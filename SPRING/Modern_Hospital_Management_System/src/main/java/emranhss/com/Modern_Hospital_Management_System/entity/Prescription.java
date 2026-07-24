@@ -26,7 +26,7 @@ public class Prescription {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @JoinColumn(name = "appointment_id", nullable = false, unique = false)
     private Appointment appointment;
 
     @ManyToOne(fetch = FetchType.LAZY)
