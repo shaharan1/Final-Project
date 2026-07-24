@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { StorageService } from '../../../services/storage.service';
-import { AuthService } from '../../../services/auth.service';
-import { NavigationService } from '../../../services/navigation.service';
-import { NavGroup } from '../../../models/nav-item.model';
+import { StorageService } from '../../../../services/storage.service';
+import { AuthService } from '../../../../services/auth.service';
+import { NavigationService } from '../../../../services/navigation.service';
+import { NavGroup } from '../../../../models/nav-item.model';
 
 @Component({
   selector: 'app-layout',
