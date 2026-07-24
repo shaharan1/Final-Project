@@ -911,6 +911,109 @@
   margin: 0;
 }
 
+.booking-fail { color: #c0392b; }
+.fail-icon { font-size: 48px; display: block; margin-bottom: 16px; color: #c0392b; }
+
+.returning-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #d4edda;
+  color: #155724;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.new-patient-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff3cd;
+  color: #856404;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.field-error {
+  display: block;
+  color: #c0392b;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.no-data {
+  color: var(--ink-soft);
+  font-size: 12px;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.fee-box {
+  background: #e8f4f8;
+  border: 1px solid #bee5eb;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.booking-form .form-control {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: inherit;
+  background: var(--white);
+  color: var(--ink);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.booking-form .form-control:focus {
+  outline: none;
+  border-color: var(--clay);
+  box-shadow: 0 0 0 3px rgba(192, 82, 74, .1);
+}
+
+.booking-form select.form-control {
+  appearance: auto;
+}
+
+.booking-form textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.booking-form .form-control:disabled {
+  background: #f0f0f0;
+  cursor: not-allowed;
+}
+
+input.form-control.ng-invalid.ng-touched,
+select.form-control.ng-invalid.ng-touched,
+textarea.form-control.ng-invalid.ng-touched {
+  border: 1px solid #c0392b;
+}
+
+input.form-control.ng-valid.ng-touched,
+select.form-control.ng-valid.ng-touched,
+textarea.form-control.ng-valid.ng-touched {
+  border: 1px solid #27ae60;
+}
+
 /* ============ FOOTER ============ */
 .footer {
   background: var(--ink);

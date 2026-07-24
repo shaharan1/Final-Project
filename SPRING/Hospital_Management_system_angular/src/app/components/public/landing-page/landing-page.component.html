@@ -207,28 +207,28 @@
         </p>
         <div class="booking-contact-list">
           <div class="booking-contact-item">
-            <span>📞</span>
+            <span>&#9742;</span>
             <div>
               <p class="bci-label">Call Us</p>
               <p class="bci-value">+880 1712-345678</p>
             </div>
           </div>
           <div class="booking-contact-item">
-            <span>✉️</span>
+            <span>&#9993;</span>
             <div>
               <p class="bci-label">Email Us</p>
               <p class="bci-value">info@elitecare.com</p>
             </div>
           </div>
           <div class="booking-contact-item">
-            <span>📍</span>
+            <span>&#9873;</span>
             <div>
               <p class="bci-label">Visit Us</p>
               <p class="bci-value">123 Health Avenue, Dhaka</p>
             </div>
           </div>
           <div class="booking-contact-item">
-            <span>🕐</span>
+            <span>&#9200;</span>
             <div>
               <p class="bci-label">Working Hours</p>
               <p class="bci-value">24/7 Emergency Available</p>
@@ -239,69 +239,115 @@
 
       <div class="booking-form-wrapper">
         <div class="booking-success" *ngIf="bookingSubmitted">
-          <span class="success-icon">✅</span>
-          <h3>Appointment Requested!</h3>
-          <p>We'll contact you soon to confirm.</p>
+          <span class="success-icon">&#10004;</span>
+          <h3>Appointment Booked Successfully!</h3>
+          <p *ngIf="bookingResponse">Appointment Number: <strong>{{ bookingResponse.appointmentNumber }}</strong></p>
+          <p *ngIf="bookingResponse">Doctor: {{ bookingResponse.doctorName }}</p>
+          <p *ngIf="bookingResponse">Fee: {{ bookingResponse.feeCharged }} Tk</p>
         </div>
 
-        <form class="booking-form" *ngIf="!bookingSubmitted" (ngSubmit)="submitBooking()">
+        <div class="booking-success booking-fail" *ngIf="bookingFailed">
+          <span class="fail-icon">&#10008;</span>
+          <h3>Booking Failed!</h3>
+          <p>Please try again or call us directly.</p>
+        </div>
+
+        <form class="booking-form" *ngIf="!bookingSubmitted && !bookingFailed" [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
           <div class="form-row">
             <div class="form-group">
-              <label>Full Name *</label>
-              <input type="text" [(ngModel)]="bookingData.name" name="name" placeholder="Your full name" required />
+              <label>Patient Name *</label>
+              <input type="text" class="form-control" formControlName="patientName" placeholder="Enter patient name">
+              <span class="field-error" *ngIf="bookingForm.get('patientName')?.touched && bookingForm.get('patientName')?.invalid">Required</span>
             </div>
             <div class="form-group">
-              <label>Phone Number *</label>
-              <input type="tel" [(ngModel)]="bookingData.phone" name="phone" placeholder="+880" required />
+              <label>Mobile Number *</label>
+              <input type="tel" class="form-control" formControlName="mobileNumber" placeholder="+880">
+              <span class="field-error" *ngIf="bookingForm.get('mobileNumber')?.touched && bookingForm.get('mobileNumber')?.invalid">Required</span>
             </div>
           </div>
+
+          <div class="returning-badge" *ngIf="returningPatient">
+            <span>&#10004;</span> Returning Patient
+          </div>
+          <div class="new-patient-badge" *ngIf="!returningPatient && bookingForm.get('mobileNumber')?.value?.length >= 10">
+            <span>&#9679;</span> New Patient
+          </div>
+
           <div class="form-row">
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" [(ngModel)]="bookingData.email" name="email" placeholder="your@email.com" />
-            </div>
             <div class="form-group">
               <label>Department *</label>
-              <select [(ngModel)]="bookingData.department" name="department" required>
+              <select class="form-control" formControlName="doctorDepartmentId">
                 <option value="">Select Department</option>
-                <option *ngFor="let d of departments" [value]="d.name">{{ d.name }}</option>
+                <option *ngFor="let dept of doctorsDepartments" [value]="dept.id">{{ dept.departmentName }}</option>
               </select>
+              <span class="field-error" *ngIf="bookingForm.get('doctorDepartmentId')?.touched && bookingForm.get('doctorDepartmentId')?.invalid">Required</span>
+            </div>
+            <div class="form-group">
+              <label>Doctor *</label>
+              <select class="form-control" formControlName="doctorId" [disabled]="!bookingForm.get('doctorDepartmentId')?.value">
+                <option value="">Select Doctor</option>
+                <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.name }}</option>
+              </select>
+              <span class="field-error" *ngIf="bookingForm.get('doctorId')?.touched && bookingForm.get('doctorId')?.invalid">Required</span>
+              <div class="no-data" *ngIf="bookingForm.get('doctorDepartmentId')?.value && doctors.length === 0">
+                No doctors found in this department.
+              </div>
             </div>
           </div>
+
           <div class="form-row">
             <div class="form-group">
-              <label>Preferred Doctor</label>
-              <select [(ngModel)]="bookingData.doctor" name="doctor">
-                <option value="">Any Available Doctor</option>
-                <option *ngFor="let doc of doctors" [value]="doc.name">{{ doc.name }} ({{ doc.spec }})</option>
-              </select>
+              <label>Appointment Date *</label>
+              <input type="date" class="form-control" formControlName="appointmentDate">
+              <span class="field-error" *ngIf="bookingForm.get('appointmentDate')?.touched && bookingForm.get('appointmentDate')?.invalid">Required</span>
             </div>
             <div class="form-group">
-              <label>Preferred Date *</label>
-              <input type="date" [(ngModel)]="bookingData.date" name="date" required />
+              <label>Available Time Slots *</label>
+              <select class="form-control" formControlName="appointmentTime"
+                [disabled]="!bookingForm.get('doctorId')?.value || !bookingForm.get('appointmentDate')?.value">
+                <option value="">Select Available Time</option>
+                <option *ngFor="let slot of availableSlots" [value]="slot.startTime">
+                  {{ slot.startTime }} - {{ slot.endTime }}
+                </option>
+              </select>
+              <span class="field-error" *ngIf="bookingForm.get('appointmentTime')?.touched && bookingForm.get('appointmentTime')?.invalid">Required</span>
+              <div class="no-data" *ngIf="bookingForm.get('doctorId')?.value && bookingForm.get('appointmentDate')?.value && availableSlots.length === 0">
+                No available slots for the selected doctor and date.
+              </div>
             </div>
           </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Problem Description *</label>
+              <textarea rows="3" class="form-control" formControlName="problemDescription" placeholder="Describe your symptoms or reason for visit"></textarea>
+              <span class="field-error" *ngIf="bookingForm.get('problemDescription')?.touched && bookingForm.get('problemDescription')?.invalid">Required</span>
+            </div>
+          </div>
+
           <div class="form-row">
             <div class="form-group">
-              <label>Preferred Time *</label>
-              <select [(ngModel)]="bookingData.time" name="time" required>
-                <option value="">Select Time</option>
-                <option value="09:00">09:00 AM</option>
-                <option value="10:00">10:00 AM</option>
-                <option value="11:00">11:00 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="14:00">02:00 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="16:00">04:00 PM</option>
-                <option value="17:00">05:00 PM</option>
+              <label>Payment Method *</label>
+              <select class="form-control" formControlName="paymentMethod">
+                <option value="">Select Payment</option>
+                <option value="Cash">Cash</option>
+                <option value="Bkash">bKash</option>
+                <option value="Nagad">Nagad</option>
+                <option value="Bank">Bank</option>
               </select>
+              <span class="field-error" *ngIf="bookingForm.get('paymentMethod')?.touched && bookingForm.get('paymentMethod')?.invalid">Required</span>
             </div>
             <div class="form-group">
-              <label>Message</label>
-              <input type="text" [(ngModel)]="bookingData.message" name="message" placeholder="Brief description of your issue" />
+              <label>Transaction ID</label>
+              <input type="text" class="form-control" formControlName="transactionId" placeholder="If paying digitally">
             </div>
           </div>
-          <button type="submit" class="booking-submit">Request Appointment</button>
+
+          <div class="fee-box" *ngIf="fee > 0">
+            Consultation Fee: <strong>{{ fee }} Tk</strong>
+          </div>
+
+          <button type="submit" class="booking-submit">Book Appointment</button>
         </form>
       </div>
     </div>

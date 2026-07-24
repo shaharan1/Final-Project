@@ -1,12 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { DoctorDepartmentModel } from '../../../models/doctorDepartmentModel';
+import { ScheduleSlotModel } from '../../../models/ScheduleSlotModel';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })
@@ -14,18 +18,11 @@ export class LandingPageComponent {
   menuOpen = false;
   isScrolled = false;
   bookingSubmitted = false;
+  bookingFailed = false;
+  bookingResponse: any = null;
 
-  bookingData = {
-    name: '',
-    phone: '',
-    email: '',
-    department: '',
-    doctor: '',
-    date: '',
-    time: '',
-    message: ''
-  };
-
+  bookingForm!: FormGroup;
+  doctorsDepartments: DoctorDepartmentModel[] = [];
   departments = [
     { icon: '❤️', name: 'Cardiology', desc: 'Heart care & cardiovascular surgery.' },
     { icon: '🧠', name: 'Neurology', desc: 'Brain & nervous system treatment.' },
@@ -36,15 +33,12 @@ export class LandingPageComponent {
     { icon: '🚑', name: 'Emergency', desc: '24/7 emergency medical services.' },
     { icon: '🩺', name: 'General Medicine', desc: 'Primary care & internal medicine.' },
   ];
+  doctors: any[] = [];
+  availableSlots: ScheduleSlotModel[] = [];
+  fee = 0;
+  returningPatient = false;
 
-  doctors = [
-    { name: 'Dr. Ahsan Rahman', spec: 'Cardiologist', exp: '15 Years', qual: 'MBBS, MD', photo: 'https://i.pravatar.cc/300?img=11' },
-    { name: 'Dr. Fatima Khan', spec: 'Neurologist', exp: '12 Years', qual: 'MBBS, DM', photo: 'https://i.pravatar.cc/300?img=32' },
-    { name: 'Dr. Kamal Hossain', spec: 'Orthopedic Surgeon', exp: '18 Years', qual: 'MBBS, MS', photo: 'https://i.pravatar.cc/300?img=12' },
-    { name: 'Dr. Nasrin Akter', spec: 'Pediatrician', exp: '10 Years', qual: 'MBBS, DCH', photo: 'https://i.pravatar.cc/300?img=26' },
-    { name: 'Dr. Rafiq Ahmed', spec: 'General Surgeon', exp: '20 Years', qual: 'MBBS, FRCS', photo: 'https://i.pravatar.cc/300?img=14' },
-    { name: 'Dr. Sabrina Islam', spec: 'Gynecologist', exp: '14 Years', qual: 'MBBS, FCPS', photo: 'https://i.pravatar.cc/300?img=25' },
-  ];
+  private apiUrl = environment.apiUrl;
 
   stats = [
     { value: '25+', label: 'Years Experience' },
@@ -71,14 +65,171 @@ export class LandingPageComponent {
     { icon: '💰', title: 'Affordable Treatment', desc: 'Quality healthcare at reasonable cost.' },
   ];
 
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.createForm();
+    this.loadDepartments();
+    this.listenFormChanges();
+  }
+
   @HostListener('window:scroll')
   onScroll() {
     this.isScrolled = window.scrollY > 40;
   }
 
+  createForm() {
+    this.bookingForm = this.fb.group({
+      patientName: ['', Validators.required],
+      mobileNumber: ['', Validators.required],
+      doctorDepartmentId: ['', Validators.required],
+      doctorId: ['', Validators.required],
+      appointmentDate: ['', Validators.required],
+      appointmentTime: ['', Validators.required],
+      problemDescription: ['', Validators.required],
+      paymentMethod: ['', Validators.required],
+      transactionId: ['']
+    });
+  }
+
+  listenFormChanges() {
+    this.bookingForm.get('doctorDepartmentId')?.valueChanges.subscribe((depId) => {
+      this.doctors = [];
+      this.availableSlots = [];
+      this.fee = 0;
+      this.bookingForm.patchValue({ doctorId: '', appointmentTime: '' }, { emitEvent: false });
+      if (depId) {
+        this.loadDoctorsByDepartment(depId);
+      }
+    });
+
+    this.bookingForm.get('doctorId')?.valueChanges.subscribe(() => {
+      this.availableSlots = [];
+      this.bookingForm.patchValue({ appointmentTime: '' }, { emitEvent: false });
+      this.loadAvailableSlots();
+      this.calculateFee();
+    });
+
+    this.bookingForm.get('appointmentDate')?.valueChanges.subscribe(() => {
+      this.availableSlots = [];
+      this.bookingForm.patchValue({ appointmentTime: '' }, { emitEvent: false });
+      this.loadAvailableSlots();
+    });
+
+    this.bookingForm.get('mobileNumber')?.valueChanges.subscribe(() => {
+      this.checkReturningPatient();
+    });
+  }
+
+  loadDepartments() {
+    this.http.get<DoctorDepartmentModel[]>(this.apiUrl + 'doctor-departments').subscribe({
+      next: (res) => {
+        this.doctorsDepartments = res;
+        this.cdr.markForCheck();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  loadDoctorsByDepartment(depId: number) {
+    this.http.get<any[]>(this.apiUrl + 'doctors/doctordepartment/' + depId).subscribe({
+      next: (res) => {
+        this.doctors = res;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error(err);
+        this.doctors = [];
+      }
+    });
+  }
+
+  loadAvailableSlots() {
+    const doctorId = this.bookingForm.get('doctorId')?.value;
+    const date = this.bookingForm.get('appointmentDate')?.value;
+    if (!doctorId || !date) {
+      this.availableSlots = [];
+      return;
+    }
+    this.http.get<ScheduleSlotModel[]>(
+      this.apiUrl + 'schedule-slots/doctor/' + doctorId + '/free?date=' + date
+    ).subscribe({
+      next: (res) => {
+        this.availableSlots = res;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error(err);
+        this.availableSlots = [];
+      }
+    });
+  }
+
+  checkReturningPatient() {
+    const phone = this.bookingForm.get('mobileNumber')?.value;
+    if (!phone || phone.length < 10) return;
+    this.http.get<boolean>(this.apiUrl + 'appointments/check-returning?phone=' + phone).subscribe({
+      next: (res) => {
+        this.returningPatient = res;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  calculateFee() {
+    const phone = this.bookingForm.get('mobileNumber')?.value;
+    const doctorId = this.bookingForm.get('doctorId')?.value;
+    if (!phone || !doctorId) return;
+    this.http.get<number>(this.apiUrl + 'appointments/calculate-fee?phone=' + phone + '&doctorId=' + doctorId).subscribe({
+      next: (res) => {
+        this.fee = res;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
   submitBooking() {
-    this.bookingSubmitted = true;
-    setTimeout(() => { this.bookingSubmitted = false; }, 4000);
+    if (this.bookingForm.invalid) {
+      this.bookingForm.markAllAsTouched();
+      return;
+    }
+
+    const formVal = this.bookingForm.value;
+
+    const payload = {
+      patientName: formVal.patientName,
+      mobileNumber: formVal.mobileNumber,
+      doctorId: Number(formVal.doctorId),
+      appointmentDate: formVal.appointmentDate,
+      appointmentTime: formVal.appointmentTime,
+      problemDescription: formVal.problemDescription,
+      paymentMethod: formVal.paymentMethod,
+      transactionId: formVal.transactionId || ''
+    };
+
+    this.http.post(this.apiUrl + 'public/checkout/confirm-booking', payload).subscribe({
+      next: (res: any) => {
+        this.bookingResponse = res;
+        this.bookingSubmitted = true;
+        this.bookingFailed = false;
+        this.bookingForm.reset();
+        this.cdr.markForCheck();
+        setTimeout(() => {
+          this.bookingSubmitted = false;
+          this.bookingResponse = null;
+        }, 5000);
+      },
+      error: (err) => {
+        console.error(err);
+        this.bookingFailed = true;
+        this.cdr.markForCheck();
+        setTimeout(() => { this.bookingFailed = false; }, 3000);
+      }
+    });
   }
 
   scrollToBooking() {
