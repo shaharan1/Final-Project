@@ -1,0 +1,111 @@
+<app-layout pageTitle="Receptionist Dashboard">
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Front Desk</p>
+      <h1>Reception Dashboard</h1>
+      <p class="hero-desc">Manage patient check-ins, walk-ins, and the daily appointment queue from the front desk.</p>
+      <div class="hero-actions">
+        <a routerLink="/patient" class="btn-primary">+ Quick Register</a>
+        <button class="btn-ghost">Check-in Patient</button>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Today's Check-ins</span>
+      <span class="stat-value">28</span>
+      <span class="stat-delta up">+9 since morning</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Pending Check-ins</span>
+      <span class="stat-value">5</span>
+      <span class="stat-delta">Waiting at desk</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Walk-ins Today</span>
+      <span class="stat-value">11</span>
+      <span class="stat-delta up">+3 this hour</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Cancelled Today</span>
+      <span class="stat-value">3</span>
+      <span class="stat-delta">Slots freed</span>
+    </div>
+  </section>
+
+  <section class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Appointment Queue</h2>
+        <span class="panel-tag">Live</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>#</th><th>Patient</th><th>Doctor</th><th>Time</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><div class="patient-cell"><span class="pt-avatar">AH</span>Amina Hossain</div></td>
+            <td>Dr. Farhan</td>
+            <td>09:30 AM</td>
+            <td><span class="badge stable">Checked In</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><div class="patient-cell"><span class="pt-avatar">MR</span>Md. Rafiq</div></td>
+            <td>Dr. Sarah</td>
+            <td>10:00 AM</td>
+            <td><span class="badge observation">Waiting</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><div class="patient-cell"><span class="pt-avatar">SK</span>Salma Khatun</div></td>
+            <td>Dr. Kamal</td>
+            <td>10:30 AM</td>
+            <td><span class="badge observation">Waiting</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><div class="patient-cell"><span class="pt-avatar">TI</span>Tanvir Islam</div></td>
+            <td>Dr. Nusrat</td>
+            <td>11:00 AM</td>
+            <td><span class="badge critical">Urgent</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel quick-actions-panel">
+      <div class="panel-head">
+        <h2>Quick Actions</h2>
+      </div>
+      <div class="quick-actions-grid">
+        <a routerLink="/patient" class="quick-action-card">
+          <span class="qa-icon qa-icon--teal">+</span>
+          <span class="qa-text">Register Patient</span>
+        </a>
+        <a routerLink="/appointment" class="quick-action-card">
+          <span class="qa-icon qa-icon--amber">A</span>
+          <span class="qa-text">Book Appointment</span>
+        </a>
+        <a routerLink="/admittedpatient" class="quick-action-card">
+          <span class="qa-icon qa-icon--clay">C</span>
+          <span class="qa-text">Check-in Patient</span>
+        </a>
+        <a routerLink="/bed" class="quick-action-card">
+          <span class="qa-icon qa-icon--teal">B</span>
+          <span class="qa-text">Bed Availability</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</app-layout>

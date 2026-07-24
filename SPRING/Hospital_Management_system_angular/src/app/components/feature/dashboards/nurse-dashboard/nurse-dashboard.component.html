@@ -1,0 +1,118 @@
+<app-layout pageTitle="Nurse Dashboard">
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Nursing Station</p>
+      <h1>Nurse Dashboard</h1>
+      <p class="hero-desc">Track your assigned patients, monitor vitals, and manage daily tasks efficiently.</p>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Assigned Patients</span>
+      <span class="stat-value">14</span>
+      <span class="stat-delta">General Ward B</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Ward Beds Occupied</span>
+      <span class="stat-value">22</span>
+      <span class="stat-delta up">of 30 beds</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Pending Tasks</span>
+      <span class="stat-value">7</span>
+      <span class="stat-delta">3 urgent</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Medication Rounds</span>
+      <span class="stat-value">3</span>
+      <span class="stat-delta up">Next: 2:00 PM</span>
+    </div>
+  </section>
+
+  <section class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Patient Vitals</h2>
+        <span class="panel-tag">Ward B</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>BP</th><th>Temp</th><th>Condition</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">RB</span>Rahim Begum</div></td>
+            <td>120/80</td>
+            <td>98.6&deg;F</td>
+            <td><span class="badge stable">Stable</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">FH</span>Fatima Haque</div></td>
+            <td>138/92</td>
+            <td>100.2&deg;F</td>
+            <td><span class="badge observation">Elevated</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">MA</span>Md. Anwar</div></td>
+            <td>110/70</td>
+            <td>98.4&deg;F</td>
+            <td><span class="badge stable">Stable</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">NI</span>Nasrin Akter</div></td>
+            <td>142/95</td>
+            <td>101.0&deg;F</td>
+            <td><span class="badge critical">Critical</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Shift Schedule</h2>
+        <span class="panel-tag">This Week</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Day</th><th>Shift</th><th>Ward</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monday</td>
+            <td>Morning (7 AM - 3 PM)</td>
+            <td>General Ward B</td>
+          </tr>
+          <tr>
+            <td>Tuesday</td>
+            <td>Morning (7 AM - 3 PM)</td>
+            <td>General Ward B</td>
+          </tr>
+          <tr>
+            <td>Wednesday</td>
+            <td>Evening (3 PM - 11 PM)</td>
+            <td>ICU</td>
+          </tr>
+          <tr>
+            <td>Thursday</td>
+            <td>Morning (7 AM - 3 PM)</td>
+            <td>General Ward B</td>
+          </tr>
+          <tr>
+            <td>Friday</td>
+            <td>Off Duty</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</app-layout>

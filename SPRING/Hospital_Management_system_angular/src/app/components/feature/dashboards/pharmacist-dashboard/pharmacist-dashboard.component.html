@@ -1,0 +1,121 @@
+<app-layout pageTitle="Pharmacist Dashboard">
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Pharmacy Operations</p>
+      <h1>Pharmacist Dashboard</h1>
+      <p class="hero-desc">Monitor stock levels, dispense prescriptions, and manage pharmacy orders efficiently.</p>
+      <div class="hero-actions">
+        <a routerLink="/pharmacysale" class="btn-primary">New Sale</a>
+        <a routerLink="/medicinestock" class="btn-ghost">Check Stock</a>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Low Stock Medicines</span>
+      <span class="stat-value">8</span>
+      <span class="stat-delta">Needs reorder</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Today's Prescriptions</span>
+      <span class="stat-value">42</span>
+      <span class="stat-delta up">+12 pending</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Pending Orders</span>
+      <span class="stat-value">5</span>
+      <span class="stat-delta">2 overdue</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Revenue Today</span>
+      <span class="stat-value">&#2547;34,200</span>
+      <span class="stat-delta up">+15.2%</span>
+    </div>
+  </section>
+
+  <section class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Low Stock Alert</h2>
+        <a routerLink="/medicinestock" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Medicine</th><th>Category</th><th>Stock</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Amoxicillin 500mg</td>
+            <td>Antibiotic</td>
+            <td>12 units</td>
+            <td><span class="badge critical">Critical</span></td>
+          </tr>
+          <tr>
+            <td>Paracetamol 650mg</td>
+            <td>Analgesic</td>
+            <td>28 units</td>
+            <td><span class="badge observation">Low</span></td>
+          </tr>
+          <tr>
+            <td>Omeprazole 20mg</td>
+            <td>Gastro</td>
+            <td>15 units</td>
+            <td><span class="badge observation">Low</span></td>
+          </tr>
+          <tr>
+            <td>Metformin 500mg</td>
+            <td>Diabetes</td>
+            <td>8 units</td>
+            <td><span class="badge critical">Critical</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent Prescriptions</h2>
+        <a routerLink="/prescription" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Doctor</th><th>Items</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">AH</span>Amina Hossain</div></td>
+            <td>Dr. Farhan</td>
+            <td>3 items</td>
+            <td><span class="badge stable">Dispensed</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">MR</span>Md. Rafiq</div></td>
+            <td>Dr. Sarah</td>
+            <td>2 items</td>
+            <td><span class="badge observation">Pending</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">SK</span>Salma Khatun</div></td>
+            <td>Dr. Kamal</td>
+            <td>4 items</td>
+            <td><span class="badge stable">Dispensed</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">TI</span>Tanvir Islam</div></td>
+            <td>Dr. Nusrat</td>
+            <td>1 item</td>
+            <td><span class="badge observation">Pending</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</app-layout>

@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.quick-action-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: border-color .15s ease, transform .15s ease;
+}
+
+.quick-action-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+}
+
+.qa-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.qa-icon--teal {
+  background: var(--teal-tint);
+  color: var(--teal);
+}
+
+.qa-icon--amber {
+  background: var(--amber-tint);
+  color: var(--amber);
+}
+
+.qa-icon--clay {
+  background: var(--clay-tint);
+  color: var(--clay);
+}

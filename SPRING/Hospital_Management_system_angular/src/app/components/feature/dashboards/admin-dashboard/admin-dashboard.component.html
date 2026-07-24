@@ -1,0 +1,136 @@
+<app-layout pageTitle="Admin Dashboard">
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">System Overview</p>
+      <h1>Welcome back, Admin</h1>
+      <p class="hero-desc">Monitor hospital operations, admissions, appointments, and revenue across all departments from a single view.</p>
+      <div class="hero-actions">
+        <button class="btn-primary">+ Admit New Patient</button>
+        <button class="btn-ghost">View Reports</button>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Patients</span>
+      <span class="stat-value">1,847</span>
+      <span class="stat-delta up">+12 today</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Today's Appointments</span>
+      <span class="stat-value">63</span>
+      <span class="stat-delta up">+8 new</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Available Beds</span>
+      <span class="stat-value">47</span>
+      <span class="stat-delta">/ 210 total</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Revenue (Monthly)</span>
+      <span class="stat-value">&#2547;12,84,500</span>
+      <span class="stat-delta up">+9.4%</span>
+    </div>
+  </section>
+
+  <section class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Ward Occupancy</h2>
+        <span class="panel-tag">Live</span>
+      </div>
+      <div class="ward-list">
+        <div class="ward-row">
+          <span class="ward-name">General Ward</span>
+          <div class="ward-bar"><div class="ward-fill" style="width:78%"></div></div>
+          <span class="ward-pct">78%</span>
+        </div>
+        <div class="ward-row">
+          <span class="ward-name">ICU</span>
+          <div class="ward-bar"><div class="ward-fill high" style="width:92%"></div></div>
+          <span class="ward-pct">92%</span>
+        </div>
+        <div class="ward-row">
+          <span class="ward-name">Maternity Ward</span>
+          <div class="ward-bar"><div class="ward-fill" style="width:54%"></div></div>
+          <span class="ward-pct">54%</span>
+        </div>
+        <div class="ward-row">
+          <span class="ward-name">Pediatric Ward</span>
+          <div class="ward-bar"><div class="ward-fill low" style="width:31%"></div></div>
+          <span class="ward-pct">31%</span>
+        </div>
+        <div class="ward-row">
+          <span class="ward-name">Emergency Ward</span>
+          <div class="ward-bar"><div class="ward-fill" style="width:66%"></div></div>
+          <span class="ward-pct">66%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent Admissions</h2>
+        <a routerLink="/admittedpatient" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Department</th><th>Bed</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">RA</span>Rahim Uddin</div></td>
+            <td>Cardiology</td>
+            <td>C-204</td>
+            <td><span class="badge stable">Stable</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">SA</span>Sabina Khatun</div></td>
+            <td>Maternity</td>
+            <td>M-112</td>
+            <td><span class="badge observation">Under Observation</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">KA</span>Kamal Hossain</div></td>
+            <td>Orthopedics</td>
+            <td>G-318</td>
+            <td><span class="badge stable">Stable</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">NU</span>Nusrat Jahan</div></td>
+            <td>ICU</td>
+            <td>I-05</td>
+            <td><span class="badge critical">Critical</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel modules-panel">
+    <div class="panel-head">
+      <h2>System Modules</h2>
+      <span class="panel-tag">10 Modules</span>
+    </div>
+    <div class="module-grid">
+      <a routerLink="/doctor" class="module-card"><span class="module-ic">D</span>Doctor Management</a>
+      <a routerLink="/patient" class="module-card"><span class="module-ic">P</span>Patient Management</a>
+      <a routerLink="/ward" class="module-card"><span class="module-ic">W</span>Ward &amp; Bed Management</a>
+      <a routerLink="/medicine" class="module-card"><span class="module-ic">M</span>Pharmacy</a>
+      <a routerLink="/tests" class="module-card"><span class="module-ic">T</span>Laboratory</a>
+      <a routerLink="/appointment" class="module-card"><span class="module-ic">A</span>Appointments</a>
+      <a routerLink="/billing" class="module-card"><span class="module-ic">B</span>Billing</a>
+      <a routerLink="/inventory" class="module-card"><span class="module-ic">I</span>Inventory</a>
+      <a routerLink="/meal" class="module-card"><span class="module-ic">M</span>Meal Management</a>
+      <a routerLink="/report" class="module-card"><span class="module-ic">R</span>Reports &amp; Analytics</a>
+    </div>
+  </section>
+
+</app-layout>

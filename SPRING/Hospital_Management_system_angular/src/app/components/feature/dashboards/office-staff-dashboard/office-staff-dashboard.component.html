@@ -1,0 +1,121 @@
+<app-layout pageTitle="Office Staff Dashboard">
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Front Office</p>
+      <h1>Office Staff Dashboard</h1>
+      <p class="hero-desc">Manage registrations, appointment scheduling, and admissions documentation for the hospital.</p>
+      <div class="hero-actions">
+        <a routerLink="/patient" class="btn-primary">+ New Registration</a>
+        <a routerLink="/appointment" class="btn-ghost">View Appointments</a>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Today's Registrations</span>
+      <span class="stat-value">18</span>
+      <span class="stat-delta up">+5 since morning</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Pending Appointments</span>
+      <span class="stat-value">12</span>
+      <span class="stat-delta">4 urgent</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Active Admissions</span>
+      <span class="stat-value">184</span>
+      <span class="stat-delta up">+6 today</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Discharges Today</span>
+      <span class="stat-value">7</span>
+      <span class="stat-delta">Paperwork pending: 2</span>
+    </div>
+  </section>
+
+  <section class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent Registrations</h2>
+        <a routerLink="/patient" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>ID</th><th>Type</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">ZH</span>Zakir Hossain</div></td>
+            <td>#1048</td>
+            <td><span class="badge stable">OPD</td>
+            <td>08:15 AM</td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">RM</span>Ruma Miah</div></td>
+            <td>#1049</td>
+            <td><span class="badge observation">Emergency</td>
+            <td>08:45 AM</td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">SA</span>Sohel Ahmed</div></td>
+            <td>#1050</td>
+            <td><span class="badge stable">OPD</td>
+            <td>09:20 AM</td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">NB</span>Nasima Begum</div></td>
+            <td>#1051</td>
+            <td><span class="badge critical">Admission</td>
+            <td>09:50 AM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Appointment Summary</h2>
+        <span class="panel-tag">Today</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Doctor</th><th>Booked</th><th>Completed</th><th>Remaining</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dr. Farhan Ahmed</td>
+            <td>12</td>
+            <td>5</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Dr. Sarah Khan</td>
+            <td>10</td>
+            <td>6</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Dr. Kamal Reza</td>
+            <td>8</td>
+            <td>3</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>Dr. Nusrat Jahan</td>
+            <td>9</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</app-layout>

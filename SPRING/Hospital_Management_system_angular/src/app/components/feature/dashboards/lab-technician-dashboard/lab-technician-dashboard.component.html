@@ -1,0 +1,121 @@
+<app-layout pageTitle="Lab Technician Dashboard">
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Laboratory</p>
+      <h1>Lab Technician Dashboard</h1>
+      <p class="hero-desc">Track pending tests, upload results, and manage samples received from across the hospital.</p>
+      <div class="hero-actions">
+        <a routerLink="/tests" class="btn-primary">View Tests</a>
+        <a routerLink="/testmaster" class="btn-ghost">Test Master</a>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Pending Tests</span>
+      <span class="stat-value">19</span>
+      <span class="stat-delta">7 urgent</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Completed Today</span>
+      <span class="stat-value">31</span>
+      <span class="stat-delta up">+8 this hour</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Samples Received</span>
+      <span class="stat-value">24</span>
+      <span class="stat-delta">3 pending verification</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Results Uploaded</span>
+      <span class="stat-value">27</span>
+      <span class="stat-delta up">All verified</span>
+    </div>
+  </section>
+
+  <section class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Pending Test Queue</h2>
+        <span class="panel-tag">19 Pending</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Test</th><th>Priority</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">AH</span>Amina Hossain</div></td>
+            <td>Blood Sugar (Fasting)</td>
+            <td><span class="badge observation">Normal</span></td>
+            <td>08:30 AM</td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">NU</span>Nusrat Jahan</div></td>
+            <td>CBC Panel</td>
+            <td><span class="badge critical">Urgent</span></td>
+            <td>09:00 AM</td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">KA</span>Kamal Hossain</div></td>
+            <td>Lipid Profile</td>
+            <td><span class="badge observation">Normal</span></td>
+            <td>09:15 AM</td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">RA</span>Rahim Uddin</div></td>
+            <td>ECG Test</td>
+            <td><span class="badge critical">Urgent</span></td>
+            <td>09:30 AM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent Results</h2>
+        <a routerLink="/tests" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Test</th><th>Result</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">FH</span>Fatima Haque</div></td>
+            <td>Thyroid Panel</td>
+            <td>TSH: 4.2 mIU/L</td>
+            <td><span class="badge stable">Normal</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">MA</span>Md. Anwar</div></td>
+            <td>Liver Function</td>
+            <td>ALT: 52 U/L</td>
+            <td><span class="badge observation">Borderline</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">NI</span>Nasrin Akter</div></td>
+            <td>Kidney Panel</td>
+            <td>Creatinine: 1.8 mg/dL</td>
+            <td><span class="badge critical">Abnormal</span></td>
+          </tr>
+          <tr>
+            <td><div class="patient-cell"><span class="pt-avatar">RB</span>Rahim Begum</div></td>
+            <td>Urinalysis</td>
+            <td>All parameters normal</td>
+            <td><span class="badge stable">Normal</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</app-layout>
