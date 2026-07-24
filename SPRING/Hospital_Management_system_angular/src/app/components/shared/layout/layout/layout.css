@@ -43,6 +43,13 @@
   flex-shrink: 0;
 }
 
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;
