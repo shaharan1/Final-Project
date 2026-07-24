@@ -6,8 +6,7 @@
       <h1>Good Morning, Dr. {{ doctorName }}</h1>
       <p class="hero-desc" *ngIf="!loading">You have {{ todayAppointments }} appointments scheduled today and {{ pendingReports }} pending lab reports to review.</p>
       <div class="hero-actions">
-        <a routerLink="/prescription" class="btn-primary">Write Prescription</a>
-        <a routerLink="/schedule" class="btn-ghost">View Schedule</a>
+        <a routerLink="/appointment-list" class="btn-primary">Today's Patients</a>
       </div>
     </div>
     <div class="hero-pulse" aria-hidden="true">
@@ -34,47 +33,31 @@
     </div>
   </section>
 
-  <section *ngIf="!loading" class="grid-2col">
+  <section *ngIf="!loading" class="full-width-section">
     <div class="panel">
       <div class="panel-head">
-        <h2>Upcoming Appointments</h2>
+        <h2>Today's Appointments</h2>
         <a routerLink="/appointment-list" class="panel-link">View All →</a>
       </div>
-      <table class="mini-table">
+      <table class="mini-table" *ngIf="appointments.length > 0">
         <thead>
-          <tr><th>Patient</th><th>Time</th><th>Type</th></tr>
+          <tr><th>Patient</th><th>Time</th><th>Status</th><th>Action</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let appt of appointments">
             <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(appt.patientName) }}</span>{{ appt.patientName }}</div></td>
             <td>{{ appt.appointmentTime }}</td>
             <td><span class="badge {{ getBadgeClass(appt.status) }}">{{ formatStatus(appt.status) }}</span></td>
+            <td>
+              <a [routerLink]="['/prescriptions/create', appt.id]" class="btn-write-rx" *ngIf="appt.status !== 'CANCELLED'">
+                Write Prescription
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <div class="panel quick-actions-panel">
-      <div class="panel-head">
-        <h2>Quick Actions</h2>
-      </div>
-      <div class="quick-actions-grid">
-        <a routerLink="/prescription" class="quick-action-card">
-          <span class="qa-icon qa-icon--teal">℞</span>
-          <span class="qa-text">Write Prescription</span>
-        </a>
-        <a routerLink="/schedule" class="quick-action-card">
-          <span class="qa-icon qa-icon--amber">S</span>
-          <span class="qa-text">View Schedule</span>
-        </a>
-        <a routerLink="/patient" class="quick-action-card">
-          <span class="qa-icon qa-icon--clay">P</span>
-          <span class="qa-text">Patient List</span>
-        </a>
-        <a routerLink="/tests" class="quick-action-card">
-          <span class="qa-icon qa-icon--teal">T</span>
-          <span class="qa-text">Lab Reports</span>
-        </a>
+      <div *ngIf="appointments.length === 0" class="empty-state">
+        <p>No appointments scheduled for today.</p>
       </div>
     </div>
   </section>
