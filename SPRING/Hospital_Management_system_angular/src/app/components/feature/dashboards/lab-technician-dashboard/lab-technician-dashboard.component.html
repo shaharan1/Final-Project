@@ -17,63 +17,30 @@
     </div>
   </section>
 
-  <section class="stats-grid">
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
     <div class="stat-card">
-      <span class="stat-label">Pending Tests</span>
-      <span class="stat-value">19</span>
-      <span class="stat-delta">7 urgent</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Completed Today</span>
-      <span class="stat-value">31</span>
-      <span class="stat-delta up">+8 this hour</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Samples Received</span>
-      <span class="stat-value">24</span>
-      <span class="stat-delta">3 pending verification</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Results Uploaded</span>
-      <span class="stat-value">27</span>
-      <span class="stat-delta up">All verified</span>
+      <span class="stat-label">Total Tests</span>
+      <span class="stat-value">{{ stats!.totalTests | number }}</span>
     </div>
   </section>
 
-  <section class="grid-2col">
+  <section *ngIf="!loading" class="grid-2col">
     <div class="panel">
       <div class="panel-head">
-        <h2>Pending Test Queue</h2>
-        <span class="panel-tag">19 Pending</span>
+        <h2>Available Tests</h2>
+        <span class="panel-tag">{{ tests.length }} Tests</span>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Patient</th><th>Test</th><th>Priority</th><th>Time</th></tr>
+          <tr><th>Test Name</th><th>Category</th><th>Price</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">AH</span>Amina Hossain</div></td>
-            <td>Blood Sugar (Fasting)</td>
-            <td><span class="badge observation">Normal</span></td>
-            <td>08:30 AM</td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">NU</span>Nusrat Jahan</div></td>
-            <td>CBC Panel</td>
-            <td><span class="badge critical">Urgent</span></td>
-            <td>09:00 AM</td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">KA</span>Kamal Hossain</div></td>
-            <td>Lipid Profile</td>
-            <td><span class="badge observation">Normal</span></td>
-            <td>09:15 AM</td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">RA</span>Rahim Uddin</div></td>
-            <td>ECG Test</td>
-            <td><span class="badge critical">Urgent</span></td>
-            <td>09:30 AM</td>
+          <tr *ngFor="let test of tests">
+            <td>{{ test.name }}</td>
+            <td>{{ test.category }}</td>
+            <td>{{ test.price | number }}</td>
           </tr>
         </tbody>
       </table>
@@ -81,37 +48,17 @@
 
     <div class="panel">
       <div class="panel-head">
-        <h2>Recent Results</h2>
-        <a routerLink="/tests" class="panel-link">View All →</a>
+        <h2>Tests by Category</h2>
+        <span class="panel-tag">{{ categories.length }} Categories</span>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Patient</th><th>Test</th><th>Result</th><th>Status</th></tr>
+          <tr><th>Category</th><th>Test Count</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">FH</span>Fatima Haque</div></td>
-            <td>Thyroid Panel</td>
-            <td>TSH: 4.2 mIU/L</td>
-            <td><span class="badge stable">Normal</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">MA</span>Md. Anwar</div></td>
-            <td>Liver Function</td>
-            <td>ALT: 52 U/L</td>
-            <td><span class="badge observation">Borderline</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">NI</span>Nasrin Akter</div></td>
-            <td>Kidney Panel</td>
-            <td>Creatinine: 1.8 mg/dL</td>
-            <td><span class="badge critical">Abnormal</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">RB</span>Rahim Begum</div></td>
-            <td>Urinalysis</td>
-            <td>All parameters normal</td>
-            <td><span class="badge stable">Normal</span></td>
+          <tr *ngFor="let cat of categories">
+            <td>{{ cat.name }}</td>
+            <td>{{ cat.count }}</td>
           </tr>
         </tbody>
       </table>

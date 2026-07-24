@@ -17,30 +17,24 @@
     </div>
   </section>
 
-  <section class="stats-grid">
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
     <div class="stat-card">
-      <span class="stat-label">Total Items</span>
-      <span class="stat-value">1,248</span>
-      <span class="stat-delta up">+18 this week</span>
+      <span class="stat-label">Total Medicines</span>
+      <span class="stat-value">{{ stats!.totalMedicines | number }}</span>
     </div>
     <div class="stat-card">
       <span class="stat-label">Low Stock Alerts</span>
-      <span class="stat-value">14</span>
-      <span class="stat-delta">6 critical</span>
+      <span class="stat-value">{{ stats!.lowStockMedicines | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Pending Orders</span>
-      <span class="stat-value">7</span>
-      <span class="stat-delta">3 overdue</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Monthly Spend</span>
-      <span class="stat-value">&#2547;8,42,000</span>
-      <span class="stat-delta up">-3.2% vs last month</span>
+      <span class="stat-label">Total Generics</span>
+      <span class="stat-value">{{ stats!.totalGenerics | number }}</span>
     </div>
   </section>
 
-  <section class="grid-2col">
+  <section *ngIf="!loading" class="grid-2col">
     <div class="panel">
       <div class="panel-head">
         <h2>Stock Overview</h2>
@@ -48,32 +42,14 @@
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Item</th><th>Category</th><th>Qty</th><th>Status</th></tr>
+          <tr><th>Medicine</th><th>Generic</th><th>Stock</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Surgical Gloves (L)</td>
-            <td>Surgical</td>
-            <td>120 boxes</td>
-            <td><span class="badge stable">Adequate</span></td>
-          </tr>
-          <tr>
-            <td>IV Fluid 500ml</td>
-            <td>Consumables</td>
-            <td>35 units</td>
-            <td><span class="badge observation">Low</span></td>
-          </tr>
-          <tr>
-            <td>Suture Kit</td>
-            <td>Surgical</td>
-            <td>8 units</td>
-            <td><span class="badge critical">Critical</span></td>
-          </tr>
-          <tr>
-            <td>Face Masks (Box)</td>
-            <td>PPE</td>
-            <td>85 boxes</td>
-            <td><span class="badge stable">Adequate</span></td>
+          <tr *ngFor="let med of medicines">
+            <td>{{ med.name }}</td>
+            <td>{{ med.genericName }}</td>
+            <td>{{ med.currentStock }} units</td>
+            <td><span class="badge {{ getStockBadgeClass(med) }}">{{ getStockStatus(med) }}</span></td>
           </tr>
         </tbody>
       </table>
@@ -81,37 +57,17 @@
 
     <div class="panel">
       <div class="panel-head">
-        <h2>Recent Orders</h2>
-        <span class="panel-tag">This Month</span>
+        <h2>Generic Medicines</h2>
+        <span class="panel-tag">{{ generics.length }} Generics</span>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Supplier</th><th>Items</th><th>Total</th><th>Status</th></tr>
+          <tr><th>Generic Name</th><th>Category</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>MedSupply Ltd.</td>
-            <td>12 items</td>
-            <td>&#2547;1,45,000</td>
-            <td><span class="badge stable">Delivered</span></td>
-          </tr>
-          <tr>
-            <td>PharmaCorp</td>
-            <td>8 items</td>
-            <td>&#2547;78,500</td>
-            <td><span class="badge observation">In Transit</span></td>
-          </tr>
-          <tr>
-            <td>SurgicalPlus</td>
-            <td>5 items</td>
-            <td>&#2547;32,000</td>
-            <td><span class="badge observation">Processing</span></td>
-          </tr>
-          <tr>
-            <td>SafeGear Inc.</td>
-            <td>3 items</td>
-            <td>&#2547;12,800</td>
-            <td><span class="badge stable">Delivered</span></td>
+          <tr *ngFor="let generic of generics">
+            <td>{{ generic.name }}</td>
+            <td>{{ generic.category }}</td>
           </tr>
         </tbody>
       </table>

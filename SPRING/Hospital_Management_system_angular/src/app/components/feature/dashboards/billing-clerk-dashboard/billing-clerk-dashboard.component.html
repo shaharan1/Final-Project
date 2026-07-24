@@ -17,63 +17,43 @@
     </div>
   </section>
 
-  <section class="stats-grid">
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
     <div class="stat-card">
-      <span class="stat-label">Today's Collections</span>
-      <span class="stat-value">&#2547;1,84,300</span>
-      <span class="stat-delta up">+12.6%</span>
+      <span class="stat-label">Monthly Revenue</span>
+      <span class="stat-value">{{ stats!.monthlyRevenue | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Pending Dues</span>
-      <span class="stat-value">&#2547;3,45,000</span>
-      <span class="stat-delta">22 patients</span>
+      <span class="stat-label">Total Patients</span>
+      <span class="stat-value">{{ stats!.totalPatients | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Insurance Claims</span>
-      <span class="stat-value">15</span>
-      <span class="stat-delta">8 pending approval</span>
+      <span class="stat-label">Active Admissions</span>
+      <span class="stat-value">{{ stats!.activeAdmissions | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Invoices Today</span>
-      <span class="stat-value">34</span>
-      <span class="stat-delta up">+9 this morning</span>
+      <span class="stat-label">Today's Appointments</span>
+      <span class="stat-value">{{ stats!.todayAppointments | number }}</span>
     </div>
   </section>
 
-  <section class="grid-2col">
+  <section *ngIf="!loading" class="grid-2col">
     <div class="panel">
       <div class="panel-head">
-        <h2>Recent Transactions</h2>
-        <a routerLink="/billing" class="panel-link">View All →</a>
+        <h2>Recent Admissions</h2>
+        <a routerLink="/admittedpatient" class="panel-link">View All →</a>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Patient</th><th>Type</th><th>Amount</th><th>Status</th></tr>
+          <tr><th>Patient</th><th>Ward</th><th>Bed</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">AH</span>Amina Hossain</div></td>
-            <td>OPD Visit</td>
-            <td>&#2547;2,500</td>
-            <td><span class="badge stable">Paid</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">MR</span>Md. Rafiq</div></td>
-            <td>Lab Tests</td>
-            <td>&#2547;4,800</td>
-            <td><span class="badge observation">Pending</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">SK</span>Salma Khatun</div></td>
-            <td>Surgery</td>
-            <td>&#2547;45,000</td>
-            <td><span class="badge stable">Paid</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">TI</span>Tanvir Islam</div></td>
-            <td>Admission</td>
-            <td>&#2547;18,500</td>
-            <td><span class="badge critical">Overdue</span></td>
+          <tr *ngFor="let admission of recentAdmissions">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(admission.patientName) }}</span>{{ admission.patientName }}</div></td>
+            <td>{{ admission.wardName }}</td>
+            <td>{{ admission.bedNumber }}</td>
+            <td><span class="badge {{ getBadgeClass(admission.status) }}">{{ formatStatus(admission.status) }}</span></td>
           </tr>
         </tbody>
       </table>
@@ -82,36 +62,18 @@
     <div class="panel">
       <div class="panel-head">
         <h2>Due Payments</h2>
-        <span class="panel-tag">22 Pending</span>
+        <span class="panel-tag">{{ stats!.pendingAdmissions }} Pending</span>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Patient</th><th>Bill</th><th>Days Overdue</th><th>Action</th></tr>
+          <tr><th>Patient</th><th>Ward</th><th>Bed</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">RA</span>Rahim Uddin</div></td>
-            <td>&#2547;12,400</td>
-            <td>7 days</td>
-            <td><span class="badge critical">Follow-up</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">SA</span>Sabina Khatun</div></td>
-            <td>&#2547;8,200</td>
-            <td>3 days</td>
-            <td><span class="badge observation">Reminder</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">NU</span>Nusrat Jahan</div></td>
-            <td>&#2547;32,000</td>
-            <td>14 days</td>
-            <td><span class="badge critical">Escalated</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">MA</span>Md. Anwar</div></td>
-            <td>&#2547;5,600</td>
-            <td>1 day</td>
-            <td><span class="badge observation">Reminder</span></td>
+          <tr *ngFor="let admission of recentAdmissions">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(admission.patientName) }}</span>{{ admission.patientName }}</div></td>
+            <td>{{ admission.wardName }}</td>
+            <td>{{ admission.bedNumber }}</td>
+            <td><span class="badge {{ getBadgeClass(admission.status) }}">{{ formatStatus(admission.status) }}</span></td>
           </tr>
         </tbody>
       </table>

@@ -17,63 +17,43 @@
     </div>
   </section>
 
-  <section class="stats-grid">
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
     <div class="stat-card">
-      <span class="stat-label">Today's Registrations</span>
-      <span class="stat-value">18</span>
-      <span class="stat-delta up">+5 since morning</span>
+      <span class="stat-label">Total Patients</span>
+      <span class="stat-value">{{ stats!.totalPatients | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Pending Appointments</span>
-      <span class="stat-value">12</span>
-      <span class="stat-delta">4 urgent</span>
+      <span class="stat-label">Today's Appointments</span>
+      <span class="stat-value">{{ stats!.todayAppointments | number }}</span>
     </div>
     <div class="stat-card">
       <span class="stat-label">Active Admissions</span>
-      <span class="stat-value">184</span>
-      <span class="stat-delta up">+6 today</span>
+      <span class="stat-value">{{ stats!.activeAdmissions | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Discharges Today</span>
-      <span class="stat-value">7</span>
-      <span class="stat-delta">Paperwork pending: 2</span>
+      <span class="stat-label">Pending Admissions</span>
+      <span class="stat-value">{{ stats!.pendingAdmissions | number }}</span>
     </div>
   </section>
 
-  <section class="grid-2col">
+  <section *ngIf="!loading" class="grid-2col">
     <div class="panel">
       <div class="panel-head">
-        <h2>Recent Registrations</h2>
-        <a routerLink="/patient" class="panel-link">View All →</a>
+        <h2>Recent Admissions</h2>
+        <a routerLink="/admittedpatient" class="panel-link">View All →</a>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Patient</th><th>ID</th><th>Type</th><th>Time</th></tr>
+          <tr><th>Patient</th><th>Ward</th><th>Bed</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">ZH</span>Zakir Hossain</div></td>
-            <td>#1048</td>
-            <td><span class="badge stable">OPD</span></td>
-            <td>08:15 AM</td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">RM</span>Ruma Miah</div></td>
-            <td>#1049</td>
-            <td><span class="badge observation">Emergency</span></td>
-            <td>08:45 AM</td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">SA</span>Sohel Ahmed</div></td>
-            <td>#1050</td>
-            <td><span class="badge stable">OPD</span></td>
-            <td>09:20 AM</td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">NB</span>Nasima Begum</div></td>
-            <td>#1051</td>
-            <td><span class="badge critical">Admission</span></td>
-            <td>09:50 AM</td>
+          <tr *ngFor="let admission of recentAdmissions">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(admission.patientName) }}</span>{{ admission.patientName }}</div></td>
+            <td>{{ admission.wardName }}</td>
+            <td>{{ admission.bedNumber }}</td>
+            <td><span class="badge {{ getBadgeClass(admission.status) }}">{{ formatStatus(admission.status) }}</span></td>
           </tr>
         </tbody>
       </table>
@@ -81,37 +61,19 @@
 
     <div class="panel">
       <div class="panel-head">
-        <h2>Appointment Summary</h2>
+        <h2>Today's Appointments</h2>
         <span class="panel-tag">Today</span>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Doctor</th><th>Booked</th><th>Completed</th><th>Remaining</th></tr>
+          <tr><th>Patient</th><th>Doctor</th><th>Time</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Dr. Farhan Ahmed</td>
-            <td>12</td>
-            <td>5</td>
-            <td>7</td>
-          </tr>
-          <tr>
-            <td>Dr. Sarah Khan</td>
-            <td>10</td>
-            <td>6</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td>Dr. Kamal Reza</td>
-            <td>8</td>
-            <td>3</td>
-            <td>5</td>
-          </tr>
-          <tr>
-            <td>Dr. Nusrat Jahan</td>
-            <td>9</td>
-            <td>4</td>
-            <td>5</td>
+          <tr *ngFor="let appt of todayAppointments">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(appt.patientName) }}</span>{{ appt.patientName }}</div></td>
+            <td>{{ appt.doctorName }}</td>
+            <td>{{ appt.appointmentTime }}</td>
+            <td><span class="badge {{ getBadgeClass(appt.status) }}">{{ formatStatus(appt.status) }}</span></td>
           </tr>
         </tbody>
       </table>

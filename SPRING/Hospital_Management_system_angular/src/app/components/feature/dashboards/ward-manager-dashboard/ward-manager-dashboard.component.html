@@ -17,65 +17,38 @@
     </div>
   </section>
 
-  <section class="stats-grid">
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
     <div class="stat-card">
       <span class="stat-label">Total Beds</span>
-      <span class="stat-value">210</span>
-      <span class="stat-delta">Across 6 wards</span>
+      <span class="stat-value">{{ stats!.totalBeds | number }}</span>
     </div>
     <div class="stat-card">
       <span class="stat-label">Occupied</span>
-      <span class="stat-value">163</span>
-      <span class="stat-delta up">+12 today</span>
+      <span class="stat-value">{{ stats!.admittedPatients | number }}</span>
     </div>
     <div class="stat-card">
       <span class="stat-label">Available</span>
-      <span class="stat-value">47</span>
-      <span class="stat-delta">ICU: 2 only</span>
+      <span class="stat-value">{{ stats!.availableBeds | number }}</span>
     </div>
     <div class="stat-card">
       <span class="stat-label">Occupancy Rate</span>
-      <span class="stat-value">77.6%</span>
-      <span class="stat-delta up">+2.1% from yesterday</span>
+      <span class="stat-value">{{ occupancyRate }}%</span>
     </div>
   </section>
 
-  <section class="grid-2col">
+  <section *ngIf="!loading" class="grid-2col">
     <div class="panel">
       <div class="panel-head">
         <h2>Ward-wise Occupancy</h2>
         <span class="panel-tag">Live</span>
       </div>
       <div class="ward-list">
-        <div class="ward-row">
-          <span class="ward-name">General Ward A</span>
-          <div class="ward-bar"><div class="ward-fill" style="width:78%"></div></div>
-          <span class="ward-pct">78%</span>
-        </div>
-        <div class="ward-row">
-          <span class="ward-name">General Ward B</span>
-          <div class="ward-bar"><div class="ward-fill" style="width:72%"></div></div>
-          <span class="ward-pct">72%</span>
-        </div>
-        <div class="ward-row">
-          <span class="ward-name">ICU</span>
-          <div class="ward-bar"><div class="ward-fill high" style="width:92%"></div></div>
-          <span class="ward-pct">92%</span>
-        </div>
-        <div class="ward-row">
-          <span class="ward-name">Maternity Ward</span>
-          <div class="ward-bar"><div class="ward-fill" style="width:54%"></div></div>
-          <span class="ward-pct">54%</span>
-        </div>
-        <div class="ward-row">
-          <span class="ward-name">Pediatric Ward</span>
-          <div class="ward-bar"><div class="ward-fill low" style="width:31%"></div></div>
-          <span class="ward-pct">31%</span>
-        </div>
-        <div class="ward-row">
-          <span class="ward-name">Emergency Ward</span>
-          <div class="ward-bar"><div class="ward-fill" style="width:66%"></div></div>
-          <span class="ward-pct">66%</span>
+        <div class="ward-row" *ngFor="let ward of wards">
+          <span class="ward-name">{{ ward.wardName }}</span>
+          <div class="ward-bar"><div class="ward-fill {{ getBarClass(ward.percentage) }}" [style.width.%]="ward.percentage"></div></div>
+          <span class="ward-pct">{{ ward.percentage }}%</span>
         </div>
       </div>
     </div>
@@ -90,29 +63,11 @@
           <tr><th>Patient</th><th>Ward</th><th>Bed</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">RA</span>Rahim Uddin</div></td>
-            <td>General Ward A</td>
-            <td>A-204</td>
-            <td><span class="badge stable">Stable</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">SA</span>Sabina Khatun</div></td>
-            <td>Maternity Ward</td>
-            <td>M-112</td>
-            <td><span class="badge observation">Observation</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">NU</span>Nusrat Jahan</div></td>
-            <td>ICU</td>
-            <td>I-05</td>
-            <td><span class="badge critical">Critical</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">KA</span>Kamal Hossain</div></td>
-            <td>General Ward B</td>
-            <td>B-318</td>
-            <td><span class="badge stable">Stable</span></td>
+          <tr *ngFor="let admission of recentAdmissions">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(admission.patientName) }}</span>{{ admission.patientName }}</div></td>
+            <td>{{ admission.wardName }}</td>
+            <td>{{ admission.bedNumber }}</td>
+            <td><span class="badge {{ getBadgeClass(admission.status) }}">{{ formatStatus(admission.status) }}</span></td>
           </tr>
         </tbody>
       </table>

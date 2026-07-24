@@ -17,30 +17,24 @@
     </div>
   </section>
 
-  <section class="stats-grid">
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Medicines</span>
+      <span class="stat-value">{{ stats!.totalMedicines | number }}</span>
+    </div>
     <div class="stat-card">
       <span class="stat-label">Low Stock Medicines</span>
-      <span class="stat-value">8</span>
-      <span class="stat-delta">Needs reorder</span>
+      <span class="stat-value">{{ stats!.lowStockMedicines | number }}</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Today's Prescriptions</span>
-      <span class="stat-value">42</span>
-      <span class="stat-delta up">+12 pending</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Pending Orders</span>
-      <span class="stat-value">5</span>
-      <span class="stat-delta">2 overdue</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Revenue Today</span>
-      <span class="stat-value">&#2547;34,200</span>
-      <span class="stat-delta up">+15.2%</span>
+      <span class="stat-label">Total Generics</span>
+      <span class="stat-value">{{ stats!.totalGenerics | number }}</span>
     </div>
   </section>
 
-  <section class="grid-2col">
+  <section *ngIf="!loading" class="grid-2col">
     <div class="panel">
       <div class="panel-head">
         <h2>Low Stock Alert</h2>
@@ -48,32 +42,14 @@
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Medicine</th><th>Category</th><th>Stock</th><th>Status</th></tr>
+          <tr><th>Medicine</th><th>Generic</th><th>Stock</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Amoxicillin 500mg</td>
-            <td>Antibiotic</td>
-            <td>12 units</td>
-            <td><span class="badge critical">Critical</span></td>
-          </tr>
-          <tr>
-            <td>Paracetamol 650mg</td>
-            <td>Analgesic</td>
-            <td>28 units</td>
-            <td><span class="badge observation">Low</span></td>
-          </tr>
-          <tr>
-            <td>Omeprazole 20mg</td>
-            <td>Gastro</td>
-            <td>15 units</td>
-            <td><span class="badge observation">Low</span></td>
-          </tr>
-          <tr>
-            <td>Metformin 500mg</td>
-            <td>Diabetes</td>
-            <td>8 units</td>
-            <td><span class="badge critical">Critical</span></td>
+          <tr *ngFor="let med of medicines">
+            <td>{{ med.name }}</td>
+            <td>{{ med.genericName }}</td>
+            <td>{{ med.currentStock }} units</td>
+            <td><span class="badge {{ getMedicineBadgeClass(med) }}">{{ getMedicineStatus(med) }}</span></td>
           </tr>
         </tbody>
       </table>
@@ -81,37 +57,17 @@
 
     <div class="panel">
       <div class="panel-head">
-        <h2>Recent Prescriptions</h2>
-        <a routerLink="/prescription" class="panel-link">View All →</a>
+        <h2>Generic Medicines</h2>
+        <a routerLink="/medicine" class="panel-link">View All →</a>
       </div>
       <table class="mini-table">
         <thead>
-          <tr><th>Patient</th><th>Doctor</th><th>Items</th><th>Status</th></tr>
+          <tr><th>Generic Name</th><th>Category</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">AH</span>Amina Hossain</div></td>
-            <td>Dr. Farhan</td>
-            <td>3 items</td>
-            <td><span class="badge stable">Dispensed</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">MR</span>Md. Rafiq</div></td>
-            <td>Dr. Sarah</td>
-            <td>2 items</td>
-            <td><span class="badge observation">Pending</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">SK</span>Salma Khatun</div></td>
-            <td>Dr. Kamal</td>
-            <td>4 items</td>
-            <td><span class="badge stable">Dispensed</span></td>
-          </tr>
-          <tr>
-            <td><div class="patient-cell"><span class="pt-avatar">TI</span>Tanvir Islam</div></td>
-            <td>Dr. Nusrat</td>
-            <td>1 item</td>
-            <td><span class="badge observation">Pending</span></td>
+          <tr *ngFor="let generic of generics">
+            <td>{{ generic.name }}</td>
+            <td>{{ generic.category }}</td>
           </tr>
         </tbody>
       </table>
