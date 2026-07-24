@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { LandingPageComponent } from './components/public/landing-page/landing-page.component';
 import { Doctor } from './components/feature/doctors/doctor/doctor';
 import { DoctorList } from './components/feature/doctors/doctor-list/doctor-list';
 import { DoctorDepartment } from './components/feature/doctors/doctor-department/doctor-department';
@@ -122,7 +123,9 @@ export const routes: Routes = [
   { path: 'ward-list', component: WardListComponent },
   { path: 'bed-management', component: BedManagementComponent },
 
+  // ============ Public ============
+  { path: '', component: LandingPageComponent },
+
   // ============ Default ============
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' },
+  { path: '**', redirectTo: '' },
 ];

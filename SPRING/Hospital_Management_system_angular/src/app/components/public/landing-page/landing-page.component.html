@@ -1,0 +1,270 @@
+<!-- ============ TOP HEADER ============ -->
+<header class="top-header">
+  <div class="header-container">
+    <div class="header-left">
+      <span class="header-item">
+        <span class="header-icon">🏥</span>
+        <span class="header-bold">Elite Care Hospital</span>
+      </span>
+      <span class="header-divider">|</span>
+      <a href="tel:+8801712345678" class="header-item header-link">
+        <span class="header-icon">📞</span>
+        Emergency: +880 1712-345678 (24/7)
+      </a>
+      <span class="header-divider">|</span>
+      <a href="mailto:info@elitecare.com" class="header-item header-link">
+        <span class="header-icon">✉️</span>
+        info@elitecare.com
+      </a>
+      <span class="header-divider">|</span>
+      <span class="header-item">
+        <span class="header-icon">📍</span>
+        Dhaka, Bangladesh
+      </span>
+    </div>
+    <div class="header-right">
+      <a href="#" class="social-link" title="Facebook">f</a>
+      <a href="#" class="social-link" title="Twitter">𝕏</a>
+      <a href="#" class="social-link" title="LinkedIn">in</a>
+      <a href="#" class="social-link" title="YouTube">▶</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="nav-container">
+    <a routerLink="/" class="nav-logo">
+      <span class="logo-icon">🏥</span>
+      <span class="logo-text">Elite Care</span>
+    </a>
+    <ul class="nav-links" [class.open]="menuOpen">
+      <li><a routerLink="/" (click)="menuOpen=false">Home</a></li>
+      <li><a href="#about" (click)="menuOpen=false">About Us</a></li>
+      <li><a href="#departments" (click)="menuOpen=false">Departments</a></li>
+      <li><a href="#doctors" (click)="menuOpen=false">Doctors</a></li>
+      <li><a href="#services" (click)="menuOpen=false">Services</a></li>
+      <li><a href="#packages" (click)="menuOpen=false">Health Packages</a></li>
+      <li><a href="#contact" (click)="menuOpen=false">Contact</a></li>
+      <li><a routerLink="/login" class="nav-login-link" (click)="menuOpen=false">Staff Login</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a routerLink="/login" class="nav-book-btn">Book Appointment</a>
+      <button class="hamburger" (click)="menuOpen = !menuOpen" [class.active]="menuOpen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO BANNER ============ -->
+<section class="hero-banner">
+  <div class="hero-container">
+    <div class="hero-content">
+      <p class="hero-tagline">Welcome to Elite Care Hospital</p>
+      <h1 class="hero-title">Your Health Is Our <span class="highlight">Top Priority</span></h1>
+      <p class="hero-desc">
+        Providing world-class healthcare services with compassion and excellence.
+        Our team of expert doctors is dedicated to your well-being.
+      </p>
+      <div class="hero-btns">
+        <a routerLink="/login" class="hero-btn-primary">Book Appointment</a>
+        <a routerLink="/login" class="hero-btn-secondary">Staff Login</a>
+      </div>
+      <div class="hero-hotline">
+        <span class="hotline-icon">📞</span>
+        <div>
+          <p class="hotline-label">Emergency Hotline</p>
+          <p class="hotline-number">+880 1712-345678</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hero-card-1">
+        <span class="hc-icon">🩺</span>
+        <span class="hc-text">Expert Doctors</span>
+      </div>
+      <div class="hero-card hero-card-2">
+        <span class="hc-icon">🏥</span>
+        <span class="hc-text">Modern Facility</span>
+      </div>
+      <div class="hero-card hero-card-3">
+        <span class="hc-icon">❤️</span>
+        <span class="hc-text">24/7 Care</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUICK SERVICES ============ -->
+<section class="section services-section" id="services">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">What We Offer</p>
+      <h2 class="section-title">Quick Services</h2>
+      <p class="section-desc">Access essential healthcare services at your fingertips.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card" *ngFor="let s of services">
+        <span class="service-icon">{{ s.icon }}</span>
+        <h3 class="service-title">{{ s.title }}</h3>
+        <p class="service-desc">{{ s.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT HOSPITAL ============ -->
+<section class="section about-section" id="about">
+  <div class="section-container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-img-placeholder">
+          <span class="about-big-icon">🏥</span>
+          <p class="about-img-text">Elite Care Hospital</p>
+        </div>
+      </div>
+      <div class="about-content">
+        <p class="section-tag">About Us</p>
+        <h2 class="section-title">A Trusted Name in Healthcare</h2>
+        <p class="about-text">
+          Elite Care Hospital has been serving the community for over 25 years with
+          compassionate, world-class healthcare. Our mission is to provide accessible,
+          affordable, and quality medical services to every patient.
+        </p>
+        <div class="about-mission">
+          <div class="about-mission-item">
+            <h4>Our Mission</h4>
+            <p>To deliver exceptional healthcare with empathy, innovation, and integrity.</p>
+          </div>
+          <div class="about-mission-item">
+            <h4>Our Vision</h4>
+            <p>To be the most trusted healthcare provider in the region.</p>
+          </div>
+        </div>
+        <div class="about-stats">
+          <div class="about-stat" *ngFor="let s of stats">
+            <span class="about-stat-value">{{ s.value }}</span>
+            <span class="about-stat-label">{{ s.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPARTMENTS ============ -->
+<section class="section departments-section" id="departments">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">Our Specialties</p>
+      <h2 class="section-title">Our Departments</h2>
+      <p class="section-desc">Specialized departments equipped with modern technology.</p>
+    </div>
+    <div class="departments-grid">
+      <div class="dept-card" *ngFor="let d of departments">
+        <span class="dept-icon">{{ d.icon }}</span>
+        <h3 class="dept-name">{{ d.name }}</h3>
+        <p class="dept-desc">{{ d.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUR DOCTORS ============ -->
+<section class="section doctors-section" id="doctors">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">Meet Our Team</p>
+      <h2 class="section-title">Our Doctors</h2>
+      <p class="section-desc">Highly qualified specialists dedicated to your health.</p>
+    </div>
+    <div class="doctors-grid">
+      <div class="doctor-card" *ngFor="let doc of doctors">
+        <div class="doctor-avatar">
+          <span>{{ doc.name.split(' ').slice(-1)[0][0] }}{{ doc.name.split(' ').slice(-2,-1)[0][0] }}</span>
+        </div>
+        <h3 class="doctor-name">{{ doc.name }}</h3>
+        <p class="doctor-spec">{{ doc.spec }}</p>
+        <div class="doctor-meta">
+          <span class="doctor-meta-item">⏱ {{ doc.exp }}</span>
+          <span class="doctor-meta-item">🎓 {{ doc.qual }}</span>
+        </div>
+        <div class="doctor-actions">
+          <a routerLink="/login" class="doctor-btn-outline">View Profile</a>
+          <a routerLink="/login" class="doctor-btn-fill">Book Appointment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section why-section">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">Why Us</p>
+      <h2 class="section-title">Why Choose Elite Care</h2>
+      <p class="section-desc">We go above and beyond to ensure the best patient experience.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card" *ngFor="let w of whyChooseUs">
+        <span class="why-icon">{{ w.icon }}</span>
+        <h3 class="why-title">{{ w.title }}</h3>
+        <p class="why-desc">{{ w.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" id="contact">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 class="footer-heading">
+          <span class="footer-logo">🏥</span> Elite Care Hospital
+        </h4>
+        <p class="footer-text">Providing world-class healthcare with compassion and excellence since 2000.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link">f</a>
+          <a href="#" class="footer-social-link">𝕏</a>
+          <a href="#" class="footer-social-link">in</a>
+          <a href="#" class="footer-social-link">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#departments">Departments</a></li>
+          <li><a href="#doctors">Our Doctors</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Departments</h4>
+        <ul class="footer-links">
+          <li><a href="#departments">Cardiology</a></li>
+          <li><a href="#departments">Neurology</a></li>
+          <li><a href="#departments">Orthopedics</a></li>
+          <li><a href="#departments">Pediatrics</a></li>
+          <li><a href="#departments">Gynecology</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Contact Info</h4>
+        <ul class="footer-contact">
+          <li><span>📍</span> 123 Health Avenue, Dhaka, Bangladesh</li>
+          <li><span>📞</span> +880 1712-345678</li>
+          <li><span>✉️</span> info@elitecare.com</li>
+          <li><span>🕐</span> 24/7 Emergency Available</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Elite Care Hospital. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
