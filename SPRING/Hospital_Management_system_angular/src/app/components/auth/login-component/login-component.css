@@ -48,6 +48,12 @@
   margin-bottom: 60px;
 }
 
+.login-logo {
+  width: 320px;
+  max-width: 80%;
+  height: auto;
+}
+
 .brand-icon {
   font-size: 64px;
   display: block;

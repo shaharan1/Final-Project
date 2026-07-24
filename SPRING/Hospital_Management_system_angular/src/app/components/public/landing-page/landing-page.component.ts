@@ -1,38 +1,30 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })
 export class LandingPageComponent {
   menuOpen = false;
   isScrolled = false;
+  bookingSubmitted = false;
 
-  @HostListener('window:scroll')
-  onScroll() {
-    this.isScrolled = window.scrollY > 40;
-  }
-
-  stats = [
-    { value: '25+', label: 'Years Experience' },
-    { value: '150+', label: 'Expert Doctors' },
-    { value: '500+', label: 'Beds Available' },
-    { value: '50K+', label: 'Patients Treated' },
-  ];
-
-  services = [
-    { icon: '🩺', title: 'Appointment Booking', desc: 'Schedule visits with top doctors instantly.' },
-    { icon: '🚑', title: 'Emergency Care', desc: '24/7 emergency medical support.' },
-    { icon: '🚐', title: 'Ambulance Service', desc: 'Fast ambulance dispatch anytime.' },
-    { icon: '💊', title: 'Pharmacy', desc: 'In-house pharmacy with all medicines.' },
-    { icon: '🔬', title: 'Laboratory', desc: 'Advanced diagnostic lab facilities.' },
-    { icon: '🩻', title: 'Health Checkup', desc: 'Comprehensive health packages.' },
-  ];
+  bookingData = {
+    name: '',
+    phone: '',
+    email: '',
+    department: '',
+    doctor: '',
+    date: '',
+    time: '',
+    message: ''
+  };
 
   departments = [
     { icon: '❤️', name: 'Cardiology', desc: 'Heart care & cardiovascular surgery.' },
@@ -46,12 +38,28 @@ export class LandingPageComponent {
   ];
 
   doctors = [
-    { name: 'Dr. Ahsan Rahman', spec: 'Cardiologist', exp: '15 Years', qual: 'MBBS, MD' },
-    { name: 'Dr. Fatima Khan', spec: 'Neurologist', exp: '12 Years', qual: 'MBBS, DM' },
-    { name: 'Dr. Kamal Hossain', spec: 'Orthopedic Surgeon', exp: '18 Years', qual: 'MBBS, MS' },
-    { name: 'Dr. Nasrin Akter', spec: 'Pediatrician', exp: '10 Years', qual: 'MBBS, DCH' },
-    { name: 'Dr. Rafiq Ahmed', spec: 'General Surgeon', exp: '20 Years', qual: 'MBBS, FRCS' },
-    { name: 'Dr. Sabrina Islam', spec: 'Gynecologist', exp: '14 Years', qual: 'MBBS, FCPS' },
+    { name: 'Dr. Ahsan Rahman', spec: 'Cardiologist', exp: '15 Years', qual: 'MBBS, MD', photo: 'https://i.pravatar.cc/300?img=11' },
+    { name: 'Dr. Fatima Khan', spec: 'Neurologist', exp: '12 Years', qual: 'MBBS, DM', photo: 'https://i.pravatar.cc/300?img=32' },
+    { name: 'Dr. Kamal Hossain', spec: 'Orthopedic Surgeon', exp: '18 Years', qual: 'MBBS, MS', photo: 'https://i.pravatar.cc/300?img=12' },
+    { name: 'Dr. Nasrin Akter', spec: 'Pediatrician', exp: '10 Years', qual: 'MBBS, DCH', photo: 'https://i.pravatar.cc/300?img=26' },
+    { name: 'Dr. Rafiq Ahmed', spec: 'General Surgeon', exp: '20 Years', qual: 'MBBS, FRCS', photo: 'https://i.pravatar.cc/300?img=14' },
+    { name: 'Dr. Sabrina Islam', spec: 'Gynecologist', exp: '14 Years', qual: 'MBBS, FCPS', photo: 'https://i.pravatar.cc/300?img=25' },
+  ];
+
+  stats = [
+    { value: '25+', label: 'Years Experience' },
+    { value: '150+', label: 'Expert Doctors' },
+    { value: '500+', label: 'Beds Available' },
+    { value: '50K+', label: 'Patients Treated' },
+  ];
+
+  services = [
+    { icon: '🩺', title: 'Appointment Booking', desc: 'Schedule visits with top doctors instantly.', link: '#booking' },
+    { icon: '🚑', title: 'Emergency Care', desc: '24/7 emergency medical support.', link: 'tel:+8801712345678' },
+    { icon: '🚐', title: 'Ambulance Service', desc: 'Fast ambulance dispatch anytime.', link: 'tel:+8801712345678' },
+    { icon: '💊', title: 'Pharmacy', desc: 'In-house pharmacy with all medicines.', link: '/login' },
+    { icon: '🔬', title: 'Laboratory', desc: 'Advanced diagnostic lab facilities.', link: '/login' },
+    { icon: '🩻', title: 'Health Checkup', desc: 'Comprehensive health packages.', link: '#booking' },
   ];
 
   whyChooseUs = [
@@ -62,4 +70,18 @@ export class LandingPageComponent {
     { icon: '📋', title: 'Digital Reports', desc: 'Access lab reports & records online.' },
     { icon: '💰', title: 'Affordable Treatment', desc: 'Quality healthcare at reasonable cost.' },
   ];
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.isScrolled = window.scrollY > 40;
+  }
+
+  submitBooking() {
+    this.bookingSubmitted = true;
+    setTimeout(() => { this.bookingSubmitted = false; }, 4000);
+  }
+
+  scrollToBooking() {
+    document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
