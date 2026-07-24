@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppointmentModel } from '../../../models/appointmentModel';
 import { AppointmentService } from '../../../services/appointment.service';
 import { DoctorModelService } from '../../../services/doctor.service';
+import { StorageService } from '../../../services/storage.service';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -25,20 +26,48 @@ export class AppointmentList implements OnInit {
   // Doctor List
   doctors: any[] = [];
 
+  isDoctor = false;
+  doctorName = '';
+
   constructor(
     private appointmentService: AppointmentService,
     private doctorService: DoctorModelService,
+    private storageService: StorageService,
     private cdr: ChangeDetectorRef,
     private router: Router
 
   ) { }
 
   ngOnInit(): void {
+    const user = this.storageService.getUser();
+    this.isDoctor = user?.role === 'Doctor';
 
-    this.loadDoctors();
+    if (this.isDoctor) {
+      this.loadDoctorAppointments(user!.userId);
+    } else {
+      this.loadDoctors();
+      this.loadAppointments();
+    }
+  }
 
-    this.loadAppointments();
-
+  loadDoctorAppointments(userId: number) {
+    this.doctorService.findByUserId(userId).subscribe({
+      next: (res) => {
+        this.doctorName = res.name || '';
+        this.doctorId = res.id;
+        this.appointmentService.getDoctorAppointments(res.id).subscribe({
+          next: (appts) => {
+            this.appointments = appts;
+            this.cdr.markForCheck();
+          },
+          error: (err) => console.log(err)
+        });
+      },
+      error: (err) => {
+        console.log(err);
+        this.loadAppointments();
+      }
+    });
   }
 
   loadDoctors() {
@@ -123,11 +152,16 @@ export class AppointmentList implements OnInit {
 
   reset() {
 
-    this.doctorId = undefined;
-
-    this.appointmentDate = '';
-
-    this.loadAppointments();
+    if (this.isDoctor) {
+      const user = this.storageService.getUser();
+      if (user) {
+        this.loadDoctorAppointments(user.userId);
+      }
+    } else {
+      this.doctorId = undefined;
+      this.appointmentDate = '';
+      this.loadAppointments();
+    }
 
   }
 
@@ -141,7 +175,12 @@ export class AppointmentList implements OnInit {
 
           alert("Appointment Cancelled");
 
-          this.loadAppointments();
+          if (this.isDoctor) {
+            const user = this.storageService.getUser();
+            if (user) this.loadDoctorAppointments(user.userId);
+          } else {
+            this.loadAppointments();
+          }
 
         });
 
@@ -178,7 +217,7 @@ export class AppointmentList implements OnInit {
     // ================= Doctor Info =================
 
     const doctorName =
-      this.doctors.find(d => d.id === this.doctorId)?.name ?? "All Doctors";
+      this.doctorName || this.doctors.find(d => d.id === this.doctorId)?.name ?? "All Doctors";
 
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");

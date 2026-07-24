@@ -125,12 +125,6 @@ export class NavigationService {
         ],
       },
       {
-        label: 'Patients',
-        items: [
-          { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
-        ],
-      },
-      {
         label: 'Pharmacy',
         items: [
           { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
