@@ -122,7 +122,7 @@ public class PrescriptionServiceImp implements PrescriptionService {
 
                         Tests test = new Tests();
                         test.setPrescription(savedPrescription);
-                        test.setPatient(patient);
+                        test.setPatient(prescription.getPatient());
                         test.setPrescribedBy(doctor);
                         test.setTestMaster(master);
                         test.setOrderStatus("PENDING");
