@@ -59,8 +59,17 @@ public class PrescriptionServiceImp implements PrescriptionService {
         Doctor doctor = doctorRepository.findById(request.getDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + request.getDoctorId()));
 
-        Patient patient = patientRepository.findById(request.getPatientId())
-                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + request.getPatientId()));
+        // Find patient - try by ID first, then by phone from appointment
+        Patient patient = null;
+        if (request.getPatientId() != null) {
+            patient = patientRepository.findById(request.getPatientId()).orElse(null);
+        }
+        if (patient == null && appointment.getMobileNumber() != null) {
+            patient = patientRepository.findByPhone(appointment.getMobileNumber()).orElse(null);
+        }
+        if (patient == null) {
+            throw new ResourceNotFoundException("Patient not found. Please register the patient first.");
+        }
 
         Prescription prescription = new Prescription();
         prescription.setAppointment(appointment);
@@ -75,6 +84,10 @@ public class PrescriptionServiceImp implements PrescriptionService {
         prescription.setWeight(request.getWeight());
         prescription.setNotes(request.getNotes());
         prescription.setNextFollowUpDate(request.getNextFollowUpDate());
+
+        // Generate unique prescription number
+        String prescriptionNumber = "RX-" + System.currentTimeMillis();
+        prescription.setPrescriptionNumber(prescriptionNumber);
 
         // Process and map prescription items (medicines)
         if (request.getPrescriptionItems() != null) {

@@ -150,13 +150,13 @@ public class PdfFooter {
         Paragraph footerText =
                 new Paragraph(
 
-                        "\nELITE CARE HOSPITAL\n"
-                                + "House #25, Road #12, Dhanmondi, Dhaka\n"
-                                + "Phone : +8801711123456\n"
-                                + "Email : info@elitecarehospital.com\n\n"
-                                + "Thank you for choosing ELITE CARE HOSPITAL.\n"
-                                + "Get Well Soon.\n\n"
-                                + "Powered By Elite IT Institute",
+//                        "\nELITE CARE HOSPITAL\n"
+//                                + "House #25, Road #12, Dhanmondi, Dhaka\n"
+//                                + "Phone : +8801711123456\n"
+//                                + "Email : info@elitecarehospital.com\n\n"
+//                                + "Thank you for choosing ELITE CARE HOSPITAL.\n"
+//                                + "Get Well Soon.\n\n"
+                                 "Powered By Elite IT Institute",
 
                         PdfStyle.VALUE_FONT
 

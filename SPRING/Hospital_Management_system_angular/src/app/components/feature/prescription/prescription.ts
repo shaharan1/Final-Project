@@ -189,11 +189,15 @@ loadAppointment(appointmentId: number) {
       console.log("Appointment Response =", res);
 
       this.prescription.appointmentId = res.id!;
-      this.prescription.patientId = res.registeredPatientId!;
+      this.prescription.patientId = res.registeredPatientId || res.patientId || null;
       this.prescription.doctorId = res.doctorId!;
 
       console.log("registeredPatientId =", res.registeredPatientId);
       console.log("patientId =", this.prescription.patientId);
+
+      if (!this.prescription.patientId) {
+        console.warn("No patientId found for this appointment. Prescription may fail.");
+      }
 
     },
 
