@@ -5,7 +5,7 @@
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
 
             <h4 class="mb-0">
-                Appointment Management
+                {{ isDoctor ? 'My Appointments' : 'Appointment Management' }}
             </h4>
 
             <button class="btn btn-light btn-sm" (click)="loadAppointments()">
@@ -21,7 +21,7 @@
 
             <!-- ================= Filter Section ================= -->
 
-            <div class="row g-3 mb-4">
+            <div class="row g-3 mb-4" *ngIf="!isDoctor">
 
                 <div class="col-md-4">
 
@@ -80,6 +80,18 @@
 
                 </div>
 
+            </div>
+
+            <div class="row g-3 mb-4" *ngIf="isDoctor">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Appointment Date</label>
+                    <input type="date" class="form-control" [(ngModel)]="appointmentDate">
+                </div>
+                <div class="col-md-8 d-flex align-items-end flex-wrap">
+                    <button class="btn btn-primary me-2 mb-2" (click)="search()">Search</button>
+                    <button class="btn btn-secondary me-2 mb-2" (click)="reset()">Reset</button>
+                    <button class="btn btn-success mb-2" (click)="downloadDoctorWisePdf()">Download Report</button>
+                </div>
             </div>
 
             <!-- ================= Table ================= -->
@@ -214,8 +226,15 @@
 
                                 </button>
 
+                                <a *ngIf="isDoctor && appointment.status !== 'CANCELLED'"
+                                   [routerLink]="['/prescriptions/create', appointment.id]"
+                                   class="btn btn-warning btn-sm me-1">
+                                    Rx
+                                </a>
+
                                 <button class="btn btn-danger btn-sm" (click)="cancel(appointment.id!)"
-                                    [disabled]="appointment.status=='CANCELLED'">
+                                    [disabled]="appointment.status=='CANCELLED'"
+                                    *ngIf="!isDoctor">
 
                                     Cancel
 

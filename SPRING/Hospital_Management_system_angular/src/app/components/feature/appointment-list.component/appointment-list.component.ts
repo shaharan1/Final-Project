@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { AppointmentModel } from '../../../models/appointmentModel';
 import { AppointmentService } from '../../../services/appointment.service';
 import { DoctorModelService } from '../../../services/doctor.service';
@@ -11,7 +12,7 @@ import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-appointment-list.component',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './appointment-list.component.html',
   styleUrl: './appointment-list.component.css',
 })
@@ -55,13 +56,15 @@ export class AppointmentList implements OnInit {
       next: (res) => {
         this.doctorName = res.name || '';
         this.doctorId = res.id;
-        this.appointmentService.getDoctorAppointments(res.id).subscribe({
-          next: (appts) => {
-            this.appointments = appts;
-            this.cdr.markForCheck();
-          },
-          error: (err) => console.log(err)
-        });
+        if (res.id) {
+          this.appointmentService.getDoctorAppointments(res.id).subscribe({
+            next: (appts) => {
+              this.appointments = appts;
+              this.cdr.markForCheck();
+            },
+            error: (err) => console.log(err)
+          });
+        }
       },
       error: (err) => {
         console.log(err);
@@ -217,7 +220,7 @@ export class AppointmentList implements OnInit {
     // ================= Doctor Info =================
 
     const doctorName =
-      this.doctorName || this.doctors.find(d => d.id === this.doctorId)?.name ?? "All Doctors";
+      this.doctorName || (this.doctors.find(d => d.id === this.doctorId)?.name ?? "All Doctors");
 
     doc.setFontSize(11);
     doc.setFont("helvetica", "normal");

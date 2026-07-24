@@ -1,6 +1,7 @@
 package emranhss.com.Modern_Hospital_Management_System.controller;
 
 
+import emranhss.com.Modern_Hospital_Management_System.dto.mapper.PrescriptionMapper;
 import emranhss.com.Modern_Hospital_Management_System.dto.request.PrescriptionRequest;
 import emranhss.com.Modern_Hospital_Management_System.dto.response.PrescriptionResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.Prescription;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/prescriptions")
@@ -25,10 +27,20 @@ public class PrescriptionController {
 
     private final PrescriptionService prescriptionService;
     private final PrescriptionRepository prescriptionRepository;
+    private final PrescriptionMapper prescriptionMapper;
 
     @PostMapping
     public ResponseEntity<PrescriptionResponse> createPrescription(@RequestBody PrescriptionRequest request) {
         return new ResponseEntity<>(prescriptionService.createPrescription(request), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PrescriptionResponse>> getAllPrescriptions() {
+        List<Prescription> prescriptions = prescriptionRepository.findAll();
+        List<PrescriptionResponse> responses = prescriptions.stream()
+                .map(prescriptionMapper::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
@@ -36,9 +48,45 @@ public class PrescriptionController {
         return ResponseEntity.ok(prescriptionService.getPrescriptionById(id));
     }
 
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<PrescriptionResponse>> getPrescriptionsByDoctorId(@PathVariable Long doctorId) {
+        List<Prescription> prescriptions = prescriptionRepository.findByDoctorId(doctorId);
+        List<PrescriptionResponse> responses = prescriptions.stream()
+                .map(prescriptionMapper::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping("/patient/{patientId}")
     public ResponseEntity<List<PrescriptionResponse>> getPrescriptionsByPatientId(@PathVariable Long patientId) {
         return ResponseEntity.ok(prescriptionService.getPrescriptionsByPatientId(patientId));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PrescriptionResponse> updatePrescription(@PathVariable Long id, @RequestBody PrescriptionRequest request) {
+        Prescription prescription = prescriptionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prescription not found with id: " + id));
+        
+        prescription.setDiagnosis(request.getDiagnosis());
+        prescription.setChiefComplaints(request.getChiefComplaints());
+        prescription.setSymptoms(request.getSymptoms());
+        prescription.setBloodPressure(request.getBloodPressure());
+        prescription.setPulseRate(request.getPulseRate());
+        prescription.setBodyTemperature(request.getBodyTemperature());
+        prescription.setWeight(request.getWeight());
+        prescription.setNotes(request.getNotes());
+        prescription.setNextFollowUpDate(request.getNextFollowUpDate());
+        
+        prescriptionRepository.save(prescription);
+        return ResponseEntity.ok(prescriptionMapper.toResponse(prescription));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePrescription(@PathVariable Long id) {
+        Prescription prescription = prescriptionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prescription not found with id: " + id));
+        prescriptionRepository.delete(prescription);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/pdf")
