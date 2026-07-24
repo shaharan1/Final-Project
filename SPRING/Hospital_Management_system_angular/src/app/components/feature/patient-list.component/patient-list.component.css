@@ -1,0 +1,126 @@
+
+
+/* Container */
+.container-fluid {
+    padding: 20px;
+}
+
+/* Card */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 15px 20px;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Form Controls */
+.form-control,
+.form-select {
+    height: 45px;
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, .25);
+}
+
+/* Table */
+.table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table thead th {
+    text-align: center;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f5f9ff;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.btn-info {
+    color: #fff;
+}
+
+.btn-sm {
+    min-width: 65px;
+}
+
+/* Badge Style (optional) */
+.badge {
+    font-size: 12px;
+    padding: 6px 10px;
+}
+
+/* Empty Message */
+.text-danger {
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+
+    .card-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .card-header .btn {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .table {
+        font-size: 13px;
+    }
+
+    .btn-sm {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    td:last-child {
+        min-width: 180px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .container-fluid {
+        padding: 10px;
+    }
+
+    .form-control,
+    .form-select {
+        margin-bottom: 10px;
+    }
+
+}

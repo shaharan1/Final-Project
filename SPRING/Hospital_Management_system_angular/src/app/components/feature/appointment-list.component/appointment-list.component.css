@@ -1,0 +1,53 @@
+.container{
+    margin-top:20px;
+}
+
+.card{
+    border:none;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.card-header{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.table th{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.table td{
+    text-align:center;
+    vertical-align:middle;
+}
+
+.table-hover tbody tr:hover{
+    background:#f8f9fa;
+}
+
+.badge{
+    font-size:14px;
+    padding:8px 12px;
+}
+
+.btn{
+    min-width:90px;
+}
+
+.shadow{
+    box-shadow:0 0 12px rgba(0,0,0,.15);
+}
+
+@media(max-width:768px){
+
+    .table{
+        font-size:13px;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+}

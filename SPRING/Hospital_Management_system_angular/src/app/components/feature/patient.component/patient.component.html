@@ -1,0 +1,224 @@
+<div class="container mt-4">
+
+  <div class="card shadow-lg border-0">
+
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Patient Registration</h3>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Appointment No (Optional)
+          </label>
+
+          <div class="input-group">
+
+            <input type="text" class="form-control" placeholder="Enter Appointment Number"
+              [(ngModel)]="appointmentNumber" name="appointmentNumber">
+
+            <button type="button" class="btn btn-primary" (click)="searchAppointment()">
+              Search
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- Patient Name -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Patient Name</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.name" name="name">
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Gender</label>
+
+          <select class="form-select" [(ngModel)]="patient.gender" name="gender">
+
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+
+          </select>
+
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Date of Birth</label>
+
+          <input type="date" class="form-control" [(ngModel)]="patient.dateOfBirth" name="dateOfBirth">
+
+        </div>
+
+        <!-- Blood Group -->
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Blood Group</label>
+
+          <select class="form-select" [(ngModel)]="patient.bloodGroup" name="bloodGroup">
+
+            <option value="">Select Blood Group</option>
+
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+
+          </select>
+
+        </div>
+
+        <!-- Marital Status -->
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Marital Status</label>
+
+          <select class="form-select" [(ngModel)]="patient.maritalStatus" name="maritalStatus">
+
+            <option value="">Select</option>
+
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+            <option>Widowed</option>
+
+          </select>
+
+        </div>
+
+        <!-- Phone -->
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Phone</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.phone" name="phone">
+
+        </div>
+
+        <!-- Alternate Phone -->
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Alternate Phone</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.alternatePhone" name="alternatePhone">
+
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">Email</label>
+
+          <input type="email" class="form-control" [(ngModel)]="patient.email" name="email">
+
+        </div>
+
+        <!-- National ID -->
+        <div class="col-md-6 mb-3">
+
+          <label class="form-label">National ID</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.nationalId" name="nationalId">
+
+        </div>
+
+        <!-- Address -->
+        <div class="col-md-12 mb-3">
+
+          <label class="form-label">Address</label>
+
+          <textarea rows="3" class="form-control" [(ngModel)]="patient.address" name="address"></textarea>
+
+        </div>
+
+        <!-- City -->
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">City</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.city" name="city">
+
+        </div>
+
+        <!-- District -->
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">District</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.district" name="district">
+
+        </div>
+
+        <!-- Postal Code -->
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">Postal Code</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.postalCode" name="postalCode">
+
+        </div>
+
+      </div>
+
+      <hr>
+
+      <h5 class="mb-3">Emergency Contact</h5>
+
+      <div class="row">
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">Contact Name</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.emergencyContactName"
+            name="emergencyContactName">
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">Phone</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.emergencyContactNumber"
+            name="emergencyContactNumber">
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+          <label class="form-label">Relationship</label>
+
+          <input type="text" class="form-control" [(ngModel)]="patient.relationship" name="relationship">
+
+        </div>
+
+      </div>
+
+      <div class="text-end mt-4">
+
+        <button class="btn btn-success px-4" (click)="save()">
+
+          {{ patient.id ? 'Update Patient' : 'Save Patient' }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

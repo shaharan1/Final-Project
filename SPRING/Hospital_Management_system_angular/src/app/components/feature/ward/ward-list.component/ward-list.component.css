@@ -1,0 +1,33 @@
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+table {
+
+    vertical-align: middle;
+
+}
+
+table th {
+
+    text-align: center;
+
+}
+
+table td {
+
+    text-align: center;
+
+}
+
+.btn {
+
+    border-radius: 20px;
+
+}

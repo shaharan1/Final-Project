@@ -1,0 +1,433 @@
+<div class="container-fluid py-4">
+
+  <!-- Header -->
+  <div class="card shadow-lg border-0 mb-4">
+    <div class="card-header bg-primary text-white">
+      <div class="row align-items-center">
+        <div class="col-md-2 text-center">
+          <img src="assets/images/logo.png" class="img-fluid" style="height:80px" alt="Hospital Logo">
+        </div>
+
+        <div class="col-md-8 text-center">
+          <h2 class="mb-0 fw-bold">
+            Modern Hospital Management System
+          </h2>
+
+          <p class="mb-0">
+            Medical Prescription
+          </p>
+        </div>
+
+        <div class="col-md-2 text-end">
+
+          <span class="badge bg-light text-dark fs-6">
+
+            {{ prescription.appointmentId }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <!-- Patient Card -->
+
+        <div class="col-lg-6">
+
+          <div class="card border-primary mb-3">
+
+            <div class="card-header bg-primary text-white">
+
+              Patient Information
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="mb-2">
+
+                <label class="form-label">
+
+                  Diagnosis
+
+                </label>
+
+                <textarea class="form-control" rows="2" [(ngModel)]="prescription.diagnosis">
+
+                </textarea>
+
+              </div>
+
+              <div class="mb-2">
+
+                <label class="form-label">
+
+                  Chief Complaints
+
+                </label>
+
+                <textarea class="form-control" rows="2" [(ngModel)]="prescription.chiefComplaints">
+
+                </textarea>
+
+              </div>
+
+              <div>
+
+                <label class="form-label">
+
+                  Symptoms
+
+                </label>
+
+                <textarea class="form-control" rows="2" [(ngModel)]="prescription.symptoms">
+
+                </textarea>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Doctor Card -->
+
+        <div class="col-lg-6">
+
+          <div class="card border-success mb-3">
+
+            <div class="card-header bg-success text-white">
+
+              Vital Signs
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                  <label>Blood Pressure</label>
+
+                  <input class="form-control" [(ngModel)]="prescription.bloodPressure">
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                  <label>Pulse</label>
+
+                  <input class="form-control" [(ngModel)]="prescription.pulseRate">
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <label>Temperature</label>
+
+                  <input class="form-control" [(ngModel)]="prescription.bodyTemperature">
+
+                </div>
+
+                <div class="col-md-6">
+
+                  <label>Weight</label>
+
+                  <input class="form-control" [(ngModel)]="prescription.weight">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Medicines -->
+      <div class="card border-info mt-3 shadow-sm">
+
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+
+          <h5 class="mb-0">
+            Medicines
+          </h5>
+
+          <button class="btn btn-light btn-sm" (click)="addMedicine()">
+
+            <i class="bi bi-plus-circle"></i>
+            Add Medicine
+
+          </button>
+
+        </div>
+
+        <div class="card-body p-2">
+
+          <div class="table-responsive">
+
+            <table class="table table-bordered align-middle medicine-table">
+
+              <thead class="table-primary">
+
+                <tr>
+
+                  <th style="width:34%">
+                    Medicine
+                  </th>
+
+                  <th style="width:16%">
+                    Dose
+                  </th>
+
+                  <th style="width:16%">
+                    Duration
+                  </th>
+
+                  <th style="width:24%">
+                    Instruction
+                  </th>
+
+                  <th style="width:10%">
+                    Action
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr *ngFor="let item of prescription.prescriptionItems; let i=index">
+
+                  <!-- Medicine -->
+
+                  <td style="position:relative; overflow:visible;">
+
+                    <input type="text" class="form-control" [(ngModel)]="item.medicineName"
+                      (input)="searchMedicine(item)" autocomplete="off">
+
+                    <div *ngIf="item.suggestions && item.suggestions.length > 0" class="medicine-search">
+
+                      <div *ngFor="let med of item.suggestions" class="medicine-item"
+                        (mousedown)="selectMedicine(item,med)">
+
+                        {{med.medicineName}}
+
+                      </div>
+
+                    </div>
+
+                  </td>
+                  <!-- Dose -->
+
+                  <td>
+
+                    <select class="form-select" [(ngModel)]="item.dosage" name="dose{{i}}">
+
+                      <option value="">
+
+                        Select Dose
+
+                      </option>
+
+                      <option *ngFor="let dose of doseList" [value]="dose">
+
+                        {{dose}}
+
+                      </option>
+
+                    </select>
+
+                  </td>
+
+                  <!-- Duration -->
+
+                  <td>
+
+                    <select class="form-select" [(ngModel)]="item.duration" name="duration{{i}}">
+
+                      <option value="">
+
+                        Select Duration
+
+                      </option>
+
+                      <option *ngFor="let d of durationList" [value]="d">
+
+                        {{d}}
+
+                      </option>
+
+                    </select>
+
+                  </td>
+
+                  <!-- Instruction -->
+
+                  <td>
+
+                    <select class="form-select" [(ngModel)]="item.instruction" name="instruction{{i}}">
+
+                      <option value="">
+
+                        Select Instruction
+
+                      </option>
+
+                      <option *ngFor="let ins of instructions" [value]="ins">
+
+                        {{ins}}
+
+                      </option>
+
+                    </select>
+
+                  </td>
+
+                  <!-- Remove -->
+
+                  <td class="text-center">
+
+                    <button class="btn btn-danger btn-sm" (click)="removeMedicine(i)">
+
+                      Remove
+
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Investigations -->
+
+      <div class="card border-warning mt-4">
+
+        <div class="card-header bg-warning">
+
+          <h5>
+
+            Laboratory Investigations
+
+          </h5>
+
+        </div>
+
+        <div class="card-body">
+
+          <input class="form-control mb-3" placeholder="Search Test..." [(ngModel)]="testKeyword"
+            (keyup)="searchTest(testKeyword)">
+
+          <ul *ngIf="filteredTests.length" class="list-group mb-3">
+
+            <li *ngFor="let t of filteredTests" class="list-group-item" (click)="selectTest(t)">
+
+              {{t.testCode}}
+
+              -
+
+              {{t.testName}}
+
+            </li>
+
+          </ul>
+
+          <div>
+
+            <span class="badge bg-primary me-2 mb-2" *ngFor="let t of selectedTests">
+
+              {{t.testName}}
+
+              <span class="ms-2" style="cursor:pointer" (click)="removeTest(t)">
+
+                ×
+
+              </span>
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Follow Up -->
+
+      <div class="card border-danger mt-4">
+
+        <div class="card-header bg-danger text-white">
+
+          Next Follow-up
+
+        </div>
+
+        <div class="card-body">
+
+          <input type="date" class="form-control" [(ngModel)]="prescription.nextFollowUpDate">
+
+        </div>
+
+      </div>
+
+      <!-- Notes -->
+
+      <div class="card mt-4">
+
+        <div class="card-header bg-success text-white">
+
+          Advice / Notes
+
+        </div>
+
+        <div class="card-body">
+
+          <textarea class="form-control" rows="5" [(ngModel)]="prescription.notes">
+
+          </textarea>
+
+        </div>
+
+      </div>
+
+      <!-- Buttons -->
+
+      <div class="text-end mt-4">
+
+        <button class="btn btn-primary me-2" (click)="save()">
+
+          Save Prescription
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,670 @@
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark">
+                <svg viewBox="0 0 40 40" width="30" height="30" fill="none">
+                    <path d="M20 3 L34 10 V20 C34 29 28 34.5 20 37 C12 34.5 6 29 6 20 V10 Z" fill="#0E5C52" />
+                    <path d="M20 13 V27 M13 20 H27" stroke="#F4F1EA" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </div>
+
+            <div class="brand-text">
+                <span class="brand-name">Elite Care Hospital</span>
+            </div>
+
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <nav class="nav-scroll">
+
+            <div class="nav-group">
+                <p class="nav-label">Overview</p>
+
+                <a href="#" class="nav-item active" data-section="dashboard">
+                    <span class="nav-ic">◆</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="report">
+                    <span class="nav-ic">Ⓡ</span>
+                    <span class="nav-text">Report</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Patients & Admissions</p>
+
+                <a href="#" class="nav-item" data-section="patient">
+                    <span class="nav-ic">Ⓟ</span>
+                    <span class="nav-text">Patient</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="admittedpatient">
+                    <span class="nav-ic">Ⓐ</span>
+                    <span class="nav-text">Admitted Patient</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="admitpatientinvoice">
+                    <span class="nav-ic">Ⓘ</span>
+                    <span class="nav-text">Admit Patient Invoice</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="emergencypatient">
+                    <span class="nav-ic">Ⓔ</span>
+                    <span class="nav-text">Emergency Patient</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="appointment">
+                    <span class="nav-ic">Ⓒ</span>
+                    <span class="nav-text">Appointment</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="schedule">
+                    <span class="nav-ic">Ⓢ</span>
+                    <span class="nav-text">Schedule Slot</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Beds & Wards</p>
+
+                <a href="#" class="nav-item" data-section="bed">
+                    <span class="nav-ic">Ⓑ</span>
+                    <span class="nav-text">Bed</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="bedbooking">
+                    <span class="nav-ic">Ⓑ</span>
+                    <span class="nav-text">Bed Booking</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="ward">
+                    <span class="nav-ic">Ⓦ</span>
+                    <span class="nav-text">Ward</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="department">
+                    <span class="nav-ic">Ⓓ</span>
+                    <span class="nav-text">Department</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="facility">
+                    <span class="nav-ic">Ⓕ</span>
+                    <span class="nav-text">Facility</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Staff</p>
+
+                <a href="#" class="nav-item" data-section="doctor">
+                    <span class="nav-ic">Ⓓ</span>
+                    <span class="nav-text">Doctor</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="doctordepartment">
+                    <span class="nav-ic">Ⓓ</span>
+                    <span class="nav-text">Doctor Department</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="doctorcharge">
+                    <span class="nav-ic">Ⓒ</span>
+                    <span class="nav-text">Doctor Charge</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="nurse">
+                    <span class="nav-ic">Ⓝ</span>
+                    <span class="nav-text">Nurse</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="officestaff">
+                    <span class="nav-ic">Ⓞ</span>
+                    <span class="nav-text">Office Staff</span>
+                </a>
+
+                <a href="#" class="nav-item" data-section="user">
+                    <span class="nav-ic">Ⓤ</span>
+                    <span class="nav-text">User</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Pharmacy & Medicine</p>
+
+                <a href="#" class="nav-item" data-section="medicine"><span class="nav-ic">Ⓜ</span><span
+                        class="nav-text">Medicine</span></a>
+                <a href="#" class="nav-item" data-section="medicinestock"><span class="nav-ic">Ⓜ</span><span
+                        class="nav-text">Medicine Stock</span></a>
+                <a href="#" class="nav-item" data-section="pharmacysale"><span class="nav-ic">Ⓟ</span><span
+                        class="nav-text">Pharmacy Sale</span></a>
+                <a href="#" class="nav-item" data-section="pharmacysaleitem"><span class="nav-ic">Ⓟ</span><span
+                        class="nav-text">Pharmacy Sale Item</span></a>
+                <a href="#" class="nav-item" data-section="prescription"><span class="nav-ic">Ⓟ</span><span
+                        class="nav-text">Prescription</span></a>
+                <a href="#" class="nav-item" data-section="prescriptionitem"><span class="nav-ic">Ⓟ</span><span
+                        class="nav-text">Prescription Item</span></a>
+                <a href="#" class="nav-item" data-section="purchase"><span class="nav-ic">Ⓟ</span><span
+                        class="nav-text">Purchase</span></a>
+                <a href="#" class="nav-item" data-section="purchaseitem"><span class="nav-ic">Ⓟ</span><span
+                        class="nav-text">Purchase Item</span></a>
+                <a href="#" class="nav-item" data-section="supplier"><span class="nav-ic">Ⓢ</span><span
+                        class="nav-text">Supplier</span></a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Laboratory & Tests</p>
+
+                <a href="#" class="nav-item" data-section="tests"><span class="nav-ic">Ⓣ</span><span
+                        class="nav-text">Tests</span></a>
+                <a href="#" class="nav-item" data-section="testmaster"><span class="nav-ic">Ⓣ</span><span
+                        class="nav-text">Test Master</span></a>
+                <a href="#" class="nav-item" data-section="testadmitedpatient"><span class="nav-ic">Ⓣ</span><span
+                        class="nav-text">Test Admitted Patient</span></a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Meals</p>
+
+                <a href="#" class="nav-item" data-section="meal"><span class="nav-ic">Ⓜ</span><span
+                        class="nav-text">Meal</span></a>
+                <a href="#" class="nav-item" data-section="mealmaster"><span class="nav-ic">Ⓜ</span><span
+                        class="nav-text">Meal Master</span></a>
+            </div>
+
+            <div class="nav-group">
+                <p class="nav-label">Accounts & Billing</p>
+
+                <a href="#" class="nav-item" data-section="billing"><span class="nav-ic">Ⓑ</span><span
+                        class="nav-text">Billing</span></a>
+                <a href="#" class="nav-item" data-section="invoice"><span class="nav-ic">Ⓘ</span><span
+                        class="nav-text">Invoice</span></a>
+                <a href="#" class="nav-item" data-section="otherscharge"><span class="nav-ic">Ⓒ</span><span
+                        class="nav-text">Other Charges</span></a>
+                <a href="#" class="nav-item" data-section="generic"><span class="nav-ic">Ⓖ</span><span
+                        class="nav-text">Generic</span></a>
+            </div>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-chip">
+                <div class="user-avatar">DR</div>
+                <div class="user-info">
+                    <span class="user-name">Dr. Farhan Ahmed</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <button class="menu-btn" id="menuBtn" aria-label="Open Menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <div class="search-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="M21 21l-4.3-4.3" />
+                </svg>
+
+                <input type="text" placeholder="Search patients, doctors, or invoices...">
+            </div>
+
+            <div class="topbar-actions">
+                <button class="icon-btn" aria-label="Notifications">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+                    </svg>
+                    <span class="dot"></span>
+                </button>
+
+                <div class="topbar-avatar">DR</div>
+            </div>
+
+        </header>
+
+        <div class="content">
+
+            <!-- Hero Section -->
+            <section class="hero">
+
+                <div class="hero-text">
+                    <p class="eyebrow">Friday, July 24 · Good Morning</p>
+
+                    <h1>
+                        Welcome to <br>
+                        Elite Care Hospital
+                    </h1>
+
+                    <p class="hero-desc">
+                        Monitor today's admissions, outpatient appointments,
+                        bed occupancy, and pharmacy activities from a single dashboard.
+                    </p>
+
+                    <div class="hero-actions">
+                        <button class="btn-primary">
+                            + Admit New Patient
+                        </button>
+
+                        <button class="btn-ghost">
+                            View Appointments
+                        </button>
+                    </div>
+                </div>
+
+                <div class="hero-pulse" aria-hidden="true">
+                    <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+
+                        <polyline id="pulseLine"
+                            points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none"
+                            stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+                    </svg>
+                </div>
+
+            </section>
+
+
+
+            <!-- Statistics -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <span class="stat-label">
+                        Total Admitted Patients
+                    </span>
+
+                    <span class="stat-value" data-count="184">
+                        0
+                    </span>
+
+                    <span class="stat-delta up">
+                        +12 Today
+                    </span>
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        Available Beds
+                    </span>
+
+                    <span class="stat-value" data-count="47">
+                        0
+                    </span>
+
+                    <span class="stat-delta">
+                        / 210 Total
+                    </span>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        Today's Appointments
+                    </span>
+
+                    <span class="stat-value" data-count="63">
+                        0
+                    </span>
+
+                    <span class="stat-delta up">
+                        +8 New
+                    </span>
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+                    <span class="stat-label">
+                        Monthly Revenue
+                    </span>
+
+                    <span class="stat-value money" data-count="1284500">
+                        ৳0
+                    </span>
+
+                    <span class="stat-delta up">
+                        +9.4%
+                    </span>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Two Column Layout -->
+            <section class="grid-2col">
+
+
+
+                <!-- Ward Occupancy -->
+                <div class="panel">
+
+                    <div class="panel-head">
+                        <h2>Ward Occupancy</h2>
+
+                        <span class="panel-tag">
+                            Live
+                        </span>
+                    </div>
+
+
+                    <div class="ward-list">
+
+                        <div class="ward-row">
+                            <span class="ward-name">
+                                General Ward
+                            </span>
+
+                            <div class="ward-bar">
+                                <div class="ward-fill" style="width:78%">
+                                </div>
+                            </div>
+
+                            <span class="ward-pct">
+                                78%
+                            </span>
+                        </div>
+
+
+
+                        <div class="ward-row">
+                            <span class="ward-name">
+                                ICU
+                            </span>
+
+                            <div class="ward-bar">
+                                <div class="ward-fill high" style="width:92%">
+                                </div>
+                            </div>
+
+                            <span class="ward-pct">
+                                92%
+                            </span>
+                        </div>
+
+
+
+                        <div class="ward-row">
+                            <span class="ward-name">
+                                Maternity Ward
+                            </span>
+
+                            <div class="ward-bar">
+                                <div class="ward-fill" style="width:54%">
+                                </div>
+                            </div>
+
+                            <span class="ward-pct">
+                                54%
+                            </span>
+                        </div>
+
+
+
+                        <div class="ward-row">
+                            <span class="ward-name">
+                                Pediatric Ward
+                            </span>
+
+                            <div class="ward-bar">
+                                <div class="ward-fill low" style="width:31%">
+                                </div>
+                            </div>
+
+                            <span class="ward-pct">
+                                31%
+                            </span>
+                        </div>
+
+
+
+                        <div class="ward-row">
+                            <span class="ward-name">
+                                Emergency Ward
+                            </span>
+
+                            <div class="ward-bar">
+                                <div class="ward-fill" style="width:66%">
+                                </div>
+                            </div>
+
+                            <span class="ward-pct">
+                                66%
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Recent Admissions -->
+                <div class="panel">
+
+                    <div class="panel-head">
+
+                        <h2>
+                            Recent Admissions
+                        </h2>
+
+                        <a href="#" class="panel-link">
+                            View All →
+                        </a>
+
+                    </div>
+
+
+                    <table class="mini-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Patient</th>
+                                <th>Department</th>
+                                <th>Bed</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="pt-avatar">RA</span>
+                                        Rahim Uddin
+                                    </div>
+                                </td>
+
+                                <td>Cardiology</td>
+
+                                <td>C-204</td>
+
+                                <td>
+                                    <span class="badge stable">
+                                        Stable
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="pt-avatar">SA</span>
+                                        Sabina Khatun
+                                    </div>
+                                </td>
+
+                                <td>Maternity</td>
+
+                                <td>M-112</td>
+
+                                <td>
+                                    <span class="badge observation">
+                                        Under Observation
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="pt-avatar">KA</span>
+                                        Kamal Hossain
+                                    </div>
+                                </td>
+
+                                <td>Orthopedics</td>
+
+                                <td>G-318</td>
+
+                                <td>
+                                    <span class="badge stable">
+                                        Stable
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+
+                            <tr>
+
+                                <td>
+                                    <div class="patient-cell">
+                                        <span class="pt-avatar">NU</span>
+                                        Nusrat Jahan
+                                    </div>
+                                </td>
+
+                                <td>ICU</td>
+
+                                <td>I-05</td>
+
+                                <td>
+                                    <span class="badge critical">
+                                        Critical
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- System Modules -->
+            <section class="panel">
+
+                <div class="panel-head">
+                    <h2>System Modules</h2>
+                    <span class="panel-tag">39 Modules</span>
+                </div>
+
+                <div class="module-grid">
+
+                    <div class="module-card">
+                        <span class="module-icon">👨‍⚕️</span>
+                        <span class="module-title">Doctor Management</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">🧑‍⚕️</span>
+                        <span class="module-title">Patient Management</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">🛏️</span>
+                        <span class="module-title">Ward & Bed Management</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">💊</span>
+                        <span class="module-title">Pharmacy</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">🧪</span>
+                        <span class="module-title">Laboratory</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">📋</span>
+                        <span class="module-title">Appointment</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">🧾</span>
+                        <span class="module-title">Billing</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">📦</span>
+                        <span class="module-title">Inventory</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">👥</span>
+                        <span class="module-title">Human Resources</span>
+                    </div>
+
+                    <div class="module-card">
+                        <span class="module-icon">📊</span>
+                        <span class="module-title">Reports & Analytics</span>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                © 2026 Elite Care Hospital
+            </p>
+        </footer>
+
+    </main>
+
+</div>

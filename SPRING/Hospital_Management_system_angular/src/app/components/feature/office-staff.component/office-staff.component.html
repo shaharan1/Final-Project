@@ -1,0 +1,171 @@
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>{{ isEdit ? 'Update Office Staff' : 'Add Office Staff' }}</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form [formGroup]="officeStaffForm" (ngSubmit)="save()">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Name</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="name">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Email</label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            formControlName="email">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Phone</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="phone">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            class="form-control"
+                            formControlName="password">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Gender</label>
+
+                        <select
+                            class="form-select"
+                            formControlName="gender">
+
+                            <option value="">Select Gender</option>
+
+                            <option value="MALE">Male</option>
+
+                            <option value="FEMALE">Female</option>
+
+                            <option value="OTHER">Other</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Position</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="position">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Age</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="age">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Department</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="department">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Working Hours</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="workingHours">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Join Date</label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            formControlName="joinDate">
+
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+
+                        <label>Photo URL</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="photo">
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-success"
+                    type="submit">
+
+                    {{ isEdit ? 'Update' : 'Save' }}
+
+                </button>
+
+                <button
+                    type="reset"
+                    class="btn btn-secondary ms-2">
+
+                    Reset
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

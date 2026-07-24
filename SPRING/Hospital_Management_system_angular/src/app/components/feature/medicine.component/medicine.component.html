@@ -1,0 +1,72 @@
+<div class="container mt-4">
+
+  <div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+      <h4>Add Medicine</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <!-- Generic Name -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Generic Name</label>
+
+          <select class="form-select" [(ngModel)]="selectedGenericId" name="genericId" (change)="onGenericChange()">
+
+            <option [ngValue]="null">Select Generic</option>
+
+            <option *ngFor="let g of generics" [ngValue]="g.id">
+
+              {{ g.genericName }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- Medicine Name -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Medicine Name</label>
+
+          <input type="text" class="form-control" [(ngModel)]="medicine.medicineName" name="medicineName"
+            placeholder="Enter Medicine Name">
+
+        </div>
+
+        <!-- Dosage -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Dosage</label>
+
+          <input type="text" class="form-control" [(ngModel)]="medicine.dosage" name="dosage">
+
+        </div>
+
+        <!-- Prescription -->
+        <!-- <div class="col-md-6 mb-3">
+          <label class="form-label">Prescription Id</label>
+
+          <input type="number" class="form-control" [(ngModel)]="medicine.prescriptionId" name="prescriptionId">
+
+        </div> -->
+
+        <div class="col-12 mt-4">
+
+          <button class="btn btn-success" (click)="save()">
+
+            Save Medicine
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

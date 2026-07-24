@@ -1,0 +1,89 @@
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>Admitted Patient List</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Patient Code</th>
+                        <th>Doctor</th>
+                        <th>Ward</th>
+                        <th>Bed</th>
+                        <th>Diagnosis</th>
+                        <th>Admission Date</th>
+                        <th>Status</th>
+                        <th width="140">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let a of admissions">
+
+                        <td>{{a.admissionId}}</td>
+
+                        <td>{{a.patientName}}</td>
+
+                        <td>{{a.patientCode}}</td>
+
+                        <td>{{a.doctorName}}</td>
+
+                        <td>{{a.wardName}}</td>
+
+                        <td>{{a.assignedBedNumber}}</td>
+
+                        <td>{{a.initialDiagnosis}}</td>
+
+                        <td>{{a.admissionDate | date:'dd-MMM-yyyy hh:mm a'}}</td>
+
+                        <td>
+
+                            <span class="badge" [ngClass]="
+                                a.status=='ADMITTED'
+                                ? 'bg-success'
+                                : 'bg-danger'
+                                ">
+
+                                {{a.status}}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button class="btn btn-danger btn-sm" *ngIf="a.status=='ADMITTED'"
+                                (click)="discharge(a.admissionId!)">
+
+                                Discharge
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

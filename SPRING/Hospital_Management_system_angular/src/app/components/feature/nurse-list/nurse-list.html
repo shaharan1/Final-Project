@@ -1,0 +1,135 @@
+<div class="container">
+
+    <div class="card">
+
+        <h2>Nurse List</h2>
+
+        <div class="toolbar">
+
+            <input
+                class="form-control"
+                placeholder="Search..."
+                [(ngModel)]="searchText"
+                (keyup)="search()">
+
+            <input
+                class="form-control"
+                placeholder="Ward Name"
+                [(ngModel)]="ward">
+
+            <button
+                class="btn btn-primary"
+                (click)="searchWard()">
+                Ward Search
+            </button>
+
+            <button
+                class="btn btn-success"
+                (click)="loadOnDuty()">
+                On Duty
+            </button>
+
+            <button
+                class="btn btn-secondary"
+                (click)="reset()">
+                Refresh
+            </button>
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Ward</th>
+                    <th>Shift</th>
+                    <th>Experience</th>
+                    <th>Duty</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr *ngFor="let nurse of filteredNurses">
+
+                    <td>{{ nurse.id }}</td>
+
+                    <td>{{ nurse.name }}</td>
+
+                    <td>{{ nurse.email }}</td>
+
+                    <td>{{ nurse.phone }}</td>
+
+                    <td>{{ nurse.assignedWard }}</td>
+
+                    <td>{{ nurse.shift }}</td>
+
+                    <td>{{ nurse.experienceYears }} Years</td>
+
+                    <td>
+
+                        <span
+                            class="badge"
+                            [ngClass]="nurse.onDuty ? 'badge-success':'badge-danger'">
+
+                            {{ nurse.onDuty ? 'ON DUTY':'OFF DUTY' }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="badge"
+                            [ngClass]="nurse.active ? 'badge-success':'badge-warning'">
+
+                            {{ nurse.active ? 'ACTIVE':'INACTIVE' }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <button
+                                class="btn btn-success"
+                                (click)="changeDutyStatus(nurse)">
+                                Duty
+                            </button>
+
+                            <button
+                                class="btn btn-warning"
+                                (click)="changeActiveStatus(nurse)">
+                                Active
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

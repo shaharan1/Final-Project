@@ -1,0 +1,75 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>
+                Ward Management
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Ward Name</th>
+
+                        <th>Department</th>
+
+                        <th>Room Type</th>
+
+                        <th>Total Beds</th>
+
+                        <th>Daily Charge</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let ward of wards; let i=index">
+
+                        <td>{{i+1}}</td>
+
+                        <td>{{ward.name}}</td>
+
+                        <td>{{ward.departmentName}}</td>
+
+                        <td>{{ward.roomType}}</td>
+
+                        <td>{{ward.totalBeds}}</td>
+
+                        <td>{{ward.basePricePerDay | number}}</td>
+
+                        <td>
+
+                            <button routerLink="/bed-management/{{ward.id}}" class="btn btn-primary btn-sm">
+
+                                Manage Beds
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

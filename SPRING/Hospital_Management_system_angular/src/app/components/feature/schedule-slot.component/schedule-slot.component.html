@@ -1,0 +1,171 @@
+<div class="container mt-4">
+
+    <div class="card">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3>Create Schedule Slot</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form [formGroup]="slotForm" (ngSubmit)="save()">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Doctor</label>
+
+                        <select
+                            class="form-select"
+                            formControlName="doctorId">
+
+                            <option value="">Select Doctor</option>
+
+                            <option
+                                *ngFor="let d of doctors"
+                                [value]="d.id">
+
+                                {{d.name}} -
+                                {{d.specialization}}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Date</label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            formControlName="date">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Start Time</label>
+
+                        <input
+                            type="time"
+                            class="form-control"
+                            formControlName="startTime">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>End Time</label>
+
+                        <input
+                            type="time"
+                            class="form-control"
+                            formControlName="endTime">
+
+                    </div>
+
+                </div>
+
+                <button class="btn btn-success">
+
+                    Save Schedule
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="card">
+
+        <div class="card-header bg-dark text-white">
+
+            <h3>Schedule List</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Doctor</th>
+
+                        <th>Specialization</th>
+
+                        <th>Date</th>
+
+                        <th>Start</th>
+
+                        <th>End</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let slot of slots">
+
+                        <td>{{slot.doctorName}}</td>
+
+                        <td>{{slot.doctorSpecialization}}</td>
+
+                        <td>{{slot.date}}</td>
+
+                        <td>{{slot.startTime}}</td>
+
+                        <td>{{slot.endTime}}</td>
+
+                        <td>
+
+                            <span
+                                class="badge"
+                                [ngClass]="slot.isBooked ? 'bg-danger':'bg-success'">
+
+                                {{slot.isBooked ? 'Booked':'Available'}}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-warning btn-sm"
+                                (click)="changeStatus(slot)">
+
+                                Toggle
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

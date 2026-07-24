@@ -1,0 +1,16 @@
+.card {
+    border-radius: 12px;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 14px;
+    padding: 8px 12px;
+}

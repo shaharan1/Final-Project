@@ -1,0 +1,27 @@
+.table th{
+    background:#0d6efd;
+    color:white;
+    text-align:center;
+}
+
+.table td{
+    vertical-align:middle;
+    text-align:center;
+}
+
+img{
+    object-fit:cover;
+}
+
+.card{
+    border:none;
+}
+
+.card-header{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.btn{
+    min-width:70px;
+}

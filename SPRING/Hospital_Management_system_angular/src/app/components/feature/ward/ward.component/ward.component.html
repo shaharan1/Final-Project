@@ -1,0 +1,155 @@
+<div class="container-fluid mt-4">
+
+    <div class="row mb-4">
+
+        <div class="col">
+
+            <h2 class="fw-bold">
+                🏥 Ward Management Dashboard
+            </h2>
+
+            <p class="text-muted">
+                Manage Hospital Wards, Beds and Patient Admissions
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Ward List -->
+
+        <div class="col-lg-4">
+
+            <div class="dashboard-card bg-primary">
+
+                <div>
+
+                    <h3>Ward List</h3>
+
+                    <p>
+                        View all hospital wards
+                    </p>
+
+                </div>
+
+                <button class="btn btn-light" (click)="openWardList()">
+
+                    Open
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Bed -->
+
+        <div class="col-lg-4">
+
+            <div class="dashboard-card bg-success">
+
+                <div>
+
+                    <h3>Bed Management</h3>
+
+                    <p>
+                        Monitor available beds
+                    </p>
+
+                </div>
+
+                <button class="btn btn-light" (click)="openBedManagement()">
+
+                    Open
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Admission -->
+
+        <div class="col-lg-4">
+
+            <div class="dashboard-card bg-danger">
+
+                <div>
+
+                    <h3>Patient Admission</h3>
+
+                    <p>
+                        Admit & Discharge Patients
+                    </p>
+
+                </div>
+
+                <button class="btn btn-light" (click)="openAdmissions()">
+
+                    Open
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="row mt-5">
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <h5>Total Wards</h5>
+
+                <h2>--</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <h5>Total Beds</h5>
+
+                <h2>--</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <h5>Occupied</h5>
+
+                <h2>--</h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="stat-card">
+
+                <h5>Available</h5>
+
+                <h2>--</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

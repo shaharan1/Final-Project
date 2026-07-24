@@ -1,0 +1,269 @@
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                {{ isEdit ? 'Update Doctor' : 'Add Doctor' }}
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form [formGroup]="doctorForm" (ngSubmit)="save()">
+
+                <div class="row">
+
+                    <!-- Name -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Doctor Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="name">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            formControlName="email">
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Phone</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="phone">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            formControlName="password">
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Gender</label>
+
+                        <select
+                            class="form-select"
+                            formControlName="gender">
+
+                            <option value="">Select Gender</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Status</label>
+
+                        <select
+                            class="form-select"
+                            formControlName="status">
+
+                            <option>Active</option>
+                            <option>Inactive</option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Study -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Study</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="study">
+                    </div>
+
+                    <!-- Specialization -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Specialization</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="specialization">
+                    </div>
+
+                    <!-- Designation -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Designation</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="designation">
+                    </div>
+
+                    <!-- Registration Number -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Registration Number
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="registrationNumber">
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Experience (Years)
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            formControlName="experienceYears">
+                    </div>
+
+                    <!-- Consultation Fee -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Consultation Fee
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            formControlName="consultationFee">
+                    </div>
+
+                    <!-- Follow Up Fee -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Follow Up Fee
+                        </label>
+
+                        <input
+                            type="number"
+                            class="form-control"
+                            formControlName="followUpFee">
+                    </div>
+
+                    <!-- Available Days -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Available Days
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Sat, Sun, Mon"
+                            formControlName="availableDays">
+                    </div>
+
+                    <!-- Duty Hours -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Duty Hours
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="9 AM - 2 PM"
+                            formControlName="dutyHours">
+                    </div>
+
+                    <!-- Chamber -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Chamber
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="chamber">
+                    </div>
+
+                    <!-- Join Date -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Join Date
+                        </label>
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            formControlName="joinDate">
+                    </div>
+
+                    <!-- Photo -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">
+                            Photo URL
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="photo">
+                    </div>
+
+                    <!-- Department -->
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            Department
+                        </label>
+
+                        <select
+                            class="form-select"
+                            formControlName="doctorDepatrmentId">
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                            <option
+                                *ngFor="let dep of departments"
+                                [value]="dep.id">
+
+                                {{ dep.departmentName }}
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="text-center mt-3">
+
+                    <button
+                        class="btn btn-success px-5"
+                        type="submit">
+
+                        {{ isEdit ? 'Update Doctor' : 'Save Doctor' }}
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,70 @@
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h4>
+
+{{isEdit ? 'Update Test' : 'Add Test'}}
+
+</h4>
+
+</div>
+
+<div class="card-body">
+
+<div class="mb-3">
+
+<label>Test Code</label>
+
+<input
+class="form-control"
+[(ngModel)]="test.testCode">
+
+</div>
+
+<div class="mb-3">
+
+<label>Test Name</label>
+
+<input
+class="form-control"
+[(ngModel)]="test.testName">
+
+</div>
+
+<div class="mb-3">
+
+<label>Price</label>
+
+<input
+type="number"
+class="form-control"
+[(ngModel)]="test.standardPrice">
+
+</div>
+
+<div class="mb-3">
+
+<label>Normal Range</label>
+
+<input
+class="form-control"
+[(ngModel)]="test.normalRange">
+
+</div>
+
+<button
+class="btn btn-success"
+(click)="save()">
+
+{{isEdit ? 'Update' : 'Save'}}
+
+</button>
+
+</div>
+
+</div>
+
+</div>

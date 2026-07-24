@@ -1,0 +1,46 @@
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Specialization</th>
+            <th>Phone</th>
+            <th>Fee</th>
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        <tr *ngFor="let doctor of doctors">
+
+            <td>{{doctor.id}}</td>
+            <td>{{doctor.name}}</td>
+            <td>{{doctor.departmentName}}</td>
+            <td>{{doctor.specialization}}</td>
+            <td>{{doctor.phone}}</td>
+            <td>{{doctor.consultationFee}}</td>
+
+            <td>
+
+                <button class="btn btn-primary btn-sm" (click)="editDoctor(doctor.id!)">
+                    Edit
+                </button>
+
+                <button class="btn btn-danger btn-sm" (click)="deleteDoctor(doctor.id!)">
+                    Delete
+                </button>
+
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>

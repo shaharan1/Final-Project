@@ -1,0 +1,97 @@
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>Office Staff List</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Gender</th>
+                        <th>Position</th>
+                        <th>Department</th>
+                        <th>Working Hours</th>
+                        <th>Join Date</th>
+                        <th width="180">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let staff of officeStaffs; let i=index">
+
+                        <td>{{i+1}}</td>
+
+                        <td>
+
+                            <img
+                                [src]="staff.photo"
+                                width="60"
+                                height="60"
+                                class="rounded-circle border">
+
+                        </td>
+
+                        <td>{{staff.name}}</td>
+
+                        <td>{{staff.email}}</td>
+
+                        <td>{{staff.phone}}</td>
+
+                        <td>{{staff.gender}}</td>
+
+                        <td>{{staff.position}}</td>
+
+                        <td>{{staff.department}}</td>
+
+                        <td>{{staff.workingHours}}</td>
+
+                        <td>{{staff.joinDate}}</td>
+
+                        <td>
+
+                            <button
+                                class="btn btn-warning btn-sm me-2"
+                                (click)="edit(staff.id!)">
+
+                                Edit
+
+                            </button>
+
+                            <button
+                                class="btn btn-danger btn-sm"
+                                (click)="delete(staff.id!)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,309 @@
+/* ===================================
+   Prescription Page
+=================================== */
+
+body {
+    background: #f5f7fb;
+    font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-fluid {
+    max-width: 1400px;
+}
+
+/* ===================================
+   Card
+=================================== */
+
+.card {
+    border: none;
+    border-radius: 14px;
+    overflow: visible;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 15px 20px;
+}
+
+/* ===================================
+   Header Colors
+=================================== */
+
+.bg-primary {
+    background: linear-gradient(135deg, #0d6efd, #3f8cff) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #198754, #48c77d) !important;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, #0dcaf0, #61dcff) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #ffe27a) !important;
+    color: #222 !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #ff6675) !important;
+}
+
+/* ===================================
+   Form
+=================================== */
+
+label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+.form-control,
+.form-select {
+
+    border-radius: 8px;
+    min-height: 42px;
+    border: 1px solid #ced4da;
+
+}
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .15);
+
+}
+
+textarea {
+
+    resize: none;
+
+}
+
+/* ===================================
+   Table
+=================================== */
+
+.table {
+
+    margin-bottom: 0;
+
+}
+
+.table th {
+
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.table td {
+
+    vertical-align: middle;
+
+}
+
+.table-responsive {
+    overflow: visible;
+}
+
+/* ===================================
+   Medicine Search
+=================================== */
+
+mat-form-field {
+
+    width: 100%;
+
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+
+    display: none;
+
+}
+
+.mat-mdc-option {
+
+    font-size: 15px;
+
+}
+
+.position-relative {
+
+    position: relative;
+
+}
+
+.medicine-search {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.15);
+    z-index: 99999;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.medicine-search li {
+
+    padding: 10px 14px;
+
+    cursor: pointer;
+
+    border-bottom: 1px solid #eee;
+
+    transition: .2s;
+
+}
+
+.medicine-search li:last-child {
+
+    border-bottom: none;
+
+}
+
+.medicine-search li:hover {
+
+    background: #0d6efd;
+
+    color: white;
+
+}
+
+/* ===================================
+   Badge
+=================================== */
+
+.badge {
+
+    padding: 8px 12px;
+
+    font-size: 14px;
+
+    border-radius: 20px;
+
+}
+
+/* ===================================
+   Button
+=================================== */
+
+.btn {
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+}
+
+.btn:hover {
+
+    transform: translateY(-1px);
+
+}
+
+.text-end .btn {
+
+    min-width: 180px;
+
+}
+
+/* ===================================
+   Border Left
+=================================== */
+
+.border-primary {
+
+    border-left: 5px solid #0d6efd !important;
+
+}
+
+.border-success {
+
+    border-left: 5px solid #198754 !important;
+
+}
+
+.border-warning {
+
+    border-left: 5px solid #ffc107 !important;
+
+}
+
+.border-danger {
+
+    border-left: 5px solid #dc3545 !important;
+
+}
+
+.card-body {
+    overflow: visible;
+}
+
+
+.medicine-item {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+
+.medicine-item:hover {
+    background: #0d6efd;
+    color: #fff;
+}
+
+/* ===================================
+   Responsive
+=================================== */
+
+@media(max-width:768px) {
+
+    .card-header {
+
+        text-align: center;
+          overflow: visible;
+
+    }
+
+    h2 {
+
+        font-size: 24px;
+
+    }
+
+}
+
+/* ===================================
+   Print
+=================================== */
+
+@media print {
+
+    .btn {
+
+        display: none !important;
+
+    }
+
+    .card {
+
+        box-shadow: none;
+
+        border: 1px solid #ddd;
+
+    }
+
+}

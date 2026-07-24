@@ -1,0 +1,247 @@
+<div class="container">
+
+    <!-- Add Nurse -->
+    <div class="card">
+
+        <h2>Add Nurse</h2>
+
+        <form (ngSubmit)="saveNurse()">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Name</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.name"
+                           name="name">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input class="form-control"
+                           type="email"
+                           [(ngModel)]="nurse.email"
+                           name="email">
+                </div>
+
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.phone"
+                           name="phone">
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input class="form-control"
+                           type="password"
+                           [(ngModel)]="nurse.password"
+                           name="password">
+                </div>
+
+                <div class="form-group">
+                    <label>Address</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.address"
+                           name="address">
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select class="form-control"
+                            [(ngModel)]="nurse.gender"
+                            name="gender">
+
+                        <option value="">Select Gender</option>
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Join Date</label>
+                    <input class="form-control"
+                           type="date"
+                           [(ngModel)]="nurse.joinDate"
+                           name="joinDate">
+                </div>
+
+                <div class="form-group">
+                    <label>Photo URL</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.photo"
+                           name="photo">
+                </div>
+
+                <div class="form-group">
+                    <label>Nurse Type</label>
+                    <select class="form-control"
+                            [(ngModel)]="nurse.nurseType"
+                            name="nurseType">
+
+                        <option value="">Select Nurse Type</option>
+                        <option value="STAFF_NURSE">STAFF_NURSE</option>
+                        <option value="ICU_NURSE">ICU_NURSE</option>
+                        <option value="OT_NURSE">OT_NURSE</option>
+                        <option value="EMERGENCY_NURSE">EMERGENCY_NURSE</option>  
+                        <option value="SENIOR_NURSE">SENIOR_NURSE</option>  
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Qualification</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.qualification"
+                           name="qualification">
+                </div>
+
+                <div class="form-group">
+                    <label>Registration Number</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.registrationNumber"
+                           name="registrationNumber">
+                </div>
+
+                <div class="form-group">
+                    <label>Experience (Years)</label>
+                    <input class="form-control"
+                           type="number"
+                           [(ngModel)]="nurse.experienceYears"
+                           name="experienceYears">
+                </div>
+
+                <div class="form-group">
+                    <label>Shift</label>
+                    <select class="form-control"
+                            [(ngModel)]="nurse.shift"
+                            name="shift">
+
+                        <option value="">Select Shift</option>
+                        <option value="MORNING">Morning</option>
+                        <option value="EVENING">Evening</option>
+                        <option value="NIGHT">Night</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Working Hours</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.workingHours"
+                           name="workingHours">
+                </div>
+
+                <div class="form-group">
+                    <label>Assigned Ward</label>
+                    <input class="form-control"
+                           type="text"
+                           [(ngModel)]="nurse.assignedWard"
+                           name="assignedWard">
+                </div>
+
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea class="form-control"
+                              [(ngModel)]="nurse.remarks"
+                              name="remarks"></textarea>
+                </div>
+
+            </div>
+
+            <br>
+
+            <button class="btn btn-primary" type="submit">
+                Save Nurse
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Nurse List -->
+    <div class="card">
+
+        <h2>Nurse List</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Ward</th>
+                    <th>Shift</th>
+                    <th>Duty</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr *ngFor="let nurse of nurses">
+
+                    <td>{{ nurse.name }}</td>
+
+                    <td>{{ nurse.email }}</td>
+
+                    <td>{{ nurse.assignedWard }}</td>
+
+                    <td>{{ nurse.shift }}</td>
+
+                    <td>
+                        <span class="badge"
+                              [ngClass]="nurse.onDuty ? 'badge-success':'badge-danger'">
+                            {{ nurse.onDuty ? 'ON DUTY' : 'OFF DUTY' }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="badge"
+                              [ngClass]="nurse.active ? 'badge-success':'badge-warning'">
+                            {{ nurse.active ? 'ACTIVE' : 'INACTIVE' }}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <button
+                                    class="btn btn-success"
+                                    (click)="dutyStatus(nurse)">
+                                Duty
+                            </button>
+
+                            <button
+                                    class="btn btn-warning"
+                                    (click)="activeStatus(nurse)">
+                                Active
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

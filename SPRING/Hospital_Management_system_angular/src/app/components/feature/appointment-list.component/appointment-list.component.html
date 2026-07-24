@@ -1,0 +1,248 @@
+<div class="container-fluid mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+            <h4 class="mb-0">
+                Appointment Management
+            </h4>
+
+            <button class="btn btn-light btn-sm" (click)="loadAppointments()">
+
+                <i class="bi bi-arrow-clockwise"></i>
+                Refresh
+
+            </button>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- ================= Filter Section ================= -->
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-bold">
+                        Doctor
+                    </label>
+
+                    <select class="form-select" [(ngModel)]="doctorId">
+
+                        <option [ngValue]="undefined">
+                            All Doctors
+                        </option>
+
+                        <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
+
+                            {{doctor.name}}
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label class="form-label fw-bold">
+                        Appointment Date
+                    </label>
+
+                    <input type="date" class="form-control" [(ngModel)]="appointmentDate">
+
+                </div>
+
+                <div class="col-md-5 d-flex align-items-end flex-wrap">
+
+                    <button class="btn btn-primary me-2 mb-2" (click)="search()">
+
+                        <i class="bi bi-search"></i>
+                        Search
+
+                    </button>
+
+                    <button class="btn btn-secondary me-2 mb-2" (click)="reset()">
+
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        Reset
+
+                    </button>
+
+                    <button class="btn btn-success mb-2" (click)="downloadDoctorWisePdf()">
+
+                        <i class="bi bi-file-earmark-pdf-fill"></i>
+                        Download Report
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- ================= Table ================= -->
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover align-middle">
+
+                    <thead class="table-primary">
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Appointment No</th>
+
+                            <th>Patient</th>
+
+                            <th>Mobile</th>
+
+                            <th>Doctor</th>
+
+                            <th>Specialization</th>
+
+                            <th>Date</th>
+
+                            <th>Time</th>
+
+                            <th>Fee</th>
+
+                            <th>Status</th>
+
+                            <th>Payment</th>
+
+                            <th width="220">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr *ngFor="let appointment of appointments; let i=index">
+
+                            <td>{{i+1}}</td>
+
+                            <td>
+
+                                {{appointment.appointmentNumber}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.patientName}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.mobileNumber}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.doctorName}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.doctorSpecialization}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.appointmentDate}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.appointmentTime}}
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.feeCharged}} Tk
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge" [ngClass]="{
+
+                                    'bg-success': appointment.status=='CONFIRMED',
+
+                                    'bg-warning text-dark': appointment.status=='PENDING_VERIFICATION',
+
+                                    'bg-danger': appointment.status=='CANCELLED'
+
+                                }">
+
+                                    {{appointment.status}}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                {{appointment.paymentMethod}}
+
+                            </td>
+
+                            <td>
+
+                                <button class="btn btn-info btn-sm me-1" (click)="printSlip(appointment)">
+
+                                    Slip
+
+                                </button>
+
+                                <button class="btn btn-success btn-sm me-1" (click)="downloadPdf(appointment)">
+
+                                    PDF
+
+                                </button>
+
+                                <button class="btn btn-danger btn-sm" (click)="cancel(appointment.id!)"
+                                    [disabled]="appointment.status=='CANCELLED'">
+
+                                    Cancel
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        <tr *ngIf="appointments.length==0">
+
+                            <td colspan="12" class="text-center text-danger fw-bold">
+
+                                No Appointment Found
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

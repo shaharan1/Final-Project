@@ -1,0 +1,106 @@
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white d-flex justify-content-between">
+
+<h4>Test List</h4>
+
+<a
+routerLink="/tests/create"
+class="btn btn-light">
+
+Add Test
+
+</a>
+
+</div>
+
+<div class="card-body">
+
+<input
+class="form-control mb-3"
+placeholder="Search Test"
+[(ngModel)]="keyword"
+(keyup)="search()">
+
+<table class="table table-bordered">
+
+<thead>
+
+<tr>
+
+<th>Code</th>
+<th>Name</th>
+<th>Price</th>
+<th>Range</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr *ngFor="let t of tests">
+
+<td>{{t.testCode}}</td>
+
+<td>{{t.testName}}</td>
+
+<td>{{t.standardPrice}}</td>
+
+<td>{{t.normalRange}}</td>
+
+<td>
+
+<span
+class="badge bg-success"
+*ngIf="t.active">
+
+Active
+
+</span>
+
+<span
+class="badge bg-danger"
+*ngIf="!t.active">
+
+Inactive
+
+</span>
+
+</td>
+
+<td>
+
+<button
+class="btn btn-warning btn-sm me-2"
+(click)="edit(t.id!)">
+
+Edit
+
+</button>
+
+<button
+class="btn btn-danger btn-sm"
+(click)="delete(t.id!)">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>

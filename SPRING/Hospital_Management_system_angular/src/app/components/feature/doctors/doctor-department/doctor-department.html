@@ -1,0 +1,119 @@
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h4>
+                {{ isEdit ? 'Update Department' : 'Add Doctor Department' }}
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <form (ngSubmit)="saveDepartment()">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Department Name
+                    </label>
+
+                    <input type="text" class="form-control" [(ngModel)]="department.departmentName"
+                        name="departmentName" required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea rows="3" class="form-control" [(ngModel)]="department.description" name="description">
+                    </textarea>
+
+                </div>
+
+                <button class="btn btn-success">
+
+                    {{ isEdit ? 'Update' : 'Save' }}
+
+                </button>
+
+                <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">
+
+                    Reset
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="card mt-4 shadow">
+
+        <div class="card-header bg-dark text-white">
+
+            <h4>Department List</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-primary">
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Department</th>
+                        <th>Description</th>
+                        <th width="180">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let dep of departments">
+
+                        <td>{{ dep.id }}</td>
+
+                        <td>{{ dep.departmentName }}</td>
+
+                        <td>{{ dep.description }}</td>
+
+                        <td>
+
+                            <button class="btn btn-warning btn-sm me-2" (click)="editDepartment(dep)">
+
+                                Edit
+
+                            </button>
+
+                            <button class="btn btn-danger btn-sm" (click)="deleteDepartment(dep.id!)">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

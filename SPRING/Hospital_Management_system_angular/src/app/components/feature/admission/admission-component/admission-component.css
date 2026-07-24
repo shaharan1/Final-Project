@@ -1,0 +1,21 @@
+.card {
+    border-radius: 10px;
+}
+
+.card-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.form-select,
+.form-control {
+
+    height: 45px;
+
+}
+
+textarea.form-control {
+
+    height: auto;
+
+}

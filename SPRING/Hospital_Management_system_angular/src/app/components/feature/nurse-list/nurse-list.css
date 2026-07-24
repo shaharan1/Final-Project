@@ -1,0 +1,94 @@
+.container{
+    padding:25px;
+}
+
+.card{
+    background:#fff;
+    border-radius:8px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    padding:20px;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.form-control{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.btn{
+    padding:10px 15px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn-primary{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.btn-success{
+    background:#198754;
+    color:#fff;
+}
+
+.btn-warning{
+    background:#ffc107;
+}
+
+.btn-secondary{
+    background:#6c757d;
+    color:#fff;
+}
+
+.table-container{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    border:1px solid #ddd;
+    text-align:center;
+}
+
+thead{
+    background:#0d6efd;
+    color:#fff;
+}
+
+.badge{
+    padding:6px 12px;
+    border-radius:15px;
+    color:white;
+}
+
+.badge-success{
+    background:#198754;
+}
+
+.badge-danger{
+    background:#dc3545;
+}
+
+.badge-warning{
+    background:#ffc107;
+    color:black;
+}
+
+.action-buttons{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+}

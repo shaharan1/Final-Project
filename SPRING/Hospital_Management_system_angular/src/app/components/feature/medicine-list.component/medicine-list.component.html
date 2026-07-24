@@ -1,0 +1,58 @@
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            <h4>Medicine List</h4>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Medicine</th>
+                        <th>Generic</th>
+                        <th>Dosage</th>
+                        <!-- <th>Prescription ID</th> -->
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr *ngFor="let m of medicines; let i = index">
+
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ m.medicineName }}</td>
+                        <td>{{ m.genericName }}</td>
+                        <td>{{ m.dosage }}</td>
+                        <!-- <td>{{ m.prescriptionId }}</td> -->
+
+                        <td>
+                            <button
+                                class="btn btn-warning btn-sm me-2"
+                                (click)="edit(m.id!)">
+                                Update
+                            </button>
+
+                            <button
+                                class="btn btn-danger btn-sm"
+                                (click)="delete(m.id!)">
+                                Delete
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
