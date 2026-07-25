@@ -2,15 +2,24 @@ package emranhss.com.Modern_Hospital_Management_System.dto.mapper;
 
 import emranhss.com.Modern_Hospital_Management_System.dto.response.PrescriptionItemResponse;
 import emranhss.com.Modern_Hospital_Management_System.dto.response.PrescriptionResponse;
+import emranhss.com.Modern_Hospital_Management_System.dto.response.TestMasterResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.Prescription;
+import emranhss.com.Modern_Hospital_Management_System.entity.Tests;
+import emranhss.com.Modern_Hospital_Management_System.repository.TestsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class PrescriptionMapper {
+
+    private final TestsRepository testsRepository;
 
     public PrescriptionResponse toResponse(Prescription prescription) {
         if (prescription == null) {
@@ -19,8 +28,8 @@ public class PrescriptionMapper {
 
         PrescriptionResponse response = new PrescriptionResponse();
 
-        // 1. Map Base Prescription Fields
         response.setId(prescription.getId());
+        response.setPrescriptionNumber(prescription.getPrescriptionNumber());
         response.setDiagnosis(prescription.getDiagnosis());
         response.setChiefComplaints(prescription.getChiefComplaints());
         response.setSymptoms(prescription.getSymptoms());
@@ -32,20 +41,26 @@ public class PrescriptionMapper {
         response.setNextFollowUpDate(prescription.getNextFollowUpDate());
         response.setCreatedDate(prescription.getCreatedDate());
 
-        // 2. Map Appointment Info
         if (prescription.getAppointment() != null) {
             response.setAppointmentId(prescription.getAppointment().getId());
         }
 
-        // 3. Map Doctor Info
-        if (prescription.getDoctor() != null && prescription.getDoctor().getUser() != null) {
-            response.setDoctorName(prescription.getDoctor().getUser().getName());
+        if (prescription.getDoctor() != null) {
+            response.setDoctorDesignation(prescription.getDoctor().getDesignation());
+            response.setDoctorDepartment(prescription.getDoctor().getDoctorDepartment() != null
+                    ? prescription.getDoctor().getDoctorDepartment().getDepartmentName() : null);
+
+            if (prescription.getDoctor().getUser() != null) {
+                response.setDoctorName(prescription.getDoctor().getUser().getName());
+            }
             response.setDoctorSpecialization(prescription.getDoctor().getSpecialization());
         }
 
-        // 4. Map Patient Info (Fixed Name String Bug)
         if (prescription.getPatient() != null) {
             response.setPatientName(prescription.getPatient().getName());
+            response.setPatientGender(prescription.getPatient().getGender());
+            response.setPatientPhone(prescription.getPatient().getPhone());
+            response.setPatientBloodGroup(prescription.getPatient().getBloodGroup());
 
             if (prescription.getPatient().getDateOfBirth() != null) {
                 int age = Period.between(prescription.getPatient().getDateOfBirth(), LocalDate.now()).getYears();
@@ -53,7 +68,6 @@ public class PrescriptionMapper {
             }
         }
 
-        // 5. Map Prescription Items
         if (prescription.getPrescriptionItems() != null) {
             response.setPrescriptionItems(prescription.getPrescriptionItems().stream().map(item -> {
                 PrescriptionItemResponse itemDto = new PrescriptionItemResponse();
@@ -69,6 +83,25 @@ public class PrescriptionMapper {
                 }
                 return itemDto;
             }).collect(Collectors.toList()));
+        }
+
+        // Map tests
+        List<Tests> testsList = testsRepository.findByPrescriptionId(prescription.getId());
+        if (testsList != null && !testsList.isEmpty()) {
+            List<TestMasterResponse> testResponses = testsList.stream().map(t -> {
+                TestMasterResponse tr = new TestMasterResponse();
+                if (t.getTestMaster() != null) {
+                    tr.setId(t.getTestMaster().getId());
+                    tr.setTestCode(t.getTestMaster().getTestCode());
+                    tr.setTestName(t.getTestMaster().getTestName());
+                    tr.setStandardPrice(t.getTestMaster().getStandardPrice());
+                    tr.setNormalRange(t.getTestMaster().getNormalRange());
+                }
+                return tr;
+            }).collect(Collectors.toList());
+            response.setTests(testResponses);
+        } else {
+            response.setTests(new ArrayList<>());
         }
 
         return response;

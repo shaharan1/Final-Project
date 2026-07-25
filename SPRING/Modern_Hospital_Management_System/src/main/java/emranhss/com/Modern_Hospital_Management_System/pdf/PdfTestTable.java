@@ -60,7 +60,7 @@ public class PdfTestTable {
         // Table
         //========================================
 
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(3);
 
         table.setWidthPercentage(100);
 
@@ -69,8 +69,6 @@ public class PdfTestTable {
                 2f,
 
                 5f,
-
-                2f,
 
                 3f
 
@@ -83,8 +81,6 @@ public class PdfTestTable {
         addHeader(table, "Code");
 
         addHeader(table, "Test Name");
-
-        addHeader(table, "Status");
 
         addHeader(table, "Normal Range");
 
@@ -107,14 +103,6 @@ public class PdfTestTable {
                     table,
 
                     test.getTestMaster().getTestName()
-
-            );
-
-            addCell(
-
-                    table,
-
-                    test.getOrderStatus()
 
             );
 

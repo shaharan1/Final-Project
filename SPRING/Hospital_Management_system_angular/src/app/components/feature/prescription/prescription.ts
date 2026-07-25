@@ -215,6 +215,27 @@ loadAppointment(appointmentId: number) {
       next: (res) => {
 
         this.prescription = res;
+
+        if (res.testIds && res.testIds.length > 0) {
+          this.prescription.testIds = res.testIds;
+        } else if (res.tests && res.tests.length > 0) {
+          this.prescription.testIds = res.tests.map(t => t.id!);
+          this.selectedTests = res.tests.map(t => ({
+            id: t.id,
+            testCode: t.testCode || '',
+            testName: t.testName || '',
+            standardPrice: t.standardPrice || 0,
+            normalRange: ''
+          }));
+        }
+
+        if (res.prescriptionItems && res.prescriptionItems.length > 0) {
+          this.prescription.prescriptionItems = res.prescriptionItems.map(item => ({
+            ...item,
+            suggestions: []
+          }));
+        }
+
         this.cdr.markForCheck();
 
       },
@@ -448,11 +469,13 @@ save() {
 
     this.service.update(this.prescription.id, payload).subscribe({
 
-      next: () => {
+      next: (res: any) => {
 
         alert('Prescription Updated Successfully');
 
-        this.router.navigate(['/prescription-list']);
+        this.printPdf(this.prescription.id!);
+
+        this.router.navigate(['/prescriptions']);
 
       },
 

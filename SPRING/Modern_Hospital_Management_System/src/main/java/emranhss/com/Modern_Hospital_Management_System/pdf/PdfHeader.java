@@ -19,9 +19,9 @@ public class PdfHeader {
         // Header Table (3 Columns)
         // =====================================================
 
-        PdfPTable header = new PdfPTable(3);
+        PdfPTable header = new PdfPTable(2);
         header.setWidthPercentage(100);
-        header.setWidths(new float[]{1.2f, 5f, 1.6f});
+        header.setWidths(new float[]{1.2f, 6f});
         header.setSpacingAfter(10);
 
         // Logo Cell
@@ -65,20 +65,6 @@ public class PdfHeader {
 
         infoCell.addElement(title);
         header.addCell(infoCell);
-
-        // Doctor Photo Cell — placeholder box, NOT self-referencing
-        PdfPCell doctorPhotoCell = new PdfPCell();
-        doctorPhotoCell.setBorder(Rectangle.BOX);
-        doctorPhotoCell.setBorderColor(BaseColor.LIGHT_GRAY);
-        doctorPhotoCell.setFixedHeight(90);
-        doctorPhotoCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        doctorPhotoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
-        Paragraph photoLabel = new Paragraph("Photo", PdfStyle.VALUE_FONT);
-        photoLabel.setAlignment(Element.ALIGN_CENTER);
-        doctorPhotoCell.addElement(photoLabel);
-
-        header.addCell(doctorPhotoCell);
 
         document.add(header);
     }

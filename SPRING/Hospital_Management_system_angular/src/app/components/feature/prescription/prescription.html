@@ -12,13 +12,17 @@
           <p class="mb-0">
             Medical Prescription
           </p>
+
+          <p class="mb-0 mt-1" *ngIf="prescription.prescriptionNumber">
+            <small class="text-light">{{ prescription.prescriptionNumber }}</small>
+          </p>
         </div>
 
         <div class="col-md-4 text-end">
 
-          <span class="badge bg-light text-dark fs-6">
+          <span class="badge bg-light text-dark fs-6" *ngIf="prescription.prescriptionNumber">
 
-            {{ prescription.appointmentId }}
+            {{ prescription.prescriptionNumber }}
 
           </span>
 
@@ -152,7 +156,43 @@
 
       </div>
 
+      <!-- Patient & Doctor Info -->
+      <div class="row mt-3" *ngIf="prescription.patientName || prescription.doctorName">
 
+        <div class="col-lg-6" *ngIf="prescription.patientName">
+          <div class="card border-secondary mb-3">
+            <div class="card-header bg-secondary text-white">
+              Patient Details
+            </div>
+            <div class="card-body">
+              <table class="table table-sm mb-0">
+                <tr><th>Name</th><td>{{ prescription.patientName }}</td></tr>
+                <tr *ngIf="prescription.patientAge"><th>Age</th><td>{{ prescription.patientAge }}</td></tr>
+                <tr *ngIf="prescription.patientGender"><th>Gender</th><td>{{ prescription.patientGender }}</td></tr>
+                <tr *ngIf="prescription.patientPhone"><th>Phone</th><td>{{ prescription.patientPhone }}</td></tr>
+                <tr *ngIf="prescription.patientBloodGroup"><th>Blood Group</th><td>{{ prescription.patientBloodGroup }}</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6" *ngIf="prescription.doctorName">
+          <div class="card border-secondary mb-3">
+            <div class="card-header bg-secondary text-white">
+              Doctor Details
+            </div>
+            <div class="card-body">
+              <table class="table table-sm mb-0">
+                <tr><th>Name</th><td>Dr. {{ prescription.doctorName }}</td></tr>
+                <tr *ngIf="prescription.doctorDesignation"><th>Designation</th><td>{{ prescription.doctorDesignation }}</td></tr>
+                <tr *ngIf="prescription.doctorSpecialization"><th>Specialization</th><td>{{ prescription.doctorSpecialization }}</td></tr>
+                <tr *ngIf="prescription.doctorDepartment"><th>Department</th><td>{{ prescription.doctorDepartment }}</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
       <!-- Medicines -->
       <div class="card border-info mt-3 shadow-sm">
@@ -416,7 +456,13 @@
 
         <button class="btn btn-primary me-2" (click)="save()">
 
-          Save Prescription
+          {{ prescription.id ? 'Update Prescription' : 'Save Prescription' }}
+
+        </button>
+
+        <button class="btn btn-secondary me-2" *ngIf="prescription.id" (click)="printPdf(prescription.id)">
+
+          Print PDF
 
         </button>
 

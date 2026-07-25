@@ -25,7 +25,14 @@ export interface PrescriptionModel {
   patientId: number | null;
 
   doctorName?: string;
+  doctorSpecialization?: string;
+  doctorDesignation?: string;
+  doctorDepartment?: string;
   patientName?: string;
+  patientAge?: string;
+  patientGender?: string;
+  patientPhone?: string;
+  patientBloodGroup?: string;
   prescriptionNumber?: string;
   createdDate?: string;
 
@@ -45,4 +52,6 @@ export interface PrescriptionModel {
   prescriptionItems: PrescriptionItemModel[];
 
   testIds: number[];
+
+  tests?: { id?: number; testCode?: string; testName?: string; standardPrice?: number }[];
 }
