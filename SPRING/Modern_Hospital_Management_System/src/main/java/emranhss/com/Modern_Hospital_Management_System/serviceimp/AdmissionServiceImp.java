@@ -131,4 +131,18 @@ public class AdmissionServiceImp implements AdmissionService {
 
     }
 
+    @Override
+    public List<AdmissionResponse> getActiveAdmissions() {
+        return admissionRepository.findAll()
+                .stream()
+                .filter(a -> "ADMITTED".equals(a.getAdmissionStatus()))
+                .map(admission -> {
+                    BedBooking booking = bedBookingRepository
+                            .findByAdmittedPatientIdAndActiveTrue(admission.getId())
+                            .orElse(null);
+                    return mapper.toResponse(admission, booking);
+                })
+                .toList();
+    }
+
 }

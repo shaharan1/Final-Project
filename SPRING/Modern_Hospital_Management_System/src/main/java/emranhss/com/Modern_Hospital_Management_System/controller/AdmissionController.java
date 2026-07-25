@@ -46,7 +46,9 @@ public class AdmissionController {
         return ResponseEntity.ok(admissionService.getAdmissionById(id));
     }
 
-
-
+    @GetMapping("/active")
+    public ResponseEntity<List<AdmissionResponse>> getActiveAdmissions() {
+        return ResponseEntity.ok(admissionService.getActiveAdmissions());
+    }
 
 }
