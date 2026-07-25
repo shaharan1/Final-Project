@@ -40,9 +40,9 @@
         <h2>Today's Appointments</h2>
         <a routerLink="/appointment-list" class="panel-link">View All →</a>
       </div>
-      <table class="mini-table" *ngIf="appointments.length > 0">
+       <table class="mini-table" *ngIf="appointments.length > 0">
         <thead>
-          <tr><th>Patient</th><th>Time</th><th>Status</th><th>Action</th></tr>
+          <tr><th>Patient</th><th>Time</th><th>Status</th><th>Prescription</th><th>Action</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let appt of appointments">
@@ -50,9 +50,14 @@
             <td>{{ appt.appointmentTime }}</td>
             <td><span class="badge {{ getBadgeClass(appt.status) }}">{{ formatStatus(appt.status) }}</span></td>
             <td>
-              <a [routerLink]="['/prescriptions/create', appt.id]" class="btn-write-rx" *ngIf="appt.status !== 'CANCELLED'">
-                Write Prescription
-              </a>
+              <span class="badge" [ngClass]="hasPrescription(appt.id) ? 'bg-success' : 'bg-secondary'" *ngIf="appt.status !== 'CANCELLED'">
+                {{ hasPrescription(appt.id) ? 'Prescribed' : 'Pending' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-write-rx" *ngIf="appt.status !== 'CANCELLED'" (click)="editPrescription(appt.id)">
+                {{ hasPrescription(appt.id) ? 'Edit Prescription' : 'Write Prescription' }}
+              </button>
             </td>
           </tr>
         </tbody>
