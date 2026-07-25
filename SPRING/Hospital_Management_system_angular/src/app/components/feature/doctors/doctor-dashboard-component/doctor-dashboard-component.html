@@ -260,7 +260,9 @@
 
                     <th>Status</th>
 
-                    <th></th>
+                    <th>Prescription</th>
+
+                    <th>Action</th>
 
                 </tr>
 
@@ -290,21 +292,39 @@
 
                      <td>
 
-                         <button
-                             class="btn btn-primary btn-sm me-2"
-                             (click)="writePrescription(appointment.id)">
+                         <span class="badge" [ngClass]="hasPrescription(appointment.id) ? 'bg-success' : 'bg-secondary'">
 
-                             Write Prescription
+                             {{ hasPrescription(appointment.id) ? 'Prescribed' : 'Pending' }}
 
-                         </button>
+                         </span>
 
-                         <button
-                             class="btn btn-outline-secondary btn-sm"
-                             (click)="viewPrescriptions()">
+                     </td>
 
-                             My Prescriptions
+                     <td>
 
-                         </button>
+                        <ng-container *ngIf="hasPrescription(appointment.id); else writeBtn">
+
+                          <button
+                              class="btn btn-success btn-sm"
+                              (click)="editPrescription(appointment.id)">
+
+                              Edit Prescription
+
+                          </button>
+
+                        </ng-container>
+
+                        <ng-template #writeBtn>
+
+                          <button
+                              class="btn btn-primary btn-sm"
+                              (click)="writePrescription(appointment.id)">
+
+                              Write Prescription
+
+                          </button>
+
+                        </ng-template>
 
                      </td>
 

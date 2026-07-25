@@ -9,6 +9,8 @@ import { AuthService } from '../../../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { AppointmentResponseModel } from '../../../../models/AppointmentResponseModel';
 import { AppointmentService } from '../../../../services/appointment.service';
+import { PrescriptionModel } from '../../../../models/prescriptionModel';
+import { PrescriptionService } from '../../../../services/prescription.service';
 
 @Component({
   selector: 'app-doctor-dashboard-component',
@@ -21,17 +23,19 @@ export class DoctorDashboardComponent {
   user: LoginResponse | null = null;
   doctor: DoctorResponseModel | null= null;
   appointments: AppointmentResponseModel[] = [];
+  prescriptions: PrescriptionModel[] = [];
 
    loading = true;
 
   constructor(
     private doctorService: DoctorModelService,
     private appointmentService: AppointmentService,
+    private prescriptionService: PrescriptionService,
     private cdr: ChangeDetectorRef,
     private storage: StorageService,
     private auth: AuthService,
       private router: Router
-   
+    
   ) { }
 
   ngOnInit(): void {
@@ -43,23 +47,24 @@ export class DoctorDashboardComponent {
   }
 
 
-loadDoctor(): void {
+  loadDoctor(): void {
     this.loading = true;
- 
+  
     const cached = this.storage.getData<DoctorResponseModel>(KEYS.Doctor);
     if (cached) {     
       this.loading = false;
     }
- 
+  
     // Always refresh from server too, in case it changed elsewhere
     if (this.user?.userId) {
       this.doctorService.findByUserId(this.user.userId).subscribe({
         next: (res) => {
           this.doctor= res;
            this.loadAppointments();
-          this.storage.saveData(KEYS.Doctor, res);
-          this.loading = false;
-          this.cdr.markForCheck();
+           this.loadPrescriptions(res.id!);
+           this.storage.saveData(KEYS.Doctor, res);
+           this.loading = false;
+           this.cdr.markForCheck();
 
           console.log("Doctor "+ this.doctor);
         },
@@ -91,6 +96,24 @@ loadDoctor(): void {
 
 }
 
+  loadPrescriptions(doctorId: number): void {
+    this.prescriptionService.getByDoctorId(doctorId).subscribe({
+      next: (res) => {
+        this.prescriptions = res;
+        this.cdr.markForCheck();
+      },
+      error: () => {}
+    });
+  }
+
+  getPrescriptionByAppointment(appointmentId: number): PrescriptionModel | undefined {
+    return this.prescriptions.find(p => p.appointmentId === appointmentId);
+  }
+
+  hasPrescription(appointmentId: number): boolean {
+    return this.prescriptions.some(p => p.appointmentId === appointmentId);
+  }
+
 
    logout(): void {
     this.auth.logout();
@@ -100,6 +123,15 @@ loadDoctor(): void {
 
   writePrescription(appointmentId: number): void {
   this.router.navigate(['/prescriptions/create', appointmentId]);
+}
+
+  editPrescription(appointmentId: number): void {
+  const prescription = this.getPrescriptionByAppointment(appointmentId);
+  if (prescription?.id) {
+    this.router.navigate(['/prescriptions/edit', prescription.id]);
+  } else {
+    this.writePrescription(appointmentId);
+  }
 }
 
   viewPrescriptions(): void {
