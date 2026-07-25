@@ -17,6 +17,7 @@ import { MedicineListComponent } from './components/feature/medicine-list.compon
 import { Generic } from './components/feature/generic/generic';
 import { GenericListComponent } from './components/feature/generic-list/generic-list';
 import { PrescriptionComponent } from './components/feature/prescription/prescription';
+import { PrescriptionListComponent } from './components/feature/prescription/prescription-list.component';
 import { PatientComponent } from './components/feature/patient.component/patient.component';
 import { PatientListComponent } from './components/feature/patient-list.component/patient-list.component';
 import { LoginComponent } from './components/auth/login-component/login-component';
@@ -99,7 +100,7 @@ export const routes: Routes = [
   { path: 'generic-list', component: GenericListComponent },
 
   // ============ Prescriptions ============
-  { path: 'prescriptions', component: PrescriptionComponent },
+  { path: 'prescriptions', component: PrescriptionListComponent },
   { path: 'prescriptions/edit/:id', component: PrescriptionComponent },
   { path: 'prescriptions/create/:appointmentId', component: PrescriptionComponent },
 

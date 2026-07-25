@@ -99,7 +99,11 @@ loadDoctor(): void {
 
 
   writePrescription(appointmentId: number): void {
-  this.router.navigate(['/doctor/prescription', appointmentId]);
+  this.router.navigate(['/prescriptions/create', appointmentId]);
+}
+
+  viewPrescriptions(): void {
+  this.router.navigate(['/prescriptions']);
 }
 
 
