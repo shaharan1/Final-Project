@@ -18,3 +18,9 @@
   background-color: #6c757d;
   color: white;
 }
+
+@media (max-width: 768px) {
+  .card-header { flex-direction: column !important; gap: 10px; }
+  .table td, .table th { padding: 10px 8px; font-size: 13px; }
+  .btn { font-size: 13px; padding: 6px 12px; }
+}

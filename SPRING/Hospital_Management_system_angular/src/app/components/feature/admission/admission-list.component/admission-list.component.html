@@ -1,89 +1,83 @@
-<div class="container mt-4">
-
-    <div class="card shadow">
-
-        <div class="card-header bg-primary text-white">
-
-            <h4>Admitted Patient List</h4>
-
+<div class="al-container">
+    <!-- Header -->
+    <div class="al-header">
+        <div>
+            <h3>Admitted Patients</h3>
+            <p class="al-sub">All active and past admissions</p>
         </div>
+        <button class="al-btn-new" (click)="goToAdmit()">+ New Admission</button>
+    </div>
 
-        <div class="card-body">
+    <!-- Stats -->
+    <div class="al-stats">
+        <div class="al-stat">
+            <span class="al-stat-num">{{ admissions.length }}</span>
+            <span class="al-stat-lbl">Total</span>
+        </div>
+        <div class="al-stat al-stat-active">
+            <span class="al-stat-num">{{ activeCount }}</span>
+            <span class="al-stat-lbl">Active</span>
+        </div>
+        <div class="al-stat al-stat-disc">
+            <span class="al-stat-num">{{ dischargedCount }}</span>
+            <span class="al-stat-lbl">Discharged</span>
+        </div>
+    </div>
 
-            <table class="table table-bordered table-hover">
+    <!-- Search & Filter -->
+    <div class="al-toolbar">
+        <input class="al-search" placeholder="Search patient, doctor, ward..." [(ngModel)]="searchKeyword">
+        <div class="al-filters">
+            <button class="al-filter-btn" [class.active]="filterStatus==='ALL'" (click)="filterStatus='ALL'">All</button>
+            <button class="al-filter-btn al-filter-active" [class.active]="filterStatus==='ADMITTED'" (click)="filterStatus='ADMITTED'">Active</button>
+            <button class="al-filter-btn al-filter-disc" [class.active]="filterStatus==='DISCHARGED'" (click)="filterStatus='DISCHARGED'">Discharged</button>
+        </div>
+    </div>
 
-                <thead class="table-dark">
-
+    <!-- Table -->
+    <div class="al-card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
                     <tr>
-
-                        <th>ID</th>
+                        <th>#</th>
                         <th>Patient</th>
-                        <th>Patient Code</th>
+                        <th>Code</th>
                         <th>Doctor</th>
                         <th>Ward</th>
                         <th>Bed</th>
                         <th>Diagnosis</th>
-                        <th>Admission Date</th>
+                        <th>Date</th>
                         <th>Status</th>
-                        <th width="140">Action</th>
-
+                        <th>Action</th>
                     </tr>
-
                 </thead>
-
                 <tbody>
-
-                    <tr *ngFor="let a of admissions">
-
-                        <td>{{a.admissionId}}</td>
-
-                        <td>{{a.patientName}}</td>
-
-                        <td>{{a.patientCode}}</td>
-
-                        <td>{{a.doctorName}}</td>
-
-                        <td>{{a.wardName}}</td>
-
-                        <td>{{a.assignedBedNumber}}</td>
-
-                        <td>{{a.initialDiagnosis}}</td>
-
-                        <td>{{a.admissionDate | date:'dd-MMM-yyyy hh:mm a'}}</td>
-
+                    <tr *ngFor="let a of filteredAdmissions">
+                        <td>{{ a.admissionId }}</td>
+                        <td><strong>{{ a.patientName }}</strong></td>
+                        <td>{{ a.patientCode }}</td>
+                        <td>Dr. {{ a.doctorName }}</td>
+                        <td>{{ a.wardName }}</td>
+                        <td>{{ a.assignedBedNumber }}</td>
+                        <td>{{ a.initialDiagnosis }}</td>
+                        <td>{{ a.admissionDate | date:'dd-MMM-yyyy' }}</td>
                         <td>
-
-                            <span class="badge" [ngClass]="
-                                a.status=='ADMITTED'
-                                ? 'bg-success'
-                                : 'bg-danger'
-                                ">
-
-                                {{a.status}}
-
+                            <span class="al-badge" [class.al-badge-active]="a.status==='ADMITTED'" [class.al-badge-disc]="a.status==='DISCHARGED'">
+                                {{ a.status }}
                             </span>
-
                         </td>
-
                         <td>
-
-                            <button class="btn btn-danger btn-sm" *ngIf="a.status=='ADMITTED'"
-                                (click)="discharge(a.admissionId!)">
-
+                            <button class="al-btn-disc" *ngIf="a.status==='ADMITTED'" (click)="discharge(a.admissionId!)">
                                 Discharge
-
                             </button>
-
                         </td>
-
                     </tr>
-
+                    <tr *ngIf="filteredAdmissions.length===0">
+                        <td colspan="10" class="al-empty">No admissions found</td>
+                    </tr>
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
-
 </div>

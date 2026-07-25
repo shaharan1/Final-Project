@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bed-management.component',
   imports: [],
-  templateUrl: './bed-management.component.html',
-  styleUrl: './bed-management.component.css',
+  template: '<p>Redirecting...</p>',
 })
-export class BedManagementComponent {}
+export class BedManagementComponent implements OnInit {
+  constructor(private router: Router) {}
+  ngOnInit(): void {
+    this.router.navigate(['/ward-management']);
+  }
+}

@@ -1,16 +1,75 @@
-.card {
-    border-radius: 12px;
+.al-container { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.al-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.al-header h3 { margin: 0; font-size: 24px; font-weight: 700; color: #1a1a2e; }
+.al-sub { margin: 4px 0 0; font-size: 14px; color: #6c757d; }
+.al-btn-new {
+    padding: 10px 24px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, #198754, #20c997);
+    color: #fff; font-weight: 600; font-size: 14px; cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
 }
+.al-btn-new:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(25,135,84,0.3); }
+
+.al-stats { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+.al-stat {
+    background: #fff; border-radius: 12px; padding: 16px 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); text-align: center; min-width: 100px;
+}
+.al-stat-num { display: block; font-size: 28px; font-weight: 700; color: #0d6efd; }
+.al-stat-active .al-stat-num { color: #198754; }
+.al-stat-disc .al-stat-num { color: #dc3545; }
+.al-stat-lbl { font-size: 12px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.al-toolbar { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+.al-search {
+    flex: 1; min-width: 250px; padding: 10px 18px; border: 2px solid #e9ecef;
+    border-radius: 12px; font-size: 14px; outline: none; transition: border-color .2s;
+}
+.al-search:focus { border-color: #0d6efd; }
+
+.al-filters { display: flex; gap: 6px; }
+.al-filter-btn {
+    padding: 8px 16px; border: 2px solid #e9ecef; border-radius: 20px;
+    background: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all .2s; color: #495057;
+}
+.al-filter-btn:hover { border-color: #0d6efd; color: #0d6efd; }
+.al-filter-btn.active { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+.al-filter-active.active { background: #198754; border-color: #198754; }
+.al-filter-disc.active { background: #dc3545; border-color: #dc3545; }
+
+.al-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); overflow: hidden; }
 
 .table th {
-    text-align: center;
+    background: #f8f9fa; font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: #495057; padding: 14px 16px; border-bottom: 2px solid #e9ecef;
 }
+.table td { padding: 14px 16px; vertical-align: middle; font-size: 14px; }
+.table tbody tr { transition: background .15s; }
+.table tbody tr:hover { background: #f8f9fa; }
 
-.table td {
-    vertical-align: middle;
+.al-badge {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #e9ecef; color: #495057;
 }
+.al-badge-active { background: #d1e7dd; color: #0f5132; }
+.al-badge-disc { background: #f8d7da; color: #842029; }
 
-.badge {
-    font-size: 14px;
-    padding: 8px 12px;
+.al-btn-disc {
+    padding: 6px 16px; border: 2px solid #dc3545; border-radius: 20px;
+    background: #fff; color: #dc3545; font-weight: 600; font-size: 13px;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.al-btn-disc:hover { background: #dc3545; color: #fff; }
+
+.al-empty { text-align: center; padding: 40px !important; color: #6c757d; }
+
+@media (max-width: 768px) {
+    .al-container { padding: 16px; }
+    .al-header { flex-direction: column; align-items: stretch; }
+    .al-btn-new { text-align: center; }
+    .al-toolbar { flex-direction: column; }
+    .al-search { min-width: 100%; }
+    .al-filters { justify-content: center; }
 }

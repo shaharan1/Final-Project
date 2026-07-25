@@ -25,7 +25,11 @@ export class DoctorDashboardComponent {
   appointments: AppointmentResponseModel[] = [];
   prescriptions: PrescriptionModel[] = [];
 
-   loading = true;
+  totalPatients = 0;
+  todayAppointments = 0;
+  pendingReports = 0;
+
+  loading = true;
 
   constructor(
     private doctorService: DoctorModelService,
@@ -86,9 +90,9 @@ export class DoctorDashboardComponent {
         next:(res)=>{
 
           this.appointments=res;
+          this.todayAppointments = res.length;
+          this.totalPatients = res.length;
           this.cdr.markForCheck();
-
-          console.log(this.appointments);
 
         }
 
