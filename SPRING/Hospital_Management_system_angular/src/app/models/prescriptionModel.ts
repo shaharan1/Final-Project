@@ -24,6 +24,10 @@ export interface PrescriptionModel {
   doctorId: number | null;
   patientId: number | null;
 
+  doctorName?: string;
+  patientName?: string;
+  prescriptionNumber?: string;
+  createdDate?: string;
 
   diagnosis: string;
   chiefComplaints: string;
