@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/common';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
 import { DashboardService, RecentAppointment } from '../../../../services/dashboard.service';
@@ -60,9 +60,9 @@ export class DoctorDashboardHomeComponent implements OnInit {
     }
   }
 
-  loadPrescriptions(doctorUserId: number): void {
-    this.prescriptionService.getByDoctorUserId(doctorUserId).subscribe({
-      next: (res) => {
+  loadPrescriptions(doctorId: number): void {
+    this.prescriptionService.getByDoctorId(doctorId).subscribe({
+      next: (res: PrescriptionModel[]) => {
         this.prescriptions = res;
         this.cdr.markForCheck();
       },
