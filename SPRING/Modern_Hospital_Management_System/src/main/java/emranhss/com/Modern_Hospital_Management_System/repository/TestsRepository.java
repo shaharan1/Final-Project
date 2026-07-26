@@ -6,9 +6,20 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public interface TestsRepository extends JpaRepository<Tests, Long> {
 
     List<Tests> findByPrescriptionId(Long prescriptionId);
+
+    List<Tests> findByPatientId(Long patientId);
+
+    List<Tests> findByPrescribedById(Long doctorId);
+
+    List<Tests> findByOrderStatus(String orderStatus);
+
+    List<Tests> findByPatientIdAndOrderStatus(Long patientId, String orderStatus);
+
+    List<Tests> findByPrescribedByIdAndOrderStatus(Long doctorId, String orderStatus);
+
+    long countByOrderStatus(String orderStatus);
 }

@@ -44,4 +44,10 @@ public class Report {
     @JoinColumn(name = "doctor_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Doctor doctor;
+
+    // Link report to a specific test order
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_order_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Tests testOrder;
 }
