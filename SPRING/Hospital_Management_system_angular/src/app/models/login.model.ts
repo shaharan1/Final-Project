@@ -14,6 +14,8 @@ export interface LoginResponse {
     email: string;
     name: string;
     userId: number;
+    phone?: string;
+    image?: string;
 }
 
 

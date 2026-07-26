@@ -141,6 +141,9 @@ public class AuthService {
         // User role
         response.setRole(user.getRole().name());
 
+        // User profile image
+        response.setImage(user.getImage());
+
         // =====================================================
         // STEP 5: Special handling for AGENT users
         //

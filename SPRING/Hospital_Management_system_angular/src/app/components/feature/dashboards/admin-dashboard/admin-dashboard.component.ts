@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, DashboardStats, WardOccupancy, RecentAdmission } from '../../../../services/dashboard.service';
 import { TestOrderService } from '../../../../services/test-order.service';
 import { LabStats } from '../../../../models/test-order.model';
@@ -9,7 +10,7 @@ import { LabStats } from '../../../../models/test-order.model';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css',
 })

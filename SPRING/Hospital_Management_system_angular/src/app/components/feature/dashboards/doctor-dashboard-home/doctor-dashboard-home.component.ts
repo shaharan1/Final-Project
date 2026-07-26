@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, RecentAppointment } from '../../../../services/dashboard.service';
 import { StorageService } from '../../../../services/storage.service';
 import { PrescriptionModel } from '../../../../models/prescriptionModel';
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-doctor-dashboard-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
   templateUrl: './doctor-dashboard-home.component.html',
   styleUrl: './doctor-dashboard-home.component.css',
 })
