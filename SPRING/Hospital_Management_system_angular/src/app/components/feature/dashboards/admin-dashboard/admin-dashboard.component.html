@@ -19,6 +19,7 @@
 
   <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
 
+  <!-- Hospital Stats -->
   <section *ngIf="!loading" class="stats-grid">
     <div class="stat-card">
       <span class="stat-label">Total Patients</span>
@@ -36,6 +37,40 @@
     <div class="stat-card">
       <span class="stat-label">Revenue (Monthly)</span>
       <span class="stat-value">{{ stats!.monthlyRevenue | number }}</span>
+    </div>
+  </section>
+
+  <!-- Lab Workflow Stats -->
+  <section *ngIf="labStats" class="lab-workflow-section">
+    <div class="section-head">
+      <h2>Laboratory Workflow</h2>
+      <a routerLink="/lab-reception" class="panel-link">Open Lab Reception →</a>
+    </div>
+    <div class="lab-flow-grid">
+      <a routerLink="/lab-reception" class="lab-flow-card lab-flow-pending">
+        <span class="lab-flow-value">{{ labStats.pending }}</span>
+        <span class="lab-flow-label">Pending Orders</span>
+      </a>
+      <a routerLink="/sample-collection" class="lab-flow-card lab-flow-collected">
+        <span class="lab-flow-value">{{ labStats.sampleCollected }}</span>
+        <span class="lab-flow-label">Sample Collected</span>
+      </a>
+      <a routerLink="/result-entry" class="lab-flow-card lab-flow-received">
+        <span class="lab-flow-value">{{ labStats.sampleReceived }}</span>
+        <span class="lab-flow-label">Sample Received</span>
+      </a>
+      <a routerLink="/result-entry" class="lab-flow-card lab-flow-testing">
+        <span class="lab-flow-value">{{ labStats.testing }}</span>
+        <span class="lab-flow-label">Testing</span>
+      </a>
+      <a routerLink="/lab-verification" class="lab-flow-card lab-flow-result">
+        <span class="lab-flow-value">{{ labStats.resultEntered }}</span>
+        <span class="lab-flow-label">Results Entered</span>
+      </a>
+      <a routerLink="/lab-verification" class="lab-flow-card lab-flow-verified">
+        <span class="lab-flow-value">{{ labStats.verified }}</span>
+        <span class="lab-flow-label">Verified</span>
+      </a>
     </div>
   </section>
 
@@ -78,19 +113,21 @@
   <section class="panel modules-panel">
     <div class="panel-head">
       <h2>System Modules</h2>
-      <span class="panel-tag">10 Modules</span>
+      <span class="panel-tag">12 Modules</span>
     </div>
     <div class="module-grid">
       <a routerLink="/doctor" class="module-card"><span class="module-ic">D</span>Doctor Management</a>
       <a routerLink="/patient" class="module-card"><span class="module-ic">P</span>Patient Management</a>
-      <a routerLink="/ward" class="module-card"><span class="module-ic">W</span>Ward &amp; Bed Management</a>
+      <a routerLink="/ward-management" class="module-card"><span class="module-ic">W</span>Ward Management</a>
+      <a routerLink="/admittedpatient" class="module-card"><span class="module-ic">A</span>Admissions</a>
+      <a routerLink="/appointment-list" class="module-card"><span class="module-ic">Ap</span>Appointments</a>
+      <a routerLink="/lab-reception" class="module-card"><span class="module-ic">LR</span>Lab Reception</a>
+      <a routerLink="/sample-collection" class="module-card"><span class="module-ic">SC</span>Sample Collection</a>
+      <a routerLink="/result-entry" class="module-card"><span class="module-ic">RE</span>Result Entry</a>
+      <a routerLink="/lab-verification" class="module-card"><span class="module-ic">LV</span>Lab Verification</a>
       <a routerLink="/medicine" class="module-card"><span class="module-ic">M</span>Pharmacy</a>
-      <a routerLink="/tests" class="module-card"><span class="module-ic">T</span>Laboratory</a>
-      <a routerLink="/appointment-list" class="module-card"><span class="module-ic">A</span>Appointments</a>
       <a routerLink="/billing" class="module-card"><span class="module-ic">B</span>Billing</a>
-      <a routerLink="/inventory" class="module-card"><span class="module-ic">I</span>Inventory</a>
-      <a routerLink="/meal" class="module-card"><span class="module-ic">M</span>Meal Management</a>
-      <a routerLink="/report" class="module-card"><span class="module-ic">R</span>Reports &amp; Analytics</a>
+      <a routerLink="/report" class="module-card"><span class="module-ic">R</span>Reports</a>
     </div>
   </section>
 

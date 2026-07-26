@@ -1,3 +1,39 @@
-:host {
-  display: block;
+:host { display: block; }
+
+/* ── Lab Workflow Section ── */
+.lab-workflow-section {
+  margin-bottom: 1.5rem;
+}
+.section-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem;
+}
+.section-head h2 { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin: 0; }
+.panel-link { color: #0d6efd; font-size: .85rem; text-decoration: none; font-weight: 600; }
+.panel-link:hover { text-decoration: underline; }
+
+.lab-flow-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: .75rem;
+}
+.lab-flow-card {
+  border-radius: 12px; padding: 1rem; text-align: center;
+  color: #fff; text-decoration: none; transition: transform .2s, box-shadow .2s;
+  display: flex; flex-direction: column; align-items: center; gap: .3rem;
+}
+.lab-flow-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,.15); }
+.lab-flow-value { font-size: 1.6rem; font-weight: 800; line-height: 1; }
+.lab-flow-label { font-size: .72rem; opacity: .9; text-transform: uppercase; letter-spacing: .3px; }
+
+.lab-flow-pending   { background: linear-gradient(135deg, #f0ad4e, #e67e22); }
+.lab-flow-collected { background: linear-gradient(135deg, #5bc0de, #3498db); }
+.lab-flow-received  { background: linear-gradient(135deg, #f39c12, #d35400); }
+.lab-flow-testing   { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+.lab-flow-result    { background: linear-gradient(135deg, #8e44ad, #6c3483); }
+.lab-flow-verified  { background: linear-gradient(135deg, #27ae60, #1e8449); }
+
+@media (max-width: 992px) {
+  .lab-flow-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 576px) {
+  .lab-flow-grid { grid-template-columns: repeat(2, 1fr); }
 }

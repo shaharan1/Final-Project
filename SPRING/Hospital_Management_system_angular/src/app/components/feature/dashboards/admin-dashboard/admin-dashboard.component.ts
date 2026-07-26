@@ -3,6 +3,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
 import { DashboardService, DashboardStats, WardOccupancy, RecentAdmission } from '../../../../services/dashboard.service';
+import { TestOrderService } from '../../../../services/test-order.service';
+import { LabStats } from '../../../../models/test-order.model';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,10 +17,12 @@ export class AdminDashboardComponent implements OnInit {
   stats: DashboardStats | null = null;
   wards: WardOccupancy[] = [];
   recentAdmissions: RecentAdmission[] = [];
+  labStats: LabStats | null = null;
   loading = true;
 
   constructor(
     private dashboardService: DashboardService,
+    private testOrderService: TestOrderService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -35,6 +39,10 @@ export class AdminDashboardComponent implements OnInit {
       this.recentAdmissions = admissions;
       this.loading = false;
       this.cdr.detectChanges();
+    });
+    this.testOrderService.getStats().subscribe({
+      next: (res) => { this.labStats = res; this.cdr.markForCheck(); },
+      error: () => {}
     });
   }
 
