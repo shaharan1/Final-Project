@@ -20,10 +20,12 @@ export class StorageService {
   // ── Write ────────────────────────────────────────────
 
   saveSession(data: LoginResponse): void {
-    localStorage.setItem(
-      KEYS.TOKEN,
-      CryptoUtil.encrypt(data.token)
-    );
+    if (data.token) {
+      localStorage.setItem(
+        KEYS.TOKEN,
+        CryptoUtil.encrypt(data.token)
+      );
+    }
     localStorage.setItem(
       KEYS.USER,
       CryptoUtil.encrypt(JSON.stringify(data))

@@ -6,6 +6,7 @@ import emranhss.com.Modern_Hospital_Management_System.entity.User;
 import emranhss.com.Modern_Hospital_Management_System.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,33 +48,53 @@ public class ProfileController {
     }
 
     @PutMapping
-    public ResponseEntity<LoginResponseDTO> updateProfile(@RequestBody ProfileUpdateRequestDTO dto) {
-        User user = userRepository.findByEmail(getCurrentEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> updateProfile(@RequestBody ProfileUpdateRequestDTO dto) {
+        try {
+            User user = userRepository.findByEmail(getCurrentEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (dto.getName() != null && !dto.getName().isBlank()) {
-            user.setName(dto.getName());
+            if (dto.getName() != null && !dto.getName().isBlank()) {
+                user.setName(dto.getName());
+            }
+            if (dto.getPhone() != null && !dto.getPhone().isBlank()) {
+                user.setPhone(dto.getPhone());
+            }
+            userRepository.save(user);
+            return ResponseEntity.ok(toDTO(user));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", "Phone number already exists. Please use a different phone number."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "error", "Failed to update profile: " + e.getMessage()
+            ));
         }
-        if (dto.getPhone() != null && !dto.getPhone().isBlank()) {
-            user.setPhone(dto.getPhone());
-        }
-        userRepository.save(user);
-        return ResponseEntity.ok(toDTO(user));
     }
 
     @PostMapping("/image")
-    public ResponseEntity<LoginResponseDTO> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        User user = userRepository.findByEmail(getCurrentEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            User user = userRepository.findByEmail(getCurrentEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        Path path = Paths.get(uploadDir + filename);
-        Files.createDirectories(path.getParent());
-        Files.write(path, file.getBytes());
+            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path path = Paths.get(uploadDir + filename);
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
 
-        user.setImage("/images/" + filename);
-        userRepository.save(user);
-        return ResponseEntity.ok(toDTO(user));
+            user.setImage("/images/" + filename);
+            userRepository.save(user);
+            return ResponseEntity.ok(toDTO(user));
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "error", "Failed to upload image: " + e.getMessage()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "error", "Failed to upload image: " + e.getMessage()
+            ));
+        }
     }
 
     @PutMapping("/password")

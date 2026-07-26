@@ -26,6 +26,11 @@ export class PharmacySaleComponent implements OnInit {
   showSaleDetailModal: boolean = false;
   selectedSale: PharmacySaleModel | null = null;
   lowStockWarning: string = '';
+  loading = false;
+  loadingSales = false;
+  processingSale = false;
+  successMessage = '';
+  error = '';
 
   patientType: string = 'OUTPATIENT';
   patientName: string = '';
@@ -50,15 +55,16 @@ export class PharmacySaleComponent implements OnInit {
   }
 
   loadSalesHistory(): void {
+    this.loadingSales = true;
     this.saleService.getAll().subscribe({
-      next: (data: any) => { this.saleHistory = data; this.filteredSales = [...data]; },
+      next: (data: any) => {
+        this.saleHistory = data;
+        this.filteredSales = [...data];
+        this.loadingSales = false;
+      },
       error: () => {
-        this.saleHistory = [
-          { id: 1, saleInvoiceNo: 'SAL-2024-001', patientType: 'OUTPATIENT', patientName: 'Kamal Ahmed', patientPhone: '+880-1711-111111', doctorName: 'Dr. Rahman', totalAmount: 850, discount: 50, vat: 144, netPayable: 944, paidAmount: 1000, changeAmount: 56, paymentMethod: 'Cash', paymentStatus: 'Paid', saleDate: '2024-12-20' },
-          { id: 2, saleInvoiceNo: 'SAL-2024-002', patientType: 'INPATIENT', patientName: 'Fatima Begum', patientPhone: '+880-1812-222222', doctorName: 'Dr. Khan', totalAmount: 1200, discount: 0, vat: 216, netPayable: 1416, paidAmount: 1416, changeAmount: 0, paymentMethod: 'Card', paymentStatus: 'Paid', saleDate: '2024-12-20' },
-          { id: 3, saleInvoiceNo: 'SAL-2024-003', patientType: 'OUTPATIENT', patientName: 'Rahim Uddin', patientPhone: '+880-1913-333333', doctorName: 'Dr. Hassan', totalAmount: 650, discount: 100, vat: 100, netPayable: 650, paidAmount: 650, changeAmount: 0, paymentMethod: 'Mobile', paymentStatus: 'Paid', saleDate: '2024-12-19' },
-        ];
-        this.filteredSales = [...this.saleHistory];
+        this.error = 'Failed to load sales history.';
+        this.loadingSales = false;
       }
     });
   }
@@ -77,15 +83,10 @@ export class PharmacySaleComponent implements OnInit {
     if (this.medicineSearchTerm.length < 2) { this.searchedMedicines = []; return; }
     this.stockService.search(this.medicineSearchTerm).subscribe({
       next: (data: any) => {
-        this.searchedMedicines = data.filter((s: any) => (s.availableQuantity || 0) > 0);
+        this.searchedMedicines = data.filter((s: any) => (s.availableQuantity || s.stockQuantity || 0) > 0);
       },
       error: () => {
-        this.searchedMedicines = [
-          { id: 1, medicineName: 'Paracetamol 500mg', genericName: 'Paracetamol', strength: '500mg', dosageForm: 'Tablet', batchNumber: 'BAT-001', stockQuantity: 500, availableQuantity: 500, purchasePrice: 8, salePrice: 12, manufacturingDate: '2024-01-01', expiryDate: '2026-01-01', supplierId: 1 },
-          { id: 2, medicineName: 'Amoxicillin 250mg', genericName: 'Amoxicillin', strength: '250mg', dosageForm: 'Capsule', batchNumber: 'BAT-002', stockQuantity: 8, availableQuantity: 8, purchasePrice: 15, salePrice: 22, minimumStockLevel: 20, manufacturingDate: '2024-03-01', expiryDate: '2025-12-01', supplierId: 1, lowStock: true },
-          { id: 3, medicineName: 'Omeprazole 20mg', genericName: 'Omeprazole', strength: '20mg', dosageForm: 'Capsule', batchNumber: 'BAT-003', stockQuantity: 300, availableQuantity: 300, purchasePrice: 12, salePrice: 18, manufacturingDate: '2024-02-15', expiryDate: '2026-02-15', supplierId: 2 },
-          { id: 4, medicineName: 'Cetirizine 10mg', genericName: 'Cetirizine', strength: '10mg', dosageForm: 'Tablet', batchNumber: 'BAT-004', stockQuantity: 5, availableQuantity: 5, purchasePrice: 6, salePrice: 10, minimumStockLevel: 15, manufacturingDate: '2024-04-01', expiryDate: '2025-11-01', supplierId: 3, lowStock: true },
-        ].filter(s => s.medicineName.toLowerCase().includes(this.medicineSearchTerm.toLowerCase()));
+        this.searchedMedicines = [];
       }
     });
   }
@@ -147,6 +148,7 @@ export class PharmacySaleComponent implements OnInit {
 
   confirmSale(): void {
     if (this.cartItems.length === 0 || this.paidAmount < this.netPayable) return;
+    this.processingSale = true;
     const sale: PharmacySaleModel = {
       patientType: this.patientType,
       patientName: this.patientName,
@@ -169,13 +171,13 @@ export class PharmacySaleComponent implements OnInit {
         this.saleHistory.unshift(saved);
         this.filteredSales = [...this.saleHistory];
         this.resetForm();
+        this.processingSale = false;
+        this.successMessage = 'Sale completed successfully!';
+        setTimeout(() => this.successMessage = '', 3000);
       },
       error: () => {
-        sale.id = this.saleHistory.length + 1;
-        sale.saleInvoiceNo = 'SAL-' + Date.now();
-        this.saleHistory.unshift(sale);
-        this.filteredSales = [...this.saleHistory];
-        this.resetForm();
+        this.error = 'Failed to process sale. Please try again.';
+        this.processingSale = false;
       }
     });
   }

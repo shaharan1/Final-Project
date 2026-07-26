@@ -39,8 +39,9 @@ export class ProfileCardComponent implements OnInit {
   loadProfile(): void {
     this.profileService.getProfile().subscribe({
       next: (res) => {
-        this.user = res;
-        this.storage.saveSession(res);
+        const existing = this.storage.getUser();
+        this.user = { ...existing, ...res };
+        this.storage.saveSession(this.user);
         this.cdr.markForCheck();
       }
     });
@@ -72,6 +73,8 @@ export class ProfileCardComponent implements OnInit {
     this.editPhone = this.user?.phone || '';
     this.showEditModal = true;
     this.msg = '';
+    this.previewUrl = null;
+    this.selectedFile = null;
   }
 
   closeEditModal(): void {
@@ -95,20 +98,29 @@ export class ProfileCardComponent implements OnInit {
   uploadImage(): void {
     if (!this.selectedFile) return;
     this.imageUploading = true;
+    this.msg = '';
     this.profileService.uploadImage(this.selectedFile).subscribe({
-      next: (res) => {
+      next: (res: any) => {
+        if (res.error) {
+          this.imageUploading = false;
+          this.msg = res.error;
+          this.msgType = 'error';
+          this.cdr.markForCheck();
+          return;
+        }
         this.user = res;
         this.storage.saveSession(res);
         this.imageUploading = false;
         this.selectedFile = null;
         this.previewUrl = null;
-        this.msg = 'Image updated!';
+        this.msg = 'Photo updated successfully!';
         this.msgType = 'success';
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: (err) => {
         this.imageUploading = false;
-        this.msg = 'Image upload failed';
+        const errMsg = err.error?.error || 'Image upload failed. Please try again.';
+        this.msg = errMsg;
         this.msgType = 'error';
         this.cdr.markForCheck();
       }
@@ -118,19 +130,28 @@ export class ProfileCardComponent implements OnInit {
   saveProfile(): void {
     if (!this.editName.trim()) return;
     this.saving = true;
+    this.msg = '';
     this.profileService.updateProfile({ name: this.editName, phone: this.editPhone }).subscribe({
-      next: (res) => {
+      next: (res: any) => {
+        if (res.error) {
+          this.saving = false;
+          this.msg = res.error;
+          this.msgType = 'error';
+          this.cdr.markForCheck();
+          return;
+        }
         this.user = res;
         this.storage.saveSession(res);
         this.saving = false;
-        this.msg = 'Profile updated!';
+        this.msg = 'Profile updated successfully!';
         this.msgType = 'success';
         this.cdr.markForCheck();
         setTimeout(() => this.closeEditModal(), 1200);
       },
-      error: () => {
+      error: (err) => {
         this.saving = false;
-        this.msg = 'Update failed';
+        const errMsg = err.error?.error || 'Update failed. Please try again.';
+        this.msg = errMsg;
         this.msgType = 'error';
         this.cdr.markForCheck();
       }

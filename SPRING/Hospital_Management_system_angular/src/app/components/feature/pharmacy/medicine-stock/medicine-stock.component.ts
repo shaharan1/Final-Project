@@ -2,42 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-interface Medicine {
-  id: number;
-  medicineName: string;
-  genericName: string;
-  strength: string;
-  dosageForm: string;
-  batchNumber: string;
-  stockQuantity: number;
-  purchasePrice: number;
-  salePrice: number;
-  vat: number;
-  minimumStockLevel: number;
-  reorderLevel: number;
-  manufacturingDate: string;
-  expiryDate: string;
-  barcode: string;
-  supplierId: number;
-  supplierName: string;
-}
-
-interface StockAdjustment {
-  id: number;
-  medicineId: number;
-  medicineName: string;
-  type: 'ADD' | 'DAMAGE' | 'RETURN';
-  quantity: number;
-  reason: string;
-  date: string;
-  performedBy: string;
-}
-
-interface Supplier {
-  id: number;
-  name: string;
-}
+import { StockService } from '../../../../services/stock.service';
+import { SupplierService } from '../../../../services/supplier.service';
+import { MedicineStockModel } from '../../../../models/medicine-stock.model';
+import { StockAdjustmentModel, StockHistoryModel } from '../../../../models/stock-adjustment.model';
+import { SupplierModel } from '../../../../models/supplier.model';
 
 @Component({
   selector: 'app-medicine-stock',
@@ -47,43 +16,29 @@ interface Supplier {
   styleUrls: ['./medicine-stock.component.css']
 })
 export class MedicineStockComponent implements OnInit {
-  medicines: Medicine[] = [
-    { id: 1, medicineName: 'Paracetamol 500mg', genericName: 'Acetaminophen', strength: '500mg', dosageForm: 'Tablet', batchNumber: 'BAT-2024-001', stockQuantity: 500, purchasePrice: 2.5, salePrice: 4.0, vat: 5, minimumStockLevel: 100, reorderLevel: 200, manufacturingDate: '2024-01-15', expiryDate: '2026-06-30', barcode: 'BAR001', supplierId: 1, supplierName: 'MediPharm Ltd' },
-    { id: 2, medicineName: 'Amoxicillin 250mg', genericName: 'Amoxicillin', strength: '250mg', dosageForm: 'Capsule', batchNumber: 'BAT-2024-002', stockQuantity: 30, purchasePrice: 8.0, salePrice: 12.0, vat: 5, minimumStockLevel: 50, reorderLevel: 100, manufacturingDate: '2024-03-10', expiryDate: '2025-09-15', barcode: 'BAR002', supplierId: 2, supplierName: 'HealthLine Supply' },
-    { id: 3, medicineName: 'Omeprazole 20mg', genericName: 'Omeprazole', strength: '20mg', dosageForm: 'Capsule', batchNumber: 'BAT-2024-003', stockQuantity: 0, purchasePrice: 15.0, salePrice: 22.0, vat: 5, minimumStockLevel: 30, reorderLevel: 60, manufacturingDate: '2023-06-01', expiryDate: '2024-12-31', barcode: 'BAR003', supplierId: 3, supplierName: 'BioCare Pharma' },
-    { id: 4, medicineName: 'Metformin 500mg', genericName: 'Metformin HCl', strength: '500mg', dosageForm: 'Tablet', batchNumber: 'BAT-2024-004', stockQuantity: 15, purchasePrice: 5.0, salePrice: 8.0, vat: 5, minimumStockLevel: 40, reorderLevel: 80, manufacturingDate: '2024-02-20', expiryDate: '2026-02-20', barcode: 'BAR004', supplierId: 4, supplierName: 'GlobalMed Inc' },
-    { id: 5, medicineName: 'Cetirizine 10mg', genericName: 'Cetirizine HCl', strength: '10mg', dosageForm: 'Tablet', batchNumber: 'BAT-2024-005', stockQuantity: 200, purchasePrice: 3.0, salePrice: 5.0, vat: 5, minimumStockLevel: 50, reorderLevel: 100, manufacturingDate: '2024-04-05', expiryDate: '2026-04-05', barcode: 'BAR005', supplierId: 5, supplierName: 'PharmaTech BD' },
-    { id: 6, medicineName: 'Ibuprofen 400mg', genericName: 'Ibuprofen', strength: '400mg', dosageForm: 'Tablet', batchNumber: 'BAT-2024-006', stockQuantity: 8, purchasePrice: 4.0, salePrice: 6.5, vat: 5, minimumStockLevel: 30, reorderLevel: 60, manufacturingDate: '2024-01-20', expiryDate: '2025-07-20', barcode: 'BAR006', supplierId: 1, supplierName: 'MediPharm Ltd' },
-    { id: 7, medicineName: 'Azithromycin 500mg', genericName: 'Azithromycin', strength: '500mg', dosageForm: 'Tablet', batchNumber: 'BAT-2024-007', stockQuantity: 45, purchasePrice: 25.0, salePrice: 38.0, vat: 5, minimumStockLevel: 20, reorderLevel: 40, manufacturingDate: '2024-05-01', expiryDate: '2026-05-01', barcode: 'BAR007', supplierId: 2, supplierName: 'HealthLine Supply' },
-    { id: 8, medicineName: 'Pantoprazole 40mg', genericName: 'Pantoprazole', strength: '40mg', dosageForm: 'Injection', batchNumber: 'BAT-2024-008', stockQuantity: 0, purchasePrice: 35.0, salePrice: 50.0, vat: 5, minimumStockLevel: 10, reorderLevel: 25, manufacturingDate: '2023-09-15', expiryDate: '2024-09-15', barcode: 'BAR008', supplierId: 3, supplierName: 'BioCare Pharma' },
-  ];
-
-  suppliers: Supplier[] = [
-    { id: 1, name: 'MediPharm Ltd' },
-    { id: 2, name: 'HealthLine Supply' },
-    { id: 3, name: 'BioCare Pharma' },
-    { id: 4, name: 'GlobalMed Inc' },
-    { id: 5, name: 'PharmaTech BD' },
-  ];
-
-  filteredMedicines: Medicine[] = [];
+  medicines: MedicineStockModel[] = [];
+  suppliers: SupplierModel[] = [];
+  filteredMedicines: MedicineStockModel[] = [];
   searchTerm: string = '';
   activeFilter: string = 'All';
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
+  loading = false;
+  error = '';
 
   showAddModal: boolean = false;
   showAdjustModal: boolean = false;
   showHistoryModal: boolean = false;
-  selectedMedicine: Medicine | null = null;
-  stockHistory: StockAdjustment[] = [];
+  selectedMedicine: MedicineStockModel | null = null;
+  stockHistory: StockHistoryModel[] = [];
+  loadingHistory = false;
 
-  addFormModel: Partial<Medicine> = this.getEmptyAddForm();
-  adjustFormModel: { type: 'ADD' | 'DAMAGE' | 'RETURN'; quantity: number; reason: string } = { type: 'ADD', quantity: 0, reason: '' };
+  addFormModel: Partial<MedicineStockModel> = this.getEmptyAddForm();
+  adjustFormModel: { adjustmentType: string; quantityChange: number; reason: string } = { adjustmentType: 'ADD', quantityChange: 0, reason: '' };
 
   get totalMedicines(): number { return this.medicines.length; }
-  get availableStock(): number { return this.medicines.filter(m => m.stockQuantity > m.minimumStockLevel).length; }
-  get lowStock(): number { return this.medicines.filter(m => m.stockQuantity > 0 && m.stockQuantity <= m.minimumStockLevel).length; }
+  get availableStock(): number { return this.medicines.filter(m => (m.availableQuantity ?? m.stockQuantity) > (m.minimumStockLevel ?? 0)).length; }
+  get lowStock(): number { return this.medicines.filter(m => (m.availableQuantity ?? m.stockQuantity) > 0 && (m.availableQuantity ?? m.stockQuantity) <= (m.minimumStockLevel ?? 0)).length; }
   get expired(): number { return this.medicines.filter(m => new Date(m.expiryDate) < new Date()).length; }
   get expiringSoon(): number {
     const now = new Date();
@@ -94,7 +49,7 @@ export class MedicineStockComponent implements OnInit {
     }).length;
   }
 
-  getEmptyAddForm(): Partial<Medicine> {
+  getEmptyAddForm(): Partial<MedicineStockModel> {
     return {
       medicineName: '', genericName: '', strength: '', dosageForm: '', batchNumber: '',
       stockQuantity: 0, purchasePrice: 0, salePrice: 0, vat: 5,
@@ -103,8 +58,37 @@ export class MedicineStockComponent implements OnInit {
     };
   }
 
+  constructor(
+    private stockService: StockService,
+    private supplierService: SupplierService
+  ) {}
+
   ngOnInit(): void {
-    this.filteredMedicines = [...this.medicines];
+    this.loadStock();
+    this.loadSuppliers();
+  }
+
+  loadStock(): void {
+    this.loading = true;
+    this.error = '';
+    this.stockService.getAll().subscribe({
+      next: (data: MedicineStockModel[]) => {
+        this.medicines = data;
+        this.applyFilters();
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load stock data. Please try again.';
+        this.loading = false;
+      }
+    });
+  }
+
+  loadSuppliers(): void {
+    this.supplierService.getAll().subscribe({
+      next: (data: SupplierModel[]) => { this.suppliers = data; },
+      error: () => {}
+    });
   }
 
   setFilter(filter: string): void {
@@ -119,10 +103,13 @@ export class MedicineStockComponent implements OnInit {
 
     switch (this.activeFilter) {
       case 'Available':
-        result = result.filter(m => m.stockQuantity > m.minimumStockLevel);
+        result = result.filter(m => (m.availableQuantity ?? m.stockQuantity) > (m.minimumStockLevel ?? 0));
         break;
       case 'Low Stock':
-        result = result.filter(m => m.stockQuantity > 0 && m.stockQuantity <= m.minimumStockLevel);
+        result = result.filter(m => {
+          const qty = m.availableQuantity ?? m.stockQuantity;
+          return qty > 0 && qty <= (m.minimumStockLevel ?? 0);
+        });
         break;
       case 'Expired':
         result = result.filter(m => new Date(m.expiryDate) < now);
@@ -172,12 +159,14 @@ export class MedicineStockComponent implements OnInit {
     this.applyFilters();
   }
 
-  getMedicineStatus(medicine: Medicine): string {
+  getMedicineStatus(medicine: MedicineStockModel): string {
+    if (medicine.inventoryStatus) return medicine.inventoryStatus;
     const now = new Date();
     const expiry = new Date(medicine.expiryDate);
     if (expiry < now) return 'Expired';
-    if (medicine.stockQuantity === 0) return 'Out of Stock';
-    if (medicine.stockQuantity <= medicine.minimumStockLevel) return 'Low Stock';
+    const qty = medicine.availableQuantity ?? medicine.stockQuantity;
+    if (qty === 0) return 'Out of Stock';
+    if (qty <= (medicine.minimumStockLevel ?? 0)) return 'Low Stock';
     return 'Available';
   }
 
@@ -191,7 +180,7 @@ export class MedicineStockComponent implements OnInit {
     }
   }
 
-  getExpiryClass(medicine: Medicine): string {
+  getExpiryClass(medicine: MedicineStockModel): string {
     const now = new Date();
     const expiry = new Date(medicine.expiryDate);
     if (expiry < now) return 'expiry-expired';
@@ -214,15 +203,20 @@ export class MedicineStockComponent implements OnInit {
     if (supplier) {
       this.addFormModel.supplierName = supplier.name;
     }
-    const newId = Math.max(...this.medicines.map(m => m.id)) + 1;
-    this.medicines.push({ ...this.addFormModel, id: newId } as Medicine);
-    this.applyFilters();
-    this.closeAddModal();
+    this.stockService.addStock(this.addFormModel as MedicineStockModel).subscribe({
+      next: () => {
+        this.loadStock();
+        this.closeAddModal();
+      },
+      error: () => {
+        this.error = 'Failed to add stock. Please try again.';
+      }
+    });
   }
 
-  openAdjustModal(medicine: Medicine): void {
+  openAdjustModal(medicine: MedicineStockModel): void {
     this.selectedMedicine = medicine;
-    this.adjustFormModel = { type: 'ADD', quantity: 0, reason: '' };
+    this.adjustFormModel = { adjustmentType: 'ADD', quantityChange: 0, reason: '' };
     this.showAdjustModal = true;
   }
 
@@ -232,41 +226,44 @@ export class MedicineStockComponent implements OnInit {
   }
 
   saveAdjustment(): void {
-    if (!this.selectedMedicine) return;
-    const m = this.medicines.find(md => md.id === this.selectedMedicine!.id);
-    if (m) {
-      if (this.adjustFormModel.type === 'ADD') {
-        m.stockQuantity += this.adjustFormModel.quantity;
-      } else {
-        m.stockQuantity = Math.max(0, m.stockQuantity - this.adjustFormModel.quantity);
+    if (!this.selectedMedicine || this.adjustFormModel.quantityChange <= 0) return;
+    const adjustment: StockAdjustmentModel = {
+      medicineStockId: this.selectedMedicine.id!,
+      adjustmentType: this.adjustFormModel.adjustmentType,
+      quantityChange: this.adjustFormModel.quantityChange,
+      reason: this.adjustFormModel.reason,
+      performedBy: 'Admin'
+    };
+    this.stockService.adjustStock(adjustment).subscribe({
+      next: () => {
+        this.loadStock();
+        this.closeAdjustModal();
+      },
+      error: () => {
+        this.error = 'Failed to adjust stock. Please try again.';
       }
-      const historyEntry: StockAdjustment = {
-        id: this.stockHistory.length + 1,
-        medicineId: m.id,
-        medicineName: m.medicineName,
-        type: this.adjustFormModel.type,
-        quantity: this.adjustFormModel.quantity,
-        reason: this.adjustFormModel.reason,
-        date: new Date().toISOString().split('T')[0],
-        performedBy: 'Admin'
-      };
-      this.stockHistory.push(historyEntry);
-    }
-    this.applyFilters();
-    this.closeAdjustModal();
+    });
   }
 
-  openHistoryModal(medicine: Medicine): void {
+  openHistoryModal(medicine: MedicineStockModel): void {
     this.selectedMedicine = medicine;
+    this.stockHistory = [];
+    this.loadingHistory = true;
     this.showHistoryModal = true;
+    this.stockService.getStockHistory(medicine.id!).subscribe({
+      next: (data: StockHistoryModel[]) => {
+        this.stockHistory = data;
+        this.loadingHistory = false;
+      },
+      error: () => {
+        this.stockHistory = [];
+        this.loadingHistory = false;
+      }
+    });
   }
 
   closeHistoryModal(): void {
     this.showHistoryModal = false;
     this.selectedMedicine = null;
-  }
-
-  getHistoryForMedicine(medicineId: number): StockAdjustment[] {
-    return this.stockHistory.filter(h => h.medicineId === medicineId);
   }
 }
