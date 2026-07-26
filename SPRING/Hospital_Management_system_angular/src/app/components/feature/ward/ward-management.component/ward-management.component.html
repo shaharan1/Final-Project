@@ -106,8 +106,8 @@
 
         <!-- Room Type Tag -->
         <div class="wm-bed-type-tag">
-          <span class="wm-bed-type-icon">{{ getRoomTypeIcon(selectedWard?.roomType || '') }}</span>
-          {{ selectedWard?.roomType || 'General' }} Ward
+          <span class="wm-bed-type-icon">{{ getRoomTypeIcon(selectedWard && selectedWard.roomType ? selectedWard.roomType : '') }}</span>
+          {{ selectedWard && selectedWard.roomType ? selectedWard.roomType : 'General' }} Ward
         </div>
 
         <!-- Facilities -->
