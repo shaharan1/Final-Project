@@ -123,56 +123,99 @@
 .wm-pill-maintenance.active { border-color: #fd7e14; background: #fd7e14; }
 
 /* Bed Grid */
-.wm-bed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.wm-bed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .wm-bed-card {
-  border-radius: 16px;
-  padding: 20px;
-  text-align: center;
+  border-radius: 18px;
+  padding: 0;
   position: relative;
   transition: transform 0.2s, box-shadow 0.2s;
-  min-height: 200px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  overflow: hidden;
 }
-.wm-bed-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+.wm-bed-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); }
 
-.bed-available { background: linear-gradient(145deg, #d1e7dd, #badbcc); border: 2px solid #198754; }
-.bed-occupied { background: linear-gradient(145deg, #f8d7da, #f1aeb5); border: 2px solid #dc3545; }
-.bed-maintenance { background: linear-gradient(145deg, #fff3cd, #ffe69c); border: 2px solid #fd7e14; }
+.bed-available { background: #fff; border: 2px solid #198754; }
+.bed-occupied { background: #fff; border: 2px solid #dc3545; }
+.bed-maintenance { background: #fff; border: 2px solid #fd7e14; }
 
-.wm-bed-number { font-size: 22px; font-weight: 800; color: #1a1a2e; }
-.wm-bed-status-dot { width: 12px; height: 12px; border-radius: 50%; margin: 8px 0; }
-.dot-available { background: #198754; box-shadow: 0 0 8px rgba(25,135,84,0.5); }
-.dot-occupied { background: #dc3545; box-shadow: 0 0 8px rgba(220,53,69,0.5); }
-.dot-maintenance { background: #fd7e14; box-shadow: 0 0 8px rgba(253,126,20,0.5); }
-.wm-bed-status-text { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #495057; }
+.wm-bed-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px 8px;
+}
+.wm-bed-number { font-size: 24px; font-weight: 800; color: #1a1a2e; }
+.wm-bed-status-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.wm-bed-dot { width: 8px; height: 8px; border-radius: 50%; }
+.badge-available { background: #d1e7dd; color: #0f5132; }
+.badge-available .wm-bed-dot { background: #198754; }
+.badge-occupied { background: #f8d7da; color: #842029; }
+.badge-occupied .wm-bed-dot { background: #dc3545; }
+.badge-maintenance { background: #fff3cd; color: #664d03; }
+.badge-maintenance .wm-bed-dot { background: #fd7e14; }
 
-.wm-bed-patient { margin: 10px 0; }
-.wm-bed-patient-name { font-size: 14px; font-weight: 700; color: #1a1a2e; }
-.wm-bed-doctor-name { font-size: 12px; color: #6c757d; margin-top: 2px; }
+.wm-bed-type-tag {
+  margin: 0 20px 8px;
+  padding: 4px 10px; border-radius: 8px;
+  background: #f0f0f0; font-size: 12px; font-weight: 600; color: #495057;
+  display: inline-flex; align-items: center; gap: 4px; width: fit-content;
+}
+.wm-bed-type-icon { font-size: 14px; }
 
-.wm-bed-actions { margin-top: 8px; width: 100%; }
+.wm-bed-meta-row { padding: 0 20px 12px; border-bottom: 1px solid #f0f0f0; }
+.wm-bed-cost { font-size: 13px; font-weight: 700; color: #198754; }
+
+.wm-bed-details { padding: 12px 20px; flex: 1; }
+.wm-bed-detail-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 10px;
+}
+.wm-bed-detail-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+  background: #f8d7da; color: #dc3545;
+}
+.wm-detail-steth { background: #cff4fc; color: #0dcaf0; }
+.wm-detail-note { background: #fff3cd; color: #ffc107; }
+.wm-detail-clock { background: #d1e7dd; color: #198754; }
+
+.wm-bed-detail-label { font-size: 11px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.3px; }
+.wm-bed-detail-value { font-size: 13px; font-weight: 600; color: #1a1a2e; }
+.wm-bed-detail-sub { font-size: 11px; color: #adb5bd; }
+.wm-detail-diag { font-weight: 500; color: #495057; }
+
+.wm-bed-empty-info {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px 20px; text-align: center;
+}
+.wm-bed-empty-icon { font-size: 36px; color: #198754; margin-bottom: 8px; }
+.wm-bed-maint-icon {
+  font-size: 36px; color: #fd7e14; margin-bottom: 8px;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #fff3cd; display: flex; align-items: center; justify-content: center;
+}
+.wm-bed-empty-text { font-size: 14px; font-weight: 600; color: #6c757d; }
+
+.wm-bed-actions { padding: 12px 20px 16px; }
 .wm-bed-btn {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border: none;
   border-radius: 10px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
-.wm-bed-btn:hover { opacity: 0.85; }
-.wm-bed-btn-admit { background: #198754; color: #fff; }
-.wm-bed-btn-discharge { background: #dc3545; color: #fff; }
-.wm-bed-maintenance-label { font-size: 12px; color: #856404; font-weight: 600; }
-.wm-bed-cost { font-size: 12px; color: #6c757d; margin-top: 8px; }
+.wm-bed-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.wm-bed-btn-admit { background: linear-gradient(135deg, #198754, #20c997); color: #fff; }
+.wm-bed-btn-discharge { background: linear-gradient(135deg, #dc3545, #e83e8c); color: #fff; }
 
 .wm-empty { text-align: center; padding: 48px; color: #6c757d; font-size: 16px; }
-
-/* Modal */
 .wm-modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.5);
@@ -221,11 +264,10 @@
   .wm-hero h1 { font-size: 22px; }
   .wm-stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .wm-ward-grid { grid-template-columns: 1fr; }
-  .wm-bed-grid { grid-template-columns: repeat(2, 1fr); }
+  .wm-bed-grid { grid-template-columns: 1fr; }
   .wm-filters { flex-direction: column; align-items: stretch; }
   .wm-search { width: 100%; }
 }
 @media (max-width: 480px) {
   .wm-stats-row { grid-template-columns: 1fr 1fr; }
-  .wm-bed-grid { grid-template-columns: 1fr; }
 }
