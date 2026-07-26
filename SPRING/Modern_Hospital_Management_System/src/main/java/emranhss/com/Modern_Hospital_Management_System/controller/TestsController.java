@@ -42,24 +42,45 @@ public class TestsController {
         return ResponseEntity.ok(testsService.getTestOrdersByDoctor(doctorId));
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<TestOrderResponse> updateStatus(
-            @PathVariable Long id,
-            @RequestBody Map<String, String> body) {
-        String status = body.get("status");
-        return ResponseEntity.ok(testsService.updateTestOrderStatus(id, status));
-    }
-
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Long>> getStats() {
-        long pending = testsService.countByStatus("PENDING");
-        long collected = testsService.countByStatus("SAMPLE_COLLECTED");
-        long completed = testsService.countByStatus("COMPLETED");
-        return ResponseEntity.ok(Map.of(
-                "pending", pending,
-                "sampleCollected", collected,
-                "completed", completed,
-                "total", pending + collected + completed
-        ));
+        return ResponseEntity.ok(testsService.getStats());
+    }
+
+    // Workflow transitions
+    @PutMapping("/{id}/collect-sample")
+    public ResponseEntity<TestOrderResponse> collectSample(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(testsService.collectSample(id,
+                body.get("collectorName"), body.get("sampleType")));
+    }
+
+    @PutMapping("/{id}/receive-sample")
+    public ResponseEntity<TestOrderResponse> receiveSample(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(testsService.receiveSample(id, body.get("receivedBy")));
+    }
+
+    @PutMapping("/{id}/start-testing")
+    public ResponseEntity<TestOrderResponse> startTesting(@PathVariable Long id) {
+        return ResponseEntity.ok(testsService.startTesting(id));
+    }
+
+    @PutMapping("/{id}/enter-result")
+    public ResponseEntity<TestOrderResponse> enterResult(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(testsService.enterResult(id,
+                body.get("resultValue"), body.get("resultNotes"), body.get("enteredBy")));
+    }
+
+    @PutMapping("/{id}/verify")
+    public ResponseEntity<TestOrderResponse> verifyResult(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(testsService.verifyResult(id,
+                body.get("verifiedBy"), body.get("verificationNotes")));
     }
 }
