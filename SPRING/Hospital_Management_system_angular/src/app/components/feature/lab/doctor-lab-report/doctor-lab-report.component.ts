@@ -86,4 +86,20 @@ export class DoctorLabReportComponent implements OnInit {
     this.pdfUrl = null;
     this.selectedOrder = null;
   }
+
+  formatStatus(status: string): string {
+    return status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  getInitials(name: string): string {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  getAvatarColor(name: string): string {
+    const colors = ['#0dcaf0', '#0d6efd', '#198754', '#dc3545', '#ffc107', '#6610f2', '#fd7e14', '#e83e8c'];
+    let hash = 0;
+    for (let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
 }
