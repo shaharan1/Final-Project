@@ -225,6 +225,34 @@ export class WardManagementComponent implements OnInit {
     }
   }
 
+  getAdmissionForBed(bed: BedModel): AdmissionResponse | undefined {
+    if (bed.status !== 'OCCUPIED') return undefined;
+    return this.activeAdmissions.find(a => a.bedId === bed.id);
+  }
+
+  getDaysSinceAdmission(dateStr: string): string {
+    if (!dateStr) return '';
+    const admitted = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - admitted.getTime();
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (days === 0) return 'Today';
+    if (days === 1) return '1 day';
+    return days + ' days';
+  }
+
+  getRoomTypeIcon(type: string): string {
+    switch (type?.toUpperCase()) {
+      case 'AC': return '❄';
+      case 'NON-AC': return '♨';
+      case 'DELUXE': return '★';
+      case 'ICU': return '✚';
+      case 'SEMI-ICU': return '✚';
+      case 'GENERAL': return '♥';
+      default: return '♥';
+    }
+  }
+
   backToWards(): void {
     this.selectedWard = null;
     this.selectedWardBeds = [];

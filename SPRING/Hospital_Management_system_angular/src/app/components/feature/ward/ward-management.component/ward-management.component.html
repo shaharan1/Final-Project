@@ -95,25 +95,81 @@
     <!-- Bed Cards Grid -->
     <div class="wm-bed-grid">
       <div class="wm-bed-card" *ngFor="let bed of filteredBeds" [ngClass]="getBedStatusClass(bed.status)">
-        <div class="wm-bed-number">{{ bed.bedNumber }}</div>
-        <div class="wm-bed-status-dot" [ngClass]="'dot-' + bed.status.toLowerCase()"></div>
-        <div class="wm-bed-status-text">{{ bed.status }}</div>
 
-        <div class="wm-bed-patient" *ngIf="bed.status==='OCCUPIED'">
-          <div class="wm-bed-patient-name">{{ getPatientForBed(bed) }}</div>
-          <div class="wm-bed-doctor-name">Dr. {{ getDoctorForBed(bed) }}</div>
+        <!-- Top Row: Bed Number + Status -->
+        <div class="wm-bed-top">
+          <div class="wm-bed-number">{{ bed.bedNumber }}</div>
+          <div class="wm-bed-status-badge" [ngClass]="'badge-' + bed.status.toLowerCase()">
+            <span class="wm-bed-dot"></span> {{ bed.status }}
+          </div>
         </div>
 
+        <!-- Room Type Tag -->
+        <div class="wm-bed-type-tag">
+          <span class="wm-bed-type-icon">{{ getRoomTypeIcon(selectedWard?.roomType || '') }}</span>
+          {{ selectedWard?.roomType || 'General' }} Ward
+        </div>
+
+        <!-- Ward + Cost -->
+        <div class="wm-bed-meta-row">
+          <span class="wm-bed-cost">{{ bed.totalDailyCost | number:'1.0-0' }} &#2547;/day</span>
+        </div>
+
+        <!-- Occupied: Patient Details -->
+        <div class="wm-bed-details" *ngIf="bed.status==='OCCUPIED' && getAdmissionForBed(bed) as adm">
+          <div class="wm-bed-detail-row">
+            <span class="wm-bed-detail-icon">♥</span>
+            <div>
+              <div class="wm-bed-detail-label">Patient</div>
+              <div class="wm-bed-detail-value">{{ adm.patientName }}</div>
+              <div class="wm-bed-detail-sub">{{ adm.patientCode }}</div>
+            </div>
+          </div>
+          <div class="wm-bed-detail-row">
+            <span class="wm-bed-detail-icon wm-detail-steth">✦</span>
+            <div>
+              <div class="wm-bed-detail-label">Doctor</div>
+              <div class="wm-bed-detail-value">Dr. {{ adm.doctorName }}</div>
+            </div>
+          </div>
+          <div class="wm-bed-detail-row" *ngIf="adm.initialDiagnosis">
+            <span class="wm-bed-detail-icon wm-detail-note">✎</span>
+            <div>
+              <div class="wm-bed-detail-label">Diagnosis</div>
+              <div class="wm-bed-detail-value wm-detail-diag">{{ adm.initialDiagnosis }}</div>
+            </div>
+          </div>
+          <div class="wm-bed-detail-row">
+            <span class="wm-bed-detail-icon wm-detail-clock">◷</span>
+            <div>
+              <div class="wm-bed-detail-label">Admitted</div>
+              <div class="wm-bed-detail-value">{{ adm.admissionDate | date:'dd-MMM-yyyy' }}</div>
+              <div class="wm-bed-detail-sub">{{ getDaysSinceAdmission(adm.admissionDate) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Available: Empty Bed -->
+        <div class="wm-bed-details wm-bed-empty-info" *ngIf="bed.status==='AVAILABLE'">
+          <div class="wm-bed-empty-icon">✓</div>
+          <div class="wm-bed-empty-text">Ready for Admission</div>
+        </div>
+
+        <!-- Maintenance -->
+        <div class="wm-bed-details wm-bed-empty-info" *ngIf="bed.status==='MAINTENANCE'">
+          <div class="wm-bed-maint-icon">!</div>
+          <div class="wm-bed-empty-text">Under Maintenance</div>
+        </div>
+
+        <!-- Actions -->
         <div class="wm-bed-actions">
           <button class="wm-bed-btn wm-bed-btn-admit" *ngIf="bed.status==='AVAILABLE'" (click)="openAdmitModal(bed)">
-            Admit Patient
+            + Admit Patient
           </button>
           <button class="wm-bed-btn wm-bed-btn-discharge" *ngIf="bed.status==='OCCUPIED'" (click)="dischargePatient(bed)">
             Discharge
           </button>
-          <span class="wm-bed-maintenance-label" *ngIf="bed.status==='MAINTENANCE'">Under Maintenance</span>
         </div>
-        <div class="wm-bed-cost">{{ bed.totalDailyCost | number:'1.0-0' }} &#2547;/day</div>
       </div>
     </div>
 
