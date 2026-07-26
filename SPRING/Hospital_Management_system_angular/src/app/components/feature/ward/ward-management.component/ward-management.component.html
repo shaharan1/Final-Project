@@ -110,6 +110,17 @@
           {{ selectedWard?.roomType || 'General' }} Ward
         </div>
 
+        <!-- Facilities -->
+        <div class="wm-bed-facilities" *ngIf="bed.facilities && bed.facilities.length > 0">
+          <div class="wm-facility-label">Room Facilities</div>
+          <div class="wm-facility-chips">
+            <span class="wm-facility-chip" *ngFor="let fac of bed.facilities">
+              <span class="wm-facility-icon">{{ getFacilityIcon(fac.name) }}</span>
+              {{ fac.name }}
+            </span>
+          </div>
+        </div>
+
         <!-- Ward + Cost -->
         <div class="wm-bed-meta-row">
           <span class="wm-bed-cost">{{ bed.totalDailyCost | number:'1.0-0' }} &#2547;/day</span>
@@ -163,6 +174,9 @@
 
         <!-- Actions -->
         <div class="wm-bed-actions">
+          <button class="wm-bed-btn wm-bed-btn-facility" (click)="openFacilityModal(bed)">
+            ✦ Facilities
+          </button>
           <button class="wm-bed-btn wm-bed-btn-admit" *ngIf="bed.status==='AVAILABLE'" (click)="openAdmitModal(bed)">
             + Admit Patient
           </button>
@@ -175,6 +189,39 @@
 
     <div class="wm-empty" *ngIf="filteredBeds.length === 0">
       <p>No beds found matching your criteria.</p>
+    </div>
+  </div>
+
+  <!-- Facility Assign Modal -->
+  <div class="wm-modal-overlay" *ngIf="showFacilityModal" (click)="closeFacilityModal()">
+    <div class="wm-modal wm-facility-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Manage Facilities — {{ facilityBed?.bedNumber }}</h3>
+        <button class="wm-modal-close" (click)="closeFacilityModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body">
+        <p class="wm-facility-hint">Select facilities available in this bed/room:</p>
+        <div class="wm-facility-grid">
+          <label class="wm-facility-item" *ngFor="let fac of allFacilities"
+                 [class.selected]="isFacilitySelected(fac.id)">
+            <input type="checkbox"
+                   [checked]="isFacilitySelected(fac.id)"
+                   (change)="toggleFacility(fac.id)" />
+            <div class="wm-facility-card">
+              <span class="wm-facility-chk">✓</span>
+              <div class="wm-facility-name">{{ fac.name }}</div>
+              <div class="wm-facility-price" *ngIf="fac.standardCharge > 0">+&#2547; {{ fac.standardCharge }}/day</div>
+              <div class="wm-facility-price wm-facility-free" *ngIf="fac.standardCharge === 0">Free</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="wm-modal-footer">
+        <button class="wm-btn-cancel" (click)="closeFacilityModal()">Cancel</button>
+        <button class="wm-btn-confirm" (click)="saveFacilities()" [disabled]="facilitySaving">
+          {{ facilitySaving ? 'Saving...' : 'Save Facilities' }}
+        </button>
+      </div>
     </div>
   </div>
 
@@ -192,23 +239,41 @@
         </div>
 
         <div class="wm-form-group">
-          <label>Patient</label>
-          <select class="wm-form-select" [(ngModel)]="admission.patientId">
-            <option [ngValue]="0">Select Patient</option>
-            <option *ngFor="let p of patients" [ngValue]="p.id">{{ p.patientCode }} - {{ p.name }}</option>
-          </select>
+          <label>Patient <small>(Search by name, code or phone)</small></label>
+          <div class="wm-patient-search-wrap">
+            <input *ngIf="!selectedPatientDisplay"
+                   class="wm-form-input wm-patient-search"
+                   type="text"
+                   placeholder="Type patient name, code or phone..."
+                   [(ngModel)]="patientSearchKeyword"
+                   (input)="onPatientSearch()"
+                   (focus)="onPatientInputFocus()"
+                   (blur)="onPatientInputBlur()" />
+            <div *ngIf="selectedPatientDisplay" class="wm-patient-selected">
+              <span class="wm-patient-selected-text">{{ selectedPatientDisplay }}</span>
+              <button class="wm-patient-clear" (click)="clearPatient()">&times;</button>
+            </div>
+            <div class="wm-patient-dropdown" *ngIf="showPatientDropdown && filteredPatients.length > 0">
+              <div class="wm-patient-option" *ngFor="let p of filteredPatients"
+                   (mousedown)="selectPatient(p)">
+                <span class="wm-po-code">{{ p.patientCode }}</span>
+                <span class="wm-po-name">{{ p.name }}</span>
+                <span class="wm-po-phone">{{ p.phone }}</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="wm-form-group">
-          <label>Assigned Doctor</label>
-          <select class="wm-form-select" [(ngModel)]="admission.doctorId">
+          <label>Assigned Doctor <small *ngIf="doctorAutoFilled" class="wm-auto-tag">(Auto-filled)</small></label>
+          <select class="wm-form-select" [(ngModel)]="admission.doctorId" [disabled]="doctorAutoFilled">
             <option [ngValue]="0">Select Doctor</option>
             <option *ngFor="let d of doctors" [ngValue]="d.id">Dr. {{ d.name }} ({{ d.specialization }})</option>
           </select>
         </div>
 
         <div class="wm-form-group">
-          <label>Initial Diagnosis</label>
+          <label>Initial Diagnosis <small *ngIf="admission.initialDiagnosis" class="wm-auto-tag">(Auto-filled from prescription)</small></label>
           <textarea class="wm-form-textarea" rows="3" [(ngModel)]="admission.initialDiagnosis" placeholder="Enter diagnosis..."></textarea>
         </div>
       </div>

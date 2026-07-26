@@ -87,6 +87,13 @@ public class PatientServiceImp implements PatientService {
     }
 
     @Override
+    public List<PatientResponse> searchPatients(String keyword) {
+        return patientRepository.search(keyword).stream()
+                .map(patientMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public PatientResponse updatePatient(Long id, PatientRequest request) {
 
 

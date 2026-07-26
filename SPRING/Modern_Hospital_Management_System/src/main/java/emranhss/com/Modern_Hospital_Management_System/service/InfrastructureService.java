@@ -31,4 +31,8 @@ public interface InfrastructureService {
 
     List<BedResponse> getBedsByWard(Long wardId);
 
+    List<FacilityResponse> getAllFacilities();
+
+    BedResponse updateBedFacilities(Long bedId, java.util.Set<Long> facilityIds);
+
 }

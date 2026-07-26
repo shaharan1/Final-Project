@@ -152,7 +152,19 @@ public class InfrastructureServiceImp implements InfrastructureService {
             totalCost += bed.getWard().getBasePricePerDay();
         }
 
-        if (bed.getFacilities() != null) {
+        if (bed.getFacilities() != null && !bed.getFacilities().isEmpty()) {
+            List<FacilityResponse> facilityResponses = bed.getFacilities().stream()
+                    .map(f -> {
+                        FacilityResponse fr = new FacilityResponse();
+                        fr.setId(f.getId());
+                        fr.setName(f.getName());
+                        fr.setStandardCharge(f.getStandardCharge());
+                        fr.setActive(f.getActive());
+                        return fr;
+                    })
+                    .toList();
+            response.setFacilities(facilityResponses);
+
             totalCost += bed.getFacilities()
                     .stream()
                     .mapToDouble(Facility::getStandardCharge)
@@ -193,5 +205,35 @@ public class InfrastructureServiceImp implements InfrastructureService {
                 .map(this::mapBedResponse)
                 .toList();
 
+    }
+
+    @Override
+    public List<FacilityResponse> getAllFacilities() {
+        return facilityRepository.findAll().stream()
+                .map(f -> {
+                    FacilityResponse r = new FacilityResponse();
+                    r.setId(f.getId());
+                    r.setName(f.getName());
+                    r.setStandardCharge(f.getStandardCharge());
+                    r.setActive(f.getActive());
+                    return r;
+                })
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public BedResponse updateBedFacilities(Long bedId, java.util.Set<Long> facilityIds) {
+        Bed bed = bedRepository.findById(bedId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bed not found with id: " + bedId));
+
+        if (facilityIds != null && !facilityIds.isEmpty()) {
+            List<Facility> facilities = facilityRepository.findAllById(facilityIds);
+            bed.setFacilities(new HashSet<>(facilities));
+        } else {
+            bed.setFacilities(new HashSet<>());
+        }
+
+        return mapBedResponse(bedRepository.save(bed));
     }
 }

@@ -8,10 +8,14 @@ import { PatientModel } from '../../../../models/patientModel';
 import { DoctorModel } from '../../../../models/doctorModel';
 import { AdmissionResponse } from '../../../../models/admission-response.model';
 import { AdmissionRequest } from '../../../../models/admission.model';
+import { FacilityModel } from '../../../../models/bed.model';
 import { InfrastructureService } from '../../../../services/infrastructure.service';
+import { FacilityService } from '../../../../services/facility.service';
 import { AdmissionService } from '../../../../services/admission.service';
 import { PatientService } from '../../../../services/patient.service';
 import { DoctorModelService } from '../../../../services/doctor.service';
+import { PrescriptionService } from '../../../../services/prescription.service';
+import { AppointmentService } from '../../../../services/appointment.service';
 
 @Component({
   selector: 'app-ward-management',
@@ -36,6 +40,12 @@ export class WardManagementComponent implements OnInit {
   showAdmitModal = false;
   admitBed: BedModel | null = null;
 
+  patientSearchKeyword = '';
+  filteredPatients: PatientModel[] = [];
+  showPatientDropdown = false;
+  selectedPatientDisplay = '';
+  doctorAutoFilled = false;
+
   admission: AdmissionRequest = {
     patientId: 0,
     doctorId: 0,
@@ -48,11 +58,21 @@ export class WardManagementComponent implements OnInit {
   occupiedBeds = 0;
   maintenanceBeds = 0;
 
+  allFacilities: FacilityModel[] = [];
+
+  showFacilityModal = false;
+  facilityBed: BedModel | null = null;
+  selectedFacilityIds: Set<number> = new Set();
+  facilitySaving = false;
+
   constructor(
     private infraService: InfrastructureService,
+    private facilityService: FacilityService,
     private admissionService: AdmissionService,
     private patientService: PatientService,
     private doctorService: DoctorModelService,
+    private prescriptionService: PrescriptionService,
+    private appointmentService: AppointmentService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -93,6 +113,13 @@ export class WardManagementComponent implements OnInit {
     this.doctorService.getAll().subscribe({
       next: (res) => {
         this.doctors = res;
+        this.cdr.markForCheck();
+      }
+    });
+
+    this.facilityService.getAll().subscribe({
+      next: (res) => {
+        this.allFacilities = res;
         this.cdr.markForCheck();
       }
     });
@@ -183,12 +210,91 @@ export class WardManagementComponent implements OnInit {
       bedId: bed.id,
       initialDiagnosis: ''
     };
+    this.patientSearchKeyword = '';
+    this.filteredPatients = [];
+    this.showPatientDropdown = false;
+    this.selectedPatientDisplay = '';
+    this.doctorAutoFilled = false;
     this.showAdmitModal = true;
   }
 
   closeAdmitModal(): void {
     this.showAdmitModal = false;
     this.admitBed = null;
+  }
+
+  onPatientSearch(): void {
+    const kw = this.patientSearchKeyword.trim();
+    if (kw.length < 1) {
+      this.filteredPatients = this.patients.slice(0, 20);
+      this.showPatientDropdown = true;
+      return;
+    }
+    this.patientService.search(kw).subscribe({
+      next: (res) => {
+        this.filteredPatients = res;
+        this.showPatientDropdown = true;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  selectPatient(patient: PatientModel): void {
+    this.admission.patientId = patient.id!;
+    this.selectedPatientDisplay = `${patient.patientCode} — ${patient.name} (${patient.phone})`;
+    this.patientSearchKeyword = '';
+    this.showPatientDropdown = false;
+    this.filteredPatients = [];
+
+    if (patient.appointmentId) {
+      this.appointmentService.getById(patient.appointmentId).subscribe({
+        next: (apt: any) => {
+          if (apt && apt.doctorId) {
+            this.admission.doctorId = apt.doctorId;
+            this.doctorAutoFilled = true;
+          }
+          this.cdr.markForCheck();
+        }
+      });
+    }
+
+    this.prescriptionService.getByPatientId(patient.id!).subscribe({
+      next: (rxList) => {
+        if (rxList && rxList.length > 0) {
+          const latest = rxList[0];
+          if (latest.diagnosis) {
+            this.admission.initialDiagnosis = latest.diagnosis;
+          }
+          if (latest.doctorName && !this.admission.doctorId) {
+            const matchedDoc = this.doctors.find(d => d.name === latest.doctorName);
+            if (matchedDoc) {
+              this.admission.doctorId = matchedDoc.id!;
+              this.doctorAutoFilled = true;
+            }
+          }
+          this.cdr.markForCheck();
+        }
+      }
+    });
+  }
+
+  clearPatient(): void {
+    this.admission.patientId = 0;
+    this.selectedPatientDisplay = '';
+    this.admission.doctorId = 0;
+    this.admission.initialDiagnosis = '';
+    this.doctorAutoFilled = false;
+  }
+
+  onPatientInputFocus(): void {
+    if (!this.selectedPatientDisplay) {
+      this.filteredPatients = this.patients.slice(0, 20);
+      this.showPatientDropdown = true;
+    }
+  }
+
+  onPatientInputBlur(): void {
+    setTimeout(() => { this.showPatientDropdown = false; }, 200);
   }
 
   admitPatient(): void {
@@ -253,8 +359,67 @@ export class WardManagementComponent implements OnInit {
     }
   }
 
+  getFacilityIcon(name: string): string {
+    const n = name.toLowerCase();
+    if (n.includes('oxygen') || n.includes('ventilator')) return '✚';
+    if (n.includes('ac') || n.includes('air')) return '❄';
+    if (n.includes('monitor') || n.includes('cardiac')) return '♥';
+    if (n.includes('wifi') || n.includes('internet')) return '📡';
+    if (n.includes('tv') || n.includes('television')) return '📺';
+    if (n.includes('phone') || n.includes('call')) return '📞';
+    if (n.includes('bathroom') || n.includes('toilet') || n.includes('shower')) return '🚿';
+    if (n.includes('wheelchair') || n.includes('lift')) return '♿';
+    if (n.includes('nurse') || n.includes('call bell')) return '🔔';
+    if (n.includes('x-ray') || n.includes('xray')) return '📷';
+    if (n.includes('bed')) return '🛏';
+    if (n.includes('safe') || n.includes('locker')) return '🔒';
+    return '✦';
+  }
+
   backToWards(): void {
     this.selectedWard = null;
     this.selectedWardBeds = [];
+  }
+
+  openFacilityModal(bed: BedModel): void {
+    this.facilityBed = bed;
+    this.selectedFacilityIds = new Set<number>();
+    if (bed.facilities) {
+      bed.facilities.forEach(f => this.selectedFacilityIds.add(f.id));
+    }
+    this.showFacilityModal = true;
+  }
+
+  closeFacilityModal(): void {
+    this.showFacilityModal = false;
+    this.facilityBed = null;
+  }
+
+  toggleFacility(facilityId: number): void {
+    if (this.selectedFacilityIds.has(facilityId)) {
+      this.selectedFacilityIds.delete(facilityId);
+    } else {
+      this.selectedFacilityIds.add(facilityId);
+    }
+  }
+
+  isFacilitySelected(facilityId: number): boolean {
+    return this.selectedFacilityIds.has(facilityId);
+  }
+
+  saveFacilities(): void {
+    if (!this.facilityBed) return;
+    this.facilitySaving = true;
+    this.facilityService.updateBedFacilities(this.facilityBed.id, Array.from(this.selectedFacilityIds)).subscribe({
+      next: () => {
+        this.facilitySaving = false;
+        this.closeFacilityModal();
+        this.loadData();
+      },
+      error: () => {
+        this.facilitySaving = false;
+        alert('Failed to save facilities');
+      }
+    });
   }
 }
