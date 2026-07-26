@@ -1,0 +1,285 @@
+<div class="stock-page">
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h1>Medicine Stock</h1>
+      <p>Track inventory, manage stock levels, and monitor expiry dates</p>
+    </div>
+  </section>
+
+  <div class="stats-row">
+    <div class="stat-card glass-card">
+      <div class="stat-icon blue"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="stat-info"><span class="stat-number">{{ totalMedicines }}</span><span class="stat-label">Total Medicines</span></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon green"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="stat-info"><span class="stat-number">{{ availableStock }}</span><span class="stat-label">Available Stock</span></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon yellow"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div class="stat-info"><span class="stat-number">{{ lowStock }}</span><span class="stat-label">Low Stock</span></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon red"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+      <div class="stat-info"><span class="stat-number">{{ expired }}</span><span class="stat-label">Expired</span></div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-icon orange"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-info"><span class="stat-number">{{ expiringSoon }}</span><span class="stat-label">Expiring Soon</span></div>
+    </div>
+  </div>
+
+  <div class="toolbar glass-card">
+    <div class="filter-tabs">
+      <button *ngFor="let f of ['All', 'Available', 'Low Stock', 'Expired', 'Expiring Soon']" class="tab" [class.active]="activeFilter === f" (click)="setFilter(f)">{{ f }}</button>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterMedicines()" placeholder="Search medicines...">
+      </div>
+      <button class="btn btn-primary" (click)="openAddModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Stock
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container glass-card desktop-only">
+    <table>
+      <thead>
+        <tr>
+          <th (click)="sort('medicineName')">Name <span class="sort-icon" *ngIf="sortColumn==='medicineName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+          <th (click)="sort('genericName')">Generic <span class="sort-icon" *ngIf="sortColumn==='genericName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+          <th>Batch</th>
+          <th (click)="sort('stockQuantity')">Qty <span class="sort-icon" *ngIf="sortColumn==='stockQuantity'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+          <th>Purchase</th>
+          <th>Sale</th>
+          <th (click)="sort('expiryDate')">Expiry <span class="sort-icon" *ngIf="sortColumn==='expiryDate'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let med of filteredMedicines">
+          <td class="fw-semibold">{{ med.medicineName }}</td>
+          <td>{{ med.genericName }}</td>
+          <td><code>{{ med.batchNumber }}</code></td>
+          <td [class.qty-low]="med.stockQuantity <= med.minimumStockLevel && med.stockQuantity > 0" [class.qty-zero]="med.stockQuantity === 0">{{ med.stockQuantity }}</td>
+          <td>{{ med.purchasePrice | currency }}</td>
+          <td>{{ med.salePrice | currency }}</td>
+          <td [ngClass]="getExpiryClass(med)">{{ med.expiryDate }}</td>
+          <td><span class="badge" [ngClass]="getStatusBadgeClass(getMedicineStatus(med))">{{ getMedicineStatus(med) }}</span></td>
+          <td class="actions-cell">
+            <button class="btn-icon adjust" (click)="openAdjustModal(med)" title="Stock Adjustment">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </button>
+            <button class="btn-icon history" (click)="openHistoryModal(med)" title="Stock History">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="empty-state" *ngIf="filteredMedicines.length === 0">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <p>No medicines found</p>
+    </div>
+  </div>
+
+  <div class="mobile-cards mobile-only">
+    <div class="medicine-card glass-card" *ngFor="let med of filteredMedicines">
+      <div class="card-header">
+        <h3>{{ med.medicineName }}</h3>
+        <span class="badge" [ngClass]="getStatusBadgeClass(getMedicineStatus(med))">{{ getMedicineStatus(med) }}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-row"><span class="label">Generic:</span><span>{{ med.genericName }}</span></div>
+        <div class="card-row"><span class="label">Batch:</span><code>{{ med.batchNumber }}</code></div>
+        <div class="card-row"><span class="label">Qty:</span><span [class.qty-low]="med.stockQuantity <= med.minimumStockLevel" [class.qty-zero]="med.stockQuantity === 0">{{ med.stockQuantity }}</span></div>
+        <div class="card-row"><span class="label">Purchase:</span><span>{{ med.purchasePrice | currency }}</span></div>
+        <div class="card-row"><span class="label">Sale:</span><span>{{ med.salePrice | currency }}</span></div>
+        <div class="card-row"><span class="label">Expiry:</span><span [ngClass]="getExpiryClass(med)">{{ med.expiryDate }}</span></div>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-sm btn-outline" (click)="openAdjustModal(med)">Adjust</button>
+        <button class="btn btn-sm btn-outline" (click)="openHistoryModal(med)">History</button>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="filteredMedicines.length === 0">
+      <p>No medicines found</p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showAddModal" (click)="closeAddModal()">
+    <div class="modal modal-lg glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Add New Medicine Stock</h2>
+        <button class="btn-close" (click)="closeAddModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid form-grid-3">
+          <div class="form-group">
+            <label>Medicine Name</label>
+            <input type="text" [(ngModel)]="addFormModel.medicineName" placeholder="Medicine name">
+          </div>
+          <div class="form-group">
+            <label>Generic Name</label>
+            <input type="text" [(ngModel)]="addFormModel.genericName" placeholder="Generic name">
+          </div>
+          <div class="form-group">
+            <label>Strength</label>
+            <input type="text" [(ngModel)]="addFormModel.strength" placeholder="e.g. 500mg">
+          </div>
+          <div class="form-group">
+            <label>Dosage Form</label>
+            <select [(ngModel)]="addFormModel.dosageForm">
+              <option value="">Select form</option>
+              <option value="Tablet">Tablet</option>
+              <option value="Capsule">Capsule</option>
+              <option value="Syrup">Syrup</option>
+              <option value="Injection">Injection</option>
+              <option value="Cream">Cream</option>
+              <option value="Drops">Drops</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Batch Number</label>
+            <input type="text" [(ngModel)]="addFormModel.batchNumber" placeholder="BAT-XXXX-XXX">
+          </div>
+          <div class="form-group">
+            <label>Stock Quantity</label>
+            <input type="number" [(ngModel)]="addFormModel.stockQuantity" min="0">
+          </div>
+          <div class="form-group">
+            <label>Purchase Price</label>
+            <input type="number" [(ngModel)]="addFormModel.purchasePrice" min="0" step="0.01">
+          </div>
+          <div class="form-group">
+            <label>Sale Price</label>
+            <input type="number" [(ngModel)]="addFormModel.salePrice" min="0" step="0.01">
+          </div>
+          <div class="form-group">
+            <label>VAT (%)</label>
+            <input type="number" [(ngModel)]="addFormModel.vat" min="0">
+          </div>
+          <div class="form-group">
+            <label>Minimum Stock Level</label>
+            <input type="number" [(ngModel)]="addFormModel.minimumStockLevel" min="0">
+          </div>
+          <div class="form-group">
+            <label>Reorder Level</label>
+            <input type="number" [(ngModel)]="addFormModel.reorderLevel" min="0">
+          </div>
+          <div class="form-group">
+            <label>Manufacturing Date</label>
+            <input type="date" [(ngModel)]="addFormModel.manufacturingDate">
+          </div>
+          <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="date" [(ngModel)]="addFormModel.expiryDate">
+          </div>
+          <div class="form-group">
+            <label>Barcode</label>
+            <input type="text" [(ngModel)]="addFormModel.barcode" placeholder="BARXXXX">
+          </div>
+          <div class="form-group">
+            <label>Supplier</label>
+            <select [(ngModel)]="addFormModel.supplierId">
+              <option [ngValue]="0">Select supplier</option>
+              <option *ngFor="let s of suppliers" [ngValue]="s.id">{{ s.name }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeAddModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveMedicine()">Save Stock</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showAdjustModal" (click)="closeAdjustModal()">
+    <div class="modal modal-sm glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Stock Adjustment</h2>
+        <button class="btn-close" (click)="closeAdjustModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="adjust-medicine-info">
+          <strong>{{ selectedMedicine?.medicineName }}</strong>
+          <span>Current Stock: {{ selectedMedicine?.stockQuantity }}</span>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Adjustment Type</label>
+            <select [(ngModel)]="adjustFormModel.type">
+              <option value="ADD">ADD</option>
+              <option value="DAMAGE">DAMAGE</option>
+              <option value="RETURN">RETURN</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" [(ngModel)]="adjustFormModel.quantity" min="1">
+          </div>
+          <div class="form-group full-width">
+            <label>Reason</label>
+            <textarea [(ngModel)]="adjustFormModel.reason" rows="3" placeholder="Reason for adjustment"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeAdjustModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveAdjustment()">Apply Adjustment</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showHistoryModal" (click)="closeHistoryModal()">
+    <div class="modal glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Stock History - {{ selectedMedicine?.medicineName }}</h2>
+        <button class="btn-close" (click)="closeHistoryModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="history-table-wrap" *ngIf="selectedMedicine">
+          <table class="history-table" *ngIf="getHistoryForMedicine(selectedMedicine.id).length > 0">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Qty</th>
+                <th>Reason</th>
+                <th>By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let h of getHistoryForMedicine(selectedMedicine.id)">
+                <td>{{ h.date }}</td>
+                <td><span class="badge" [ngClass]="{'badge-green': h.type === 'ADD', 'badge-red': h.type === 'DAMAGE', 'badge-yellow': h.type === 'RETURN'}">{{ h.type }}</span></td>
+                <td>{{ h.quantity }}</td>
+                <td>{{ h.reason }}</td>
+                <td>{{ h.performedBy }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="empty-state" *ngIf="getHistoryForMedicine(selectedMedicine.id).length === 0">
+            <p>No stock history records found</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeHistoryModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

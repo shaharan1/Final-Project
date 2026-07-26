@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AppointmentService } from '../../../services/appointment.service';
-import { DoctorModelService } from '../../../services/doctor.service';
+
 import { Router } from '@angular/router';
-import { ScheduleSlotService } from '../../../services/schedule-slot.service';
-import { ScheduleSlotModel } from '../../../models/ScheduleSlotModel';
-import { DoctorsDepartmentService } from '../../../services/doctors-department';
-import { DoctorDepartmentModel } from '../../../models/doctorDepartmentModel';
+import { ScheduleSlotModel } from '../../../../models/ScheduleSlotModel';
+import { DoctorDepartmentModel } from '../../../../models/doctorDepartmentModel';
+import { AppointmentService } from '../../../../services/appointment.service';
+import { DoctorModelService } from '../../../../services/doctor.service';
+import { ScheduleSlotService } from '../../../../services/schedule-slot.service';
+import { DoctorsDepartmentService } from '../../../../services/doctors-department';
+
 
 @Component({
   selector: 'app-appointment.component',
