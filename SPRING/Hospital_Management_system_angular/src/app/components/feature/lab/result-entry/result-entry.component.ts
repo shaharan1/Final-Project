@@ -132,4 +132,20 @@ export class ResultEntryComponent implements OnInit {
       error: (err) => { console.log(err); alert('Failed'); }
     });
   }
+
+  formatStatus(status: string): string {
+    return status.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  getInitials(name: string): string {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  getAvatarColor(name: string): string {
+    const colors = ['#ffc107', '#fd7e14', '#dc3545', '#e83e8c', '#6610f2', '#0d6efd', '#198754', '#20c997'];
+    let hash = 0;
+    for (let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
 }

@@ -77,4 +77,16 @@ export class SampleCollectionComponent implements OnInit {
       error: (err) => { console.log(err); alert('Failed'); }
     });
   }
+
+  getInitials(name: string): string {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  getAvatarColor(name: string): string {
+    const colors = ['#198754', '#20c997', '#0dcaf0', '#0d6efd', '#6610f2', '#fd7e14', '#dc3545', '#e83e8c'];
+    let hash = 0;
+    for (let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
 }

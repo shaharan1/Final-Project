@@ -119,4 +119,16 @@ export class LabVerificationComponent implements OnInit {
     this.rawPdfUrl = null;
     this.selectedOrder = null;
   }
+
+  getInitials(name: string): string {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  }
+
+  getAvatarColor(name: string): string {
+    const colors = ['#6610f2', '#a855f7', '#0d6efd', '#198754', '#dc3545', '#ffc107', '#fd7e14', '#e83e8c'];
+    let hash = 0;
+    for (let i = 0; i < (name || '').length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  }
 }
