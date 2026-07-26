@@ -23,6 +23,8 @@ public class Refund {
     @Column(unique = true, nullable = false)
     private String refundReference;
 
+    private Long paymentId;
+
     @Column(nullable = false)
     private String invoiceNumber;
 
@@ -38,7 +40,9 @@ public class Refund {
     @Column(nullable = false)
     private Double refundAmount;
 
-    private String reason;
+    private String refundReason;
+
+    private String refundType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -50,9 +54,7 @@ public class Refund {
 
     private String processedBy;
 
-    private String paymentMethod;
-
-    private String transactionId;
+    private String notes;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

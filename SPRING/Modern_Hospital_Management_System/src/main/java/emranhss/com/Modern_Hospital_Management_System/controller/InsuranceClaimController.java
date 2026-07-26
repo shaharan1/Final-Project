@@ -1,6 +1,5 @@
 package emranhss.com.Modern_Hospital_Management_System.controller;
 
-import emranhss.com.Modern_Hospital_Management_System.dto.request.InsuranceClaimRequest;
 import emranhss.com.Modern_Hospital_Management_System.entity.InsuranceClaim;
 import emranhss.com.Modern_Hospital_Management_System.service.InsuranceClaimService;
 import lombok.RequiredArgsConstructor;
@@ -21,22 +20,22 @@ public class InsuranceClaimController {
 
     @GetMapping
     public ResponseEntity<List<InsuranceClaim>> getAll() {
-        return ResponseEntity.ok(insuranceClaimService.getAllClaims());
+        return ResponseEntity.ok(insuranceClaimService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InsuranceClaim> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(insuranceClaimService.getClaimById(id));
+        return ResponseEntity.ok(insuranceClaimService.getById(id));
     }
 
     @GetMapping("/pending")
     public ResponseEntity<List<InsuranceClaim>> getPending() {
-        return ResponseEntity.ok(insuranceClaimService.getPendingClaims());
+        return ResponseEntity.ok(insuranceClaimService.getPending());
     }
 
     @PostMapping
-    public ResponseEntity<InsuranceClaim> createClaim(@RequestBody InsuranceClaimRequest request) {
-        return new ResponseEntity<>(insuranceClaimService.createClaim(request), HttpStatus.CREATED);
+    public ResponseEntity<InsuranceClaim> createClaim(@RequestBody InsuranceClaim claim) {
+        return new ResponseEntity<>(insuranceClaimService.createClaim(claim), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/approve")
@@ -57,6 +56,6 @@ public class InsuranceClaimController {
 
     @GetMapping("/insurance/{insuranceId}")
     public ResponseEntity<List<InsuranceClaim>> getByInsuranceId(@PathVariable Long insuranceId) {
-        return ResponseEntity.ok(insuranceClaimService.getClaimsByInsuranceId(insuranceId));
+        return ResponseEntity.ok(insuranceClaimService.getByInsuranceId(insuranceId));
     }
 }

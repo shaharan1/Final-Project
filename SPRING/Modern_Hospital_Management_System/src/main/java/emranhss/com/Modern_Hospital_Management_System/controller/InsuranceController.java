@@ -19,37 +19,37 @@ public class InsuranceController {
 
     @GetMapping
     public ResponseEntity<List<Insurance>> getAll() {
-        return ResponseEntity.ok(insuranceService.getAllInsurance());
+        return ResponseEntity.ok(insuranceService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Insurance> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(insuranceService.getInsuranceById(id));
+        return ResponseEntity.ok(insuranceService.getById(id));
     }
 
     @GetMapping("/active")
     public ResponseEntity<List<Insurance>> getActive() {
-        return ResponseEntity.ok(insuranceService.getActiveInsurance());
+        return ResponseEntity.ok(insuranceService.getActive());
     }
 
     @PostMapping
     public ResponseEntity<Insurance> create(@RequestBody Insurance insurance) {
-        return new ResponseEntity<>(insuranceService.createInsurance(insurance), HttpStatus.CREATED);
+        return new ResponseEntity<>(insuranceService.create(insurance), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Insurance> update(@PathVariable Long id, @RequestBody Insurance insurance) {
-        return ResponseEntity.ok(insuranceService.updateInsurance(id, insurance));
+        return ResponseEntity.ok(insuranceService.update(id, insurance));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        insuranceService.deleteInsurance(id);
+        insuranceService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<Insurance>> search(@RequestParam String keyword) {
-        return ResponseEntity.ok(insuranceService.searchInsurance(keyword));
+        return ResponseEntity.ok(insuranceService.search(keyword));
     }
 }

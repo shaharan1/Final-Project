@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PaymentService } from '../../../../services/billing/payment.service';
-import { BillingDashboardService } from '../../../../services/billing/billing-dashboard.service';
+import { PatientService } from '../../../../services/patient.service';
 
 export interface BillItem {
   id: number;
@@ -71,7 +71,6 @@ export class PatientBillingComponent implements OnInit {
   filteredBills: Bill[] = [];
   billSearchTerm = '';
   billFilterStatus = 'all';
-  billFilterDate = '';
 
   showBillDetailModal = false;
   selectedBill: Bill | null = null;
@@ -81,9 +80,11 @@ export class PatientBillingComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
+  private searchDebounce: any;
+
   constructor(
     private paymentService: PaymentService,
-    private billingDashboardService: BillingDashboardService,
+    private patientService: PatientService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -136,8 +137,8 @@ export class PatientBillingComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => {
-        this.recentBills = this.getMockBills();
-        this.filteredBills = [...this.recentBills];
+        this.recentBills = [];
+        this.filteredBills = [];
         this.loadingBills = false;
         this.cdr.detectChanges();
       }
@@ -147,116 +148,60 @@ export class PatientBillingComponent implements OnInit {
   private mapToBill(p: any): Bill {
     return {
       id: p.id,
-      invoiceNumber: p.invoiceNumber || p.id,
+      invoiceNumber: p.paymentReference || p.invoiceNumber || ('PAY-' + p.id),
       patientId: p.patientId || '',
-      patientName: p.patientName || p.patient?.name || 'Unknown',
-      patientPhone: p.patientPhone || p.patient?.phone || '',
-      patientAddress: p.patientAddress || '',
-      patientAge: p.patientAge || '',
-      patientGender: p.patientGender || '',
-      items: p.items || [],
-      subtotal: p.subtotal || p.totalAmount || 0,
+      patientName: p.patientName || 'Unknown',
+      patientPhone: '',
+      patientAddress: '',
+      patientAge: '',
+      patientGender: '',
+      items: [],
+      subtotal: p.amount || 0,
       discount: p.discount || 0,
       vat: p.vat || 0,
-      serviceCharge: p.serviceCharge || 0,
+      serviceCharge: 0,
       insuranceCoverage: p.insuranceCoverage || 0,
-      advancePayment: p.advancePayment || 0,
-      netPayable: p.netPayable || p.totalAmount || 0,
+      advancePayment: 0,
+      netPayable: p.netAmount || p.amount || 0,
       dueAmount: p.dueAmount || 0,
-      status: p.paymentStatus || p.status || 'Pending',
-      billDate: p.billDate || p.paymentDate || '',
+      status: p.paymentStatus || 'Pending',
+      billDate: p.paymentDate || p.createdDate || '',
       paymentMethod: p.paymentMethod || 'Cash',
       notes: p.notes || ''
     };
   }
 
-  private getMockBills(): Bill[] {
-    return [
-      {
-        id: 1, invoiceNumber: 'INV-20260720-0001', patientId: 'P-1001',
-        patientName: 'Rahim Uddin', patientPhone: '+8801712345678',
-        patientAddress: 'Dhaka', patientAge: '35', patientGender: 'Male',
-        items: [
-          { id: 1, category: 'Registration', description: 'OPD Registration', quantity: 1, unitPrice: 500, discount: 0, amount: 500 },
-          { id: 2, category: 'Consultation', description: 'General Checkup', quantity: 1, unitPrice: 1500, discount: 100, amount: 1400 }
-        ],
-        subtotal: 1900, discount: 100, vat: 324, serviceCharge: 100,
-        insuranceCoverage: 500, advancePayment: 500,
-        netPayable: 1724, dueAmount: 724, status: 'Partial',
-        billDate: '2026-07-20', paymentMethod: 'Cash', notes: ''
-      },
-      {
-        id: 2, invoiceNumber: 'INV-20260721-0002', patientId: 'P-1002',
-        patientName: 'Fatima Khan', patientPhone: '+8801812345679',
-        patientAddress: 'Chittagong', patientAge: '28', patientGender: 'Female',
-        items: [
-          { id: 1, category: 'Admission', description: 'General Ward 3 Days', quantity: 3, unitPrice: 2000, discount: 0, amount: 6000 },
-          { id: 2, category: 'Doctor Visit', description: 'Daily Visit', quantity: 3, unitPrice: 800, discount: 0, amount: 2400 }
-        ],
-        subtotal: 8400, discount: 0, vat: 1512, serviceCharge: 200,
-        insuranceCoverage: 0, advancePayment: 5000,
-        netPayable: 10112, dueAmount: 5112, status: 'Pending',
-        billDate: '2026-07-21', paymentMethod: 'Card', notes: ''
-      },
-      {
-        id: 3, invoiceNumber: 'INV-20260722-0003', patientId: 'P-1003',
-        patientName: 'Karim Hassan', patientPhone: '+8801912345670',
-        patientAddress: 'Sylhet', patientAge: '52', patientGender: 'Male',
-        items: [
-          { id: 1, category: 'Operation', description: 'Appendectomy', quantity: 1, unitPrice: 25000, discount: 2000, amount: 23000 },
-          { id: 2, category: 'Bed', description: 'ICU Bed 2 Days', quantity: 2, unitPrice: 5000, discount: 0, amount: 10000 }
-        ],
-        subtotal: 33000, discount: 2000, vat: 5580, serviceCharge: 500,
-        insuranceCoverage: 10000, advancePayment: 15000,
-        netPayable: 27080, dueAmount: 2080, status: 'Paid',
-        billDate: '2026-07-22', paymentMethod: 'Mobile', notes: ''
-      },
-      {
-        id: 4, invoiceNumber: 'INV-20260723-0004', patientId: 'P-1004',
-        patientName: 'Sumaiya Akter', patientPhone: '+8801612345671',
-        patientAddress: 'Rajshahi', patientAge: '41', patientGender: 'Female',
-        items: [
-          { id: 1, category: 'Laboratory', description: 'Blood Test Panel', quantity: 1, unitPrice: 2500, discount: 0, amount: 2500 },
-          { id: 2, category: 'Radiology', description: 'Chest X-Ray', quantity: 1, unitPrice: 1200, discount: 0, amount: 1200 }
-        ],
-        subtotal: 3700, discount: 200, vat: 630, serviceCharge: 100,
-        insuranceCoverage: 1000, advancePayment: 2000,
-        netPayable: 3430, dueAmount: 430, status: 'Pending',
-        billDate: '2026-07-23', paymentMethod: 'Cash', notes: ''
-      }
-    ];
-  }
-
   searchPatient(): void {
+    clearTimeout(this.searchDebounce);
     if (this.searchQuery.length < 2) {
       this.searchResults = [];
       this.showSearchResults = false;
       return;
     }
-    this.paymentService.getAll().subscribe({
-      next: (data: any) => {
-        const list = Array.isArray(data) ? data : [];
-        const q = this.searchQuery.toLowerCase();
-        this.searchResults = list.filter((p: any) => {
-          if (this.searchType === 'name') return (p.patientName || '').toLowerCase().includes(q);
-          if (this.searchType === 'phone') return (p.patientPhone || '').toLowerCase().includes(q);
-          return String(p.patientId || '').toLowerCase().includes(q);
-        }).slice(0, 8);
-        this.showSearchResults = this.searchResults.length > 0;
-        this.cdr.detectChanges();
-      },
-      error: () => { this.showSearchResults = false; }
-    });
+    this.searchDebounce = setTimeout(() => {
+      this.patientService.search(this.searchQuery).subscribe({
+        next: (patients: any[]) => {
+          this.searchResults = (patients || []).slice(0, 8);
+          this.showSearchResults = this.searchResults.length > 0;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.searchResults = [];
+          this.showSearchResults = false;
+          this.cdr.detectChanges();
+        }
+      });
+    }, 300);
   }
 
   selectPatient(patient: any): void {
     this.selectedPatient = patient;
-    this.bill.patientId = patient.patientId || patient.id || '';
-    this.bill.patientName = patient.patientName || patient.patient?.name || '';
-    this.bill.patientPhone = patient.patientPhone || patient.patient?.phone || '';
-    this.bill.patientAddress = patient.patientAddress || '';
-    this.bill.patientAge = patient.patientAge || '';
-    this.bill.patientGender = patient.patientGender || '';
+    this.bill.patientId = patient.id || patient.patientCode || '';
+    this.bill.patientName = patient.name || patient.patientName || '';
+    this.bill.patientPhone = patient.phone || patient.phoneNumber || '';
+    this.bill.patientAddress = patient.address || '';
+    this.bill.patientAge = patient.age || '';
+    this.bill.patientGender = patient.gender || '';
     this.showSearchResults = false;
     this.cdr.detectChanges();
   }
@@ -269,6 +214,7 @@ export class PatientBillingComponent implements OnInit {
     this.bill.patientAddress = '';
     this.bill.patientAge = '';
     this.bill.patientGender = '';
+    this.cdr.detectChanges();
   }
 
   addBillItem(): void {
@@ -315,14 +261,6 @@ export class PatientBillingComponent implements OnInit {
     this.recalculate();
   }
 
-  getSubtotal(): number {
-    return this.bill.items.reduce((sum, i) => sum + (i.quantity * i.unitPrice), 0);
-  }
-
-  getItemsDiscountTotal(): number {
-    return this.bill.items.reduce((sum, i) => sum + i.discount, 0);
-  }
-
   canGenerate(): boolean {
     return this.bill.patientName.trim().length > 0 &&
            this.bill.items.length > 0 &&
@@ -335,45 +273,37 @@ export class PatientBillingComponent implements OnInit {
     this.bill.invoiceNumber = this.generateInvoiceNumber();
     this.confirmAction = 'generate';
     this.showConfirmModal = true;
+    this.cdr.detectChanges();
   }
 
   saveDraft(): void {
     if (!this.bill.patientName.trim() || this.bill.items.length === 0) {
       this.errorMessage = 'Please add patient info and at least one bill item.';
-      setTimeout(() => this.errorMessage = '', 3000);
+      setTimeout(() => { this.errorMessage = ''; this.cdr.detectChanges(); }, 3000);
+      this.cdr.detectChanges();
       return;
     }
     this.bill.invoiceNumber = this.generateInvoiceNumber();
     this.confirmAction = 'draft';
     this.showConfirmModal = true;
+    this.cdr.detectChanges();
   }
 
   executeConfirmAction(): void {
     this.showConfirmModal = false;
     this.processingBill = true;
+    this.cdr.detectChanges();
 
     const payload = {
       invoiceNumber: this.bill.invoiceNumber,
-      patientId: this.bill.patientId,
+      patientId: this.bill.patientId ? Number(this.bill.patientId) : 0,
       patientName: this.bill.patientName,
-      patientPhone: this.bill.patientPhone,
-      patientAddress: this.bill.patientAddress,
-      patientAge: this.bill.patientAge,
-      patientGender: this.bill.patientGender,
-      items: this.bill.items,
-      subtotal: this.bill.subtotal,
+      amount: this.bill.netPayable,
+      paymentMethod: this.bill.paymentMethod.toUpperCase(),
       discount: this.bill.discount,
-      vat: this.bill.vat,
-      serviceCharge: this.bill.serviceCharge,
-      insuranceCoverage: this.bill.insuranceCoverage,
-      advancePayment: this.bill.advancePayment,
-      netPayable: this.bill.netPayable,
-      dueAmount: this.bill.dueAmount,
-      status: this.confirmAction === 'draft' ? 'Draft' : 'Pending',
-      paymentMethod: this.bill.paymentMethod,
-      notes: this.bill.notes,
-      billDate: this.bill.billDate,
-      paymentDate: new Date().toISOString()
+      VAT: this.bill.vat,
+      notes: this.bill.notes || (this.confirmAction === 'draft' ? 'Draft bill' : ''),
+      processedBy: 'BillingClerk'
     };
 
     this.paymentService.processPayment(payload).subscribe({
@@ -388,14 +318,14 @@ export class PatientBillingComponent implements OnInit {
         this.successMessage = this.confirmAction === 'draft'
           ? 'Bill saved as draft successfully!'
           : 'Invoice generated successfully!';
-        setTimeout(() => this.successMessage = '', 3000);
+        setTimeout(() => { this.successMessage = ''; this.cdr.detectChanges(); }, 3000);
         this.activeTab = 'history';
         this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Failed to save bill. Please try again.';
         this.processingBill = false;
-        setTimeout(() => this.errorMessage = '', 3000);
+        setTimeout(() => { this.errorMessage = ''; this.cdr.detectChanges(); }, 3000);
         this.cdr.detectChanges();
       }
     });
@@ -404,6 +334,7 @@ export class PatientBillingComponent implements OnInit {
   closeConfirmModal(): void {
     this.showConfirmModal = false;
     this.confirmAction = '';
+    this.cdr.detectChanges();
   }
 
   printBill(): void {
@@ -414,6 +345,7 @@ export class PatientBillingComponent implements OnInit {
     this.bill = this.getEmptyBill();
     this.bill.billDate = new Date().toISOString().split('T')[0];
     this.selectedPatient = null;
+    this.cdr.detectChanges();
   }
 
   filterBills(): void {
@@ -426,29 +358,50 @@ export class PatientBillingComponent implements OnInit {
         b.status.toLowerCase() === this.billFilterStatus.toLowerCase();
       return matchesSearch && matchesStatus;
     });
-  }
-
-  onFilterStatusChange(): void {
-    this.filterBills();
+    this.cdr.detectChanges();
   }
 
   viewBillDetail(bill: Bill): void {
     this.selectedBill = bill;
     this.showBillDetailModal = true;
+    this.cdr.detectChanges();
   }
 
   closeBillDetailModal(): void {
     this.showBillDetailModal = false;
     this.selectedBill = null;
+    this.cdr.detectChanges();
+  }
+
+  deleteBill(bill: Bill): void {
+    if (!bill.id) return;
+    if (!confirm('Delete this bill?')) return;
+    this.paymentService.deletePayment(bill.id).subscribe({
+      next: () => {
+        this.recentBills = this.recentBills.filter(b => b.id !== bill.id);
+        this.filteredBills = [...this.recentBills];
+        this.showBillDetailModal = false;
+        this.selectedBill = null;
+        this.successMessage = 'Bill deleted successfully!';
+        setTimeout(() => { this.successMessage = ''; this.cdr.detectChanges(); }, 3000);
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.errorMessage = 'Failed to delete bill.';
+        setTimeout(() => { this.errorMessage = ''; this.cdr.detectChanges(); }, 3000);
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   getStatusClass(status: string): string {
     switch (status?.toLowerCase()) {
+      case 'completed': return 'badge-paid';
       case 'paid': return 'badge-paid';
       case 'pending': return 'badge-pending';
       case 'partial': return 'badge-partial';
       case 'draft': return 'badge-draft';
-      case 'overdue': return 'badge-overdue';
+      case 'failed': return 'badge-overdue';
       default: return 'badge-pending';
     }
   }

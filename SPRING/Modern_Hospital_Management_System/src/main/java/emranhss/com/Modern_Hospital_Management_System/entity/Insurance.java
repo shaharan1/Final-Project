@@ -22,24 +22,23 @@ public class Insurance {
     @Column(nullable = false)
     private String companyName;
 
-    @Column(nullable = false)
-    private String policyNumber;
+    private String contactPerson;
 
-    private String policyHolderName;
+    private String phone;
 
-    private String contactPhone;
-
-    private String contactEmail;
+    private String email;
 
     private String address;
 
+    private String policyPrefix;
+
     private Double coveragePercentage;
 
-    private Double maxCoverageAmount;
-
-    private String policyType;
+    private Double maxCoverage;
 
     private Boolean active = true;
+
+    private String notes;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

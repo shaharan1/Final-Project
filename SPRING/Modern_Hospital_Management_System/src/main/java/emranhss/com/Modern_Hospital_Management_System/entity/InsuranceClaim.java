@@ -23,6 +23,8 @@ public class InsuranceClaim {
     @Column(unique = true, nullable = false)
     private String claimReference;
 
+    private String claimNumber;
+
     @Column(nullable = false)
     private Long patientId;
 
@@ -33,6 +35,8 @@ public class InsuranceClaim {
     private Long insuranceId;
 
     private String insuranceCompanyName;
+
+    private String policyNumber;
 
     private String invoiceNumber;
 
@@ -47,21 +51,19 @@ public class InsuranceClaim {
     @Column(nullable = false)
     private ClaimStatus claimStatus;
 
-    private String diagnosisCode;
-
-    private String treatmentDescription;
-
-    private String submittedBy;
-
-    private String reviewedBy;
+    private String processedBy;
 
     private String rejectionReason;
+
+    private String notes;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
-    private LocalDateTime reviewedDate;
+    private LocalDateTime submissionDate;
 
-    private LocalDateTime settledDate;
+    private LocalDateTime reviewDate;
+
+    private LocalDateTime settlementDate;
 }

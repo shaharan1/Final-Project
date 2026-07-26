@@ -41,10 +41,15 @@ public class InsuranceClaimServiceImp implements InsuranceClaimService {
     @Override
     @Transactional
     public InsuranceClaim createClaim(InsuranceClaim claim) {
-        claim.setClaimReference(generateClaimReference());
+        String ref = generateClaimReference();
+        claim.setClaimReference(ref);
+        claim.setClaimNumber(ref);
         claim.setClaimStatus(ClaimStatus.SUBMITTED);
         if (claim.getCreatedDate() == null) {
             claim.setCreatedDate(LocalDateTime.now());
+        }
+        if (claim.getSubmissionDate() == null) {
+            claim.setSubmissionDate(LocalDateTime.now());
         }
         return insuranceClaimRepository.save(claim);
     }
@@ -59,7 +64,7 @@ public class InsuranceClaimServiceImp implements InsuranceClaimService {
         }
         claim.setClaimStatus(amount >= claim.getClaimAmount() ? ClaimStatus.APPROVED : ClaimStatus.PARTIALLY_APPROVED);
         claim.setApprovedAmount(amount);
-        claim.setReviewedDate(LocalDateTime.now());
+        claim.setReviewDate(LocalDateTime.now());
         return insuranceClaimRepository.save(claim);
     }
 
@@ -73,7 +78,7 @@ public class InsuranceClaimServiceImp implements InsuranceClaimService {
         }
         claim.setClaimStatus(ClaimStatus.REJECTED);
         claim.setRejectionReason(reason);
-        claim.setReviewedDate(LocalDateTime.now());
+        claim.setReviewDate(LocalDateTime.now());
         return insuranceClaimRepository.save(claim);
     }
 
@@ -87,7 +92,7 @@ public class InsuranceClaimServiceImp implements InsuranceClaimService {
         }
         claim.setClaimStatus(ClaimStatus.SETTLED);
         claim.setPaidAmount(claim.getApprovedAmount());
-        claim.setSettledDate(LocalDateTime.now());
+        claim.setSettlementDate(LocalDateTime.now());
         return insuranceClaimRepository.save(claim);
     }
 

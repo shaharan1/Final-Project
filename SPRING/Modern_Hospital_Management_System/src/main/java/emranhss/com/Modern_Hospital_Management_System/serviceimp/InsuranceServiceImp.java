@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,15 +50,15 @@ public class InsuranceServiceImp implements InsuranceService {
         Insurance existing = insuranceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
         existing.setCompanyName(insurance.getCompanyName());
-        existing.setPolicyNumber(insurance.getPolicyNumber());
-        existing.setPolicyHolderName(insurance.getPolicyHolderName());
-        existing.setContactPhone(insurance.getContactPhone());
-        existing.setContactEmail(insurance.getContactEmail());
+        existing.setContactPerson(insurance.getContactPerson());
+        existing.setPhone(insurance.getPhone());
+        existing.setEmail(insurance.getEmail());
         existing.setAddress(insurance.getAddress());
+        existing.setPolicyPrefix(insurance.getPolicyPrefix());
         existing.setCoveragePercentage(insurance.getCoveragePercentage());
-        existing.setMaxCoverageAmount(insurance.getMaxCoverageAmount());
-        existing.setPolicyType(insurance.getPolicyType());
+        existing.setMaxCoverage(insurance.getMaxCoverage());
         existing.setActive(insurance.getActive());
+        existing.setNotes(insurance.getNotes());
         existing.setUpdatedDate(LocalDateTime.now());
         return insuranceRepository.save(existing);
     }

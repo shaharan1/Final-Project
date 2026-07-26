@@ -2,6 +2,7 @@ package emranhss.com.Modern_Hospital_Management_System.controller;
 
 import emranhss.com.Modern_Hospital_Management_System.dto.request.RefundRequest;
 import emranhss.com.Modern_Hospital_Management_System.entity.Refund;
+import emranhss.com.Modern_Hospital_Management_System.enums.RefundStatus;
 import emranhss.com.Modern_Hospital_Management_System.service.RefundService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/refunds")
@@ -21,31 +21,41 @@ public class RefundController {
 
     @GetMapping
     public ResponseEntity<List<Refund>> getAll() {
-        return ResponseEntity.ok(refundService.getAllRefunds());
+        return ResponseEntity.ok(refundService.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Refund> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(refundService.getRefundById(id));
+        return ResponseEntity.ok(refundService.getById(id));
     }
 
     @GetMapping("/pending")
     public ResponseEntity<List<Refund>> getPending() {
-        return ResponseEntity.ok(refundService.getPendingRefunds());
+        return ResponseEntity.ok(refundService.getPending());
     }
 
     @PostMapping
     public ResponseEntity<Refund> createRefund(@RequestBody RefundRequest request) {
-        return new ResponseEntity<>(refundService.createRefund(request), HttpStatus.CREATED);
+        Refund refund = new Refund();
+        refund.setPaymentId(request.getPaymentId());
+        refund.setInvoiceNumber(request.getInvoiceNumber());
+        refund.setPatientId(request.getPatientId());
+        refund.setPatientName(request.getPatientName());
+        refund.setRefundAmount(request.getRefundAmount());
+        refund.setRefundReason(request.getRefundReason());
+        refund.setRefundType(request.getRefundType());
+        refund.setProcessedBy(request.getProcessedBy());
+        refund.setNotes(request.getNotes());
+        return new ResponseEntity<>(refundService.createRefund(refund), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/approve")
-    public ResponseEntity<Refund> approveRefund(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Refund> approveRefund(@PathVariable Long id, @RequestBody java.util.Map<String, String> body) {
         return ResponseEntity.ok(refundService.approveRefund(id, body.get("approvedBy")));
     }
 
     @PutMapping("/{id}/reject")
-    public ResponseEntity<Refund> rejectRefund(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<Refund> rejectRefund(@PathVariable Long id, @RequestBody java.util.Map<String, String> body) {
         return ResponseEntity.ok(refundService.rejectRefund(id, body.get("reason")));
     }
 
@@ -56,6 +66,6 @@ public class RefundController {
 
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Refund>> getByStatus(@PathVariable String status) {
-        return ResponseEntity.ok(refundService.getRefundsByStatus(status));
+        return ResponseEntity.ok(refundService.getByStatus(RefundStatus.valueOf(status)));
     }
 }

@@ -19,12 +19,12 @@ public class BillingNotificationController {
 
     @GetMapping
     public ResponseEntity<List<BillingNotification>> getAll() {
-        return ResponseEntity.ok(billingNotificationService.getAllNotifications());
+        return ResponseEntity.ok(billingNotificationService.getAll());
     }
 
     @GetMapping("/unread")
     public ResponseEntity<List<BillingNotification>> getUnread() {
-        return ResponseEntity.ok(billingNotificationService.getUnreadNotifications());
+        return ResponseEntity.ok(billingNotificationService.getUnread());
     }
 
     @GetMapping("/unread-count")
@@ -33,8 +33,9 @@ public class BillingNotificationController {
     }
 
     @PutMapping("/{id}/read")
-    public ResponseEntity<BillingNotification> markAsRead(@PathVariable Long id) {
-        return ResponseEntity.ok(billingNotificationService.markAsRead(id));
+    public ResponseEntity<Void> markAsRead(@PathVariable Long id) {
+        billingNotificationService.markAsRead(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/read-all")
