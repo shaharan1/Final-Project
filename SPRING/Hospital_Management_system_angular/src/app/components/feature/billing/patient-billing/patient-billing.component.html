@@ -227,17 +227,17 @@
           <h2>Recent Bills</h2>
         </div>
         <div class="recent-list">
-          <div class="recent-item" *ngFor="let bill of recentBills">
-            <div class="recent-main">
-              <span class="recent-bill-num">{{ bill.billNumber }}</span>
-              <span class="recent-patient">{{ bill.patientName }}</span>
-            </div>
-            <div class="recent-meta">
-              <span class="recent-date">{{ bill.date }}</span>
-              <span class="recent-total">{{ formatCurrency(bill.total) }}</span>
-              <span class="badge" [ngClass]="getStatusClass(bill.status)">{{ bill.status }}</span>
-            </div>
-          </div>
+  <div class="recent-item" *ngFor="let bill of recentBills" (click)="loadRecentBill(bill)">
+    <div class="recent-main">
+      <span class="recent-bill-num">{{ bill.billNumber }}</span>
+      <span class="recent-patient">{{ bill.patientName }}</span>
+    </div>
+    <div class="recent-meta">
+      <span class="recent-date">{{ bill.date }}</span>
+      <span class="recent-total">{{ formatCurrency(bill.total) }}</span>
+      <span class="badge" [ngClass]="getStatusClass(bill.status)">{{ bill.status }}</span>
+    </div>
+  </div>
         </div>
       </div>
 

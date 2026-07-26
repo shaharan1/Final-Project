@@ -42,7 +42,13 @@ interface RecentBill {
   styleUrl: './patient-billing.component.css'
 })
 export class PatientBillingComponent implements OnInit {
-  patients: Patient[] = [];
+  patients: Patient[] = [
+    { id: 1, name: 'Ahmed Rahman', phone: '01711-001001', address: 'House 12, Road 5, Dhanmondi', age: 45, gender: 'Male', patientCode: 'PAT00001', bloodGroup: 'A+', ward: 'Ward A', bedNumber: 'A-101' },
+    { id: 2, name: 'Sara Islam', phone: '01811-002002', address: 'House 8, Road 12, Gulshan', age: 32, gender: 'Female', patientCode: 'PAT00002', bloodGroup: 'O+', ward: 'Ward B', bedNumber: 'B-205' },
+    { id: 3, name: 'Mohammad Khan', phone: '01911-003003', address: 'House 5, Road 3, Mirpur', age: 58, gender: 'Male', patientCode: 'PAT00003', bloodGroup: 'B+', ward: 'Ward C', bedNumber: 'C-112' },
+    { id: 4, name: 'Fatima Begum', phone: '01611-004004', address: 'House 20, Road 7, Uttara', age: 28, gender: 'Female', patientCode: 'PAT00004', bloodGroup: 'AB-', ward: 'Ward A', bedNumber: 'A-203' },
+    { id: 5, name: 'Hasan Talukder', phone: '01511-005005', address: 'House 15, Road 2, Banani', age: 65, gender: 'Male', patientCode: 'PAT00005', bloodGroup: 'A-', ward: 'Ward D', bedNumber: 'D-301' },
+  ];
   filteredPatients: Patient[] = [];
   searchTerm = '';
   selectedPatient: Patient | null = null;
@@ -52,14 +58,9 @@ export class PatientBillingComponent implements OnInit {
   nextItemId = 1;
   categories = ['Consultation', 'Diagnostic', 'Therapy', 'Medicine', 'Procedure', 'Room Charge', 'Surgery', 'Lab Test', 'Imaging', 'Other'];
 
-  billForm = {
-    billNumber: '',
-    patientName: '',
-    phone: '',
-    address: '',
-    age: null as number | null,
-    gender: '',
-    notes: ''
+  billForm: any = {
+    billNumber: '', patientName: '', phone: '', address: '',
+    age: null, gender: '', notes: ''
   };
 
   recentBills: RecentBill[] = [];
@@ -121,7 +122,7 @@ export class PatientBillingComponent implements OnInit {
   }
 
   addItem(): void {
-    const newItem: BillItem = {
+    this.billItems.push({
       id: this.nextItemId++,
       category: '',
       description: '',
@@ -129,8 +130,7 @@ export class PatientBillingComponent implements OnInit {
       unitPrice: 0,
       discount: 0,
       amount: 0
-    };
-    this.billItems.push(newItem);
+    });
     this.cdr.detectChanges();
   }
 
@@ -140,16 +140,19 @@ export class PatientBillingComponent implements OnInit {
   }
 
   updateItem(item: BillItem): void {
+    if (item.qty == null) item.qty = 0;
+    if (item.unitPrice == null) item.unitPrice = 0;
+    if (item.discount == null) item.discount = 0;
     item.amount = (item.qty * item.unitPrice) - ((item.qty * item.unitPrice * item.discount) / 100);
     this.calculateTotals();
   }
 
   calculateSubtotal(): number {
-    return this.billItems.reduce((sum, item) => sum + item.amount, 0);
+    return this.billItems.reduce((sum, item) => sum + (item.amount || 0), 0);
   }
 
   calculateDiscount(): number {
-    return this.calculateSubtotal() * (this.discountPercent / 100);
+    return this.calculateSubtotal() * ((this.discountPercent || 0) / 100);
   }
 
   calculateTax(): number {
@@ -161,9 +164,7 @@ export class PatientBillingComponent implements OnInit {
   }
 
   calculateTotals(): void {
-    this.billItems.forEach(item => {
-      item.amount = (item.qty * item.unitPrice) - ((item.qty * item.unitPrice * item.discount) / 100);
-    });
+    this.billItems.forEach(item => this.updateItem(item));
     this.cdr.detectChanges();
   }
 
@@ -181,8 +182,18 @@ export class PatientBillingComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  loadRecentBill(bill: RecentBill): void {
+    this.billForm.billNumber = bill.billNumber;
+    this.billForm.patientName = bill.patientName;
+    this.msg = 'Loaded bill: ' + bill.billNumber;
+    this.msgType = 'success';
+    this.generateBillNumber();
+    this.cdr.detectChanges();
+  }
+
   saveDraft(): void {
-    this.msg = 'Bill saved as draft'; this.msgType = 'success';
+    this.msg = 'Bill saved as draft!'; this.msgType = 'success';
+    localStorage.setItem('draftBill', JSON.stringify({ billForm: this.billForm, billItems: this.billItems }));
   }
 
   generateInvoice(): void {
@@ -193,10 +204,11 @@ export class PatientBillingComponent implements OnInit {
       this.msg = 'Please enter patient name'; this.msgType = 'error'; return;
     }
     this.loading = true;
+    const billNum = this.billForm.billNumber;
     setTimeout(() => {
       this.loading = false;
-      this.msg = 'Invoice generated successfully!'; this.msgType = 'success';
-    }, 500);
+      this.msg = 'Invoice generated successfully! Bill #' + billNum; this.msgType = 'success';
+    }, 800);
   }
 
   printBill(): void {
@@ -212,7 +224,7 @@ export class PatientBillingComponent implements OnInit {
   }
 
   formatCurrency(amount: number): string {
-    return '৳' + amount.toLocaleString('en-BD');
+    return '৳' + (amount || 0).toLocaleString('en-BD');
   }
 
   toggleRecentBills(): void {

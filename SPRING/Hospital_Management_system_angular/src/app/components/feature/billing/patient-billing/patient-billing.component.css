@@ -64,17 +64,36 @@
   transition: all 0.2s ease;
   text-decoration: none;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s ease;
+}
+.btn:active::after {
+  background: rgba(255,255,255,0.15);
 }
 .btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn:disabled::after { display: none; }
 .btn-primary { background: linear-gradient(135deg, #0d6efd, #6610f2); color: #fff; box-shadow: 0 4px 16px rgba(13,110,253,0.3); }
 .btn-primary:hover:not(:disabled) { box-shadow: 0 8px 24px rgba(13,110,253,0.4); }
+.btn-primary:active:not(:disabled) { box-shadow: 0 2px 8px rgba(13,110,253,0.3); transform: translateY(0); }
 .btn-secondary { background: rgba(255,255,255,0.06); color: #f0f4f8; border: 1px solid rgba(255,255,255,0.1); }
-.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+.btn-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+.btn-secondary:active { background: rgba(255,255,255,0.04); }
 .btn-outline { background: transparent; color: #f0f4f8; border: 1px solid rgba(255,255,255,0.15); }
-.btn-outline:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
-.btn-success { background: linear-gradient(135deg, #198754, #0d6e3e); color: #fff; }
-.btn-success:hover { box-shadow: 0 8px 24px rgba(25,135,84,0.4); transform: translateY(-2px); }
+.btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3); }
+.btn-outline:active { background: rgba(255,255,255,0.04); }
+.btn-success { background: linear-gradient(135deg, #198754, #0d6e3e); color: #fff; box-shadow: 0 4px 16px rgba(25,135,84,0.3); }
+.btn-success:hover:not(:disabled) { box-shadow: 0 8px 24px rgba(25,135,84,0.4); }
+.btn-success:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 8px rgba(25,135,84,0.3); }
 .btn-sm { padding: 8px 16px; font-size: 0.78rem; border-radius: 8px; }
 .btn-remove {
   width: 32px; height: 32px;
@@ -275,8 +294,12 @@
 /* ===== RECENT BILLS ===== */
 .recent-bills-card { max-height: 400px; overflow-y: auto; }
 .recent-list { display: flex; flex-direction: column; gap: 8px; }
-.recent-item { padding: 12px; background: rgba(255,255,255,0.02); border-radius: 10px; transition: all 0.2s; }
-.recent-item:hover { background: rgba(255,255,255,0.04); }
+.recent-item {
+  padding: 12px; background: rgba(255,255,255,0.02); border-radius: 10px;
+  cursor: pointer; transition: all 0.2s ease;
+}
+.recent-item:hover { background: rgba(255,255,255,0.06); transform: translateX(3px); }
+.recent-item:active { background: rgba(255,255,255,0.02); transform: translateX(0); }
 .recent-main { display: flex; flex-direction: column; margin-bottom: 4px; }
 .recent-bill-num { font-size: 0.75rem; font-weight: 600; color: #f0f4f8; font-family: 'IBM Plex Mono', monospace; }
 .recent-patient { font-size: 0.78rem; color: rgba(255,255,255,0.65); }
