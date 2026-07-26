@@ -11,6 +11,7 @@ public class AdmissionResponse {
 
     private Long admissionId;
     private Long patientId;
+    private Long bedId;
     private String patientName;
     private String patientCode;
     private String doctorName;

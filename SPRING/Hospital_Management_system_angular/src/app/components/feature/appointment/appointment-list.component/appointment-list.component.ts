@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { AppointmentModel } from '../../../models/appointmentModel';
-import { AppointmentService } from '../../../services/appointment.service';
-import { DoctorModelService } from '../../../services/doctor.service';
-import { StorageService } from '../../../services/storage.service';
+
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { AppointmentModel } from '../../../../models/appointmentModel';
+import { AppointmentService } from '../../../../services/appointment.service';
+import { DoctorModelService } from '../../../../services/doctor.service';
+import { StorageService } from '../../../../services/storage.service';
 
 @Component({
   selector: 'app-appointment-list.component',
@@ -56,11 +57,12 @@ export class AppointmentList implements OnInit {
       next: (res) => {
         this.doctorName = res.name || '';
         this.doctorId = res.id;
+          this.cdr.markForCheck();
         if (res.id) {
           this.appointmentService.getDoctorAppointments(res.id).subscribe({
             next: (appts) => {
               this.appointments = appts;
-              this.cdr.markForCheck();
+            
             },
             error: (err) => console.log(err)
           });
@@ -80,6 +82,7 @@ export class AppointmentList implements OnInit {
       next: (res) => {
 
         this.doctors = res;
+          this.cdr.markForCheck();
 
       }
 
@@ -116,6 +119,7 @@ export class AppointmentList implements OnInit {
         next: (res) => {
 
           this.appointments = res;
+            this.cdr.markForCheck();
 
         },
 

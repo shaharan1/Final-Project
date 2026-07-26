@@ -57,6 +57,10 @@ export class AdmissionService {
 
   }
 
+  getActive(): Observable<AdmissionResponse[]> {
+    return this.http.get<AdmissionResponse[]>(`${this.api}/active`);
+  }
+
   getById(id: number): Observable<AdmissionResponse> {
 
     return this.http.get<AdmissionResponse>(`${this.api}/${id}`);

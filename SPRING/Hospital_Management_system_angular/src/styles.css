@@ -85,6 +85,16 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 600;
 }
 
+.btn-secondary {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
 .btn-ghost {
   background: transparent;
   color: #EDEDE2;

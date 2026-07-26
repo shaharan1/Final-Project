@@ -1,0 +1,158 @@
+<div class="lab-page">
+  <div class="lab-hero lab-hero-amber">
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">Ⓔ</div>
+      <div>
+        <h1>Result Entry</h1>
+        <p>Enter test results and manage the testing workflow</p>
+      </div>
+    </div>
+    <div class="lab-hero-stats">
+      <div class="lab-hero-stat lab-stat-ready"><span class="lab-hero-num">{{ readyCount }}</span><span class="lab-hero-lbl">Ready</span></div>
+      <div class="lab-hero-stat lab-stat-testing"><span class="lab-hero-num">{{ testingCount }}</span><span class="lab-hero-lbl">Testing</span></div>
+      <div class="lab-hero-stat lab-stat-done"><span class="lab-hero-num">{{ doneCount }}</span><span class="lab-hero-lbl">Done</span></div>
+    </div>
+    <div class="lab-hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 400 80" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,40 30,40 45,15 60,65 75,40 120,40 135,25 150,55 165,40 400,40" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="lab-toolbar">
+    <div class="lab-search-wrap">
+      <span class="lab-search-icon">🔍</span>
+      <input class="lab-search" placeholder="Search patient, test..." [(ngModel)]="searchKeyword">
+    </div>
+    <div class="lab-tabs">
+      <button class="lab-tab" [class.active]="activeTab==='READY'" (click)="activeTab='READY'">
+        <span class="lab-tab-dot lab-dot-ready"></span> Ready <span class="lab-tab-count">{{ readyCount }}</span>
+      </button>
+      <button class="lab-tab lab-tab-testing" [class.active]="activeTab==='TESTING'" (click)="activeTab='TESTING'">
+        <span class="lab-tab-dot lab-dot-testing"></span> Testing <span class="lab-tab-count">{{ testingCount }}</span>
+      </button>
+      <button class="lab-tab lab-tab-done" [class.active]="activeTab==='DONE'" (click)="activeTab='DONE'">
+        <span class="lab-tab-dot lab-dot-done"></span> Result Entered <span class="lab-tab-count">{{ doneCount }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="lab-table-card">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th>Patient</th>
+            <th>Test</th>
+            <th>Sample</th>
+            <th>Normal Range</th>
+            <th>Status</th>
+            <th class="th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index" class="lab-row">
+            <td class="td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lab-patient-cell">
+                <div class="lab-avatar" [style.background]="getAvatarColor(order.patientName)">{{ getInitials(order.patientName) }}</div>
+                <div>
+                  <div class="lab-patient-name">{{ order.patientName }}</div>
+                  <div class="lab-patient-sub">{{ order.patientCode }}</div>
+                </div>
+              </div>
+            </td>
+            <td><div class="lab-test-name">{{ order.testName }}<br><small class="lab-test-sub">{{ order.testCode }}</small></div></td>
+            <td><span class="lab-sample-badge">{{ order.sampleType }}</span></td>
+            <td><span class="lab-range">{{ order.normalRange }}</span></td>
+            <td>
+              <span class="lab-status-chip" [class]="'lab-status-' + order.orderStatus.toLowerCase()">
+                {{ formatStatus(order.orderStatus) }}
+              </span>
+            </td>
+            <td>
+              <button class="lab-action-btn lab-start-btn" *ngIf="order.orderStatus==='SAMPLE_RECEIVED'" (click)="openStartModal(order)">
+                <span class="lab-btn-icon">▶</span> Start
+              </button>
+              <button class="lab-action-btn lab-result-btn" *ngIf="order.orderStatus==='TESTING'" (click)="openResultModal(order)">
+                <span class="lab-btn-icon">✎</span> Enter Result
+              </button>
+              <span class="lab-done-badge" *ngIf="order.orderStatus==='RESULT_ENTERED'">✓ Completed</span>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="7">
+              <div class="lab-empty-state">
+                <div class="lab-empty-icon lab-empty-amber">⏸</div>
+                <h4>Nothing here</h4>
+                <p>No tests in this stage</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Start Testing Modal -->
+  <div class="lab-modal-overlay" *ngIf="showStartModal" (click)="closeStartModal()">
+    <div class="lab-modal" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-amber">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">▶</div>
+          <div><h3>Start Testing</h3><p>Begin testing for this sample</p></div>
+        </div>
+        <button class="lab-modal-close" (click)="closeStartModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info-card">
+          <div class="lab-info-row"><span class="lab-info-label">Test</span><span class="lab-info-value">{{ selectedOrder.testName }}</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Patient</span><span class="lab-info-value">{{ selectedOrder.patientName }}</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Sample</span><span class="lab-info-value">{{ selectedOrder.sampleType }}</span></div>
+        </div>
+        <p class="lab-confirm-text">Ready to begin testing?</p>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeStartModal()">Cancel</button>
+        <button class="lab-btn-primary lab-btn-amber" (click)="startTesting()">Start Testing</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enter Result Modal -->
+  <div class="lab-modal-overlay" *ngIf="showResultModal" (click)="closeResultModal()">
+    <div class="lab-modal lab-modal-wide" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-green">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">✎</div>
+          <div><h3>Enter Test Result</h3><p>Record the test result value</p></div>
+        </div>
+        <button class="lab-modal-close" (click)="closeResultModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info-card">
+          <div class="lab-info-row"><span class="lab-info-label">Test</span><span class="lab-info-value">{{ selectedOrder.testName }} ({{ selectedOrder.testCode }})</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Patient</span><span class="lab-info-value">{{ selectedOrder.patientName }}</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Normal Range</span><span class="lab-info-value lab-range-highlight">{{ selectedOrder.normalRange }}</span></div>
+        </div>
+        <div class="lab-form-group">
+          <label>Result Value <span class="lab-required">*</span></label>
+          <input class="lab-form-input lab-form-input-lg" [(ngModel)]="resultValue" placeholder="e.g. 12.5 g/dL">
+        </div>
+        <div class="lab-form-group">
+          <label>Notes</label>
+          <textarea class="lab-form-textarea" rows="3" [(ngModel)]="resultNotes" placeholder="Additional observations..."></textarea>
+        </div>
+        <div class="lab-form-group">
+          <label>Entered By <span class="lab-required">*</span></label>
+          <input class="lab-form-input" [(ngModel)]="enteredBy" placeholder="Lab technician name">
+        </div>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeResultModal()">Cancel</button>
+        <button class="lab-btn-primary lab-btn-green" (click)="submitResult()">Submit Result</button>
+      </div>
+    </div>
+  </div>
+</div>

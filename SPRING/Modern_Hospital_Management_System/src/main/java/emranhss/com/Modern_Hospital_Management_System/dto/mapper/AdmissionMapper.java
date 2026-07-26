@@ -37,6 +37,7 @@ public class AdmissionMapper {
 
         if (booking != null && booking.getBed() != null) {
 
+            response.setBedId(booking.getBed().getId());
             response.setAssignedBedNumber(
                     booking.getBed().getBedNumber()
             );

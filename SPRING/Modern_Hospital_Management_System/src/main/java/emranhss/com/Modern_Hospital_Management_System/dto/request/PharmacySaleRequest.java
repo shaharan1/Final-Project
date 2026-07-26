@@ -1,16 +1,20 @@
 package emranhss.com.Modern_Hospital_Management_System.dto.request;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.util.List;
-
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PharmacySaleRequest {
-    private String patientType; // INPATIENT or OUTPATIENT
-    private Long billingId;     // Required only if patientType is INPATIENT
+    private String patientType;
+    private String patientName;
+    private String patientPhone;
+    private Long patientId;
+    private Long doctorId;
+    private String doctorName;
+    private Long prescriptionId;
+    private Long billingId;
     private Double discount;
+    private Double vat;
+    private Double paidAmount;
+    private String paymentMethod;
+    private String saleType;
     private List<PharmacySaleItemRequest> items;
 }

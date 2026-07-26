@@ -40,6 +40,11 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<PatientResponse>> searchPatients(@RequestParam String keyword) {
+        return ResponseEntity.ok(patientService.searchPatients(keyword));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PatientResponse> updatePatient(@PathVariable Long id, @RequestBody PatientRequest request) {
         return ResponseEntity.ok(patientService.updatePatient(id, request));

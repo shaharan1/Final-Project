@@ -12,6 +12,7 @@ public interface PatientService {
     PatientResponse getPatientById(Long id);
     PatientResponse getPatientByCode(String code);
     List<PatientResponse> getAllPatients();
+    List<PatientResponse> searchPatients(String keyword);
     PatientResponse updatePatient(Long id, PatientRequest request);
     void deletePatient(Long id);
 }

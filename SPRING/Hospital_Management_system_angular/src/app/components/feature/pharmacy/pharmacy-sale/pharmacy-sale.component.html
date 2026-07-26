@@ -1,0 +1,240 @@
+<div class="sale-page">
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5Z"/><path d="M6 9.01V9"/><path d="M22 12l-4.6 4.6"/><path d="M22 17l-4.6 4.6"/></svg>
+      </div>
+      <h1>Pharmacy POS &amp; Dispensing</h1>
+      <p>Process medicine sales and manage prescriptions</p>
+    </div>
+  </section>
+
+  <div class="tab-bar glass-card">
+    <button class="tab" [class.active]="activeTab === 'pos'" (click)="activeTab = 'pos'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      POS Terminal
+    </button>
+    <button class="tab" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Sale History
+    </button>
+  </div>
+
+  <div *ngIf="activeTab === 'pos'" class="pos-layout">
+    <div class="pos-left">
+      <div class="search-section glass-card">
+        <div class="search-medicine">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" [(ngModel)]="medicineSearchTerm" (input)="searchMedicines()" placeholder="Search medicine or scan barcode...">
+        </div>
+        <div class="search-results" *ngIf="searchedMedicines.length > 0">
+          <div class="search-result-item" *ngFor="let med of searchedMedicines" (click)="addToCart(med)">
+            <div class="med-info">
+              <span class="med-name">{{ med.medicineName }}</span>
+              <span class="med-generic">{{ med.genericName }}</span>
+              <span class="med-detail">{{ med.strength }} &middot; {{ med.dosageForm }} &middot; Batch: {{ med.batchNumber }}</span>
+            </div>
+            <div class="med-right">
+              <span class="med-stock" [class.low]="med.lowStock || (med.minimumStockLevel && (med.availableQuantity || 0) <= med.minimumStockLevel)">
+                {{ med.availableQuantity }} in stock
+                <span class="low-badge" *ngIf="med.lowStock || (med.minimumStockLevel && (med.availableQuantity || 0) <= med.minimumStockLevel)">LOW</span>
+              </span>
+              <span class="med-price">&#2547;{{ med.salePrice }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-section glass-card">
+        <h3 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          Cart ({{ cartItems.length }} items)
+        </h3>
+        <div class="cart-empty" *ngIf="cartItems.length === 0">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+          <p>Search &amp; add medicines to cart</p>
+        </div>
+        <div class="cart-items" *ngIf="cartItems.length > 0">
+          <div class="cart-item" *ngFor="let item of cartItems; let i = index">
+            <div class="cart-item-info">
+              <span class="item-name">{{ item.medicineName }}</span>
+              <span class="item-batch">{{ item.batchNumber }} &middot; &#2547;{{ item.unitPrice }}/unit</span>
+            </div>
+            <div class="cart-item-controls">
+              <div class="qty-wrapper">
+                <button class="qty-btn" (click)="item.quantity = item.quantity > 1 ? item.quantity - 1 : 1; updateCartItemQty(item)">-</button>
+                <input type="number" [(ngModel)]="item.quantity" (input)="updateCartItemQty(item)" min="1" class="qty-input">
+                <button class="qty-btn" (click)="item.quantity = item.quantity + 1; updateCartItemQty(item)">+</button>
+              </div>
+              <span class="item-subtotal">&#2547;{{ item.subtotal | number:'1.2-2' }}</span>
+              <button class="btn-remove" (click)="removeCartItem(i)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="low-stock-warning" *ngIf="lowStockWarning">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        {{ lowStockWarning }}
+      </div>
+    </div>
+
+    <div class="pos-right">
+      <div class="patient-section glass-card">
+        <h3 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Patient Information
+        </h3>
+        <div class="patient-type-toggle">
+          <button class="type-btn" [class.active]="patientType === 'OUTPATIENT'" (click)="patientType = 'OUTPATIENT'">Outpatient</button>
+          <button class="type-btn" [class.active]="patientType === 'INPATIENT'" (click)="patientType = 'INPATIENT'">Inpatient</button>
+        </div>
+        <div class="form-group">
+          <label>Patient Name</label>
+          <input type="text" [(ngModel)]="patientName" placeholder="Enter patient name">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" [(ngModel)]="patientPhone" placeholder="+880-XXXXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label>Doctor Name</label>
+          <input type="text" [(ngModel)]="doctorName" placeholder="Prescribing doctor">
+        </div>
+      </div>
+
+      <div class="payment-section glass-card">
+        <h3 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Payment Summary
+        </h3>
+        <div class="summary-rows">
+          <div class="summary-row"><span>Subtotal</span><span>&#2547;{{ subtotal | number:'1.2-2' }}</span></div>
+          <div class="summary-row discount-row">
+            <span>Discount</span>
+            <input type="number" [(ngModel)]="discount" (input)="onDiscountChange()" min="0" class="discount-input" placeholder="0">
+          </div>
+          <div class="summary-row"><span>VAT (18%)</span><span>&#2547;{{ vat | number:'1.2-2' }}</span></div>
+          <div class="summary-row total-row"><span>Net Payable</span><span class="total-amount">&#2547;{{ netPayable | number:'1.2-2' }}</span></div>
+          <div class="summary-row paid-row">
+            <span>Paid Amount</span>
+            <input type="number" [(ngModel)]="paidAmount" (input)="onPaidChange()" min="0" class="paid-input" placeholder="0.00">
+          </div>
+          <div class="summary-row change-row" *ngIf="changeAmount > 0"><span>Change</span><span class="change-amount">&#2547;{{ changeAmount | number:'1.2-2' }}</span></div>
+        </div>
+
+        <div class="payment-methods">
+          <button class="method-btn" [class.active]="paymentMethod === 'Cash'" (click)="selectPayment('Cash')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            Cash
+          </button>
+          <button class="method-btn" [class.active]="paymentMethod === 'Card'" (click)="selectPayment('Card')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Card
+          </button>
+          <button class="method-btn" [class.active]="paymentMethod === 'Mobile'" (click)="selectPayment('Mobile')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            Mobile Banking
+          </button>
+        </div>
+
+        <button class="btn btn-confirm-sale" (click)="confirmSale()" [disabled]="cartItems.length === 0 || paidAmount < netPayable">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Confirm Sale
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'history'" class="history-section">
+    <div class="toolbar glass-card">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterSales()" placeholder="Search invoice, patient, method...">
+      </div>
+    </div>
+    <div class="table-container glass-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice No</th>
+            <th>Patient</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Net Payable</th>
+            <th>Paid</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sale of filteredSales">
+            <td class="fw-semibold">{{ sale.saleInvoiceNo }}</td>
+            <td>{{ sale.patientName }}</td>
+            <td><span class="badge" [class.badge-ip]="sale.patientType === 'INPATIENT'">{{ sale.patientType }}</span></td>
+            <td>{{ sale.saleDate }}</td>
+            <td>&#2547;{{ sale.netPayable | number:'1.2-2' }}</td>
+            <td class="text-green">&#2547;{{ sale.paidAmount | number:'1.2-2' }}</td>
+            <td>
+              <span class="method-badge">
+                <svg *ngIf="sale.paymentMethod === 'Cash'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                <svg *ngIf="sale.paymentMethod === 'Card'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                <svg *ngIf="sale.paymentMethod === 'Mobile'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                {{ sale.paymentMethod }}
+              </span>
+            </td>
+            <td><span class="badge" [ngClass]="getStatusClass(sale.paymentStatus || '')">{{ sale.paymentStatus }}</span></td>
+            <td>
+              <button class="btn-icon view" (click)="viewSaleDetail(sale)" title="View">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-state" *ngIf="filteredSales.length === 0">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <p>No sales found</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showSaleDetailModal" (click)="closeSaleDetailModal()">
+    <div class="modal modal-lg glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Sale Detail &mdash; {{ selectedSale?.saleInvoiceNo }}</h2>
+        <button class="btn-close" (click)="closeSaleDetailModal()">&times;</button>
+      </div>
+      <div class="modal-body" *ngIf="selectedSale">
+        <div class="detail-grid">
+          <div class="detail-item"><span class="label">Patient:</span><span>{{ selectedSale.patientName }}</span></div>
+          <div class="detail-item"><span class="label">Type:</span><span>{{ selectedSale.patientType }}</span></div>
+          <div class="detail-item"><span class="label">Doctor:</span><span>{{ selectedSale.doctorName }}</span></div>
+          <div class="detail-item"><span class="label">Phone:</span><span>{{ selectedSale.patientPhone }}</span></div>
+          <div class="detail-item"><span class="label">Date:</span><span>{{ selectedSale.saleDate }}</span></div>
+          <div class="detail-item"><span class="label">Payment:</span><span>{{ selectedSale.paymentMethod }}</span></div>
+          <div class="detail-item"><span class="label">Total:</span><span>&#2547;{{ selectedSale.totalAmount | number:'1.2-2' }}</span></div>
+          <div class="detail-item"><span class="label">Discount:</span><span>&#2547;{{ selectedSale.discount | number:'1.2-2' }}</span></div>
+          <div class="detail-item"><span class="label">VAT:</span><span>&#2547;{{ selectedSale.vat | number:'1.2-2' }}</span></div>
+          <div class="detail-item highlight"><span class="label">Net Payable:</span><span>&#2547;{{ selectedSale.netPayable | number:'1.2-2' }}</span></div>
+          <div class="detail-item"><span class="label">Paid:</span><span class="text-green">&#2547;{{ selectedSale.paidAmount | number:'1.2-2' }}</span></div>
+          <div class="detail-item"><span class="label">Change:</span><span>&#2547;{{ selectedSale.changeAmount | number:'1.2-2' }}</span></div>
+        </div>
+        <div class="empty-state small" *ngIf="!selectedSale.items || selectedSale.items.length === 0">
+          <p>Item details not available for this sale</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeSaleDetailModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

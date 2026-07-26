@@ -19,7 +19,7 @@ public class PharmacySaleItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pharmacy_sale_id", nullable = false)
-    @JsonIgnoreProperties("saleItems")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "items"})
     private PharmacySale pharmacySale;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,7 +27,13 @@ public class PharmacySaleItem {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private MedicineStock medicineStock;
 
-    private Integer quantity;
-    private Double unitPrice;
-    private Double subtotal;
+    private int quantity;
+
+    private double unitPrice;
+
+    private double discount = 0.0;
+
+    private double subtotal;
+
+    private String batchNumber;
 }

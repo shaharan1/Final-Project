@@ -39,6 +39,9 @@ public class User implements UserDetails {
 
     private boolean active;
 
+    @Column(length = 500)
+    private String image;
+
 
 
     @Override

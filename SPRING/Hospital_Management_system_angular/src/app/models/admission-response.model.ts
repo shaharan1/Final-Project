@@ -4,6 +4,8 @@ export interface AdmissionResponse {
 
     patientId: number;
 
+    bedId: number;
+
     patientName: string;
 
     patientCode: string;

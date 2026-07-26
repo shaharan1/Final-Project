@@ -92,6 +92,12 @@ public class PdfPatientDoctorSection {
                 prescription.getDoctor().getSpecialization(),
                 PdfStyle.VALUE_FONT));
 
+        if (prescription.getDoctor().getStudy() != null && !prescription.getDoctor().getStudy().isEmpty()) {
+            doctorCell.addElement(new Paragraph(
+                    "Qualification : " + prescription.getDoctor().getStudy(),
+                    PdfStyle.VALUE_FONT));
+        }
+
         doctorCell.addElement(new Paragraph(
                 "Date : " +
                         prescription.getCreatedDate().format(

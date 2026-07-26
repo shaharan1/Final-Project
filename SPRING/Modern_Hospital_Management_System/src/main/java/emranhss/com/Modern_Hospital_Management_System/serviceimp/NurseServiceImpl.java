@@ -10,6 +10,7 @@ import emranhss.com.Modern_Hospital_Management_System.repository.NurseRepository
 import emranhss.com.Modern_Hospital_Management_System.repository.UserRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.NurseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -22,6 +23,8 @@ public class NurseServiceImpl implements NurseService {
     private final NurseRepository nurseRepository;
     private final UserRepository userRepository;
     private final NurseMapper nurseMapper;
+    private  final PasswordEncoder passwordEncoder;
+
 
 
 
@@ -34,7 +37,7 @@ public class NurseServiceImpl implements NurseService {
         user.setEmail(request.getEmail());
         user.setName(request.getName());
         user.setPhone(request.getPhone());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.Nurse);
         user.setActive(true);
 

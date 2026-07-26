@@ -92,12 +92,22 @@ export class NavigationService {
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
           { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
           { label: 'Prescription', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+          { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
+          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
+          { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
+          { label: 'Pharmacy Sale', icon: '💊', route: '/pharmacy-sale', section: 'pharmacysale' },
+          { label: 'Pharmacy Reports', icon: '📈', route: '/pharmacy-reports', section: 'pharmacyreports' },
         ],
       },
       {
         label: 'Laboratory & Tests',
         items: [
-          { label: 'Tests', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
+          { label: 'Test Catalog', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
+          { label: 'Lab Reception', icon: 'Ⓡ', route: '/lab-reception', section: 'labreception' },
+          { label: 'Sample Collection', icon: 'Ⓢ', route: '/sample-collection', section: 'samplecollection' },
+          { label: 'Result Entry', icon: 'Ⓔ', route: '/result-entry', section: 'resultentry' },
+          { label: 'Verification', icon: '✓', route: '/lab-verification', section: 'labverification' },
         ],
       },
       {
@@ -129,6 +139,12 @@ export class NavigationService {
         items: [
           { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
+        ],
+      },
+      {
+        label: 'Laboratory',
+        items: [
+          { label: 'Lab Reports', icon: 'Ⓛ', route: '/doctor-lab-reports', section: 'labreports' },
         ],
       },
     ];
@@ -231,10 +247,20 @@ export class NavigationService {
         label: 'Overview',
         items: [
           { label: 'Dashboard', icon: '◆', route: '/pharmacist-dashboard', section: 'dashboard' },
+          { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
         ],
       },
       {
-        label: 'Pharmacy',
+        label: 'Pharmacy Operations',
+        items: [
+          { label: 'Pharmacy Sale', icon: '💊', route: '/pharmacy-sale', section: 'pharmacysale' },
+          { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
+          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
+        ],
+      },
+      {
+        label: 'Catalog',
         items: [
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
           { label: 'Add Medicine', icon: '+', route: '/medicines/create', section: 'addmedicine' },
@@ -246,6 +272,12 @@ export class NavigationService {
         label: 'Prescriptions',
         items: [
           { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+        ],
+      },
+      {
+        label: 'Reports',
+        items: [
+          { label: 'Pharmacy Reports', icon: '📈', route: '/pharmacy-reports', section: 'pharmacyreports' },
         ],
       },
     ];
@@ -262,8 +294,17 @@ export class NavigationService {
       {
         label: 'Laboratory',
         items: [
-          { label: 'Tests', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
+          { label: 'Test Catalog', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
           { label: 'Add Test', icon: '+', route: '/tests/create', section: 'addtest' },
+        ],
+      },
+      {
+        label: 'Lab Workflow',
+        items: [
+          { label: 'Lab Reception', icon: 'Ⓡ', route: '/lab-reception', section: 'labreception' },
+          { label: 'Sample Collection', icon: 'Ⓢ', route: '/sample-collection', section: 'samplecollection' },
+          { label: 'Result Entry', icon: 'Ⓔ', route: '/result-entry', section: 'resultentry' },
+          { label: 'Verification', icon: '✓', route: '/lab-verification', section: 'labverification' },
         ],
       },
       {
@@ -311,6 +352,7 @@ export class NavigationService {
         label: 'Overview',
         items: [
           { label: 'Dashboard', icon: '◆', route: '/inventory-manager-dashboard', section: 'dashboard' },
+          { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
         ],
       },
       {
@@ -318,8 +360,16 @@ export class NavigationService {
         items: [
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
           { label: 'Add Medicine', icon: '+', route: '/medicines/create', section: 'addmedicine' },
+          { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
           { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
           { label: 'Add Generic', icon: '+', route: '/generics', section: 'addgeneric' },
+        ],
+      },
+      {
+        label: 'Suppliers & Purchase',
+        items: [
+          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
         ],
       },
       {
@@ -327,6 +377,12 @@ export class NavigationService {
         items: [
           { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
           { label: 'Bed Management', icon: 'Ⓑ', route: '/bed-management', section: 'bed' },
+        ],
+      },
+      {
+        label: 'Reports',
+        items: [
+          { label: 'Pharmacy Reports', icon: '📈', route: '/pharmacy-reports', section: 'pharmacyreports' },
         ],
       },
     ];

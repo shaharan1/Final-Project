@@ -65,7 +65,7 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
             saleItem.setSubtotal(itemSubtotal);
             runningTotal += itemSubtotal;
 
-            sale.getSaleItems().add(saleItem);
+            sale.getItems().add(saleItem);
         }
 
         // 3. Complete main invoice financial deductions calculations

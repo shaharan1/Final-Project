@@ -1,75 +1,61 @@
-<div class="container-fluid mt-4">
+<div class="container-fluid">
 
-    <div class="card shadow">
-
-        <div class="card-header bg-primary text-white">
-
-            <h4>
-                Ward Management
-            </h4>
-
+    <!-- Header -->
+    <div class="wl-header">
+        <div>
+            <h3>Ward List</h3>
+            <p class="wl-subtitle">All hospital wards with live bed status</p>
         </div>
-
-        <div class="card-body">
-
-            <table class="table table-bordered table-hover">
-
-                <thead class="table-dark">
-
-                    <tr>
-
-                        <th>#</th>
-
-                        <th>Ward Name</th>
-
-                        <th>Department</th>
-
-                        <th>Room Type</th>
-
-                        <th>Total Beds</th>
-
-                        <th>Daily Charge</th>
-
-                        <th>Action</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    <tr *ngFor="let ward of wards; let i=index">
-
-                        <td>{{i+1}}</td>
-
-                        <td>{{ward.name}}</td>
-
-                        <td>{{ward.departmentName}}</td>
-
-                        <td>{{ward.roomType}}</td>
-
-                        <td>{{ward.totalBeds}}</td>
-
-                        <td>{{ward.basePricePerDay | number}}</td>
-
-                        <td>
-
-                            <button routerLink="/bed-management/{{ward.id}}" class="btn btn-primary btn-sm">
-
-                                Manage Beds
-
-                            </button>
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
+        <button class="wl-btn-primary" routerLink="/ward-management">
+            Ward Management
+        </button>
     </div>
 
+    <!-- Search -->
+    <div class="wl-search-bar">
+        <input class="wl-search" placeholder="Search ward or department..." [(ngModel)]="searchKeyword">
+    </div>
+
+    <!-- Ward Table -->
+    <div class="wl-card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ward Name</th>
+                        <th>Department</th>
+                        <th>Room Type</th>
+                        <th>Total Beds</th>
+                        <th>Available</th>
+                        <th>Occupied</th>
+                        <th>Daily Charge</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ward of filteredWards; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><strong>{{ ward.name }}</strong></td>
+                        <td>{{ ward.departmentName }}</td>
+                        <td>
+                            <span class="wl-badge">{{ ward.roomType }}</span>
+                        </td>
+                        <td>{{ getWardTotal(ward) }}</td>
+                        <td><span class="wl-avail">{{ getWardAvailable(ward) }}</span></td>
+                        <td><span class="wl-occupied">{{ getWardOccupied(ward) }}</span></td>
+                        <td>&#2547; {{ ward.basePricePerDay | number:'1.0-0' }}</td>
+                        <td>
+                            <button class="wl-btn-sm" (click)="viewBeds(ward)">
+                                View Beds
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredWards.length === 0">
+                        <td colspan="9" class="wl-empty">No wards found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

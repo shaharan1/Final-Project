@@ -67,7 +67,7 @@
 
                     <h6>Total Patients</h6>
 
-                    <h2>145</h2>
+                    <h2>{{ totalPatients }}</h2>
 
                 </div>
 
@@ -83,7 +83,7 @@
 
                     <h6>Today's Appointment</h6>
 
-                    <h2>18</h2>
+                    <h2>{{ todayAppointments }}</h2>
 
                 </div>
 
@@ -99,7 +99,7 @@
 
                     <h6>Pending Reports</h6>
 
-                    <h2>7</h2>
+                    <h2>{{ pendingReports }}</h2>
 
                 </div>
 
@@ -260,7 +260,9 @@
 
                     <th>Status</th>
 
-                    <th></th>
+                    <th>Prescription</th>
+
+                    <th>Action</th>
 
                 </tr>
 
@@ -288,17 +290,43 @@
 
                     </td>
 
-                    <td>
+                     <td>
 
-                        <button
-                            class="btn btn-primary btn-sm"
-                            (click)="writePrescription(appointment.id)">
+                         <span class="badge" [ngClass]="hasPrescription(appointment.id) ? 'bg-success' : 'bg-secondary'">
 
-                            Write Prescription
+                             {{ hasPrescription(appointment.id) ? 'Prescribed' : 'Pending' }}
 
-                        </button>
+                         </span>
 
-                    </td>
+                     </td>
+
+                     <td>
+
+                        <ng-container *ngIf="hasPrescription(appointment.id); else writeBtn">
+
+                          <button
+                              class="btn btn-success btn-sm"
+                              (click)="editPrescription(appointment.id)">
+
+                              Edit Prescription
+
+                          </button>
+
+                        </ng-container>
+
+                        <ng-template #writeBtn>
+
+                          <button
+                              class="btn btn-primary btn-sm"
+                              (click)="writePrescription(appointment.id)">
+
+                              Write Prescription
+
+                          </button>
+
+                        </ng-template>
+
+                     </td>
 
                 </tr>
 

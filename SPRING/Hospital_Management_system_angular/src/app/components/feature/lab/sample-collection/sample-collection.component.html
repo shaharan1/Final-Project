@@ -1,0 +1,123 @@
+<div class="lab-page">
+  <div class="lab-hero lab-hero-green">
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">Ⓢ</div>
+      <div>
+        <h1>Sample Collection</h1>
+        <p>Samples collected and awaiting lab receipt</p>
+      </div>
+    </div>
+    <div class="lab-hero-stats">
+      <div class="lab-hero-stat">
+        <span class="lab-hero-num">{{ filteredOrders.length }}</span>
+        <span class="lab-hero-lbl">Awaiting Receipt</span>
+      </div>
+    </div>
+    <div class="lab-hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 400 80" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,40 30,40 45,15 60,65 75,40 120,40 135,25 150,55 165,40 400,40" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+
+  <div class="lab-search-row">
+    <div class="lab-search-wrap">
+      <span class="lab-search-icon">🔍</span>
+      <input class="lab-search" placeholder="Search patient, test..." [(ngModel)]="searchKeyword">
+    </div>
+  </div>
+
+  <div class="lab-table-card">
+    <div class="lab-table-header">
+      <h3>Samples Awaiting Lab Receipt</h3>
+      <span class="lab-table-count lab-count-blue">{{ filteredOrders.length }} samples</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th>Patient</th>
+            <th>Test</th>
+            <th>Sample Type</th>
+            <th>Collector</th>
+            <th>Collected Date</th>
+            <th class="th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index" class="lab-row">
+            <td class="td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lab-patient-cell">
+                <div class="lab-avatar lab-avatar-green" [style.background]="getAvatarColor(order.patientName)">{{ getInitials(order.patientName) }}</div>
+                <div>
+                  <div class="lab-patient-name">{{ order.patientName }}</div>
+                  <div class="lab-patient-sub">{{ order.patientCode }}</div>
+                </div>
+              </div>
+            </td>
+            <td><div class="lab-test-name">{{ order.testName }}</div></td>
+            <td><span class="lab-sample-badge">{{ order.sampleType }}</span></td>
+            <td>{{ order.sampleCollectorName }}</td>
+            <td><span class="lab-date">{{ order.sampleCollectedDate | date:'dd MMM, yyyy hh:mm a' }}</span></td>
+            <td>
+              <button class="lab-action-btn lab-receive-btn" (click)="openReceiveModal(order)">
+                <span class="lab-btn-icon">✓</span> Receive
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="7">
+              <div class="lab-empty-state">
+                <div class="lab-empty-icon lab-empty-green">✓</div>
+                <h4>All clear!</h4>
+                <p>No samples awaiting receipt</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Receive Modal -->
+  <div class="lab-modal-overlay" *ngIf="showReceiveModal" (click)="closeReceiveModal()">
+    <div class="lab-modal" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-green">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">✓</div>
+          <div>
+            <h3>Receive Sample in Lab</h3>
+            <p>Confirm sample receipt for testing</p>
+          </div>
+        </div>
+        <button class="lab-modal-close" (click)="closeReceiveModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info-card">
+          <div class="lab-info-row">
+            <span class="lab-info-label">Test</span>
+            <span class="lab-info-value">{{ selectedOrder.testName }} ({{ selectedOrder.testCode }})</span>
+          </div>
+          <div class="lab-info-row">
+            <span class="lab-info-label">Patient</span>
+            <span class="lab-info-value">{{ selectedOrder.patientName }}</span>
+          </div>
+          <div class="lab-info-row">
+            <span class="lab-info-label">Sample</span>
+            <span class="lab-info-value">{{ selectedOrder.sampleType }} | Collected by {{ selectedOrder.sampleCollectorName }}</span>
+          </div>
+        </div>
+        <div class="lab-form-group">
+          <label>Received By (Lab Technician)</label>
+          <input class="lab-form-input" [(ngModel)]="receivedBy" placeholder="Your name">
+        </div>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeReceiveModal()">Cancel</button>
+        <button class="lab-btn-primary lab-btn-green" (click)="receiveSample()">Confirm Receipt</button>
+      </div>
+    </div>
+  </div>
+</div>

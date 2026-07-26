@@ -16,5 +16,5 @@ public interface AdmissionService {
 
     AdmissionResponse getAdmissionById(Long id);
 
-
+    List<AdmissionResponse> getActiveAdmissions();
 }

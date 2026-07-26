@@ -18,6 +18,10 @@ export class InfrastructureService {
     return this.http.get<WardModel[]>(this.api + "/wards");
   }
 
+  getAllBeds() {
+    return this.http.get<BedModel[]>(this.api + "/beds");
+  }
+
   getBedsByWard(id: number) {
     return this.http.get<BedModel[]>(`${this.api}/wards/${id}/beds`);
   }

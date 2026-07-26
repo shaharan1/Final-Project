@@ -1,87 +1,83 @@
 .container-fluid {
-
     padding: 25px;
-
 }
 
 .dashboard-card {
-
     color: white;
-
     border-radius: 18px;
-
     padding: 30px;
-
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
-
-    transition: .3s;
-
+    transition: transform .3s, box-shadow .3s;
     min-height: 170px;
-
+    cursor: pointer;
 }
 
 .dashboard-card:hover {
-
     transform: translateY(-8px);
-
-    cursor: pointer;
-
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .2);
 }
 
 .dashboard-card h3 {
-
     font-weight: 700;
-
+    font-size: 20px;
 }
 
 .dashboard-card p {
-
-    margin-top: 10px;
-
+    margin-top: 8px;
+    opacity: 0.9;
 }
 
 .dashboard-card button {
-
     border-radius: 30px;
-
     padding: 10px 25px;
-
     font-weight: bold;
+    transition: transform .2s;
+}
 
+.dashboard-card button:hover {
+    transform: scale(1.05);
+}
+
+.bg-gradient-purple {
+    background: linear-gradient(135deg, #6610f2, #0d6efd);
 }
 
 .stat-card {
-
     background: white;
-
     border-radius: 15px;
-
     padding: 25px;
-
     text-align: center;
-
     box-shadow: 0 5px 20px rgba(0, 0, 0, .12);
+    transition: transform .3s, box-shadow .3s;
+}
 
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
 }
 
 .stat-card h5 {
-
     color: #777;
-
+    font-size: 14px;
 }
 
 .stat-card h2 {
-
     font-weight: bold;
-
     color: #0d6efd;
-
     margin-top: 15px;
+    font-size: 36px;
+}
 
+.stat-total h2 { color: #6610f2; }
+.stat-occupied h2 { color: #dc3545; }
+.stat-available h2 { color: #198754; }
+
+@media (max-width: 768px) {
+    .container-fluid { padding: 16px; }
+    .dashboard-card { min-height: 120px; padding: 20px; }
+    .dashboard-card h3 { font-size: 16px; }
+    .stat-card h2 { font-size: 28px; }
 }

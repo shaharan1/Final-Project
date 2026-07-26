@@ -2,13 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, RecentAppointment } from '../../../../services/dashboard.service';
 import { StorageService } from '../../../../services/storage.service';
+import { PrescriptionModel } from '../../../../models/prescriptionModel';
+import { PrescriptionService } from '../../../../services/prescription.service';
+import { DoctorModelService } from '../../../../services/doctor.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-dashboard-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
   templateUrl: './doctor-dashboard-home.component.html',
   styleUrl: './doctor-dashboard-home.component.css',
 })
@@ -17,13 +22,17 @@ export class DoctorDashboardHomeComponent implements OnInit {
   todayAppointments = 0;
   pendingReports = 0;
   appointments: RecentAppointment[] = [];
+  prescriptions: PrescriptionModel[] = [];
   loading = true;
   doctorName = 'Doctor';
 
   constructor(
     private dashboardService: DashboardService,
     private storageService: StorageService,
-    private cdr: ChangeDetectorRef
+    private prescriptionService: PrescriptionService,
+    private doctorService: DoctorModelService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -38,9 +47,40 @@ export class DoctorDashboardHomeComponent implements OnInit {
         this.loading = false;
         this.cdr.detectChanges();
       });
+      this.doctorService.findByUserId(user.userId).subscribe({
+        next: (doctor) => {
+          if (doctor?.id) {
+            this.loadPrescriptions(doctor.id);
+          }
+        },
+        error: () => {}
+      });
     } else {
       this.loading = false;
       this.cdr.detectChanges();
+    }
+  }
+
+  loadPrescriptions(doctorId: number): void {
+    this.prescriptionService.getByDoctorId(doctorId).subscribe({
+      next: (res: PrescriptionModel[]) => {
+        this.prescriptions = res;
+        this.cdr.markForCheck();
+      },
+      error: () => {}
+    });
+  }
+
+  hasPrescription(appointmentId: number): boolean {
+    return this.prescriptions.some(p => p.appointmentId === appointmentId);
+  }
+
+  editPrescription(appointmentId: number): void {
+    const prescription = this.prescriptions.find(p => p.appointmentId === appointmentId);
+    if (prescription?.id) {
+      this.router.navigate(['/prescriptions/edit', prescription.id]);
+    } else {
+      this.router.navigate(['/prescriptions/create', appointmentId]);
     }
   }
 

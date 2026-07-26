@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,16 +30,32 @@ public class Purchase {
     @Column(nullable = false, unique = true)
     private String invoiceNo;
 
-    @Temporal(TemporalType.DATE)
-    private Date purchaseDate;
+    private LocalDateTime purchaseDate;
 
-    private double totalAmount;
+    private Double totalAmount = 0.0;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private Double vat = 0.0;
 
+    private Double discount = 0.0;
+
+    private Double netAmount = 0.0;
+
+    private Double paidAmount = 0.0;
+
+    private Double dueAmount = 0.0;
+
+    @Column(nullable = false)
+    private String status = "PENDING";
+
+    private String paymentMethod = "CASH";
+
+    private String notes;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("purchase")
-    private List<PurchaseItem> items;
+    private List<PurchaseItem> items = new ArrayList<>();
 }

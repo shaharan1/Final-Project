@@ -9,14 +9,15 @@ import { NurseList } from './components/feature/nurse-list/nurse-list';
 import { OfficeStaffComponent } from './components/feature/office-staff.component/office-staff.component';
 import { OfficeStaffList } from './components/feature/office-staff-list.component/office-staff-list.component';
 import { ScheduleSlotComponent } from './components/feature/schedule-slot.component/schedule-slot.component';
-import { AppointmentList } from './components/feature/appointment-list.component/appointment-list.component';
-import { AppointmentComponent } from './components/feature/appointment.component/appointment.component';
-import { AppointmentSlip } from './components/feature/appointment-slip/appointment-slip';
+import { AppointmentList } from './components/feature/appointment/appointment-list.component/appointment-list.component';
+import { AppointmentComponent } from './components/feature/appointment/appointment.component/appointment.component';
+import { AppointmentSlip } from './components/feature/appointment/appointment-slip/appointment-slip';
 import { MedicineComponent } from './components/feature/medicine.component/medicine.component';
 import { MedicineListComponent } from './components/feature/medicine-list.component/medicine-list.component';
 import { Generic } from './components/feature/generic/generic';
 import { GenericListComponent } from './components/feature/generic-list/generic-list';
 import { PrescriptionComponent } from './components/feature/prescription/prescription';
+import { PrescriptionListComponent } from './components/feature/prescription/prescription-list.component';
 import { PatientComponent } from './components/feature/patient.component/patient.component';
 import { PatientListComponent } from './components/feature/patient-list.component/patient-list.component';
 import { LoginComponent } from './components/auth/login-component/login-component';
@@ -42,6 +43,18 @@ import { LabTechnicianDashboardComponent } from './components/feature/dashboards
 import { BillingClerkDashboardComponent } from './components/feature/dashboards/billing-clerk-dashboard/billing-clerk-dashboard.component';
 import { InventoryManagerDashboardComponent } from './components/feature/dashboards/inventory-manager-dashboard/inventory-manager-dashboard.component';
 import { WardManagerDashboardComponent } from './components/feature/dashboards/ward-manager-dashboard/ward-manager-dashboard.component';
+import { LabReceptionComponent } from './components/feature/lab/lab-reception/lab-reception.component';
+import { SampleCollectionComponent } from './components/feature/lab/sample-collection/sample-collection.component';
+import { ResultEntryComponent } from './components/feature/lab/result-entry/result-entry.component';
+import { LabVerificationComponent } from './components/feature/lab/lab-verification/lab-verification.component';
+import { DoctorLabReportComponent } from './components/feature/lab/doctor-lab-report/doctor-lab-report.component';
+
+import { SupplierComponent } from './components/feature/pharmacy/supplier/supplier.component';
+import { MedicineStockComponent } from './components/feature/pharmacy/medicine-stock/medicine-stock.component';
+import { PurchaseOrderComponent } from './components/feature/pharmacy/purchase-order/purchase-order.component';
+import { PharmacySaleComponent } from './components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component';
+import { PharmacyDashboardComponent } from './components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component';
+import { PharmacyReportComponent } from './components/feature/pharmacy/pharmacy-report/pharmacy-report.component';
 
 const ALL_ROLES = ['Admin', 'Doctor', 'Nurse', 'OfficeStaff', 'Receptionist', 'Pharmacist', 'LabTechnician', 'BillingClerk', 'InventoryManager', 'WardManager'];
 
@@ -99,7 +112,7 @@ export const routes: Routes = [
   { path: 'generic-list', component: GenericListComponent },
 
   // ============ Prescriptions ============
-  { path: 'prescriptions', component: PrescriptionComponent },
+  { path: 'prescriptions', component: PrescriptionListComponent },
   { path: 'prescriptions/edit/:id', component: PrescriptionComponent },
   { path: 'prescriptions/create/:appointmentId', component: PrescriptionComponent },
 
@@ -122,6 +135,21 @@ export const routes: Routes = [
   { path: 'ward', component: WardComponent },
   { path: 'ward-list', component: WardListComponent },
   { path: 'bed-management', component: BedManagementComponent },
+
+  // ============ Laboratory ============
+  { path: 'lab-reception', component: LabReceptionComponent },
+  { path: 'sample-collection', component: SampleCollectionComponent },
+  { path: 'result-entry', component: ResultEntryComponent },
+  { path: 'lab-verification', component: LabVerificationComponent },
+  { path: 'doctor-lab-reports', component: DoctorLabReportComponent },
+
+  // ============ Pharmacy Module ============
+  { path: 'pharmacy-dashboard', component: PharmacyDashboardComponent },
+  { path: 'suppliers', component: SupplierComponent },
+  { path: 'medicine-stock', component: MedicineStockComponent },
+  { path: 'purchase-orders', component: PurchaseOrderComponent },
+  { path: 'pharmacy-sale', component: PharmacySaleComponent },
+  { path: 'pharmacy-reports', component: PharmacyReportComponent },
 
   // ============ Public ============
   { path: '', component: LandingPageComponent },

@@ -74,4 +74,16 @@ public class InfrastructureController {
         return ResponseEntity.ok(infraService.getBedsByWard(wardId));
     }
 
+    @GetMapping("/facilities")
+    public ResponseEntity<List<FacilityResponse>> getAllFacilities() {
+        return ResponseEntity.ok(infraService.getAllFacilities());
+    }
+
+    @PutMapping("/beds/{id}/facilities")
+    public ResponseEntity<BedResponse> updateBedFacilities(
+            @PathVariable Long id,
+            @RequestBody java.util.Set<Long> facilityIds) {
+        return ResponseEntity.ok(infraService.updateBedFacilities(id, facilityIds));
+    }
+
 }

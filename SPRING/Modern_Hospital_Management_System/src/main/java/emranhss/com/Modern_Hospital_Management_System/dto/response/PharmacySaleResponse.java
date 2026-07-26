@@ -1,21 +1,28 @@
 package emranhss.com.Modern_Hospital_Management_System.dto.response;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
-
+import java.util.List;
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PharmacySaleResponse {
     private Long id;
     private String saleInvoiceNo;
     private String patientType;
+    private String patientName;
+    private String patientPhone;
+    private Long patientId;
+    private Long doctorId;
+    private String doctorName;
+    private Long prescriptionId;
     private Double totalAmount;
     private Double discount;
+    private Double vat;
     private Double netPayable;
+    private Double paidAmount;
+    private Double changeAmount;
+    private String paymentMethod;
     private String paymentStatus;
+    private String saleType;
+    private Long billingId;
+    private List<PharmacySaleItemResponse> items;
     private LocalDateTime saleDate;
-    private Long billingId; // Attached parent indoor ledger index link if present
 }

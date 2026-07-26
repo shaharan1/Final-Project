@@ -1,15 +1,15 @@
 package emranhss.com.Modern_Hospital_Management_System.dto.request;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import java.time.LocalDate;
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PurchaseItemRequest {
     private Long purchaseId;
     private Long stockId;
-    private int quantity;
-    private double unitPrice;
+    private Integer quantity;
+    private Double unitPrice;
+    private Double discount;
+    private Double vat;
+    private String batchNumber;
+    private LocalDate manufacturingDate;
+    private LocalDate expiryDate;
 }

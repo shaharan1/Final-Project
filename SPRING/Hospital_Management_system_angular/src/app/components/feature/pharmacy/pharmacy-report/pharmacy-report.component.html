@@ -1,0 +1,243 @@
+<div class="report-wrapper">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#198754" />
+            <stop offset="100%" stop-color="#0dcaf0" />
+          </linearGradient>
+        </defs>
+        <path class="wave wave-1" fill="none" stroke="url(#waveGrad)" stroke-width="3"
+          d="M0,100 L200,100 L250,100 L280,40 L310,160 L340,20 L370,180 L400,80 L430,120 L460,100 L700,100 L750,100 L780,40 L810,160 L840,20 L870,180 L900,80 L930,120 L960,100 L1200,100" />
+        <path class="wave wave-2" fill="none" stroke="url(#waveGrad)" stroke-width="2" opacity="0.4"
+          d="M0,100 L200,100 L250,100 L280,50 L310,150 L340,30 L370,170 L400,90 L430,110 L460,100 L700,100 L750,100 L780,50 L810,150 L840,30 L870,170 L900,90 L930,110 L960,100 L1200,100" />
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
+        </svg>
+      </div>
+      <h1>Pharmacy Reports</h1>
+      <p>Comprehensive analytics and insights for your pharmacy operations</p>
+    </div>
+  </section>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <div class="tabs">
+      <button *ngFor="let tab of tabs" class="tab" [class.active]="activeTab === tab.key" (click)="setTab(tab.key)">
+        {{ tab.label }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Report Forms -->
+  <div class="form-section">
+    <!-- Daily Sales -->
+    <div *ngIf="activeTab === 'daily'" class="report-form glass-card">
+      <h2>Daily Sales Report</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Select Date</label>
+          <input type="date" [(ngModel)]="dailyDate" class="form-input" />
+        </div>
+      </div>
+      <button class="btn-generate" (click)="generateDailySales()" [disabled]="loading">
+        <span *ngIf="!loading">Generate Report</span>
+        <span *ngIf="loading">Generating...</span>
+      </button>
+      <div *ngIf="dailySalesResult" class="results">
+        <div class="stat-cards">
+          <div class="stat-card">
+            <span class="stat-label">Total Sales</span>
+            <span class="stat-value">{{ dailySalesResult.totalSales ?? 0 }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Medicines Sold</span>
+            <span class="stat-value">{{ dailySalesResult.totalCount ?? 0 }}</span>
+          </div>
+          <div class="stat-card accent">
+            <span class="stat-label">Revenue</span>
+            <span class="stat-value">{{ (dailySalesResult.totalRevenue ?? 0) | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Sales -->
+    <div *ngIf="activeTab === 'monthly'" class="report-form glass-card">
+      <h2>Monthly Sales Report</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Year</label>
+          <input type="number" [(ngModel)]="monthlyYear" class="form-input" placeholder="2026" />
+        </div>
+        <div class="form-group">
+          <label>Month</label>
+          <select [(ngModel)]="monthlyMonth" class="form-input">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-generate" (click)="generateMonthlySales()" [disabled]="loading">
+        <span *ngIf="!loading">Generate Report</span>
+        <span *ngIf="loading">Generating...</span>
+      </button>
+      <div *ngIf="monthlySalesResult" class="results">
+        <div *ngIf="monthlySalesResult.breakdown && monthlySalesResult.breakdown.length > 0" class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Sales</th>
+                <th>Revenue</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of monthlySalesResult.breakdown">
+                <td>{{ row.date }}</td>
+                <td>{{ row.sales }}</td>
+                <td>{{ row.revenue | currency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!monthlySalesResult.breakdown || monthlySalesResult.breakdown.length === 0" class="stat-cards">
+          <div class="stat-card">
+            <span class="stat-label">Total Sales</span>
+            <span class="stat-value">{{ monthlySalesResult.totalSales ?? 0 }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Medicines Sold</span>
+            <span class="stat-value">{{ monthlySalesResult.totalCount ?? 0 }}</span>
+          </div>
+          <div class="stat-card accent">
+            <span class="stat-label">Revenue</span>
+            <span class="stat-value">{{ (monthlySalesResult.totalRevenue ?? 0) | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purchase Report -->
+    <div *ngIf="activeTab === 'purchase'" class="report-form glass-card">
+      <h2>Purchase Report</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" [(ngModel)]="purchaseStartDate" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" [(ngModel)]="purchaseEndDate" class="form-input" />
+        </div>
+      </div>
+      <button class="btn-generate" (click)="generatePurchaseReport()" [disabled]="loading">
+        <span *ngIf="!loading">Generate Report</span>
+        <span *ngIf="loading">Generating...</span>
+      </button>
+      <div *ngIf="purchaseReportResult" class="results">
+        <div class="stat-cards">
+          <div class="stat-card">
+            <span class="stat-label">Total Purchases</span>
+            <span class="stat-value">{{ purchaseReportResult.totalPurchases ?? 0 }}</span>
+          </div>
+          <div class="stat-card accent">
+            <span class="stat-label">Total Amount</span>
+            <span class="stat-value">{{ (purchaseReportResult.totalAmount ?? 0) | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock Report -->
+    <div *ngIf="activeTab === 'stock'" class="report-form glass-card">
+      <h2>Stock Report</h2>
+      <button class="btn-generate" (click)="generateStockReport()" [disabled]="loading">
+        <span *ngIf="!loading">Generate Stock Report</span>
+        <span *ngIf="loading">Generating...</span>
+      </button>
+      <div *ngIf="stockReportResult" class="results">
+        <div class="stat-cards">
+          <div class="stat-card">
+            <span class="stat-label">Total Medicines</span>
+            <span class="stat-value">{{ stockReportResult.totalMedicines ?? 0 }}</span>
+          </div>
+          <div class="stat-card warn">
+            <span class="stat-label">Low Stock</span>
+            <span class="stat-value">{{ stockReportResult.lowStock ?? 0 }}</span>
+          </div>
+          <div class="stat-card danger">
+            <span class="stat-label">Expired</span>
+            <span class="stat-value">{{ stockReportResult.expired ?? 0 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supplier Report -->
+    <div *ngIf="activeTab === 'supplier'" class="report-form glass-card">
+      <h2>Supplier Report</h2>
+      <button class="btn-generate" (click)="generateSupplierReport()" [disabled]="loading">
+        <span *ngIf="!loading">Generate Supplier Report</span>
+        <span *ngIf="loading">Generating...</span>
+      </button>
+      <div *ngIf="supplierReportResult" class="results">
+        <div *ngIf="supplierReportResult.suppliers && supplierReportResult.suppliers.length > 0" class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Contact</th>
+                <th>Total Orders</th>
+                <th>Outstanding Dues</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of supplierReportResult.suppliers">
+                <td>{{ s.name }}</td>
+                <td>{{ s.contact }}</td>
+                <td>{{ s.totalOrders }}</td>
+                <td>{{ s.dues | currency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="!supplierReportResult.suppliers || supplierReportResult.suppliers.length === 0" class="empty-state">
+          <p>No supplier data available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Print Button -->
+  <div class="print-section" *ngIf="dailySalesResult || monthlySalesResult || purchaseReportResult || stockReportResult || supplierReportResult">
+    <button class="btn-print" (click)="printReport()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 6 2 18 2 18 9" />
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+        <rect x="6" y="14" width="12" height="8" />
+      </svg>
+      Print Report
+    </button>
+  </div>
+</div>

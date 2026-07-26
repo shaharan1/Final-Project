@@ -1,5 +1,7 @@
 <app-layout pageTitle="Doctor Home">
 
+  <app-profile-card></app-profile-card>
+
   <section class="hero">
     <div class="hero-text">
       <p class="eyebrow">Clinical Overview</p>
@@ -7,6 +9,7 @@
       <p class="hero-desc" *ngIf="!loading">You have {{ todayAppointments }} appointments scheduled today and {{ pendingReports }} pending lab reports to review.</p>
       <div class="hero-actions">
         <a routerLink="/appointment-list" class="btn-primary">Today's Patients</a>
+        <a routerLink="/prescriptions" class="btn-secondary">My Prescriptions</a>
       </div>
     </div>
     <div class="hero-pulse" aria-hidden="true">
@@ -39,9 +42,9 @@
         <h2>Today's Appointments</h2>
         <a routerLink="/appointment-list" class="panel-link">View All →</a>
       </div>
-      <table class="mini-table" *ngIf="appointments.length > 0">
+       <table class="mini-table" *ngIf="appointments.length > 0">
         <thead>
-          <tr><th>Patient</th><th>Time</th><th>Status</th><th>Action</th></tr>
+          <tr><th>Patient</th><th>Time</th><th>Status</th><th>Prescription</th><th>Action</th></tr>
         </thead>
         <tbody>
           <tr *ngFor="let appt of appointments">
@@ -49,9 +52,14 @@
             <td>{{ appt.appointmentTime }}</td>
             <td><span class="badge {{ getBadgeClass(appt.status) }}">{{ formatStatus(appt.status) }}</span></td>
             <td>
-              <a [routerLink]="['/prescriptions/create', appt.id]" class="btn-write-rx" *ngIf="appt.status !== 'CANCELLED'">
-                Write Prescription
-              </a>
+              <span class="badge" [ngClass]="hasPrescription(appt.id) ? 'bg-success' : 'bg-secondary'" *ngIf="appt.status !== 'CANCELLED'">
+                {{ hasPrescription(appt.id) ? 'Prescribed' : 'Pending' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-write-rx" *ngIf="appt.status !== 'CANCELLED'" (click)="editPrescription(appt.id)">
+                {{ hasPrescription(appt.id) ? 'Edit Prescription' : 'Write Prescription' }}
+              </button>
             </td>
           </tr>
         </tbody>

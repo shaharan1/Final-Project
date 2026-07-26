@@ -1,121 +1,66 @@
-<div class="container mt-4">
-
-    <div class="card shadow">
-
-        <div class="card-header bg-primary text-white">
-            <h4>Patient Admission</h4>
+<div class="adm-container">
+    <div class="adm-card">
+        <div class="adm-card-header">
+            <h3>Patient Admission</h3>
+            <p>Admit a patient to a ward and bed</p>
         </div>
-
-        <div class="card-body">
+        <div class="adm-card-body">
 
             <!-- Patient -->
-
-            <div class="mb-3">
-
-                <label class="form-label">Patient</label>
-
-                <select class="form-select" [(ngModel)]="admission.patientId">
-
+            <div class="adm-form-group">
+                <label>Patient <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="admission.patientId">
                     <option [ngValue]="0">Select Patient</option>
-
                     <option *ngFor="let p of patients" [ngValue]="p.id">
-
                         {{p.patientCode}} - {{p.name}}
-
                     </option>
-
                 </select>
-
             </div>
 
             <!-- Doctor -->
-
-            <div class="mb-3">
-
-                <label class="form-label">Doctor</label>
-
-                <select class="form-select" [(ngModel)]="admission.doctorId">
-
+            <div class="adm-form-group">
+                <label>Assigned Doctor <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="admission.doctorId">
                     <option [ngValue]="0">Select Doctor</option>
-
                     <option *ngFor="let d of doctors" [ngValue]="d.id">
-
-                        {{d.name}}
-                        ({{d.specialization}})
-
+                        Dr. {{d.name}} ({{d.specialization}})
                     </option>
-
                 </select>
-
             </div>
 
             <!-- Ward -->
-
-            <div class="mb-3">
-
-                <label class="form-label">Ward</label>
-
-                <select class="form-select" #ward (change)="onWardChange(+ward.value)">
-
-                    <option value="0">Select Ward</option>
-
-                    <option *ngFor="let w of wards" [value]="w.id">
-
-                        {{w.name}}
-                        ({{w.roomType}})
-
+            <div class="adm-form-group">
+                <label>Ward <span class="adm-required">*</span></label>
+                <select class="adm-select" #ward (change)="onWardChange(+ward.value)">
+                    <option [ngValue]="0">Select Ward</option>
+                    <option *ngFor="let w of wards" [ngValue]="w.id">
+                        {{w.name}} ({{w.roomType}})
                     </option>
-
                 </select>
-
             </div>
 
             <!-- Bed -->
-
-            <div class="mb-3">
-
-                <label class="form-label">Bed</label>
-
-                <select class="form-select" [(ngModel)]="admission.bedId">
-
-                    <option [ngValue]="0">Select Bed</option>
-
+            <div class="adm-form-group">
+                <label>Bed <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="admission.bedId" [disabled]="beds.length === 0">
+                    <option [ngValue]="0">{{ beds.length === 0 ? 'Select a ward first' : 'Select Bed' }}</option>
                     <option *ngFor="let b of beds" [ngValue]="b.id">
-
-                        {{b.bedNumber}}
-                        -
-                        {{b.totalDailyCost}} Tk/Day
-
+                        {{b.bedNumber}} - &#2547;{{b.totalDailyCost}}/day
                     </option>
-
                 </select>
-
             </div>
 
             <!-- Diagnosis -->
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Initial Diagnosis
-                </label>
-
-                <textarea class="form-control" rows="4" [(ngModel)]="admission.initialDiagnosis">
-
-                </textarea>
-
+            <div class="adm-form-group">
+                <label>Initial Diagnosis</label>
+                <textarea class="adm-textarea" rows="4" [(ngModel)]="admission.initialDiagnosis"
+                    placeholder="Enter initial diagnosis..."></textarea>
             </div>
 
             <!-- Button -->
-
-            <button class="btn btn-success" (click)="admit()">
-
-                Admit Patient
-
+            <button class="adm-btn" (click)="admit()" [disabled]="submitting">
+                {{ submitting ? 'Admitting...' : 'Admit Patient' }}
             </button>
-
         </div>
-
     </div>
-
 </div>

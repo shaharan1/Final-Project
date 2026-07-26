@@ -23,6 +23,10 @@ export class PatientService {
     return this.http.get<PatientModel[]>(this.apiUrl);
   }
 
+  search(keyword: string): Observable<PatientModel[]> {
+    return this.http.get<PatientModel[]>(`${this.apiUrl}/search?keyword=${encodeURIComponent(keyword)}`);
+  }
+
   getById(id: number): Observable<PatientModel> {
     return this.http.get<PatientModel>(`${this.apiUrl}/${id}`);
   }
