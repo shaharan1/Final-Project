@@ -43,6 +43,11 @@ import { LabTechnicianDashboardComponent } from './components/feature/dashboards
 import { BillingClerkDashboardComponent } from './components/feature/dashboards/billing-clerk-dashboard/billing-clerk-dashboard.component';
 import { InventoryManagerDashboardComponent } from './components/feature/dashboards/inventory-manager-dashboard/inventory-manager-dashboard.component';
 import { WardManagerDashboardComponent } from './components/feature/dashboards/ward-manager-dashboard/ward-manager-dashboard.component';
+import { LabReceptionComponent } from './components/feature/lab/lab-reception/lab-reception.component';
+import { SampleCollectionComponent } from './components/feature/lab/sample-collection/sample-collection.component';
+import { ResultEntryComponent } from './components/feature/lab/result-entry/result-entry.component';
+import { LabVerificationComponent } from './components/feature/lab/lab-verification/lab-verification.component';
+import { DoctorLabReportComponent } from './components/feature/lab/doctor-lab-report/doctor-lab-report.component';
 
 const ALL_ROLES = ['Admin', 'Doctor', 'Nurse', 'OfficeStaff', 'Receptionist', 'Pharmacist', 'LabTechnician', 'BillingClerk', 'InventoryManager', 'WardManager'];
 
@@ -123,6 +128,13 @@ export const routes: Routes = [
   { path: 'ward', component: WardComponent },
   { path: 'ward-list', component: WardListComponent },
   { path: 'bed-management', component: BedManagementComponent },
+
+  // ============ Laboratory ============
+  { path: 'lab-reception', component: LabReceptionComponent },
+  { path: 'sample-collection', component: SampleCollectionComponent },
+  { path: 'result-entry', component: ResultEntryComponent },
+  { path: 'lab-verification', component: LabVerificationComponent },
+  { path: 'doctor-lab-reports', component: DoctorLabReportComponent },
 
   // ============ Public ============
   { path: '', component: LandingPageComponent },

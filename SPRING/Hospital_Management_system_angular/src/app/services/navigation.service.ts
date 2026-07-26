@@ -97,7 +97,11 @@ export class NavigationService {
       {
         label: 'Laboratory & Tests',
         items: [
-          { label: 'Tests', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
+          { label: 'Test Catalog', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
+          { label: 'Lab Reception', icon: 'Ⓡ', route: '/lab-reception', section: 'labreception' },
+          { label: 'Sample Collection', icon: 'Ⓢ', route: '/sample-collection', section: 'samplecollection' },
+          { label: 'Result Entry', icon: 'Ⓔ', route: '/result-entry', section: 'resultentry' },
+          { label: 'Verification', icon: '✓', route: '/lab-verification', section: 'labverification' },
         ],
       },
       {
@@ -129,6 +133,12 @@ export class NavigationService {
         items: [
           { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
+        ],
+      },
+      {
+        label: 'Laboratory',
+        items: [
+          { label: 'Lab Reports', icon: 'Ⓛ', route: '/doctor-lab-reports', section: 'labreports' },
         ],
       },
     ];
@@ -262,8 +272,17 @@ export class NavigationService {
       {
         label: 'Laboratory',
         items: [
-          { label: 'Tests', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
+          { label: 'Test Catalog', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
           { label: 'Add Test', icon: '+', route: '/tests/create', section: 'addtest' },
+        ],
+      },
+      {
+        label: 'Lab Workflow',
+        items: [
+          { label: 'Lab Reception', icon: 'Ⓡ', route: '/lab-reception', section: 'labreception' },
+          { label: 'Sample Collection', icon: 'Ⓢ', route: '/sample-collection', section: 'samplecollection' },
+          { label: 'Result Entry', icon: 'Ⓔ', route: '/result-entry', section: 'resultentry' },
+          { label: 'Verification', icon: '✓', route: '/lab-verification', section: 'labverification' },
         ],
       },
       {

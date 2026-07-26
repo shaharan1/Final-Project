@@ -5,31 +5,29 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TestOrderModel } from '../../../../models/test-order.model';
 import { TestOrderService } from '../../../../services/test-order.service';
 import { StorageService } from '../../../../services/storage.service';
+import { DoctorModelService } from '../../../../services/doctor.service';
 
 @Component({
-  selector: 'app-lab-verification',
+  selector: 'app-doctor-lab-report',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './lab-verification.component.html',
-  styleUrl: './lab-verification.component.css',
+  templateUrl: './doctor-lab-report.component.html',
+  styleUrl: './doctor-lab-report.component.css',
 })
-export class LabVerificationComponent implements OnInit {
+export class DoctorLabReportComponent implements OnInit {
 
   orders: TestOrderModel[] = [];
   searchKeyword = '';
   loading = true;
+  doctorId: number = 0;
 
-  showVerifyModal = false;
   showPdfModal = false;
   selectedOrder: TestOrderModel | null = null;
-  verifiedBy = '';
-  verificationNotes = '';
-  userName = '';
   pdfUrl: SafeResourceUrl | null = null;
-  rawPdfUrl: string | null = null;
 
   constructor(
     private testOrderService: TestOrderService,
+    private doctorService: DoctorModelService,
     private storage: StorageService,
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef
@@ -37,15 +35,23 @@ export class LabVerificationComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.storage.getUser();
-    this.userName = user?.name || '';
-    this.loadOrders();
+    if (user?.userId) {
+      this.doctorService.findByUserId(user.userId).subscribe({
+        next: (doctor) => {
+          if (doctor?.id) {
+            this.doctorId = doctor.id;
+            this.loadOrders();
+          }
+        }
+      });
+    }
   }
 
   loadOrders(): void {
     this.loading = true;
-    this.testOrderService.getByStatus('RESULT_ENTERED').subscribe({
+    this.testOrderService.getByDoctor(this.doctorId).subscribe({
       next: (res) => {
-        this.orders = res;
+        this.orders = res.filter(o => ['RESULT_ENTERED', 'VERIFIED', 'COMPLETED'].includes(o.orderStatus));
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -58,36 +64,8 @@ export class LabVerificationComponent implements OnInit {
     const kw = this.searchKeyword.toLowerCase();
     return this.orders.filter(o =>
       o.patientName?.toLowerCase().includes(kw) ||
-      o.testName?.toLowerCase().includes(kw) ||
-      o.resultValue?.toLowerCase().includes(kw)
+      o.testName?.toLowerCase().includes(kw)
     );
-  }
-
-  openVerifyModal(order: TestOrderModel): void {
-    this.selectedOrder = order;
-    this.verifiedBy = this.userName;
-    this.verificationNotes = '';
-    this.showVerifyModal = true;
-  }
-
-  closeVerifyModal(): void {
-    this.showVerifyModal = false;
-    this.selectedOrder = null;
-  }
-
-  verifyResult(): void {
-    if (!this.selectedOrder?.id || !this.verifiedBy) {
-      alert('Please enter verifier name');
-      return;
-    }
-    this.testOrderService.verifyResult(this.selectedOrder.id, this.verifiedBy, this.verificationNotes).subscribe({
-      next: () => {
-        alert('Result Verified Successfully');
-        this.closeVerifyModal();
-        this.loadOrders();
-      },
-      error: (err) => { console.log(err); alert('Failed'); }
-    });
   }
 
   viewPdf(order: TestOrderModel): void {
@@ -95,28 +73,17 @@ export class LabVerificationComponent implements OnInit {
     this.testOrderService.downloadReportPdf(order.id).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
-        this.rawPdfUrl = url;
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
         this.selectedOrder = order;
         this.showPdfModal = true;
       },
-      error: (err) => { console.log(err); alert('PDF not available yet. Verify the result first.'); }
+      error: () => alert('PDF not available yet.')
     });
-  }
-
-  downloadPdf(): void {
-    if (this.rawPdfUrl) {
-      const a = document.createElement('a');
-      a.href = this.rawPdfUrl;
-      a.download = 'Lab_Report_' + (this.selectedOrder?.patientCode || 'report') + '.pdf';
-      a.click();
-    }
   }
 
   closePdfModal(): void {
     this.showPdfModal = false;
     this.pdfUrl = null;
-    this.rawPdfUrl = null;
     this.selectedOrder = null;
   }
 }

@@ -1,0 +1,67 @@
+<div class="lab-container">
+  <div class="lab-header">
+    <div>
+      <h3>Lab Reports</h3>
+      <p class="lab-sub">Review test results for your patients</p>
+    </div>
+  </div>
+
+  <div class="lab-toolbar">
+    <input class="lab-search" placeholder="Search patient, test..." [(ngModel)]="searchKeyword">
+  </div>
+
+  <div class="lab-card">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Normal Range</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td><strong>{{ order.patientName }}</strong><br><small class="text-muted">{{ order.patientCode }}</small></td>
+            <td>{{ order.testName }}</td>
+            <td><span class="lab-result-value">{{ order.resultValue || 'Pending' }}</span></td>
+            <td>{{ order.normalRange }}</td>
+            <td>
+              <span class="lab-status" [class]="'status-' + order.orderStatus.toLowerCase()">
+                {{ order.orderStatus | titlecase }}
+              </span>
+            </td>
+            <td>{{ order.lastUpdated | date:'dd-MMM-yyyy' }}</td>
+            <td>
+              <button class="lab-btn-pdf" *ngIf="order.resultValue" (click)="viewPdf(order)">
+                View Report
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="8" class="lab-empty">No lab reports found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PDF Modal -->
+  <div class="lab-modal-overlay" *ngIf="showPdfModal" (click)="closePdfModal()">
+    <div class="lab-modal lab-modal-pdf" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header">
+        <h3>Lab Report - {{ selectedOrder?.testName }}</h3>
+        <button class="lab-modal-close" (click)="closePdfModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body lab-pdf-body">
+        <iframe *ngIf="pdfUrl" [src]="pdfUrl" class="lab-pdf-frame"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
