@@ -1,68 +1,122 @@
 <app-layout pageTitle="Lab Technician Dashboard">
 
-  <section class="hero">
+  <!-- Hero -->
+  <section class="hero lab-dash-hero">
     <div class="hero-text">
       <p class="eyebrow">Laboratory</p>
       <h1>Lab Technician Dashboard</h1>
-      <p class="hero-desc">Track pending tests, upload results, and manage samples received from across the hospital.</p>
+      <p class="hero-desc">Track pending tests, manage samples, enter results and generate reports.</p>
       <div class="hero-actions">
-        <a routerLink="/tests" class="btn-primary">View Tests</a>
-        <a routerLink="/testmaster" class="btn-ghost">Test Master</a>
+        <a routerLink="/lab-reception" class="btn-primary">Lab Reception</a>
+        <a routerLink="/result-entry" class="btn-ghost">Result Entry</a>
+        <a routerLink="/lab-verification" class="btn-ghost">Verification</a>
       </div>
     </div>
     <div class="hero-pulse" aria-hidden="true">
       <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
-        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </div>
   </section>
 
-  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+  <div *ngIf="loading" style="text-align:center; padding:3rem;">
+    <div class="lab-dash-spinner"></div>
+    <p style="color:#6c757d; margin-top:1rem;">Loading dashboard...</p>
+  </div>
 
-  <section *ngIf="!loading" class="stats-grid">
-    <div class="stat-card">
+  <!-- Stats Grid -->
+  <section *ngIf="!loading && labStats" class="stats-grid lab-stats-grid">
+    <div class="stat-card lab-stat-pending" (click)="goTo('/lab-reception')">
+      <span class="stat-icon">Ⓟ</span>
+      <span class="stat-value">{{ labStats.pending }}</span>
+      <span class="stat-label">Pending Orders</span>
+    </div>
+    <div class="stat-card lab-stat-collected" (click)="goTo('/sample-collection')">
+      <span class="stat-icon">Ⓢ</span>
+      <span class="stat-value">{{ labStats.sampleCollected }}</span>
+      <span class="stat-label">Sample Collected</span>
+    </div>
+    <div class="stat-card lab-stat-received" (click)="goTo('/result-entry')">
+      <span class="stat-icon">Ｒ</span>
+      <span class="stat-value">{{ labStats.sampleReceived + labStats.testing }}</span>
+      <span class="stat-label">In Lab / Testing</span>
+    </div>
+    <div class="stat-card lab-stat-result" (click)="goTo('/lab-verification')">
+      <span class="stat-icon">Ｅ</span>
+      <span class="stat-value">{{ labStats.resultEntered }}</span>
+      <span class="stat-label">Results Entered</span>
+    </div>
+    <div class="stat-card lab-stat-verified" (click)="goTo('/lab-verification')">
+      <span class="stat-icon">✓</span>
+      <span class="stat-value">{{ labStats.verified }}</span>
+      <span class="stat-label">Verified</span>
+    </div>
+    <div class="stat-card lab-stat-total">
+      <span class="stat-icon">Ⓣ</span>
+      <span class="stat-value">{{ labStats.total }}</span>
       <span class="stat-label">Total Tests</span>
-      <span class="stat-value">{{ stats!.totalTests | number }}</span>
     </div>
   </section>
 
+  <!-- Two Column: Recent Orders + Test Catalog -->
   <section *ngIf="!loading" class="grid-2col">
-    <div class="panel">
+
+    <!-- Recent Test Orders -->
+    <div class="panel lab-panel">
       <div class="panel-head">
-        <h2>Available Tests</h2>
-        <span class="panel-tag">{{ tests.length }} Tests</span>
+        <h2>Recent Test Orders</h2>
+        <a routerLink="/lab-reception" class="panel-link">View All →</a>
       </div>
-      <table class="mini-table">
+      <table class="mini-table" *ngIf="recentOrders.length > 0">
         <thead>
-          <tr><th>Test Name</th><th>Category</th><th>Price</th></tr>
+          <tr><th>Patient</th><th>Test</th><th>Status</th><th>Date</th></tr>
         </thead>
         <tbody>
-          <tr *ngFor="let test of tests">
-            <td>{{ test.name }}</td>
-            <td>{{ test.category }}</td>
-            <td>{{ test.price | number }}</td>
+          <tr *ngFor="let order of recentOrders">
+            <td>
+              <div class="lab-dash-patient">
+                <strong>{{ order.patientName }}</strong>
+                <small>{{ order.patientCode }}</small>
+              </div>
+            </td>
+            <td>{{ order.testName }}</td>
+            <td><span class="lab-status-chip" [class]="getStatusClass(order.orderStatus)">{{ formatStatus(order.orderStatus) }}</span></td>
+            <td>{{ order.orderedDate | date:'dd MMM' }}</td>
           </tr>
         </tbody>
       </table>
+      <div *ngIf="recentOrders.length === 0" class="empty-state">
+        <p>No test orders yet. Orders appear when doctors prescribe tests.</p>
+      </div>
     </div>
 
-    <div class="panel">
+    <!-- Test Catalog -->
+    <div class="panel lab-panel">
       <div class="panel-head">
-        <h2>Tests by Category</h2>
-        <span class="panel-tag">{{ categories.length }} Categories</span>
+        <h2>Test Catalog</h2>
+        <a routerLink="/test-list" class="panel-link">Manage →</a>
       </div>
-      <table class="mini-table">
+      <table class="mini-table" *ngIf="testCatalog.length > 0">
         <thead>
-          <tr><th>Category</th><th>Test Count</th></tr>
+          <tr><th>Code</th><th>Test Name</th><th>Price</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cat of categories">
-            <td>{{ cat.name }}</td>
-            <td>{{ cat.count }}</td>
+          <tr *ngFor="let test of testCatalog">
+            <td><span class="lab-code-tag">{{ test.testCode }}</span></td>
+            <td>{{ test.testName }}</td>
+            <td>&#2547; {{ test.standardPrice | number:'1.0-0' }}</td>
+            <td>
+              <span class="lab-active-badge" *ngIf="test.active">Active</span>
+              <span class="lab-inactive-badge" *ngIf="!test.active">Inactive</span>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div *ngIf="testCatalog.length === 0" class="empty-state">
+        <p>No tests in catalog. Add tests first.</p>
+      </div>
     </div>
+
   </section>
 
 </app-layout>
