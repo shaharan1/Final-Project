@@ -70,5 +70,6 @@ public class Tests {
     private String reportFilePath;
 
     @UpdateTimestamp
+    @Column(nullable = true)
     private LocalDateTime lastUpdated;
 }

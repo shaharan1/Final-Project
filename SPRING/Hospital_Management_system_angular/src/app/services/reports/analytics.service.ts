@@ -28,62 +28,62 @@ export class AnalyticsService {
   }
 
   getPatientAnalytics(): Observable<PatientAnalytics> {
-    return this.http.get<PatientAnalytics>(`${this.api}/patients`);
+    return this.http.get<PatientAnalytics>(`${this.api}/patient/analytics`);
   }
 
   getAppointmentAnalytics(): Observable<AppointmentAnalytics> {
-    return this.http.get<AppointmentAnalytics>(`${this.api}/appointments`);
+    return this.http.get<AppointmentAnalytics>(`${this.api}/appointment/analytics`);
   }
 
   getDoctorAnalytics(): Observable<DoctorAnalytics> {
-    return this.http.get<DoctorAnalytics>(`${this.api}/doctors`);
+    return this.http.get<DoctorAnalytics>(`${this.api}/doctor/analytics`);
   }
 
   getLabAnalytics(): Observable<LabAnalytics> {
-    return this.http.get<LabAnalytics>(`${this.api}/lab`);
+    return this.http.get<LabAnalytics>(`${this.api}/laboratory/analytics`);
   }
 
   getPharmacyAnalytics(): Observable<PharmacyAnalytics> {
-    return this.http.get<PharmacyAnalytics>(`${this.api}/pharmacy`);
+    return this.http.get<PharmacyAnalytics>(`${this.api}/pharmacy/analytics`);
   }
 
   getRevenueAnalytics(): Observable<RevenueAnalytics> {
-    return this.http.get<RevenueAnalytics>(`${this.api}/revenue`);
+    return this.http.get<RevenueAnalytics>(`${this.api}/revenue/analytics`);
   }
 
   getBedOccupancy(): Observable<BedOccupancy> {
-    return this.http.get<BedOccupancy>(`${this.api}/bed-occupancy`);
+    return this.http.get<BedOccupancy>(`${this.api}/bed/occupancy`);
   }
 
   getEmergencyAnalytics(): Observable<EmergencyAnalytics> {
-    return this.http.get<EmergencyAnalytics>(`${this.api}/emergency`);
+    return this.http.get<EmergencyAnalytics>(`${this.api}/emergency/analytics`);
   }
 
   getFinancialAnalytics(): Observable<FinancialAnalytics> {
-    return this.http.get<FinancialAnalytics>(`${this.api}/financial`);
+    return this.http.get<FinancialAnalytics>(`${this.api}/financial/analytics`);
   }
 
   getDailyRevenue(date: string): Observable<any> {
-    return this.http.get(`${this.api}/revenue/daily`, { params: { date } });
+    return this.http.get(`${this.api}/daily-revenue`, { params: { date } });
   }
 
   getMonthlyRevenue(year: number, month: number): Observable<any> {
-    return this.http.get(`${this.api}/revenue/monthly`, { params: { year: year.toString(), month: month.toString() } });
+    return this.http.get(`${this.api}/monthly-revenue`, { params: { year: year.toString(), month: month.toString() } });
   }
 
   getDepartmentRevenue(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/revenue/by-department`);
+    return this.http.get<any[]>(`${this.api}/department-revenue`);
   }
 
   getTopDoctors(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/doctors/top`);
+    return this.http.get<any[]>(`${this.api}/top-doctors`);
   }
 
   getTopMedicines(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/pharmacy/top-medicines`);
+    return this.http.get<any[]>(`${this.api}/top-medicines`);
   }
 
   getRecentActivity(): Observable<ActivityItem[]> {
-    return this.http.get<ActivityItem[]>(`${this.api}/activity/recent`);
+    return this.http.get<ActivityItem[]>(`${this.api}/recent-activity`);
   }
 }

@@ -38,8 +38,8 @@ public class BillingNotification {
 
     private Double amount;
 
-    @Column(nullable = false)
-    private Boolean read = false;
+    @Column(name = "is_read", nullable = false)
+    private Boolean isRead = false;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

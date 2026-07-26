@@ -1,0 +1,113 @@
+<div class="dietary-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Nutrition Analytics & Insights</h1>
+      <p class="page-subtitle">Comprehensive dietary analytics and performance metrics</p>
+    </div>
+    <div class="period-selector">
+      <button class="btn-sm" *ngFor="let p of periodOptions" [class.active]="period===p" (click)="onPeriodChange(p)">{{ p | titlecase }}</button>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div><p>Loading analytics...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Summary Cards -->
+    <div class="analytics-grid">
+      <div class="analytics-card glass">
+        <div class="analytics-icon" style="background:rgba(13,110,253,0.15);color:#0d6efd;">📊</div>
+        <div class="analytics-body"><span class="analytics-value">{{ getTotalMeals() }}</span><span class="analytics-label">Total Meals This Period</span></div>
+      </div>
+      <div class="analytics-card glass">
+        <div class="analytics-icon" style="background:rgba(25,135,84,0.15);color:#198754;">🔥</div>
+        <div class="analytics-body"><span class="analytics-value">{{ getCalorieTotal() | number }}</span><span class="analytics-label">Total Calories Served</span></div>
+      </div>
+      <div class="analytics-card glass">
+        <div class="analytics-icon" style="background:rgba(102,16,242,0.15);color:#6610f2;">📈</div>
+        <div class="analytics-body"><span class="analytics-value">{{ getAverageCompletion() }}%</span><span class="analytics-label">Avg Completion Rate</span></div>
+      </div>
+      <div class="analytics-card glass">
+        <div class="analytics-icon" style="background:rgba(253,126,20,0.15);color:#fd7e14;">🍽️</div>
+        <div class="analytics-body"><span class="analytics-value">{{ dietTypeData.length }}</span><span class="analytics-label">Active Diet Types</span></div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="charts-grid">
+      <div class="chart-card glass">
+        <h3 class="chart-title">Diet Type Distribution</h3>
+        <div class="chart-container">
+          <div class="bar-chart">
+            <div class="bar-row" *ngFor="let item of dietTypeData">
+              <span class="bar-label">{{ item.type }}</span>
+              <div class="bar-track">
+                <div class="bar-fill" [style.width.%]="(item.count / getMaxCount()) * 100" [style.background]="item.color"></div>
+              </div>
+              <span class="bar-value">{{ item.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card glass">
+        <h3 class="chart-title">Ward Wise Meal Distribution</h3>
+        <div class="chart-container">
+          <div class="bar-chart horizontal">
+            <div class="bar-row" *ngFor="let item of wardData">
+              <span class="bar-label">{{ item.ward }}</span>
+              <div class="bar-track">
+                <div class="bar-fill" [style.width.%]="(item.meals / getMaxWardMeals()) * 100" [style.background]="item.color"></div>
+              </div>
+              <span class="bar-value">{{ item.meals }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card glass">
+        <h3 class="chart-title">Daily Calories Trend</h3>
+        <div class="chart-container">
+          <div class="line-chart">
+            <svg viewBox="0 0 400 150" preserveAspectRatio="none" class="chart-svg">
+              <defs>
+                <linearGradient id="calGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0d6efd" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#0d6efd" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <polygon [attr.points]="getCalorieAreaPoints()" fill="url(#calGrad)"/>
+              <polyline [attr.points]="getCalorieLinePoints()" fill="none" stroke="#0d6efd" stroke-width="2"/>
+              <line *ngFor="let d of dailyCalories; let i = index" [attr.x1]="getX(i)" [attr.y1]="getY(d.calories)" [attr.x2]="getX(i)" [attr.y2]="150" stroke="rgba(255,255,255,0.03)"/>
+              <line x1="0" y1="30" x2="400" y2="30" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card glass">
+        <h3 class="chart-title">Meal Completion Rate</h3>
+        <div class="chart-container">
+          <div class="completion-bars">
+            <div class="completion-row" *ngFor="let item of completionData">
+              <span class="comp-label">{{ item.label }}</span>
+              <div class="comp-track">
+                <div class="comp-fill" [style.width.%]="item.delivered" [style.background]="item.delivered > 80 ? '#198754' : item.delivered > 60 ? '#fd7e14' : '#dc3545'"></div>
+              </div>
+              <span class="comp-val">{{ item.delivered }}%</span>
+            </div>
+          </div>
+          <div class="donut-container">
+            <div class="donut" [style.background]="getDonutGradient()">
+              <div class="donut-center">
+                <span class="donut-value">{{ getAverageCompletion() }}%</span>
+                <span class="donut-label">Overall</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

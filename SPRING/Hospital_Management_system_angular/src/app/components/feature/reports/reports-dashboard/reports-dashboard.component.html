@@ -1,0 +1,349 @@
+<div class="dashboard-wrapper">
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60"
+              fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3" class="wave-path"/>
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60"
+              fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6" class="wave-path"/>
+      </svg>
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">Enterprise BI Platform</div>
+          <h1>Reports &amp; Analytics</h1>
+          <p>Enterprise Business Intelligence Dashboard &mdash; Real-time hospital analytics at your fingertips</p>
+        </div>
+        <div class="hero-stats" *ngIf="summary && !loading">
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">{{ formatCurrency(summary.monthlyRevenue) }}</span>
+            <span class="hero-stat-label">Monthly Revenue</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-value">{{ summary.totalPatients | number }}</span>
+            <span class="hero-stat-label">Total Patients</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOADING -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading analytics dashboard...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-container" *ngIf="error && !loading">
+    <div class="error-card">
+      <span class="error-icon">!</span>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadAllData()">Retry</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="dashboard-content" *ngIf="!loading && !error">
+
+    <!-- FILTERS BAR -->
+    <div class="filter-bar glass">
+      <div class="filter-group">
+        <label>Date Range</label>
+        <select [(ngModel)]="dateRange" class="filter-select">
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="year">This Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Department</label>
+        <select [(ngModel)]="selectedDepartment" class="filter-select">
+          <option value="all">All Departments</option>
+          <option value="cardiology">Cardiology</option>
+          <option value="orthopedics">Orthopedics</option>
+          <option value="neurology">Neurology</option>
+          <option value="pediatrics">Pediatrics</option>
+          <option value="oncology">Oncology</option>
+          <option value="radiology">Radiology</option>
+          <option value="general">General Medicine</option>
+        </select>
+      </div>
+      <button class="filter-btn" (click)="applyFilters()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23,4 23,10 17,10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+        Refresh
+      </button>
+    </div>
+
+    <!-- KPI CARDS -->
+    <div class="kpi-grid" *ngIf="summary">
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--blue">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ getAnimated('totalPatients') | number }}</span>
+          <span class="kpi-label">Total Patients</span>
+        </div>
+        <div class="kpi-glow kpi-glow--blue"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ getAnimated('todayAppointments') | number }}</span>
+          <span class="kpi-label">Today's Appointments</span>
+        </div>
+        <div class="kpi-glow kpi-glow--green"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--emerald">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">${{ getAnimated('todayRevenue') | number }}</span>
+          <span class="kpi-label">Today's Revenue</span>
+        </div>
+        <div class="kpi-glow kpi-glow--emerald"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--cyan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">${{ getAnimated('monthlyRevenue') | number }}</span>
+          <span class="kpi-label">Monthly Revenue</span>
+        </div>
+        <div class="kpi-glow kpi-glow--cyan"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--purple">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">${{ getAnimated('pharmacySales') | number }}</span>
+          <span class="kpi-label">Pharmacy Sales</span>
+        </div>
+        <div class="kpi-glow kpi-glow--purple"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--teal">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 3h6v11l-3 3-3-3z"/><path d="M6 21h12"/><path d="M12 3v-1"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">${{ getAnimated('labIncome') | number }}</span>
+          <span class="kpi-label">Lab Income</span>
+        </div>
+        <div class="kpi-glow kpi-glow--teal"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--orange">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ getAnimated('bedOccupancy') }}%</span>
+          <span class="kpi-label">Bed Occupancy</span>
+        </div>
+        <div class="kpi-glow kpi-glow--orange"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--yellow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ getAnimated('pendingPayments') | number }}</span>
+          <span class="kpi-label">Pending Payments</span>
+        </div>
+        <div class="kpi-glow kpi-glow--yellow"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--indigo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ getAnimated('dischargedPatients') | number }}</span>
+          <span class="kpi-label">Discharged Patients</span>
+        </div>
+        <div class="kpi-glow kpi-glow--indigo"></div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-icon--red">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ getAnimated('emergencyCases') | number }}</span>
+          <span class="kpi-label">Emergency Cases</span>
+        </div>
+        <div class="kpi-glow kpi-glow--red"></div>
+      </div>
+
+    </div>
+
+    <!-- CHARTS GRID -->
+    <div class="charts-grid">
+
+      <section class="chart-panel glass">
+        <div class="chart-panel-header">
+          <h3>Revenue Trend</h3>
+          <span class="chart-tag">Daily</span>
+        </div>
+        <div class="chart-container">
+          <canvas #revenueChart id="revenueChart"></canvas>
+        </div>
+      </section>
+
+      <section class="chart-panel glass">
+        <div class="chart-panel-header">
+          <h3>Appointments by Department</h3>
+          <span class="chart-tag">Distribution</span>
+        </div>
+        <div class="chart-container">
+          <canvas #appointmentsChart id="appointmentsChart"></canvas>
+        </div>
+      </section>
+
+      <section class="chart-panel glass">
+        <div class="chart-panel-header">
+          <h3>Payment Methods</h3>
+          <span class="chart-tag">Revenue Split</span>
+        </div>
+        <div class="chart-container">
+          <canvas #paymentChart id="paymentChart"></canvas>
+        </div>
+      </section>
+
+      <section class="chart-panel glass">
+        <div class="chart-panel-header">
+          <h3>Patient Blood Group Distribution</h3>
+          <span class="chart-tag">Demographics</span>
+        </div>
+        <div class="chart-container">
+          <canvas #demographicsChart id="demographicsChart"></canvas>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- SUB-REPORT NAVIGATION -->
+    <div class="section-header">
+      <h2>Sub-Reports</h2>
+      <p>Drill down into specific analytics modules</p>
+    </div>
+    <div class="reports-nav-grid">
+      <a *ngFor="let report of subReports"
+         [routerLink]="report.route"
+         class="report-nav-card glass"
+         [style.--accent]="report.color">
+        <div class="report-nav-icon" [style.background]="'linear-gradient(135deg, ' + report.color + '33, ' + report.color + '11)'" [style.color]="report.color">
+          <svg *ngIf="report.icon === 'users'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <svg *ngIf="report.icon === 'calendar'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <svg *ngIf="report.icon === 'stethoscope'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/>
+          </svg>
+          <svg *ngIf="report.icon === 'dollar'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          <svg *ngIf="report.icon === 'flask'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 3h6v11l-3 3-3-3z"/><path d="M6 21h12"/>
+          </svg>
+          <svg *ngIf="report.icon === 'pill'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3"/>
+          </svg>
+          <svg *ngIf="report.icon === 'bed'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>
+          </svg>
+          <svg *ngIf="report.icon === 'alert'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div class="report-nav-body">
+          <h4>{{ report.title }}</h4>
+          <p>{{ report.description }}</p>
+        </div>
+        <div class="report-nav-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9,18 15,12 9,6"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+
+    <!-- RECENT ACTIVITY TIMELINE -->
+    <section class="activity-section glass">
+      <div class="panel-header">
+        <h3>Recent Activity</h3>
+        <span class="chart-tag" *ngIf="recentActivity.length">{{ recentActivity.length }} events</span>
+      </div>
+      <div class="timeline" *ngIf="recentActivity.length; else noActivity">
+        <div class="timeline-item" *ngFor="let act of recentActivity">
+          <div class="timeline-dot" [ngClass]="'timeline-dot--' + getActivityColor(act.type)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path [attr.d]="getActivityIcon(act.type)"/>
+            </svg>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-top">
+              <span class="timeline-desc">{{ act.description }}</span>
+              <span class="badge" [ngClass]="{
+                'badge--success': act.status === 'COMPLETED' || act.status === 'PAID',
+                'badge--warning': act.status === 'PENDING' || act.status === 'PROCESSING',
+                'badge--danger': act.status === 'FAILED' || act.status === 'CANCELLED',
+                'badge--info': act.status !== 'COMPLETED' && act.status !== 'PAID' && act.status !== 'PENDING' && act.status !== 'PROCESSING' && act.status !== 'FAILED' && act.status !== 'CANCELLED'
+              }">{{ act.status }}</span>
+            </div>
+            <div class="timeline-bottom">
+              <span class="timeline-amount" *ngIf="act.amount">${{ act.amount | number }}</span>
+              <span class="timeline-time">{{ act.date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noActivity>
+        <div class="empty-state">
+          <p>No recent activity</p>
+        </div>
+      </ng-template>
+    </section>
+
+  </div>
+</div>

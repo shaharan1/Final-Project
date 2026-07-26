@@ -255,6 +255,7 @@ export class NavigationService {
         items: [
           { label: 'Dashboard', icon: '◆', route: '/pharmacist-dashboard', section: 'dashboard' },
           { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
+          { label: 'Reports & Analytics', icon: '📊', route: '/reports', section: 'reports' },
         ],
       },
       {
@@ -330,6 +331,7 @@ export class NavigationService {
         items: [
           { label: 'Dashboard', icon: '◆', route: '/billing-clerk-dashboard', section: 'dashboard' },
           { label: 'Billing Dashboard', icon: '💰', route: '/billing-dashboard', section: 'billingdashboard' },
+          { label: 'Reports & Analytics', icon: '📊', route: '/reports', section: 'reports' },
         ],
       },
       {

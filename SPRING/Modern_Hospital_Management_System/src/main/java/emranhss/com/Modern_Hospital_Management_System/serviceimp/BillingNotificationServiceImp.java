@@ -25,13 +25,13 @@ public class BillingNotificationServiceImp implements BillingNotificationService
     @Override
     @Transactional(readOnly = true)
     public List<BillingNotification> getUnread() {
-        return billingNotificationRepository.findByRead(false);
+        return billingNotificationRepository.findByIsRead(false);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Long getUnreadCount() {
-        return billingNotificationRepository.countByRead(false);
+        return billingNotificationRepository.countByIsRead(false);
     }
 
     @Override
@@ -39,22 +39,22 @@ public class BillingNotificationServiceImp implements BillingNotificationService
     public void markAsRead(Long id) {
         BillingNotification notification = billingNotificationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Notification not found with ID: " + id));
-        notification.setRead(true);
+        notification.setIsRead(true);
         billingNotificationRepository.save(notification);
     }
 
     @Override
     @Transactional
     public void markAllAsRead() {
-        List<BillingNotification> unread = billingNotificationRepository.findByRead(false);
-        unread.forEach(n -> n.setRead(true));
+        List<BillingNotification> unread = billingNotificationRepository.findByIsRead(false);
+        unread.forEach(n -> n.setIsRead(true));
         billingNotificationRepository.saveAll(unread);
     }
 
     @Override
     @Transactional
     public BillingNotification createNotification(BillingNotification notification) {
-        notification.setRead(false);
+        notification.setIsRead(false);
         return billingNotificationRepository.save(notification);
     }
 

@@ -5,6 +5,6 @@ export interface BillingNotification {
   type: string;
   relatedInvoiceNumber?: string;
   patientId?: number;
-  read: boolean;
+  isRead: boolean;
   createdDate?: string;
 }

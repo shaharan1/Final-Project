@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface BillingNotificationRepository extends JpaRepository<BillingNotification, Long> {
 
-    List<BillingNotification> findByRead(boolean read);
+    List<BillingNotification> findByIsRead(boolean isRead);
 
     List<BillingNotification> findByType(String type);
 
-    Long countByRead(boolean read);
+    Long countByIsRead(boolean isRead);
 }

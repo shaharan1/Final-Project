@@ -64,6 +64,27 @@ import { RefundManagementComponent } from './components/feature/billing/refund-m
 import { InsuranceComponent } from './components/feature/billing/insurance/insurance.component';
 import { BillingReportsComponent } from './components/feature/billing/billing-reports/billing-reports.component';
 
+import { ReportsDashboardComponent } from './components/feature/reports/reports-dashboard/reports-dashboard.component';
+import { PatientReportsComponent } from './components/feature/reports/patient-reports/patient-reports.component';
+import { AppointmentReportsComponent } from './components/feature/reports/appointment-reports/appointment-reports.component';
+import { DoctorReportsComponent } from './components/feature/reports/doctor-reports/doctor-reports.component';
+import { RevenueReportsComponent } from './components/feature/reports/revenue-reports/revenue-reports.component';
+import { LabReportsComponent } from './components/feature/reports/lab-reports/lab-reports.component';
+import { PharmacyReportsComponent } from './components/feature/reports/pharmacy-reports/pharmacy-reports.component';
+import { BedReportsComponent } from './components/feature/reports/bed-reports/bed-reports.component';
+import { EmergencyReportsComponent } from './components/feature/reports/emergency-reports/emergency-reports.component';
+import { DietaryDashboardComponent } from './components/feature/dietary/dietary-dashboard/dietary-dashboard.component';
+import { PatientDietComponent } from './components/feature/dietary/patient-diet/patient-diet.component';
+import { DietPlanComponent } from './components/feature/dietary/diet-plan/diet-plan.component';
+import { DieticianManagementComponent } from './components/feature/dietary/dietician-management/dietician-management.component';
+import { MealScheduleComponent } from './components/feature/dietary/meal-schedule/meal-schedule.component';
+import { KitchenDashboardComponent } from './components/feature/dietary/kitchen-dashboard/kitchen-dashboard.component';
+import { KitchenOrdersComponent } from './components/feature/dietary/kitchen-orders/kitchen-orders.component';
+import { NutritionAnalyticsComponent } from './components/feature/dietary/nutrition-analytics/nutrition-analytics.component';
+import { DietReportsComponent } from './components/feature/dietary/diet-reports/diet-reports.component';
+import { DietAlertsComponent } from './components/feature/dietary/diet-alerts/diet-alerts.component';
+import { DietHistoryComponent } from './components/feature/dietary/diet-history/diet-history.component';
+
 const ALL_ROLES = ['Admin', 'Doctor', 'Nurse', 'OfficeStaff', 'Receptionist', 'Pharmacist', 'LabTechnician', 'BillingClerk', 'InventoryManager', 'WardManager'];
 
 export const routes: Routes = [
@@ -167,6 +188,30 @@ export const routes: Routes = [
   { path: 'refunds', component: RefundManagementComponent },
   { path: 'insurance', component: InsuranceComponent },
   { path: 'billing-reports', component: BillingReportsComponent },
+
+  // ============ Reports & Analytics ============
+  { path: 'reports', component: ReportsDashboardComponent },
+  { path: 'reports/patient', component: PatientReportsComponent },
+  { path: 'reports/appointment', component: AppointmentReportsComponent },
+  { path: 'reports/doctor', component: DoctorReportsComponent },
+  { path: 'reports/revenue', component: RevenueReportsComponent },
+  { path: 'reports/lab', component: LabReportsComponent },
+  { path: 'reports/pharmacy', component: PharmacyReportsComponent },
+  { path: 'reports/bed', component: BedReportsComponent },
+  { path: 'reports/emergency', component: EmergencyReportsComponent },
+
+  // ============ Dietary & Nutrition Module ============
+  { path: 'dietary/dashboard', component: DietaryDashboardComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Dietary Dashboard' } },
+  { path: 'dietary/patient-diet', component: PatientDietComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse'])], data: { title: 'Patient Diet' } },
+  { path: 'dietary/diet-plans', component: DietPlanComponent, canActivate: [authGuard, roleGuard(['Admin', 'Dietician'])], data: { title: 'Diet Plans' } },
+  { path: 'dietary/dieticians', component: DieticianManagementComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Dietician Management' } },
+  { path: 'dietary/meal-schedule', component: MealScheduleComponent, canActivate: [authGuard, roleGuard(['Admin', 'Dietician', 'Nurse'])], data: { title: 'Meal Schedule' } },
+  { path: 'dietary/kitchen-dashboard', component: KitchenDashboardComponent, canActivate: [authGuard, roleGuard(['Admin', 'Nurse', 'WardManager'])], data: { title: 'Kitchen Dashboard' } },
+  { path: 'dietary/kitchen-orders', component: KitchenOrdersComponent, canActivate: [authGuard, roleGuard(['Admin', 'Nurse', 'WardManager'])], data: { title: 'Kitchen Orders' } },
+  { path: 'dietary/nutrition-analytics', component: NutritionAnalyticsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Nutrition Analytics' } },
+  { path: 'dietary/diet-reports', component: DietReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet Reports' } },
+  { path: 'dietary/diet-alerts', component: DietAlertsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet Alerts' } },
+  { path: 'dietary/diet-history', component: DietHistoryComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet History' } },
 
   // ============ Public ============
   { path: '', component: LandingPageComponent },

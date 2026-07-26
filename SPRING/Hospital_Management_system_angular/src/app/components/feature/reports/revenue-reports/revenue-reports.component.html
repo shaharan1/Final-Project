@@ -1,0 +1,118 @@
+<div class="dashboard-wrapper">
+  <section class="hero-section">
+    <div class="hero-bg">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="hero-badge">Analytics</span>
+          <h1>Revenue Reports</h1>
+          <p>Track revenue trends, payment methods, and department-level financial performance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading revenue analytics...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <div class="error-card">
+      <div class="error-icon">!</div>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadData()">Retry</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error && data" class="dashboard-content">
+    <div class="actions-bar">
+      <button class="btn-back" (click)="goBack()">&#8592; Back to Reports</button>
+      <div class="export-group">
+        <button class="btn-export" (click)="exportPdf()">PDF</button>
+        <button class="btn-export" (click)="exportExcel()">Excel</button>
+        <button class="btn-export" (click)="exportCsv()">CSV</button>
+        <button class="btn-export" (click)="printReport()">Print</button>
+      </div>
+    </div>
+
+    <div class="stats-row stats-row--5">
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--green"></div>
+        <div class="stat-body">
+          <span class="stat-label">Total Revenue</span>
+          <span class="stat-value">{{ data.totalRevenue | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--blue"></div>
+        <div class="stat-body">
+          <span class="stat-label">Billing</span>
+          <span class="stat-value">{{ data.billingRevenue | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--purple"></div>
+        <div class="stat-body">
+          <span class="stat-label">Pharmacy</span>
+          <span class="stat-value">{{ data.pharmacyRevenue | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--cyan"></div>
+        <div class="stat-body">
+          <span class="stat-label">Lab</span>
+          <span class="stat-value">{{ data.labRevenue | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--orange"></div>
+        <div class="stat-body">
+          <span class="stat-label">Admission</span>
+          <span class="stat-value">{{ data.admissionRevenue | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid charts-grid--2">
+      <div class="panel glass">
+        <div class="panel-header"><h3>Daily Trend</h3></div>
+        <div class="chart-container"><canvas #dailyTrendChart></canvas></div>
+      </div>
+      <div class="panel glass">
+        <div class="panel-header"><h3>Monthly Trend</h3></div>
+        <div class="chart-container"><canvas #monthlyTrendChart></canvas></div>
+      </div>
+    </div>
+
+    <div class="charts-grid charts-grid--2">
+      <div class="panel glass">
+        <div class="panel-header"><h3>Payment Methods</h3></div>
+        <div class="chart-container"><canvas #paymentMethodsChart></canvas></div>
+      </div>
+      <div class="panel glass">
+        <div class="panel-header"><h3>Revenue by Department</h3></div>
+        <div class="chart-container"><canvas #deptRevenueChart></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel glass table-panel">
+      <div class="panel-header"><h3>Revenue Breakdown</h3></div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of data.revenueByDepartment">
+              <td class="cell-bold">{{ row.department }}</td>
+              <td class="cell-amount">{{ row.revenue | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
