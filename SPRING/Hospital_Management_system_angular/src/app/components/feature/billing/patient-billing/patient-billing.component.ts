@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { InvoiceGeneratorService } from '../../../services/billing/invoice-generator.service';
+import { InvoiceGeneratorService } from '../../../../services/billing/invoice-generator.service';
 
 interface BillItem {
   id: number;
@@ -208,8 +208,9 @@ export class PatientBillingComponent implements OnInit {
     const billNum = this.billForm.billNumber;
     setTimeout(() => {
       this.loading = false;
-      this.msg = 'Invoice generated successfully! Bill #' + billNum; this.msgType = 'success';
-    }, 800);
+      this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate);
+      this.msg = 'Invoice PDF downloaded! Bill #' + billNum; this.msgType = 'success';
+    }, 300);
   }
 
   printBill(): void {
