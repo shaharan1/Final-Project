@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 @Table(name = "purchase_items")
@@ -19,7 +21,7 @@ public class PurchaseItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "purchaseItems"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "items"})
     private Purchase purchase;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,6 +30,18 @@ public class PurchaseItem {
     private MedicineStock medicineStock;
 
     private int quantity;
+
     private double unitPrice;
+
+    private double discount = 0.0;
+
+    private double vat = 0.0;
+
     private double subtotal;
+
+    private String batchNumber;
+
+    private LocalDate manufacturingDate;
+
+    private LocalDate expiryDate;
 }
