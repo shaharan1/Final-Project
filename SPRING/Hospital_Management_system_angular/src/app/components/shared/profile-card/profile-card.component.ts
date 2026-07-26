@@ -41,7 +41,7 @@ export class ProfileCardComponent implements OnInit {
       next: (res) => {
         const existing = this.storage.getUser();
         this.user = { ...existing, ...res };
-        this.storage.saveSession(this.user);
+        if (this.user) this.storage.saveSession(this.user);
         this.cdr.markForCheck();
       }
     });
@@ -108,8 +108,9 @@ export class ProfileCardComponent implements OnInit {
           this.cdr.markForCheck();
           return;
         }
-        this.user = res;
-        this.storage.saveSession(res);
+        const existing = this.storage.getUser();
+        this.user = { ...existing, ...res };
+        if (this.user) this.storage.saveSession(this.user);
         this.imageUploading = false;
         this.selectedFile = null;
         this.previewUrl = null;
@@ -140,8 +141,9 @@ export class ProfileCardComponent implements OnInit {
           this.cdr.markForCheck();
           return;
         }
-        this.user = res;
-        this.storage.saveSession(res);
+        const existing = this.storage.getUser();
+        this.user = { ...existing, ...res };
+        if (this.user) this.storage.saveSession(this.user);
         this.saving = false;
         this.msg = 'Profile updated successfully!';
         this.msgType = 'success';
