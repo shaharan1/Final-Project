@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 export class PharmacyReportService {
   private api = environment.apiUrl + 'pharmacy/reports';
   constructor(private http: HttpClient) {}
-  dailySales(date: string): Observable<any> { return this.http.get(`${this.api}/daily-sales`, { params: { date } }); }
-  monthlySales(year: number, month: number): Observable<any> { return this.http.get(`${this.api}/monthly-sales`, { params: { year: year.toString(), month: month.toString() } }); }
-  purchaseReport(startDate: string, endDate: string): Observable<any> { return this.http.get(`${this.api}/purchase-report`, { params: { startDate, endDate } }); }
-  stockReport(): Observable<any> { return this.http.get(`${this.api}/stock-report`); }
-  supplierReport(): Observable<any> { return this.http.get(`${this.api}/supplier-report`); }
+  getDailySales(date: string): Observable<any> { return this.http.get(`${this.api}/daily-sales`, { params: { date } }); }
+  getMonthlySales(year: string, month: string): Observable<any> { return this.http.get(`${this.api}/monthly-sales`, { params: { year, month } }); }
+  getPurchaseReport(startDate: string, endDate: string): Observable<any> { return this.http.get(`${this.api}/purchase-report`, { params: { startDate, endDate } }); }
+  getStockReport(): Observable<any> { return this.http.get(`${this.api}/stock-report`); }
+  getSupplierReport(): Observable<any> { return this.http.get(`${this.api}/supplier-report`); }
 }

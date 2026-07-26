@@ -49,6 +49,13 @@ import { ResultEntryComponent } from './components/feature/lab/result-entry/resu
 import { LabVerificationComponent } from './components/feature/lab/lab-verification/lab-verification.component';
 import { DoctorLabReportComponent } from './components/feature/lab/doctor-lab-report/doctor-lab-report.component';
 
+import { SupplierComponent } from './components/feature/pharmacy/supplier/supplier.component';
+import { MedicineStockComponent } from './components/feature/pharmacy/medicine-stock/medicine-stock.component';
+import { PurchaseOrderComponent } from './components/feature/pharmacy/purchase-order/purchase-order.component';
+import { PharmacySaleComponent } from './components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component';
+import { PharmacyDashboardComponent } from './components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component';
+import { PharmacyReportComponent } from './components/feature/pharmacy/pharmacy-report/pharmacy-report.component';
+
 const ALL_ROLES = ['Admin', 'Doctor', 'Nurse', 'OfficeStaff', 'Receptionist', 'Pharmacist', 'LabTechnician', 'BillingClerk', 'InventoryManager', 'WardManager'];
 
 export const routes: Routes = [
@@ -135,6 +142,14 @@ export const routes: Routes = [
   { path: 'result-entry', component: ResultEntryComponent },
   { path: 'lab-verification', component: LabVerificationComponent },
   { path: 'doctor-lab-reports', component: DoctorLabReportComponent },
+
+  // ============ Pharmacy Module ============
+  { path: 'pharmacy-dashboard', component: PharmacyDashboardComponent },
+  { path: 'suppliers', component: SupplierComponent },
+  { path: 'medicine-stock', component: MedicineStockComponent },
+  { path: 'purchase-orders', component: PurchaseOrderComponent },
+  { path: 'pharmacy-sale', component: PharmacySaleComponent },
+  { path: 'pharmacy-reports', component: PharmacyReportComponent },
 
   // ============ Public ============
   { path: '', component: LandingPageComponent },

@@ -92,6 +92,12 @@ export class NavigationService {
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
           { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
           { label: 'Prescription', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+          { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
+          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
+          { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
+          { label: 'Pharmacy Sale', icon: '💊', route: '/pharmacy-sale', section: 'pharmacysale' },
+          { label: 'Pharmacy Reports', icon: '📈', route: '/pharmacy-reports', section: 'pharmacyreports' },
         ],
       },
       {
@@ -241,10 +247,20 @@ export class NavigationService {
         label: 'Overview',
         items: [
           { label: 'Dashboard', icon: '◆', route: '/pharmacist-dashboard', section: 'dashboard' },
+          { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
         ],
       },
       {
-        label: 'Pharmacy',
+        label: 'Pharmacy Operations',
+        items: [
+          { label: 'Pharmacy Sale', icon: '💊', route: '/pharmacy-sale', section: 'pharmacysale' },
+          { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
+          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
+        ],
+      },
+      {
+        label: 'Catalog',
         items: [
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
           { label: 'Add Medicine', icon: '+', route: '/medicines/create', section: 'addmedicine' },
@@ -256,6 +272,12 @@ export class NavigationService {
         label: 'Prescriptions',
         items: [
           { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+        ],
+      },
+      {
+        label: 'Reports',
+        items: [
+          { label: 'Pharmacy Reports', icon: '📈', route: '/pharmacy-reports', section: 'pharmacyreports' },
         ],
       },
     ];
@@ -330,6 +352,7 @@ export class NavigationService {
         label: 'Overview',
         items: [
           { label: 'Dashboard', icon: '◆', route: '/inventory-manager-dashboard', section: 'dashboard' },
+          { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
         ],
       },
       {
@@ -337,8 +360,16 @@ export class NavigationService {
         items: [
           { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
           { label: 'Add Medicine', icon: '+', route: '/medicines/create', section: 'addmedicine' },
+          { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
           { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
           { label: 'Add Generic', icon: '+', route: '/generics', section: 'addgeneric' },
+        ],
+      },
+      {
+        label: 'Suppliers & Purchase',
+        items: [
+          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
         ],
       },
       {
@@ -346,6 +377,12 @@ export class NavigationService {
         items: [
           { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
           { label: 'Bed Management', icon: 'Ⓑ', route: '/bed-management', section: 'bed' },
+        ],
+      },
+      {
+        label: 'Reports',
+        items: [
+          { label: 'Pharmacy Reports', icon: '📈', route: '/pharmacy-reports', section: 'pharmacyreports' },
         ],
       },
     ];

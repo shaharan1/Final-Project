@@ -51,7 +51,7 @@ export class PharmacySaleComponent implements OnInit {
 
   loadSalesHistory(): void {
     this.saleService.getAll().subscribe({
-      next: (data) => { this.saleHistory = data; this.filteredSales = [...data]; },
+      next: (data: any) => { this.saleHistory = data; this.filteredSales = [...data]; },
       error: () => {
         this.saleHistory = [
           { id: 1, saleInvoiceNo: 'SAL-2024-001', patientType: 'OUTPATIENT', patientName: 'Kamal Ahmed', patientPhone: '+880-1711-111111', doctorName: 'Dr. Rahman', totalAmount: 850, discount: 50, vat: 144, netPayable: 944, paidAmount: 1000, changeAmount: 56, paymentMethod: 'Cash', paymentStatus: 'Paid', saleDate: '2024-12-20' },
@@ -76,8 +76,8 @@ export class PharmacySaleComponent implements OnInit {
     this.lowStockWarning = '';
     if (this.medicineSearchTerm.length < 2) { this.searchedMedicines = []; return; }
     this.stockService.search(this.medicineSearchTerm).subscribe({
-      next: (data) => {
-        this.searchedMedicines = data.filter(s => (s.availableQuantity || 0) > 0);
+      next: (data: any) => {
+        this.searchedMedicines = data.filter((s: any) => (s.availableQuantity || 0) > 0);
       },
       error: () => {
         this.searchedMedicines = [
@@ -165,7 +165,7 @@ export class PharmacySaleComponent implements OnInit {
       items: this.cartItems
     };
     this.saleService.processSale(sale).subscribe({
-      next: (saved) => {
+      next: (saved: any) => {
         this.saleHistory.unshift(saved);
         this.filteredSales = [...this.saleHistory];
         this.resetForm();
