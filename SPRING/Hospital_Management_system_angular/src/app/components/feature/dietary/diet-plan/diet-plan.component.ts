@@ -22,6 +22,7 @@ export class DietPlanComponent implements OnInit {
   showDeleteModal = false;
   editingPlan: DietPlan | null = null;
   planToDelete: DietPlan | null = null;
+  expandedPlanId: number | null = null;
   formModel: Partial<DietPlan> = this.getEmptyForm();
   msg = '';
   msgType = '';
@@ -98,6 +99,12 @@ export class DietPlanComponent implements OnInit {
     const map: Record<string, string> = { 'Diabetic': 'badge-danger', 'LowSalt': 'badge-info', 'LowFat': 'badge-warning', 'Cardiac': 'badge-danger', 'HighProtein': 'badge-primary', 'Liquid': 'badge-info', 'Soft': 'badge-secondary', 'Renal': 'badge-warning', 'Pediatric': 'badge-success', 'Pregnancy': 'badge-info', 'PostSurgery': 'badge-warning', 'Special': 'badge-primary' };
     return map[type] || 'badge-secondary';
   }
+  getDietTypeColor(type: string): string {
+    const map: Record<string, string> = { 'Diabetic': '#dc3545', 'LowSalt': '#0dcaf0', 'LowFat': '#fd7e14', 'Cardiac': '#dc3545', 'HighProtein': '#0d6efd', 'Liquid': '#0dcaf0', 'Soft': '#6c757d', 'Renal': '#fd7e14', 'Pediatric': '#198754', 'Pregnancy': '#0dcaf0', 'PostSurgery': '#fd7e14', 'Special': '#0d6efd' };
+    return map[type] || '#6c757d';
+  }
+  togglePlanDetail(plan: DietPlan): void { this.expandedPlanId = this.expandedPlanId === (plan.id ?? null) ? null : (plan.id ?? null); }
+  closeModal(): void { this.showModal = false; this.showDeleteModal = false; }
 
   getMeals(plan: DietPlan): { time: string; name: string; content: string }[] {
     return [

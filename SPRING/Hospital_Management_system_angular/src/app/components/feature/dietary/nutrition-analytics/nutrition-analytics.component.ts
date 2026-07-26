@@ -97,4 +97,42 @@ export class NutritionAnalyticsComponent implements OnInit {
   getTotalMeals(): number {
     return this.wardData.reduce((sum: number, w: any) => sum + w.meals, 0);
   }
+
+  getMaxCount(): number {
+    return Math.max(...this.dietTypeData.map((d: any) => d.count), 1);
+  }
+
+  getMaxWardMeals(): number {
+    return Math.max(...this.wardData.map((w: any) => w.meals), 1);
+  }
+
+  getCalorieAreaPoints(): string {
+    const points = this.dailyCalories.map((d: any, i: number) => {
+      const x = (i / Math.max(this.dailyCalories.length - 1, 1)) * 400;
+      const y = 150 - ((d.calories - 1500) / 1000) * 120;
+      return `${x},${Math.max(10, Math.min(140, y))}`;
+    });
+    return `0,150 ${points.join(' ')} 400,150`;
+  }
+
+  getCalorieLinePoints(): string {
+    return this.dailyCalories.map((d: any, i: number) => {
+      const x = (i / Math.max(this.dailyCalories.length - 1, 1)) * 400;
+      const y = 150 - ((d.calories - 1500) / 1000) * 120;
+      return `${x},${Math.max(10, Math.min(140, y))}`;
+    }).join(' ');
+  }
+
+  getX(index: number): number {
+    return (index / Math.max(this.dailyCalories.length - 1, 1)) * 400;
+  }
+
+  getY(value: number): number {
+    return 150 - ((value - 1500) / 1000) * 120;
+  }
+
+  getDonutGradient(): string {
+    const pct = this.getAverageCompletion();
+    return `conic-gradient(#198754 0% ${pct}%, rgba(255,255,255,0.05) ${pct}% 100%)`;
+  }
 }

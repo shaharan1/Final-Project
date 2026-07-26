@@ -25,6 +25,9 @@ export class KitchenOrderService {
   getTodayOrders(): Observable<KitchenOrder[]> {
     return this.http.get<KitchenOrder[]>(`${this.api}/today`);
   }
+  create(data: KitchenOrder): Observable<KitchenOrder> {
+    return this.http.post<KitchenOrder>(this.api, data);
+  }
   updateStatus(id: number, status: string, notes?: string): Observable<KitchenOrder> {
     return this.http.put<KitchenOrder>(
       `${this.api}/${id}/status?status=${status}&notes=${notes || ''}`, {}

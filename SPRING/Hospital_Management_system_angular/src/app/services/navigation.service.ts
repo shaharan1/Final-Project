@@ -119,12 +119,28 @@ export class NavigationService {
           { label: 'Payments', icon: '💳', route: '/payments', section: 'payments' },
           { label: 'Invoices', icon: '🧾', route: '/invoices', section: 'invoices' },
           { label: 'Refunds', icon: '↩️', route: '/refunds', section: 'refunds' },
-          { label: 'Insurance', icon: '🛡️', route: '/insurance', section: 'insurance' },
-          { label: 'Billing Reports', icon: '📊', route: '/billing-reports', section: 'billingreports' },
-        ],
-      },
-    ];
-  }
+           { label: 'Insurance', icon: '🛡️', route: '/insurance', section: 'insurance' },
+           { label: 'Billing Reports', icon: '📊', route: '/billing-reports', section: 'billingreports' },
+         ],
+       },
+       {
+         label: 'Dietary & Nutrition',
+         items: [
+           { label: 'Dashboard', icon: '🍽️', route: '/dietary/dashboard', section: 'dietarydashboard' },
+           { label: 'Patient Diet', icon: '👤', route: '/dietary/patient-diet', section: 'patientdiet' },
+           { label: 'Diet Plans', icon: '📋', route: '/dietary/diet-plans', section: 'dietplans' },
+           { label: 'Dieticians', icon: '👨‍⚕️', route: '/dietary/dieticians', section: 'dieticians' },
+           { label: 'Meal Schedule', icon: '⏰', route: '/dietary/meal-schedule', section: 'mealschedule' },
+           { label: 'Kitchen Dashboard', icon: '🍳', route: '/dietary/kitchen-dashboard', section: 'kitchendashboard' },
+           { label: 'Kitchen Orders', icon: '📦', route: '/dietary/kitchen-orders', section: 'kitchenorders' },
+           { label: 'Nutrition Analytics', icon: '📊', route: '/dietary/nutrition-analytics', section: 'nutritionanalytics' },
+           { label: 'Diet Reports', icon: '📈', route: '/dietary/diet-reports', section: 'dietreports' },
+           { label: 'Diet Alerts', icon: '⚠️', route: '/dietary/diet-alerts', section: 'dietalerts' },
+           { label: 'Diet History', icon: '📜', route: '/dietary/diet-history', section: 'diethistory' },
+         ],
+       },
+     ];
+   }
 
   private doctorNav(): NavGroup[] {
     return [

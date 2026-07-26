@@ -71,4 +71,12 @@ export class MealScheduleComponent implements OnInit {
   getStatusBadge(status: string): string {
     return status === 'ACTIVE' ? 'badge-success' : 'badge-secondary';
   }
+
+  getMealIcon(mealName: string): string {
+    const map: Record<string, string> = {
+      'Breakfast': '🌅', 'Morning Snacks': '🍎', 'Lunch': '☀️',
+      'Evening Snacks': '🍪', 'Dinner': '🌙', 'Night Diet': '💫'
+    };
+    return map[mealName] || '🍽️';
+  }
 }

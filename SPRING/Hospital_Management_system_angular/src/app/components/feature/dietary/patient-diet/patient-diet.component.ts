@@ -205,4 +205,41 @@ export class PatientDietComponent implements OnInit {
     this.showAlertModal = false;
     this.msg = '';
   }
+
+  getUniqueWards(): string[] {
+    const wards = this.patients.map(p => p.ward?.name).filter((w: string) => w);
+    return [...new Set(wards)];
+  }
+
+  calculateAge(dateOfBirth: string): number {
+    if (!dateOfBirth) return 0;
+    const birth = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  getMeals(plan: any): { time: string; name: string; content: string }[] {
+    return [
+      { time: plan.breakfastTime || '07:30', name: 'Breakfast', content: plan.breakfast || '-' },
+      { time: plan.morningSnacksTime || '10:00', name: 'Morning Snacks', content: plan.morningSnacks || '-' },
+      { time: plan.lunchTime || '12:30', name: 'Lunch', content: plan.lunch || '-' },
+      { time: plan.eveningSnacksTime || '16:00', name: 'Evening Snacks', content: plan.eveningSnacks || '-' },
+      { time: plan.dinnerTime || '19:00', name: 'Dinner', content: plan.dinner || '-' },
+      { time: plan.nightDietTime || '21:00', name: 'Night Diet', content: plan.nightDiet || '-' }
+    ];
+  }
+
+  getActionClass(action: string): string {
+    const map: Record<string, string> = {
+      'ASSIGNED': 'badge-success', 'UPDATED': 'badge-info', 'CANCELLED': 'badge-danger',
+      'DOCTOR_RECOMMENDATION': 'badge-primary', 'DIETICIAN_RECOMMENDATION': 'badge-warning',
+      'MEAL_CHANGED': 'badge-secondary'
+    };
+    return map[action] || 'badge-secondary';
+  }
 }

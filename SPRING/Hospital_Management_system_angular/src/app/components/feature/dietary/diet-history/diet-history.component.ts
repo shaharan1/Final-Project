@@ -45,6 +45,20 @@ export class DietHistoryComponent implements OnInit {
     });
   }
 
+  getActionIcon(action: string): string {
+    const map: Record<string, string> = {
+      'ASSIGNED': '➕', 'UPDATED': '✏️', 'CANCELLED': '❌',
+      'DOCTOR_RECOMMENDATION': '👨‍⚕️', 'DIETICIAN_RECOMMENDATION': '🍽️',
+      'MEAL_CHANGED': '🔄'
+    };
+    return map[action] || '📋';
+  }
+
+  filterAlerts(): void {
+    if (!this.filterAction) { this.history = this.history; return; }
+    // filterAlerts not used for diet-history; using template directly
+  }
+
   getActionClass(action: string): string {
     const map: Record<string, string> = {
       'ASSIGNED': 'badge-success', 'UPDATED': 'badge-info', 'CANCELLED': 'badge-danger',

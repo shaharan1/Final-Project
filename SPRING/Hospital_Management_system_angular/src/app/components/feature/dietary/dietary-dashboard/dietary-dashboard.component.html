@@ -48,7 +48,7 @@
           <span class="stat-value" [style.color]="card.color">{{ getAnimated(card.key) | number }}</span>
           <span class="stat-sub" *ngIf="card.key === 'mealCompletionRate'">%</span>
           <div class="stat-progress">
-            <div class="stat-progress-bar" [style.width.%]="getAnimated(card.key) > 0 ? Math.min(getAnimated(card.key), 100) : 0" [style.background]="card.color"></div>
+            <div class="stat-progress-bar" [style.width.%]="getProgressPercent(getAnimated(card.key))" [style.background]="card.color"></div>
           </div>
         </div>
         <div class="stat-glow" [style.box-shadow]="'0 0 20px ' + card.color + '40'"></div>

@@ -2,41 +2,36 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { PaymentService } from '../../../../services/billing/payment.service';
-import { PatientService } from '../../../../services/patient.service';
 
-export interface BillItem {
+interface BillItem {
   id: number;
   category: string;
   description: string;
-  quantity: number;
+  qty: number;
   unitPrice: number;
   discount: number;
   amount: number;
 }
 
-export interface Bill {
+interface Patient {
   id?: number;
-  invoiceNumber: string;
-  patientId: string;
+  name: string;
+  phone: string;
+  address: string;
+  age: number;
+  gender: string;
+  patientCode: string;
+  bloodGroup: string;
+  ward: string;
+  bedNumber: string;
+}
+
+interface RecentBill {
+  billNumber: string;
   patientName: string;
-  patientPhone: string;
-  patientAddress: string;
-  patientAge: string;
-  patientGender: string;
-  items: BillItem[];
-  subtotal: number;
-  discount: number;
-  vat: number;
-  serviceCharge: number;
-  insuranceCoverage: number;
-  advancePayment: number;
-  netPayable: number;
-  dueAmount: number;
+  date: string;
+  total: number;
   status: string;
-  billDate: string;
-  paymentMethod: string;
-  notes: string;
 }
 
 @Component({
@@ -44,365 +39,183 @@ export interface Bill {
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './patient-billing.component.html',
-  styleUrls: ['./patient-billing.component.css']
+  styleUrl: './patient-billing.component.css'
 })
 export class PatientBillingComponent implements OnInit {
-  activeTab: 'create' | 'history' = 'create';
+  patients: Patient[] = [];
+  filteredPatients: Patient[] = [];
+  searchTerm = '';
+  selectedPatient: Patient | null = null;
+  showPatientSearch = false;
+
+  billItems: BillItem[] = [];
+  nextItemId = 1;
+  categories = ['Consultation', 'Diagnostic', 'Therapy', 'Medicine', 'Procedure', 'Room Charge', 'Surgery', 'Lab Test', 'Imaging', 'Other'];
+
+  billForm = {
+    billNumber: '',
+    patientName: '',
+    phone: '',
+    address: '',
+    age: null as number | null,
+    gender: '',
+    notes: ''
+  };
+
+  recentBills: RecentBill[] = [];
+  showRecentBills = false;
+  msg = '';
+  msgType = '';
+  today = new Date();
   loading = false;
-  loadingBills = false;
-  processingBill = false;
+  taxRate = 0.18;
+  discountPercent = 0;
 
-  searchQuery = '';
-  searchType: 'name' | 'phone' | 'id' = 'name';
-  searchResults: any[] = [];
-  showSearchResults = false;
-  selectedPatient: any = null;
-
-  bill = this.getEmptyBill();
-
-  categories: string[] = [
-    'Registration', 'Consultation', 'Admission', 'Bed',
-    'Doctor Visit', 'Nursing', 'Operation', 'ICU',
-    'Oxygen', 'Laboratory', 'Radiology', 'Pharmacy',
-    'Ambulance', 'Food', 'Other'
-  ];
-
-  recentBills: Bill[] = [];
-  filteredBills: Bill[] = [];
-  billSearchTerm = '';
-  billFilterStatus = 'all';
-
-  showBillDetailModal = false;
-  selectedBill: Bill | null = null;
-  showConfirmModal = false;
-  confirmAction = '';
-
-  successMessage = '';
-  errorMessage = '';
-
-  private searchDebounce: any;
-
-  constructor(
-    private paymentService: PaymentService,
-    private patientService: PatientService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.loadRecentBills();
+    this.generateBillNumber();
+    this.recentBills = this.getMockRecentBills();
   }
 
-  getEmptyBill(): Bill {
-    return {
-      invoiceNumber: '',
-      patientId: '',
-      patientName: '',
-      patientPhone: '',
-      patientAddress: '',
-      patientAge: '',
-      patientGender: '',
-      items: [],
-      subtotal: 0,
-      discount: 0,
-      vat: 0,
-      serviceCharge: 0,
-      insuranceCoverage: 0,
-      advancePayment: 0,
-      netPayable: 0,
-      dueAmount: 0,
-      status: 'Pending',
-      billDate: new Date().toISOString().split('T')[0],
-      paymentMethod: 'Cash',
-      notes: ''
-    };
+  generateBillNumber(): void {
+    const date = new Date();
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yy = String(date.getFullYear()).slice(-2);
+    const seq = String(Math.floor(Math.random() * 9000) + 1000);
+    this.billForm.billNumber = `BIL-${dd}${mm}${yy}-${seq}`;
   }
 
-  generateInvoiceNumber(): string {
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, '0');
-    const d = String(now.getDate()).padStart(2, '0');
-    const r = String(Math.floor(Math.random() * 9000) + 1000);
-    return 'INV-' + y + m + d + '-' + r;
+  getMockRecentBills(): RecentBill[] {
+    return [
+      { billNumber: 'BIL-260727-1042', patientName: 'Ahmed Rahman', date: '2026-07-27', total: 12500, status: 'PAID' },
+      { billNumber: 'BIL-260727-1041', patientName: 'Sara Islam', date: '2026-07-27', total: 8450, status: 'PENDING' },
+      { billNumber: 'BIL-260726-2891', patientName: 'Mohammad Khan', date: '2026-07-26', total: 23100, status: 'PAID' },
+      { billNumber: 'BIL-260726-2890', patientName: 'Fatima Begum', date: '2026-07-26', total: 5600, status: 'REFUNDED' },
+      { billNumber: 'BIL-260725-1772', patientName: 'Hasan Talukder', date: '2026-07-25', total: 18900, status: 'PAID' },
+    ];
   }
 
-  loadRecentBills(): void {
-    this.loadingBills = true;
-    this.paymentService.getAll().subscribe({
-      next: (data: any) => {
-        const list = Array.isArray(data) ? data : [];
-        this.recentBills = list.map((p: any) => this.mapToBill(p));
-        this.filteredBills = [...this.recentBills];
-        this.loadingBills = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.recentBills = [];
-        this.filteredBills = [];
-        this.loadingBills = false;
-        this.cdr.detectChanges();
-      }
-    });
+  searchPatients(): void {
+    if (!this.searchTerm) { this.filteredPatients = []; return; }
+    const term = this.searchTerm.toLowerCase();
+    this.filteredPatients = this.patients.filter(p =>
+      (p.name && p.name.toLowerCase().includes(term)) ||
+      (p.patientCode && p.patientCode.toLowerCase().includes(term)) ||
+      (p.phone && p.phone.includes(term))
+    );
+    this.showPatientSearch = true;
   }
 
-  private mapToBill(p: any): Bill {
-    return {
-      id: p.id,
-      invoiceNumber: p.paymentReference || p.invoiceNumber || ('PAY-' + p.id),
-      patientId: p.patientId || '',
-      patientName: p.patientName || 'Unknown',
-      patientPhone: '',
-      patientAddress: '',
-      patientAge: '',
-      patientGender: '',
-      items: [],
-      subtotal: p.amount || 0,
-      discount: p.discount || 0,
-      vat: p.vat || 0,
-      serviceCharge: 0,
-      insuranceCoverage: p.insuranceCoverage || 0,
-      advancePayment: 0,
-      netPayable: p.netAmount || p.amount || 0,
-      dueAmount: p.dueAmount || 0,
-      status: p.paymentStatus || 'Pending',
-      billDate: p.paymentDate || p.createdDate || '',
-      paymentMethod: p.paymentMethod || 'Cash',
-      notes: p.notes || ''
-    };
-  }
-
-  searchPatient(): void {
-    clearTimeout(this.searchDebounce);
-    if (this.searchQuery.length < 2) {
-      this.searchResults = [];
-      this.showSearchResults = false;
-      return;
-    }
-    this.searchDebounce = setTimeout(() => {
-      this.patientService.search(this.searchQuery).subscribe({
-        next: (patients: any[]) => {
-          this.searchResults = (patients || []).slice(0, 8);
-          this.showSearchResults = this.searchResults.length > 0;
-          this.cdr.detectChanges();
-        },
-        error: () => {
-          this.searchResults = [];
-          this.showSearchResults = false;
-          this.cdr.detectChanges();
-        }
-      });
-    }, 300);
-  }
-
-  selectPatient(patient: any): void {
+  selectPatient(patient: Patient): void {
     this.selectedPatient = patient;
-    this.bill.patientId = patient.id || patient.patientCode || '';
-    this.bill.patientName = patient.name || patient.patientName || '';
-    this.bill.patientPhone = patient.phone || patient.phoneNumber || '';
-    this.bill.patientAddress = patient.address || '';
-    this.bill.patientAge = patient.age || '';
-    this.bill.patientGender = patient.gender || '';
-    this.showSearchResults = false;
+    this.billForm.patientName = patient.name;
+    this.billForm.phone = patient.phone;
+    this.billForm.address = patient.address;
+    this.billForm.age = patient.age;
+    this.billForm.gender = patient.gender;
+    this.showPatientSearch = false;
+    this.searchTerm = '';
     this.cdr.detectChanges();
   }
 
-  clearPatientSelection(): void {
-    this.selectedPatient = null;
-    this.bill.patientId = '';
-    this.bill.patientName = '';
-    this.bill.patientPhone = '';
-    this.bill.patientAddress = '';
-    this.bill.patientAge = '';
-    this.bill.patientGender = '';
-    this.cdr.detectChanges();
-  }
-
-  addBillItem(): void {
-    const nextId = this.bill.items.length > 0
-      ? Math.max(...this.bill.items.map(i => i.id)) + 1
-      : 1;
-    this.bill.items.push({
-      id: nextId,
-      category: 'Registration',
+  addItem(): void {
+    const newItem: BillItem = {
+      id: this.nextItemId++,
+      category: '',
       description: '',
-      quantity: 1,
+      qty: 1,
       unitPrice: 0,
       discount: 0,
       amount: 0
-    });
-    this.recalculate();
-  }
-
-  removeBillItem(index: number): void {
-    this.bill.items.splice(index, 1);
-    this.recalculate();
-  }
-
-  updateItemAmount(item: BillItem): void {
-    item.amount = (item.quantity * item.unitPrice) - item.discount;
-    if (item.amount < 0) item.amount = 0;
-    this.recalculate();
-  }
-
-  recalculate(): void {
-    const itemsSubtotal = this.bill.items.reduce((sum, i) => sum + (i.quantity * i.unitPrice), 0);
-    const itemsDiscount = this.bill.items.reduce((sum, i) => sum + i.discount, 0);
-    const totalDiscount = itemsDiscount + this.bill.discount;
-    const afterDiscount = Math.max(0, itemsSubtotal - totalDiscount);
-    this.bill.subtotal = itemsSubtotal;
-    this.bill.vat = Math.round(afterDiscount * 0.18 * 100) / 100;
-    if (this.bill.vat < 0) this.bill.vat = 0;
-    this.bill.netPayable = afterDiscount + this.bill.vat + this.bill.serviceCharge - this.bill.insuranceCoverage - this.bill.advancePayment;
-    this.bill.dueAmount = Math.max(0, this.bill.netPayable);
+    };
+    this.billItems.push(newItem);
     this.cdr.detectChanges();
   }
 
-  onSummaryChange(): void {
-    this.recalculate();
+  removeItem(id: number): void {
+    this.billItems = this.billItems.filter(item => item.id !== id);
+    this.calculateTotals();
   }
 
-  canGenerate(): boolean {
-    return this.bill.patientName.trim().length > 0 &&
-           this.bill.items.length > 0 &&
-           this.bill.items.every(i => i.description.trim().length > 0 && i.quantity > 0) &&
-           !this.processingBill;
+  updateItem(item: BillItem): void {
+    item.amount = (item.qty * item.unitPrice) - ((item.qty * item.unitPrice * item.discount) / 100);
+    this.calculateTotals();
   }
 
-  generateInvoice(): void {
-    if (!this.canGenerate()) return;
-    this.bill.invoiceNumber = this.generateInvoiceNumber();
-    this.confirmAction = 'generate';
-    this.showConfirmModal = true;
+  calculateSubtotal(): number {
+    return this.billItems.reduce((sum, item) => sum + item.amount, 0);
+  }
+
+  calculateDiscount(): number {
+    return this.calculateSubtotal() * (this.discountPercent / 100);
+  }
+
+  calculateTax(): number {
+    return (this.calculateSubtotal() - this.calculateDiscount()) * this.taxRate;
+  }
+
+  calculateTotal(): number {
+    return this.calculateSubtotal() - this.calculateDiscount() + this.calculateTax();
+  }
+
+  calculateTotals(): void {
+    this.billItems.forEach(item => {
+      item.amount = (item.qty * item.unitPrice) - ((item.qty * item.unitPrice * item.discount) / 100);
+    });
+    this.cdr.detectChanges();
+  }
+
+  resetForm(): void {
+    this.billItems = [];
+    this.nextItemId = 1;
+    this.billForm = {
+      billNumber: '', patientName: '', phone: '', address: '',
+      age: null, gender: '', notes: ''
+    };
+    this.selectedPatient = null;
+    this.discountPercent = 0;
+    this.generateBillNumber();
+    this.msg = '';
     this.cdr.detectChanges();
   }
 
   saveDraft(): void {
-    if (!this.bill.patientName.trim() || this.bill.items.length === 0) {
-      this.errorMessage = 'Please add patient info and at least one bill item.';
-      setTimeout(() => { this.errorMessage = ''; this.cdr.detectChanges(); }, 3000);
-      this.cdr.detectChanges();
-      return;
+    this.msg = 'Bill saved as draft'; this.msgType = 'success';
+  }
+
+  generateInvoice(): void {
+    if (this.billItems.length === 0) {
+      this.msg = 'Add at least one item to generate invoice'; this.msgType = 'error'; return;
     }
-    this.bill.invoiceNumber = this.generateInvoiceNumber();
-    this.confirmAction = 'draft';
-    this.showConfirmModal = true;
-    this.cdr.detectChanges();
-  }
-
-  executeConfirmAction(): void {
-    this.showConfirmModal = false;
-    this.processingBill = true;
-    this.cdr.detectChanges();
-
-    const payload = {
-      invoiceNumber: this.bill.invoiceNumber,
-      patientId: this.bill.patientId ? Number(this.bill.patientId) : 0,
-      patientName: this.bill.patientName,
-      amount: this.bill.netPayable,
-      paymentMethod: this.bill.paymentMethod.toUpperCase(),
-      discount: this.bill.discount,
-      VAT: this.bill.vat,
-      notes: this.bill.notes || (this.confirmAction === 'draft' ? 'Draft bill' : ''),
-      processedBy: 'BillingClerk'
-    };
-
-    this.paymentService.processPayment(payload).subscribe({
-      next: (saved: any) => {
-        const mapped = this.mapToBill(saved);
-        this.recentBills.unshift(mapped);
-        this.filteredBills = [...this.recentBills];
-        this.processingBill = false;
-        this.bill = this.getEmptyBill();
-        this.bill.billDate = new Date().toISOString().split('T')[0];
-        this.selectedPatient = null;
-        this.successMessage = this.confirmAction === 'draft'
-          ? 'Bill saved as draft successfully!'
-          : 'Invoice generated successfully!';
-        setTimeout(() => { this.successMessage = ''; this.cdr.detectChanges(); }, 3000);
-        this.activeTab = 'history';
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.errorMessage = 'Failed to save bill. Please try again.';
-        this.processingBill = false;
-        setTimeout(() => { this.errorMessage = ''; this.cdr.detectChanges(); }, 3000);
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  closeConfirmModal(): void {
-    this.showConfirmModal = false;
-    this.confirmAction = '';
-    this.cdr.detectChanges();
+    if (!this.billForm.patientName) {
+      this.msg = 'Please enter patient name'; this.msgType = 'error'; return;
+    }
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+      this.msg = 'Invoice generated successfully!'; this.msgType = 'success';
+    }, 500);
   }
 
   printBill(): void {
     window.print();
   }
 
-  resetBillForm(): void {
-    this.bill = this.getEmptyBill();
-    this.bill.billDate = new Date().toISOString().split('T')[0];
-    this.selectedPatient = null;
-    this.cdr.detectChanges();
-  }
-
-  filterBills(): void {
-    const term = this.billSearchTerm.toLowerCase();
-    this.filteredBills = this.recentBills.filter(b => {
-      const matchesSearch = (b.invoiceNumber || '').toLowerCase().includes(term) ||
-        (b.patientName || '').toLowerCase().includes(term) ||
-        (b.patientId || '').toLowerCase().includes(term);
-      const matchesStatus = this.billFilterStatus === 'all' ||
-        b.status.toLowerCase() === this.billFilterStatus.toLowerCase();
-      return matchesSearch && matchesStatus;
-    });
-    this.cdr.detectChanges();
-  }
-
-  viewBillDetail(bill: Bill): void {
-    this.selectedBill = bill;
-    this.showBillDetailModal = true;
-    this.cdr.detectChanges();
-  }
-
-  closeBillDetailModal(): void {
-    this.showBillDetailModal = false;
-    this.selectedBill = null;
-    this.cdr.detectChanges();
-  }
-
-  deleteBill(bill: Bill): void {
-    if (!bill.id) return;
-    if (!confirm('Delete this bill?')) return;
-    this.paymentService.deletePayment(bill.id).subscribe({
-      next: () => {
-        this.recentBills = this.recentBills.filter(b => b.id !== bill.id);
-        this.filteredBills = [...this.recentBills];
-        this.showBillDetailModal = false;
-        this.selectedBill = null;
-        this.successMessage = 'Bill deleted successfully!';
-        setTimeout(() => { this.successMessage = ''; this.cdr.detectChanges(); }, 3000);
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.errorMessage = 'Failed to delete bill.';
-        setTimeout(() => { this.errorMessage = ''; this.cdr.detectChanges(); }, 3000);
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
   getStatusClass(status: string): string {
-    switch (status?.toLowerCase()) {
-      case 'completed': return 'badge-paid';
-      case 'paid': return 'badge-paid';
-      case 'pending': return 'badge-pending';
-      case 'partial': return 'badge-partial';
-      case 'draft': return 'badge-draft';
-      case 'failed': return 'badge-overdue';
-      default: return 'badge-pending';
-    }
+    const map: Record<string, string> = {
+      'PAID': 'badge-success', 'PENDING': 'badge-warning',
+      'REFUNDED': 'badge-info', 'CANCELLED': 'badge-danger', 'DRAFT': 'badge-secondary'
+    };
+    return map[status] || 'badge-secondary';
+  }
+
+  formatCurrency(amount: number): string {
+    return '৳' + amount.toLocaleString('en-BD');
+  }
+
+  toggleRecentBills(): void {
+    this.showRecentBills = !this.showRecentBills;
   }
 }

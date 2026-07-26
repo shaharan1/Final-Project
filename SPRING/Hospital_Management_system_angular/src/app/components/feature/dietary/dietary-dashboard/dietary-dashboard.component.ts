@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DietaryDashboardService } from '../../../services/dietary/dietary-dashboard.service';
+import { DietaryDashboardService } from '../../../../services/dietary/dietary-dashboard.service';
 
 @Component({
   selector: 'app-dietary-dashboard',
@@ -96,7 +96,7 @@ this.dashboardService.getDashboardStats().subscribe({
   }
 
   getAnimated(key: string): number {
-    return this.animatedValues[key] || 0;
+    return this.animatedValues[key] ?? 0;
   }
 
   getStatusClass(status: string): string {
@@ -114,10 +114,23 @@ this.dashboardService.getDashboardStats().subscribe({
 
   getAlertIcon(type: string): string {
     const map: Record<string, string> = {
-      'DIABETIC': '🩸', 'LOW_SODIUM': '🧂', 'ALLERGY': '⚠️',
-      'NPO': '🚫', 'FASTING': '⏰', 'CRITICAL': '🚨',
-      'FOOD_ALLERGY': '🥜', 'KITCHEN_ALERT': '🍳', 'LATE_DELIVERY': '📦'
+      'DIABETIC': 'dYc,', 'LOW_SODIUM': 'dY,', 'ALLERGY': '�s��,?',
+      'NPO': 'dYs�', 'FASTING': '�?�', 'CRITICAL': 'dYs"',
+      'FOOD_ALLERGY': 'dY�o', 'KITCHEN_ALERT': 'dY?3', 'LATE_DELIVERY': 'dY"�'
     };
-    return map[type] || '⚠️';
+    return map[type] || '�s��,?';
+  }
+
+  getProgressPercent(value: number): number {
+    return Math.min(value, 100);
+  }
+
+  getAlertSeverityColor(severity: string): string {
+    const map: Record<string, string> = { 'CRITICAL': '#dc3545', 'HIGH': '#fd7e14', 'MEDIUM': '#ffc107', 'LOW': '#0dcaf0' };
+    return map[severity] || '#0dcaf0';
+  }
+
+  goToOrder(id: number): void {
+    /* Navigate to order detail */
   }
 }
