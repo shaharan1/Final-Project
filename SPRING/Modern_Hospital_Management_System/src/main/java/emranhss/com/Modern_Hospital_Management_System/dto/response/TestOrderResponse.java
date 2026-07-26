@@ -54,4 +54,7 @@ public class TestOrderResponse {
     private String verifiedBy;
     private LocalDateTime verifiedDate;
     private String verificationNotes;
+
+    // Meta
+    private LocalDateTime lastUpdated;
 }

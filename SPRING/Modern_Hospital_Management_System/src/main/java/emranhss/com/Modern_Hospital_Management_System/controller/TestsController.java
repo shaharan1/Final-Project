@@ -1,11 +1,17 @@
 package emranhss.com.Modern_Hospital_Management_System.controller;
 
 import emranhss.com.Modern_Hospital_Management_System.dto.response.TestOrderResponse;
+import emranhss.com.Modern_Hospital_Management_System.entity.Tests;
+import emranhss.com.Modern_Hospital_Management_System.pdf.LabReportPdfGenerator;
+import emranhss.com.Modern_Hospital_Management_System.repository.TestsRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.TestsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +22,7 @@ import java.util.Map;
 public class TestsController {
 
     private final TestsService testsService;
+    private final TestsRepository testsRepository;
 
     @GetMapping
     public ResponseEntity<List<TestOrderResponse>> getAllTestOrders() {
@@ -82,5 +89,24 @@ public class TestsController {
             @RequestBody Map<String, String> body) {
         return ResponseEntity.ok(testsService.verifyResult(id,
                 body.get("verifiedBy"), body.get("verificationNotes")));
+    }
+
+    @GetMapping("/{id}/report/pdf")
+    public ResponseEntity<byte[]> downloadReportPdf(@PathVariable Long id) {
+        Tests test = testsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Test not found"));
+        try {
+            ByteArrayOutputStream pdfBytes = LabReportPdfGenerator.generate(test);
+            test.setReportFilePath("lab_report_" + id + ".pdf");
+            testsRepository.save(test);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment",
+                    "Lab_Report_" + test.getPatient().getPatientCode() + ".pdf");
+            return ResponseEntity.ok().headers(headers).body(pdfBytes.toByteArray());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

@@ -1,0 +1,116 @@
+<div class="lab-container">
+  <div class="lab-header">
+    <div>
+      <h3>Result Entry</h3>
+      <p class="lab-sub">Enter test results for received samples</p>
+    </div>
+  </div>
+
+  <div class="lab-toolbar">
+    <input class="lab-search" placeholder="Search patient, test..." [(ngModel)]="searchKeyword">
+    <div class="lab-filters">
+      <button class="lab-pill" [class.active]="activeTab==='READY'" (click)="activeTab='READY'">Ready ({{ readyCount }})</button>
+      <button class="lab-pill lab-pill-testing" [class.active]="activeTab==='TESTING'" (click)="activeTab='TESTING'">Testing ({{ testingCount }})</button>
+      <button class="lab-pill lab-pill-done" [class.active]="activeTab==='DONE'" (click)="activeTab='DONE'">Result Entered ({{ doneCount }})</button>
+    </div>
+  </div>
+
+  <div class="lab-card">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Test</th>
+            <th>Sample Type</th>
+            <th>Normal Range</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td><strong>{{ order.patientName }}</strong><br><small class="text-muted">{{ order.patientCode }}</small></td>
+            <td>{{ order.testName }}<br><small class="text-muted">{{ order.testCode }}</small></td>
+            <td><span class="lab-badge">{{ order.sampleType }}</span></td>
+            <td>{{ order.normalRange }}</td>
+            <td>
+              <span class="lab-status" [class]="'status-' + order.orderStatus.toLowerCase()">
+                {{ order.orderStatus | titlecase }}
+              </span>
+            </td>
+            <td>
+              <button class="lab-btn-start" *ngIf="order.orderStatus==='SAMPLE_RECEIVED'" (click)="openStartModal(order)">
+                Start Testing
+              </button>
+              <button class="lab-btn-result" *ngIf="order.orderStatus==='TESTING'" (click)="openResultModal(order)">
+                Enter Result
+              </button>
+              <span class="lab-done-label" *ngIf="order.orderStatus==='RESULT_ENTERED'">
+                ✓ Done
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="7" class="lab-empty">No tests in this stage</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Start Testing Modal -->
+  <div class="lab-modal-overlay" *ngIf="showStartModal" (click)="closeStartModal()">
+    <div class="lab-modal" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header">
+        <h3>Start Testing</h3>
+        <button class="lab-modal-close" (click)="closeStartModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info">
+          <span class="lab-modal-test">{{ selectedOrder.testName }}</span>
+          <span class="lab-modal-patient">{{ selectedOrder.patientName }} | {{ selectedOrder.sampleType }}</span>
+        </div>
+        <p>Start testing for this sample?</p>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeStartModal()">Cancel</button>
+        <button class="lab-btn-confirm" (click)="startTesting()">Start Testing</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enter Result Modal -->
+  <div class="lab-modal-overlay" *ngIf="showResultModal" (click)="closeResultModal()">
+    <div class="lab-modal lab-modal-wide" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header">
+        <h3>Enter Test Result</h3>
+        <button class="lab-modal-close" (click)="closeResultModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info">
+          <span class="lab-modal-test">{{ selectedOrder.testName }} ({{ selectedOrder.testCode }})</span>
+          <span class="lab-modal-patient">{{ selectedOrder.patientName }} | Normal Range: {{ selectedOrder.normalRange }}</span>
+        </div>
+        <div class="lab-form-group">
+          <label>Result Value <span class="lab-required">*</span></label>
+          <input class="lab-form-input" [(ngModel)]="resultValue" placeholder="e.g. 12.5 g/dL">
+        </div>
+        <div class="lab-form-group">
+          <label>Notes</label>
+          <textarea class="lab-form-textarea" rows="3" [(ngModel)]="resultNotes" placeholder="Additional observations..."></textarea>
+        </div>
+        <div class="lab-form-group">
+          <label>Entered By <span class="lab-required">*</span></label>
+          <input class="lab-form-input" [(ngModel)]="enteredBy" placeholder="Lab technician name">
+        </div>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeResultModal()">Cancel</button>
+        <button class="lab-btn-confirm" (click)="submitResult()">Submit Result</button>
+      </div>
+    </div>
+  </div>
+</div>
