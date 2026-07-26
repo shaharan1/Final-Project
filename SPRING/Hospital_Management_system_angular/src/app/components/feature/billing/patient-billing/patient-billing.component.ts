@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { InvoiceGeneratorService } from '../../../services/billing/invoice-generator.service';
 
 interface BillItem {
   id: number;
@@ -72,7 +73,7 @@ export class PatientBillingComponent implements OnInit {
   taxRate = 0.18;
   discountPercent = 0;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private invoiceGen: InvoiceGeneratorService) {}
 
   ngOnInit(): void {
     this.generateBillNumber();
