@@ -114,6 +114,13 @@ export class NavigationService {
         label: 'Accounts & Billing',
         items: [
           { label: 'Admission', icon: 'Ⓐ', route: '/admission', section: 'admissionform' },
+          { label: 'Billing Dashboard', icon: '💰', route: '/billing-dashboard', section: 'billingdashboard' },
+          { label: 'Patient Billing', icon: '📋', route: '/patient-billing', section: 'patientbilling' },
+          { label: 'Payments', icon: '💳', route: '/payments', section: 'payments' },
+          { label: 'Invoices', icon: '🧾', route: '/invoices', section: 'invoices' },
+          { label: 'Refunds', icon: '↩️', route: '/refunds', section: 'refunds' },
+          { label: 'Insurance', icon: '🛡️', route: '/insurance', section: 'insurance' },
+          { label: 'Billing Reports', icon: '📊', route: '/billing-reports', section: 'billingreports' },
         ],
       },
     ];
@@ -322,10 +329,21 @@ export class NavigationService {
         label: 'Overview',
         items: [
           { label: 'Dashboard', icon: '◆', route: '/billing-clerk-dashboard', section: 'dashboard' },
+          { label: 'Billing Dashboard', icon: '💰', route: '/billing-dashboard', section: 'billingdashboard' },
         ],
       },
       {
-        label: 'Billing',
+        label: 'Billing Operations',
+        items: [
+          { label: 'Patient Billing', icon: '📋', route: '/patient-billing', section: 'patientbilling' },
+          { label: 'Payments', icon: '💳', route: '/payments', section: 'payments' },
+          { label: 'Invoices', icon: '🧾', route: '/invoices', section: 'invoices' },
+          { label: 'Refunds', icon: '↩️', route: '/refunds', section: 'refunds' },
+          { label: 'Insurance', icon: '🛡️', route: '/insurance', section: 'insurance' },
+        ],
+      },
+      {
+        label: 'Admissions',
         items: [
           { label: 'Admission', icon: 'Ⓐ', route: '/admission', section: 'admissionform' },
           { label: 'Admission List', icon: 'Ⓛ', route: '/admission-list', section: 'admission' },
@@ -338,9 +356,9 @@ export class NavigationService {
         ],
       },
       {
-        label: 'Pharmacy',
+        label: 'Reports',
         items: [
-          { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
+          { label: 'Billing Reports', icon: '📊', route: '/billing-reports', section: 'billingreports' },
         ],
       },
     ];

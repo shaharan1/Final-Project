@@ -56,6 +56,14 @@ import { PharmacySaleComponent } from './components/feature/pharmacy/pharmacy-sa
 import { PharmacyDashboardComponent } from './components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component';
 import { PharmacyReportComponent } from './components/feature/pharmacy/pharmacy-report/pharmacy-report.component';
 
+import { BillingDashboardComponent } from './components/feature/billing/billing-dashboard/billing-dashboard.component';
+import { PatientBillingComponent } from './components/feature/billing/patient-billing/patient-billing.component';
+import { PaymentModuleComponent } from './components/feature/billing/payment-module/payment-module.component';
+import { InvoiceComponent } from './components/feature/billing/invoice/invoice.component';
+import { RefundManagementComponent } from './components/feature/billing/refund-management/refund-management.component';
+import { InsuranceComponent } from './components/feature/billing/insurance/insurance.component';
+import { BillingReportsComponent } from './components/feature/billing/billing-reports/billing-reports.component';
+
 const ALL_ROLES = ['Admin', 'Doctor', 'Nurse', 'OfficeStaff', 'Receptionist', 'Pharmacist', 'LabTechnician', 'BillingClerk', 'InventoryManager', 'WardManager'];
 
 export const routes: Routes = [
@@ -150,6 +158,15 @@ export const routes: Routes = [
   { path: 'purchase-orders', component: PurchaseOrderComponent },
   { path: 'pharmacy-sale', component: PharmacySaleComponent },
   { path: 'pharmacy-reports', component: PharmacyReportComponent },
+
+  // ============ Billing Module ============
+  { path: 'billing-dashboard', component: BillingDashboardComponent },
+  { path: 'patient-billing', component: PatientBillingComponent },
+  { path: 'payments', component: PaymentModuleComponent },
+  { path: 'invoices', component: InvoiceComponent },
+  { path: 'refunds', component: RefundManagementComponent },
+  { path: 'insurance', component: InsuranceComponent },
+  { path: 'billing-reports', component: BillingReportsComponent },
 
   // ============ Public ============
   { path: '', component: LandingPageComponent },

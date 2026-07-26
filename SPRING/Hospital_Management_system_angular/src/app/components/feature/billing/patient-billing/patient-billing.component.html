@@ -1,0 +1,568 @@
+﻿<div class="billing-page">
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="hero-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5Z"/>
+          <path d="M6 9.01V9"/><path d="M22 12l-4.6 4.6"/><path d="M22 17l-4.6 4.6"/>
+        </svg>
+      </div>
+      <h1>Patient Billing</h1>
+      <p>Create bills, generate invoices, and track payment history</p>
+    </div>
+  </section>
+
+  <!-- Success Toast -->
+  <div class="success-toast" *ngIf="successMessage">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    {{ successMessage }}
+  </div>
+
+  <!-- Error Toast -->
+  <div class="error-toast" *ngIf="errorMessage">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+    {{ errorMessage }}
+    <button class="btn-close-toast" (click)="errorMessage = ''">&times;</button>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar glass-card">
+    <button class="tab" [class.active]="activeTab === 'create'" (click)="activeTab = 'create'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Create Bill
+    </button>
+    <button class="tab" [class.active]="activeTab === 'history'" (click)="activeTab = 'history'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Recent Bills
+    </button>
+  </div>
+
+  <!-- ============ CREATE BILL TAB ============ -->
+  <div *ngIf="activeTab === 'create'" class="create-layout">
+
+    <!-- Patient Search Section -->
+    <div class="search-card glass-card">
+      <h3 class="section-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Patient Search
+      </h3>
+      <div class="search-controls">
+        <div class="search-type-tabs">
+          <button class="type-btn" [class.active]="searchType === 'name'" (click)="searchType = 'name'; searchQuery = ''; showSearchResults = false">Name</button>
+          <button class="type-btn" [class.active]="searchType === 'phone'" (click)="searchType = 'phone'; searchQuery = ''; showSearchResults = false">Phone</button>
+          <button class="type-btn" [class.active]="searchType === 'id'" (click)="searchType = 'id'; searchQuery = ''; showSearchResults = false">Patient ID</button>
+        </div>
+        <div class="search-input-wrapper">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" [(ngModel)]="searchQuery" (input)="searchPatient()"
+            [placeholder]="searchType === 'name' ? 'Search patient by name...' : searchType === 'phone' ? 'Search by phone number...' : 'Search by patient ID...'">
+          <button class="btn-clear-search" *ngIf="searchQuery" (click)="searchQuery = ''; showSearchResults = false">&times;</button>
+        </div>
+      </div>
+      <div class="search-results" *ngIf="showSearchResults">
+        <div class="search-result-item" *ngFor="let p of searchResults" (click)="selectPatient(p)">
+          <div class="result-avatar">{{ (p.patientName || 'U')[0] }}</div>
+          <div class="result-info">
+            <span class="result-name">{{ p.patientName || p.patient?.name }}</span>
+            <span class="result-detail">{{ p.patientPhone || p.patient?.phone }} &middot; ID: {{ p.patientId || p.id }}</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6610f2" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Info + Bill Form -->
+    <div class="bill-layout">
+      <div class="bill-left">
+        <!-- Patient Information -->
+        <div class="patient-info-card glass-card">
+          <div class="card-header">
+            <h3 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Patient Information
+            </h3>
+            <button class="btn-clear" *ngIf="selectedPatient" (click)="clearPatientSelection()">Clear</button>
+          </div>
+          <div class="form-grid" [class.has-patient]="selectedPatient">
+            <div class="form-group">
+              <label>Patient Name *</label>
+              <input type="text" [(ngModel)]="bill.patientName" placeholder="Enter patient name">
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text" [(ngModel)]="bill.patientPhone" placeholder="+880-XXXXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label>Patient ID</label>
+              <input type="text" [(ngModel)]="bill.patientId" placeholder="P-XXXX" readonly>
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" [(ngModel)]="bill.patientAddress" placeholder="Patient address">
+            </div>
+            <div class="form-group">
+              <label>Age</label>
+              <input type="text" [(ngModel)]="bill.patientAge" placeholder="Age">
+            </div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select [(ngModel)]="bill.patientGender" class="form-input">
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Bill Date</label>
+              <input type="date" [(ngModel)]="bill.billDate">
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select [(ngModel)]="bill.paymentMethod" class="form-input">
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="Mobile">Mobile Banking</option>
+                <option value="Insurance">Insurance</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bill Items Table -->
+        <div class="bill-items-card glass-card">
+          <div class="card-header">
+            <h3 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Bill Items
+            </h3>
+            <button class="btn-add-item" (click)="addBillItem()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add Item
+            </button>
+          </div>
+
+          <div class="table-responsive" *ngIf="bill.items.length > 0">
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Qty</th>
+                  <th>Unit Price</th>
+                  <th>Discount</th>
+                  <th>Amount</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of bill.items; let i = index" class="item-row">
+                  <td class="row-num">{{ i + 1 }}</td>
+                  <td>
+                    <select [(ngModel)]="item.category" (change)="updateItemAmount(item)" class="form-input table-select">
+                      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="text" [(ngModel)]="item.description" placeholder="Description" class="form-input table-input">
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="item.quantity" (input)="updateItemAmount(item)" min="1" class="form-input table-input-sm">
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="item.unitPrice" (input)="updateItemAmount(item)" min="0" class="form-input table-input-sm">
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="item.discount" (input)="updateItemAmount(item)" min="0" class="form-input table-input-sm">
+                  </td>
+                  <td class="amount-cell">{{ item.amount | number:'1.2-2' }}</td>
+                  <td>
+                    <button class="btn-remove-item" (click)="removeBillItem(i)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="empty-items" *ngIf="bill.items.length === 0">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>No items added yet. Click "Add Item" to start building the bill.</p>
+            <button class="btn-add-first" (click)="addBillItem()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add First Item
+            </button>
+          </div>
+
+          <!-- Mobile Cards for Bill Items -->
+          <div class="mobile-items" *ngIf="bill.items.length > 0">
+            <div class="mobile-item-card" *ngFor="let item of bill.items; let i = index">
+              <div class="mobile-item-header">
+                <span class="mobile-item-num">#{{ i + 1 }}</span>
+                <span class="mobile-item-category">{{ item.category }}</span>
+                <button class="btn-remove-item" (click)="removeBillItem(i)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input type="text" [(ngModel)]="item.description" placeholder="Description" class="form-input">
+              </div>
+              <div class="mobile-item-fields">
+                <div class="form-group">
+                  <label>Qty</label>
+                  <input type="number" [(ngModel)]="item.quantity" (input)="updateItemAmount(item)" min="1" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Price</label>
+                  <input type="number" [(ngModel)]="item.unitPrice" (input)="updateItemAmount(item)" min="0" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Disc.</label>
+                  <input type="number" [(ngModel)]="item.discount" (input)="updateItemAmount(item)" min="0" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label>Amount</label>
+                  <div class="mobile-amount">{{ item.amount | number:'1.2-2' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="add-item-bottom" *ngIf="bill.items.length > 0">
+            <button class="btn-add-item" (click)="addBillItem()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              Add Another Item
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bill Summary -->
+      <div class="bill-right">
+        <div class="summary-card glass-card">
+          <h3 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Bill Summary
+          </h3>
+
+          <div class="summary-rows">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span class="summary-value">{{ bill.subtotal | number:'1.2-2' }}</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Item Discount</span>
+              <span class="summary-value text-red">- {{ getItemsDiscountTotal() | number:'1.2-2' }}</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Bill Discount</span>
+              <input type="number" [(ngModel)]="bill.discount" (input)="onSummaryChange()" min="0" class="summary-input" placeholder="0">
+            </div>
+
+            <div class="summary-row">
+              <span>VAT (18%)</span>
+              <span class="summary-value">{{ bill.vat | number:'1.2-2' }}</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Service Charge</span>
+              <input type="number" [(ngModel)]="bill.serviceCharge" (input)="onSummaryChange()" min="0" class="summary-input" placeholder="0">
+            </div>
+
+            <div class="summary-row">
+              <span>Insurance Coverage</span>
+              <input type="number" [(ngModel)]="bill.insuranceCoverage" (input)="onSummaryChange()" min="0" class="summary-input" placeholder="0">
+            </div>
+
+            <div class="summary-row">
+              <span>Advance Payment</span>
+              <input type="number" [(ngModel)]="bill.advancePayment" (input)="onSummaryChange()" min="0" class="summary-input" placeholder="0">
+            </div>
+
+            <div class="summary-row total-row">
+              <span>Net Payable</span>
+              <span class="total-amount">{{ bill.netPayable | number:'1.2-2' }}</span>
+            </div>
+
+            <div class="summary-row due-row" *ngIf="bill.dueAmount > 0">
+              <span>Due Amount</span>
+              <span class="due-amount">{{ bill.dueAmount | number:'1.2-2' }}</span>
+            </div>
+
+            <div class="summary-row paid-row" *ngIf="bill.dueAmount <= 0 && bill.items.length > 0">
+              <span>Fully Paid</span>
+              <span class="paid-badge">PAID</span>
+            </div>
+          </div>
+
+          <div class="summary-notes">
+            <div class="form-group">
+              <label>Notes</label>
+              <textarea [(ngModel)]="bill.notes" placeholder="Additional notes..." rows="2" class="form-input form-textarea"></textarea>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn btn-generate" (click)="generateInvoice()" [disabled]="!canGenerate()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Generate Invoice
+            </button>
+            <button class="btn btn-print" (click)="printBill()" [disabled]="bill.items.length === 0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print
+            </button>
+            <button class="btn btn-draft" (click)="saveDraft()" [disabled]="processingBill">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Draft
+            </button>
+            <button class="btn btn-reset" (click)="resetBillForm()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ RECENT BILLS TAB ============ -->
+  <div *ngIf="activeTab === 'history'" class="history-section">
+    <div class="toolbar glass-card">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" [(ngModel)]="billSearchTerm" (input)="filterBills()" placeholder="Search invoice, patient, ID...">
+      </div>
+      <div class="filter-group">
+        <select [(ngModel)]="billFilterStatus" (change)="onFilterStatusChange()" class="form-input filter-select">
+          <option value="all">All Status</option>
+          <option value="Paid">Paid</option>
+          <option value="Pending">Pending</option>
+          <option value="Partial">Partial</option>
+          <option value="Draft">Draft</option>
+          <option value="Overdue">Overdue</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="loading-container" *ngIf="loadingBills">
+      <div class="spinner"></div>
+      <p>Loading bills...</p>
+    </div>
+
+    <div class="table-container glass-card" *ngIf="!loadingBills && filteredBills.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice No</th>
+            <th>Patient</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Subtotal</th>
+            <th>Net Payable</th>
+            <th>Due</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let b of filteredBills">
+            <td class="fw-semibold">{{ b.invoiceNumber }}</td>
+            <td>
+              <div class="patient-cell">
+                <span class="pt-avatar">{{ (b.patientName || 'U')[0] }}</span>
+                {{ b.patientName }}
+              </div>
+            </td>
+            <td>{{ b.billDate }}</td>
+            <td>{{ b.items.length }}</td>
+            <td>{{ b.subtotal | number:'1.2-2' }}</td>
+            <td class="fw-semibold">{{ b.netPayable | number:'1.2-2' }}</td>
+            <td [class.text-red]="b.dueAmount > 0">{{ b.dueAmount | number:'1.2-2' }}</td>
+            <td><span class="badge" [ngClass]="getStatusClass(b.status)">{{ b.status }}</span></td>
+            <td>
+              <button class="btn-icon view" (click)="viewBillDetail(b)" title="View Details">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="empty-state glass-card" *ngIf="!loadingBills && filteredBills.length === 0">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <p>No bills found</p>
+    </div>
+
+    <!-- Mobile Cards for Recent Bills -->
+    <div class="mobile-bills" *ngIf="!loadingBills && filteredBills.length > 0">
+      <div class="mobile-bill-card glass-card" *ngFor="let b of filteredBills">
+        <div class="mobile-bill-header">
+          <span class="mobile-invoice">{{ b.invoiceNumber }}</span>
+          <span class="badge" [ngClass]="getStatusClass(b.status)">{{ b.status }}</span>
+        </div>
+        <div class="mobile-bill-patient">
+          <span class="pt-avatar">{{ (b.patientName || 'U')[0] }}</span>
+          {{ b.patientName }}
+        </div>
+        <div class="mobile-bill-details">
+          <span>{{ b.billDate }}</span>
+          <span>{{ b.items.length }} items</span>
+        </div>
+        <div class="mobile-bill-amounts">
+          <div class="mobile-amount-row">
+            <span>Net Payable</span>
+            <span class="fw-semibold">{{ b.netPayable | number:'1.2-2' }}</span>
+          </div>
+          <div class="mobile-amount-row" *ngIf="b.dueAmount > 0">
+            <span>Due</span>
+            <span class="text-red">{{ b.dueAmount | number:'1.2-2' }}</span>
+          </div>
+        </div>
+        <button class="btn-view-mobile" (click)="viewBillDetail(b)">View Details</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ BILL DETAIL MODAL ============ -->
+  <div class="modal-overlay" *ngIf="showBillDetailModal" (click)="closeBillDetailModal()">
+    <div class="modal modal-lg glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Bill Detail &mdash; {{ selectedBill?.invoiceNumber }}</h2>
+        <button class="btn-close" (click)="closeBillDetailModal()">&times;</button>
+      </div>
+      <div class="modal-body" *ngIf="selectedBill">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="label">Patient Name</span>
+            <span>{{ selectedBill.patientName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Patient ID</span>
+            <span>{{ selectedBill.patientId || 'N/A' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Phone</span>
+            <span>{{ selectedBill.patientPhone || 'N/A' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Bill Date</span>
+            <span>{{ selectedBill.billDate }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Payment Method</span>
+            <span>{{ selectedBill.paymentMethod }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Status</span>
+            <span class="badge" [ngClass]="getStatusClass(selectedBill.status)">{{ selectedBill.status }}</span>
+          </div>
+        </div>
+
+        <div class="detail-items" *ngIf="selectedBill.items && selectedBill.items.length > 0">
+          <h4 class="detail-subtitle">Bill Items</h4>
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Discount</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedBill.items; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice | number:'1.2-2' }}</td>
+                <td>{{ item.discount | number:'1.2-2' }}</td>
+                <td class="fw-semibold">{{ item.amount | number:'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="detail-summary">
+          <div class="summary-row"><span>Subtotal</span><span>{{ selectedBill.subtotal | number:'1.2-2' }}</span></div>
+          <div class="summary-row"><span>Discount</span><span class="text-red">- {{ selectedBill.discount | number:'1.2-2' }}</span></div>
+          <div class="summary-row"><span>VAT (18%)</span><span>{{ selectedBill.vat | number:'1.2-2' }}</span></div>
+          <div class="summary-row"><span>Service Charge</span><span>{{ selectedBill.serviceCharge | number:'1.2-2' }}</span></div>
+          <div class="summary-row"><span>Insurance Coverage</span><span class="text-red">- {{ selectedBill.insuranceCoverage | number:'1.2-2' }}</span></div>
+          <div class="summary-row"><span>Advance Payment</span><span class="text-red">- {{ selectedBill.advancePayment | number:'1.2-2' }}</span></div>
+          <div class="summary-row total-row">
+            <span>Net Payable</span>
+            <span class="total-amount">{{ selectedBill.netPayable | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-row" *ngIf="selectedBill.dueAmount > 0">
+            <span>Due Amount</span>
+            <span class="due-amount">{{ selectedBill.dueAmount | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-print-sm" (click)="printBill()">Print</button>
+        <button class="btn btn-outline" (click)="closeBillDetailModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CONFIRM MODAL ============ -->
+  <div class="modal-overlay" *ngIf="showConfirmModal" (click)="closeConfirmModal()">
+    <div class="modal modal-sm glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 *ngIf="confirmAction === 'generate'">Generate Invoice</h2>
+        <h2 *ngIf="confirmAction === 'draft'">Save as Draft</h2>
+        <button class="btn-close" (click)="closeConfirmModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="confirmAction === 'generate'">Are you sure you want to generate this invoice? This will finalize the bill.</p>
+        <p *ngIf="confirmAction === 'draft'">Save this bill as a draft for later editing?</p>
+        <div class="confirm-details">
+          <div class="confirm-row">
+            <span>Patient:</span>
+            <span class="fw-semibold">{{ bill.patientName }}</span>
+          </div>
+          <div class="confirm-row">
+            <span>Items:</span>
+            <span>{{ bill.items.length }}</span>
+          </div>
+          <div class="confirm-row total">
+            <span>Net Payable:</span>
+            <span class="total-amount">{{ bill.netPayable | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeConfirmModal()">Cancel</button>
+        <button class="btn btn-generate" (click)="executeConfirmAction()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="processingBill">
+    <div class="spinner-lg"></div>
+    <p>Processing bill...</p>
+  </div>
+
+</div>
