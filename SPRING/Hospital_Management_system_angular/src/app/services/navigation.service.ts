@@ -73,7 +73,7 @@ export class NavigationService {
       {
         label: 'Beds & Wards',
         items: [
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/bed-management', section: 'bed' },
+          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
           { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
           { label: 'Department', icon: 'Ⓓ', route: '/doctor-departments', section: 'department' },
         ],
@@ -192,7 +192,7 @@ export class NavigationService {
         label: 'Wards & Beds',
         items: [
           { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/bed-management', section: 'bed' },
+          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
         ],
       },
       {
@@ -414,7 +414,7 @@ export class NavigationService {
         label: 'Wards & Beds',
         items: [
           { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/bed-management', section: 'bed' },
+          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
         ],
       },
       {
@@ -439,7 +439,7 @@ export class NavigationService {
         items: [
           { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
           { label: 'Ward Management', icon: 'Ⓦ', route: '/ward-management', section: 'wardmanagement' },
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/bed-management', section: 'bed' },
+          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
         ],
       },
       {
