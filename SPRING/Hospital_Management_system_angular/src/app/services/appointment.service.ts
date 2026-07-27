@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AppointmentModel } from '../models/appointmentModel';
@@ -10,18 +10,9 @@ import { AppointmentResponseModel } from '../models/AppointmentResponseModel';
 })
 export class AppointmentService {
 
-
   private apiUrl = environment.apiUrl + "appointments";
 
-  constructor(
-
-    private http: HttpClient,
-private cdr:ChangeDetectorRef
-
-    private http: HttpClient
-
-
-  ) { }
+  constructor(private http: HttpClient) { }
 
   bookAppointment(data: AppointmentModel): Observable<AppointmentModel> {
     return this.http.post<AppointmentModel>(this.apiUrl, data);

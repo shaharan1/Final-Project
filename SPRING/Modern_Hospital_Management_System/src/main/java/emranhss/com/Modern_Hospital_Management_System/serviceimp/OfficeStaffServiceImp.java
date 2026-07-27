@@ -11,6 +11,7 @@ import emranhss.com.Modern_Hospital_Management_System.repository.OfficeStaffRepo
 import emranhss.com.Modern_Hospital_Management_System.repository.UserRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.OfficeStaffService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class OfficeStaffServiceImp implements OfficeStaffService {
     private final OfficeStaffRepository officeStaffRepository;
     private final OfficeStaffMapper officeStaffMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -34,7 +36,7 @@ public class OfficeStaffServiceImp implements OfficeStaffService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.OfficeStaff);
         user.setActive(true);
 
@@ -105,7 +107,7 @@ public class OfficeStaffServiceImp implements OfficeStaffService {
         if (request.getPassword() != null &&
                 !request.getPassword().trim().isEmpty()) {
 
-            officeStaff.getUser().setPassword(request.getPassword());
+            officeStaff.getUser().setPassword(passwordEncoder.encode(request.getPassword()));
         }
 
         userRepository.save(officeStaff.getUser());
