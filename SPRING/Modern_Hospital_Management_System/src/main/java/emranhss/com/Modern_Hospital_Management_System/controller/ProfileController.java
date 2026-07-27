@@ -22,6 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/profile")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class ProfileController {
 
@@ -32,16 +33,28 @@ public class ProfileController {
     private String uploadDir;
 
     private String getCurrentEmail() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername();
+        try {
+            var auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null || !auth.isAuthenticated()) return null;
+            Object principal = auth.getPrincipal();
+            if (principal instanceof UserDetails) {
+                return ((UserDetails) principal).getUsername();
+            }
+            String email = principal.toString();
+            if ("anonymousUser".equals(email)) return null;
+            return email;
+        } catch (Exception e) {
+            return null;
         }
-        return principal.toString();
     }
 
     @GetMapping
-    public ResponseEntity<LoginResponseDTO> getProfile() {
-        User user = userRepository.findByEmail(getCurrentEmail())
+    public ResponseEntity<?> getProfile() {
+        String email = getCurrentEmail();
+        if (email == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "Not authenticated"));
+        }
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return ResponseEntity.ok(toDTO(user));
     }
@@ -49,7 +62,11 @@ public class ProfileController {
     @PutMapping
     public ResponseEntity<?> updateProfile(@RequestBody ProfileUpdateRequestDTO dto) {
         try {
-            User user = userRepository.findByEmail(getCurrentEmail())
+            String email = getCurrentEmail();
+            if (email == null) {
+                return ResponseEntity.status(401).body(Map.of("error", "Not authenticated"));
+            }
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
             if (dto.getName() != null && !dto.getName().isBlank()) {
                 user.setName(dto.getName());
@@ -67,7 +84,11 @@ public class ProfileController {
     @PostMapping("/image")
     public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
-            User user = userRepository.findByEmail(getCurrentEmail())
+            String email = getCurrentEmail();
+            if (email == null) {
+                return ResponseEntity.status(401).body(Map.of("error", "Not authenticated"));
+            }
+            User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
             String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path path = Paths.get(uploadDir + filename);
@@ -85,7 +106,11 @@ public class ProfileController {
 
     @PutMapping("/password")
     public ResponseEntity<String> changePassword(@RequestBody Map<String, String> body) {
-        User user = userRepository.findByEmail(getCurrentEmail())
+        String email = getCurrentEmail();
+        if (email == null) {
+            return ResponseEntity.status(401).body("Not authenticated");
+        }
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String currentPassword = body.get("currentPassword");
         String newPassword = body.get("newPassword");
