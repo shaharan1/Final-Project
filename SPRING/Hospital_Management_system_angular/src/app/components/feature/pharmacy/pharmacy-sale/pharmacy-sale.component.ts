@@ -27,6 +27,13 @@ export class PharmacySaleComponent implements OnInit {
   selectedSale: PharmacySaleModel | null = null;
   lowStockWarning: string = '';
 
+  loading = false;
+  loadingSales = false;
+  processingSale = false;
+  successMessage = '';
+  error = '';
+
+
   patientType: string = 'OUTPATIENT';
   patientName: string = '';
   patientPhone: string = '';
@@ -50,6 +57,7 @@ export class PharmacySaleComponent implements OnInit {
   }
 
   loadSalesHistory(): void {
+
     this.saleService.getAll().subscribe({
       next: (data: any) => { this.saleHistory = data; this.filteredSales = [...data]; },
       error: () => {
@@ -59,6 +67,18 @@ export class PharmacySaleComponent implements OnInit {
           { id: 3, saleInvoiceNo: 'SAL-2024-003', patientType: 'OUTPATIENT', patientName: 'Rahim Uddin', patientPhone: '+880-1913-333333', doctorName: 'Dr. Hassan', totalAmount: 650, discount: 100, vat: 100, netPayable: 650, paidAmount: 650, changeAmount: 0, paymentMethod: 'Mobile', paymentStatus: 'Paid', saleDate: '2024-12-19' },
         ];
         this.filteredSales = [...this.saleHistory];
+
+    this.loadingSales = true;
+    this.saleService.getAll().subscribe({
+      next: (data: any) => {
+        this.saleHistory = data;
+        this.filteredSales = [...data];
+        this.loadingSales = false;
+      },
+      error: () => {
+        this.error = 'Failed to load sales history.';
+        this.loadingSales = false;
+
       }
     });
   }
@@ -77,6 +97,7 @@ export class PharmacySaleComponent implements OnInit {
     if (this.medicineSearchTerm.length < 2) { this.searchedMedicines = []; return; }
     this.stockService.search(this.medicineSearchTerm).subscribe({
       next: (data: any) => {
+
         this.searchedMedicines = data.filter((s: any) => (s.availableQuantity || 0) > 0);
       },
       error: () => {
@@ -86,6 +107,12 @@ export class PharmacySaleComponent implements OnInit {
           { id: 3, medicineName: 'Omeprazole 20mg', genericName: 'Omeprazole', strength: '20mg', dosageForm: 'Capsule', batchNumber: 'BAT-003', stockQuantity: 300, availableQuantity: 300, purchasePrice: 12, salePrice: 18, manufacturingDate: '2024-02-15', expiryDate: '2026-02-15', supplierId: 2 },
           { id: 4, medicineName: 'Cetirizine 10mg', genericName: 'Cetirizine', strength: '10mg', dosageForm: 'Tablet', batchNumber: 'BAT-004', stockQuantity: 5, availableQuantity: 5, purchasePrice: 6, salePrice: 10, minimumStockLevel: 15, manufacturingDate: '2024-04-01', expiryDate: '2025-11-01', supplierId: 3, lowStock: true },
         ].filter(s => s.medicineName.toLowerCase().includes(this.medicineSearchTerm.toLowerCase()));
+
+        this.searchedMedicines = data.filter((s: any) => (s.availableQuantity || s.stockQuantity || 0) > 0);
+      },
+      error: () => {
+        this.searchedMedicines = [];
+
       }
     });
   }
@@ -147,6 +174,10 @@ export class PharmacySaleComponent implements OnInit {
 
   confirmSale(): void {
     if (this.cartItems.length === 0 || this.paidAmount < this.netPayable) return;
+
+
+    this.processingSale = true;
+
     const sale: PharmacySaleModel = {
       patientType: this.patientType,
       patientName: this.patientName,
@@ -169,6 +200,7 @@ export class PharmacySaleComponent implements OnInit {
         this.saleHistory.unshift(saved);
         this.filteredSales = [...this.saleHistory];
         this.resetForm();
+
       },
       error: () => {
         sale.id = this.saleHistory.length + 1;
@@ -176,6 +208,15 @@ export class PharmacySaleComponent implements OnInit {
         this.saleHistory.unshift(sale);
         this.filteredSales = [...this.saleHistory];
         this.resetForm();
+
+        this.processingSale = false;
+        this.successMessage = 'Sale completed successfully!';
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: () => {
+        this.error = 'Failed to process sale. Please try again.';
+        this.processingSale = false;
+
       }
     });
   }

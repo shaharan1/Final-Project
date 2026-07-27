@@ -1,0 +1,105 @@
+<div class="dashboard-wrapper">
+  <section class="hero-section">
+    <div class="hero-bg">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="hero-badge">Analytics</span>
+          <h1>Patient Reports</h1>
+          <p>Comprehensive patient demographics, blood group distribution, and registration trends.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading patient analytics...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <div class="error-card">
+      <div class="error-icon">!</div>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadData()">Retry</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error && data" class="dashboard-content">
+    <div class="actions-bar">
+      <button class="btn-back" (click)="goBack()">&#8592; Back to Reports</button>
+      <div class="export-group">
+        <button class="btn-export" (click)="exportPdf()">PDF</button>
+        <button class="btn-export" (click)="exportExcel()">Excel</button>
+        <button class="btn-export" (click)="exportCsv()">CSV</button>
+        <button class="btn-export" (click)="printReport()">Print</button>
+      </div>
+    </div>
+
+    <div class="stats-row stats-row--3">
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--blue"></div>
+        <div class="stat-body">
+          <span class="stat-label">Total Patients</span>
+          <span class="stat-value">{{ data.total | number }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--purple"></div>
+        <div class="stat-body">
+          <span class="stat-label">Male</span>
+          <span class="stat-value">{{ data.male | number }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--green"></div>
+        <div class="stat-body">
+          <span class="stat-label">Female</span>
+          <span class="stat-value">{{ data.female | number }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="panel glass">
+        <div class="panel-header">
+          <h3>Blood Group Distribution</h3>
+        </div>
+        <div class="chart-container"><canvas #bloodGroupChart></canvas></div>
+      </div>
+      <div class="panel glass">
+        <div class="panel-header">
+          <h3>Age Group Distribution</h3>
+        </div>
+        <div class="chart-container"><canvas #ageGroupChart></canvas></div>
+      </div>
+      <div class="panel glass">
+        <div class="panel-header">
+          <h3>Monthly Registration Trend</h3>
+        </div>
+        <div class="chart-container"><canvas #monthlyTrendChart></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel glass table-panel">
+      <div class="panel-header">
+        <h3>Department-wise Patients</h3>
+      </div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Patient Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of data.departmentWisePatients">
+              <td class="cell-bold">{{ row.department }}</td>
+              <td>{{ row.count | number }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

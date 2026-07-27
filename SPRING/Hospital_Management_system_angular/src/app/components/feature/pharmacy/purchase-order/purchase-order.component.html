@@ -18,6 +18,24 @@
     </div>
   </section>
 
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading purchase orders...</p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-container" *ngIf="error && !loading">
+    <div class="error-card">
+      <span class="error-icon">!</span>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadPurchases()">Retry</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error">
+
   <div class="stats-row">
     <div class="stat-card glass-card">
       <div class="stat-icon orange">
@@ -397,4 +415,7 @@
       </div>
     </div>
   </div>
+
+  </div>
+
 </div>

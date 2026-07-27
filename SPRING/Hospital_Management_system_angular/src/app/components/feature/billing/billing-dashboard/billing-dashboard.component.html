@@ -1,0 +1,344 @@
+<div class="dashboard-wrapper">
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60"
+              fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3" class="wave-path"/>
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60"
+              fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="6" class="wave-path"/>
+      </svg>
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge">Billing Management</div>
+          <h1>Billing Dashboard</h1>
+          <p>Real-time overview of revenue, payments, invoices &amp; claims</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOADING -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
+  </div>
+
+  <!-- ERROR -->
+  <div class="error-container" *ngIf="error && !loading">
+    <div class="error-card">
+      <span class="error-icon">!</span>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadDashboard()">Retry</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="dashboard-content" *ngIf="summary && !loading">
+
+    <!-- TOP STATS ROW: Revenue -->
+    <div class="stats-row stats-row--revenue">
+      <div class="stat-card stat-card--primary glass">
+        <div class="stat-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Today's Revenue</span>
+          <span class="stat-value">${{ getAnimated('todayRevenue') | number }}</span>
+          <span class="stat-change" [class.stat-change--up]="summary.todayRevenueChange >= 0" [class.stat-change--down]="summary.todayRevenueChange < 0">
+            <svg *ngIf="summary.todayRevenueChange >= 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/></svg>
+            <svg *ngIf="summary.todayRevenueChange < 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,18 13.5,8.5 8.5,13.5 1,6"/></svg>
+            {{ summary.todayRevenueChange >= 0 ? '+' : '' }}{{ summary.todayRevenueChange }}%
+          </span>
+        </div>
+        <div class="stat-glow stat-glow--blue"></div>
+      </div>
+
+      <div class="stat-card stat-card--success glass">
+        <div class="stat-icon stat-icon--green">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Monthly Revenue</span>
+          <span class="stat-value">${{ getAnimated('monthlyRevenue') | number }}</span>
+          <span class="stat-change" [class.stat-change--up]="summary.monthlyRevenueChange >= 0" [class.stat-change--down]="summary.monthlyRevenueChange < 0">
+            <svg *ngIf="summary.monthlyRevenueChange >= 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/></svg>
+            <svg *ngIf="summary.monthlyRevenueChange < 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,18 13.5,8.5 8.5,13.5 1,6"/></svg>
+            {{ summary.monthlyRevenueChange >= 0 ? '+' : '' }}{{ summary.monthlyRevenueChange }}%
+          </span>
+        </div>
+        <div class="stat-glow stat-glow--green"></div>
+      </div>
+
+      <div class="stat-card stat-card--warning glass">
+        <div class="stat-icon stat-icon--yellow">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Pending Payments</span>
+          <span class="stat-value stat-value--warning">{{ getAnimated('pendingPayments') | number }}</span>
+          <span class="stat-sub">Awaiting processing</span>
+        </div>
+        <div class="stat-glow stat-glow--yellow"></div>
+      </div>
+
+      <div class="stat-card glass">
+        <div class="stat-icon stat-icon--cyan">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Paid Bills</span>
+          <span class="stat-value">{{ getAnimated('paidBills') | number }}</span>
+          <span class="stat-sub">Completed payments</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECOND STATS ROW -->
+    <div class="stats-row stats-row--secondary">
+      <div class="stat-card stat-card--danger glass">
+        <div class="stat-icon stat-icon--red">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Unpaid Bills</span>
+          <span class="stat-value stat-value--danger">{{ getAnimated('unpaidBills') | number }}</span>
+          <span class="stat-sub">Requires follow-up</span>
+        </div>
+        <div class="stat-glow stat-glow--red"></div>
+      </div>
+
+      <div class="stat-card stat-card--info glass">
+        <div class="stat-icon stat-icon--purple">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Insurance Claims</span>
+          <span class="stat-value">{{ getAnimated('insuranceClaims') | number }}</span>
+          <span class="stat-sub">Active claims</span>
+        </div>
+      </div>
+
+      <div class="stat-card stat-card--orange glass">
+        <div class="stat-icon stat-icon--orange">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Refund Amount</span>
+          <span class="stat-value stat-value--orange">${{ getAnimated('refundAmount') | number }}</span>
+          <span class="stat-sub">Total refunds</span>
+        </div>
+        <div class="stat-glow stat-glow--orange"></div>
+      </div>
+
+      <div class="stat-card glass">
+        <div class="stat-icon stat-icon--indigo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">Total Patients Billed</span>
+          <span class="stat-value">{{ getAnimated('totalPatientsBilled') | number }}</span>
+          <span class="stat-sub">This month</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS SECTION -->
+    <div class="charts-grid">
+
+      <!-- DAILY REVENUE BAR CHART -->
+      <section class="panel glass">
+        <div class="panel-header">
+          <h3>Daily Revenue (Last 7 Days)</h3>
+        </div>
+        <div class="bar-chart" *ngIf="dailyRevenue.length; else noDailyData">
+          <div class="bar-chart__bars">
+            <div class="bar-chart__item" *ngFor="let item of dailyRevenue">
+              <div class="bar-chart__bar-wrapper">
+                <div class="bar-chart__bar bar-chart__bar--blue"
+                     [style.height.%]="getDailyBarHeight(item.revenue)">
+                  <span class="bar-chart__tooltip">${{ item.revenue | number }}</span>
+                </div>
+              </div>
+              <span class="bar-chart__label">{{ formatDayLabel(item.date) }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noDailyData>
+          <div class="empty-state"><p>No revenue data</p></div>
+        </ng-template>
+      </section>
+
+      <!-- MONTHLY REVENUE LINE CHART (CSS) -->
+      <section class="panel glass">
+        <div class="panel-header">
+          <h3>Monthly Revenue (Last 6 Months)</h3>
+        </div>
+        <div class="monthly-chart" *ngIf="monthlyRevenue.length; else noMonthlyData">
+          <div class="monthly-chart__bars">
+            <div class="monthly-chart__item" *ngFor="let item of monthlyRevenue">
+              <div class="monthly-chart__bar-wrapper">
+                <div class="monthly-chart__bar monthly-chart__bar--green"
+                     [style.height.%]="getMonthlyBarHeight(item.revenue)">
+                  <span class="monthly-chart__tooltip">${{ item.revenue | number }}</span>
+                </div>
+              </div>
+              <span class="monthly-chart__label">{{ formatMonthLabel(item.date) }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noMonthlyData>
+          <div class="empty-state"><p>No monthly data</p></div>
+        </ng-template>
+      </section>
+
+      <!-- PAYMENT METHOD PIE CHART -->
+      <section class="panel glass">
+        <div class="panel-header">
+          <h3>Payment Methods</h3>
+        </div>
+        <div class="pie-section" *ngIf="paymentMethods.length; else noPieData">
+          <div class="pie-chart" [style.background]="getPaymentPieGradient()">
+            <div class="pie-chart__center">
+              <span class="pie-chart__total">{{ paymentMethods.length }}</span>
+              <span class="pie-chart__total-label">Methods</span>
+            </div>
+          </div>
+          <div class="pie-legend">
+            <div class="pie-legend__item" *ngFor="let pm of paymentMethods; let i = index">
+              <span class="pie-legend__dot" [style.background]="['#0d6efd','#198754','#fd7e14','#6610f2','#dc3545','#14b8a6'][i % 6]"></span>
+              <span class="pie-legend__label">{{ pm.method }}</span>
+              <span class="pie-legend__value">{{ pm.percentage }}%</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noPieData>
+          <div class="empty-state"><p>No payment data</p></div>
+        </ng-template>
+      </section>
+    </div>
+
+    <!-- DEPARTMENT REVENUE -->
+    <section class="panel glass department-section">
+      <div class="panel-header">
+        <h3>Revenue by Department</h3>
+      </div>
+      <div class="dept-list" *ngIf="departmentRevenue.length; else noDept">
+        <div class="dept-item" *ngFor="let dept of departmentRevenue">
+          <div class="dept-info">
+            <span class="dept-name">{{ dept.department }}</span>
+            <span class="dept-amount">${{ dept.revenue | number }}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-bar__fill progress-bar__fill--animated"
+                 [style.width.%]="dept.percentage">
+            </div>
+          </div>
+          <span class="dept-percent">{{ dept.percentage }}%</span>
+        </div>
+      </div>
+      <ng-template #noDept>
+        <div class="empty-state"><p>No department data</p></div>
+      </ng-template>
+    </section>
+
+    <!-- RECENT ACTIVITY + QUICK ACTIONS -->
+    <div class="bottom-grid">
+
+      <!-- RECENT ACTIVITY -->
+      <section class="panel glass">
+        <div class="panel-header">
+          <h3>Recent Activity</h3>
+        </div>
+        <div class="timeline" *ngIf="recentActivity.length; else noActivity">
+          <div class="timeline-item" *ngFor="let act of recentActivity">
+            <div class="timeline-dot" [ngClass]="'timeline-dot--' + getActivityColor(act.type)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path [attr.d]="getActivityIcon(act.type)"/>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-top">
+                <span class="timeline-desc">{{ act.description }}</span>
+                <span class="badge" [ngClass]="getStatusClass(act.status)">{{ act.status }}</span>
+              </div>
+              <div class="timeline-bottom">
+                <span class="timeline-amount" *ngIf="act.amount">${{ act.amount | number }}</span>
+                <span class="timeline-time">{{ act.time }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noActivity>
+          <div class="empty-state"><p>No recent activity</p></div>
+        </ng-template>
+      </section>
+
+      <!-- QUICK ACTIONS -->
+      <section class="panel glass">
+        <div class="panel-header">
+          <h3>Quick Actions</h3>
+        </div>
+        <div class="actions-grid actions-grid--compact">
+          <a routerLink="/billing/payments" class="action-card glass">
+            <div class="action-icon action-icon--green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <span>New Payment</span>
+          </a>
+          <a routerLink="/billing/invoices" class="action-card glass">
+            <div class="action-icon action-icon--blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            </div>
+            <span>Create Invoice</span>
+          </a>
+          <a routerLink="/billing/refunds" class="action-card glass">
+            <div class="action-icon action-icon--orange">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/>
+              </svg>
+            </div>
+            <span>Refund</span>
+          </a>
+          <a routerLink="/billing/insurance" class="action-card glass">
+            <div class="action-icon action-icon--purple">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              </svg>
+            </div>
+            <span>Insurance Claims</span>
+          </a>
+          <a routerLink="/billing/reports" class="action-card glass">
+            <div class="action-icon action-icon--teal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+            </div>
+            <span>Reports</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

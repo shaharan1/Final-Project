@@ -12,7 +12,7 @@ import { LabStats } from '../../../../models/test-order.model';
   standalone: true,
   imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
   templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.css',
+  styleUrls: ['./admin-dashboard.component.css'],
 })
 export class AdminDashboardComponent implements OnInit {
   stats: DashboardStats | null = null;

@@ -64,6 +64,12 @@ export class PurchaseOrderComponent implements OnInit {
       .reduce((sum, p) => sum + (p.dueAmount || 0), 0);
   }
 
+
+  loading = false;
+  error = '';
+  creating = false;
+
+
   constructor(
     private purchaseService: PurchasePharmacyService,
     private supplierService: SupplierService,
@@ -77,6 +83,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   loadPurchases(): void {
+
     this.purchaseService.getAll().subscribe({
       next: (data: any) => { this.purchases = data; this.filteredPurchases = [...data]; },
       error: () => {
@@ -89,6 +96,19 @@ export class PurchaseOrderComponent implements OnInit {
           { id: 6, supplierId: 3, supplierName: 'BioCare Pharma', invoiceNo: 'INV-2025-003', purchaseDate: '2025-01-20', totalAmount: 42000, vat: 7560, discount: 2500, netAmount: 47060, paidAmount: 0, dueAmount: 47060, status: 'Pending', paymentMethod: 'Card' },
         ];
         this.filteredPurchases = [...this.purchases];
+
+    this.loading = true;
+    this.error = '';
+    this.purchaseService.getAll().subscribe({
+      next: (data: any) => {
+        this.purchases = data;
+        this.filteredPurchases = [...data];
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load purchases.';
+        this.loading = false;
+
       }
     });
   }
@@ -96,6 +116,7 @@ export class PurchaseOrderComponent implements OnInit {
   loadSuppliers(): void {
     this.supplierService.getAll().subscribe({
       next: (data: any) => this.suppliers = data,
+
       error: () => {
         this.suppliers = [
           { id: 1, name: 'MediPharm Ltd', contactPerson: 'Dr. Rahman', phone: '+880-1711-234567', email: 'rahman@medipharm.com', address: '45 Pharma Tower, Dhaka', companyName: 'MediPharm Bangladesh Ltd', tradeLicense: 'TL-2024-1234', drugLicense: 'DL-2024-5678', website: '', notes: '', active: true },
@@ -103,12 +124,16 @@ export class PurchaseOrderComponent implements OnInit {
           { id: 3, name: 'BioCare Pharma', contactPerson: 'Md. Hassan', phone: '+880-1913-456789', email: 'hassan@biocare.com', address: '12 Bio Street, Sylhet', companyName: 'BioCare Pharmaceuticals', tradeLicense: 'TL-2024-3456', drugLicense: 'DL-2024-7890', website: '', notes: '', active: true },
         ];
       }
+
+      error: () => {}
+
     });
   }
 
   loadStock(): void {
     this.stockService.getAll().subscribe({
       next: (data: any) => this.stockItems = data,
+
       error: () => {
         this.stockItems = [
           { id: 1, medicineName: 'Paracetamol 500mg', genericName: 'Paracetamol', strength: '500mg', dosageForm: 'Tablet', batchNumber: 'BAT-001', stockQuantity: 500, availableQuantity: 500, purchasePrice: 8, salePrice: 12, manufacturingDate: '2024-01-01', expiryDate: '2026-01-01', supplierId: 1, supplierName: 'MediPharm Ltd' },
@@ -117,6 +142,9 @@ export class PurchaseOrderComponent implements OnInit {
           { id: 4, medicineName: 'Cetirizine 10mg', genericName: 'Cetirizine', strength: '10mg', dosageForm: 'Tablet', batchNumber: 'BAT-004', stockQuantity: 150, availableQuantity: 150, purchasePrice: 6, salePrice: 10, manufacturingDate: '2024-04-01', expiryDate: '2025-11-01', supplierId: 3, supplierName: 'BioCare Pharma' },
         ];
       }
+
+      error: () => {}
+
     });
   }
 
@@ -226,6 +254,9 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   confirmPurchase(): void {
+
+    this.creating = true;
+
     const purchase: PurchaseModel = {
       supplierId: this.purchaseForm.supplierId!,
       supplierName: this.purchaseForm.supplierName,
@@ -248,6 +279,7 @@ export class PurchaseOrderComponent implements OnInit {
         this.purchases.unshift(saved);
         this.filterPurchases();
         this.closeCreateModal();
+
       },
       error: () => {
         purchase.id = this.purchases.length + 1;
@@ -255,6 +287,13 @@ export class PurchaseOrderComponent implements OnInit {
         this.purchases.unshift(purchase);
         this.filterPurchases();
         this.closeCreateModal();
+
+        this.creating = false;
+      },
+      error: () => {
+        this.error = 'Failed to create purchase order.';
+        this.creating = false;
+
       }
     });
   }

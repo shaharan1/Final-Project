@@ -39,8 +39,14 @@ export class ProfileCardComponent implements OnInit {
   loadProfile(): void {
     this.profileService.getProfile().subscribe({
       next: (res) => {
+
         this.user = res;
         this.storage.saveSession(res);
+
+        const existing = this.storage.getUser();
+        this.user = { ...existing, ...res };
+        if (this.user) this.storage.saveSession(this.user);
+
         this.cdr.markForCheck();
       }
     });
@@ -72,6 +78,11 @@ export class ProfileCardComponent implements OnInit {
     this.editPhone = this.user?.phone || '';
     this.showEditModal = true;
     this.msg = '';
+
+
+    this.previewUrl = null;
+    this.selectedFile = null;
+
   }
 
   closeEditModal(): void {
@@ -95,6 +106,7 @@ export class ProfileCardComponent implements OnInit {
   uploadImage(): void {
     if (!this.selectedFile) return;
     this.imageUploading = true;
+
     this.profileService.uploadImage(this.selectedFile).subscribe({
       next: (res) => {
         this.user = res;
@@ -109,6 +121,32 @@ export class ProfileCardComponent implements OnInit {
       error: () => {
         this.imageUploading = false;
         this.msg = 'Image upload failed';
+
+    this.msg = '';
+    this.profileService.uploadImage(this.selectedFile).subscribe({
+      next: (res: any) => {
+        if (res.error) {
+          this.imageUploading = false;
+          this.msg = res.error;
+          this.msgType = 'error';
+          this.cdr.markForCheck();
+          return;
+        }
+        const existing = this.storage.getUser();
+        this.user = { ...existing, ...res };
+        if (this.user) this.storage.saveSession(this.user);
+        this.imageUploading = false;
+        this.selectedFile = null;
+        this.previewUrl = null;
+        this.msg = 'Photo updated successfully!';
+        this.msgType = 'success';
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        this.imageUploading = false;
+        const errMsg = err.error?.error || 'Image upload failed. Please try again.';
+        this.msg = errMsg;
+
         this.msgType = 'error';
         this.cdr.markForCheck();
       }
@@ -118,19 +156,43 @@ export class ProfileCardComponent implements OnInit {
   saveProfile(): void {
     if (!this.editName.trim()) return;
     this.saving = true;
+
     this.profileService.updateProfile({ name: this.editName, phone: this.editPhone }).subscribe({
       next: (res) => {
         this.user = res;
         this.storage.saveSession(res);
         this.saving = false;
         this.msg = 'Profile updated!';
-        this.msgType = 'success';
+
+    this.msg = '';
+    this.profileService.updateProfile({ name: this.editName, phone: this.editPhone }).subscribe({
+      next: (res: any) => {
+        if (res.error) {
+          this.saving = false;
+          this.msg = res.error;
+          this.msgType = 'error';
+          this.cdr.markForCheck();
+          return;
+        }
+        const existing = this.storage.getUser();
+        this.user = { ...existing, ...res };
+        if (this.user) this.storage.saveSession(this.user);
+        this.saving = false;
+        this.msg = 'Profile updated successfully!';
+     this.msgType = 'success';
         this.cdr.markForCheck();
         setTimeout(() => this.closeEditModal(), 1200);
       },
+
       error: () => {
         this.saving = false;
         this.msg = 'Update failed';
+
+      error: (err) => {
+        this.saving = false;
+        const errMsg = err.error?.error || 'Update failed. Please try again.';
+        this.msg = errMsg;
+
         this.msgType = 'error';
         this.cdr.markForCheck();
       }

@@ -14,8 +14,13 @@ export class AppointmentService {
   private apiUrl = environment.apiUrl + "appointments";
 
   constructor(
+
     private http: HttpClient,
 private cdr:ChangeDetectorRef
+
+    private http: HttpClient
+
+
   ) { }
 
   bookAppointment(data: AppointmentModel): Observable<AppointmentModel> {
@@ -28,10 +33,10 @@ private cdr:ChangeDetectorRef
   }
 
   getDoctorAppointments(doctorId: number) {
-  return this.http.get<AppointmentResponseModel[]>(
-    `${this.apiUrl}/doctor/${doctorId}`
-  );
-}
+    return this.http.get<AppointmentResponseModel[]>(
+      `${this.apiUrl}/doctor/${doctorId}`
+    );
+  }
 
   getSchedule(date: string): Observable<AppointmentModel[]> {
     return this.http.get<AppointmentModel[]>(
@@ -89,7 +94,7 @@ private cdr:ChangeDetectorRef
   }
 
 
-   getById(id: number) {
+  getById(id: number) {
 
     return this.http.get<AppointmentModel>(
       `${this.apiUrl}/${id}`
@@ -102,7 +107,7 @@ private cdr:ChangeDetectorRef
   //     `${this.apiUrl}/doctor/${doctorId}`
   //   );
   // }
-  
+
 
 
 }

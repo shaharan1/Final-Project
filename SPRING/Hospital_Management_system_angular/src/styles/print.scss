@@ -1,0 +1,47 @@
+@media print {
+  .billing-page {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+  }
+  .billing-page::before {
+    display: none !important;
+  }
+  .glass {
+    backdrop-filter: none !important;
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+  }
+  .header-right,
+  .action-buttons,
+  .billing-sidebar,
+  .patient-results,
+  .search-section,
+  .recent-bills-card,
+  .btn {
+    display: none !important;
+  }
+  .billing-main {
+    width: 100% !important;
+  }
+  .page-title {
+    -webkit-text-fill-color: #000 !important;
+  }
+  .badge {
+    border: 1px solid #ccc !important;
+    background: #f5f5f5 !important;
+    color: #000 !important;
+  }
+  .inline-select,
+  .inline-input,
+  .inline-input-sm,
+  .inline-input-xs {
+    border-bottom: 1px solid #ccc !important;
+    background: transparent !important;
+  }
+  @page {
+    margin: 10mm;
+    size: A4;
+  }
+}

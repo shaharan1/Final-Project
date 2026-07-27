@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+
 interface Supplier {
   id: number;
   name: string;
@@ -19,6 +20,10 @@ interface Supplier {
   dueAmount: number;
 }
 
+import { SupplierService } from '../../../../services/supplier.service';
+import { SupplierModel } from '../../../../models/supplier.model';
+
+
 @Component({
   selector: 'app-supplier',
   standalone: true,
@@ -27,6 +32,7 @@ interface Supplier {
   styleUrls: ['./supplier.component.css']
 })
 export class SupplierComponent implements OnInit {
+
   suppliers: Supplier[] = [
     { id: 1, name: 'MediPharm Ltd', contactPerson: 'Dr. Rahman Ahmed', phone: '+880-1711-234567', email: 'rahman@medipharm.com', address: '45 Pharma Tower, Dhaka', companyName: 'MediPharm Bangladesh Ltd', tradeLicense: 'TL-2024-1234', drugLicense: 'DL-2024-5678', website: 'www.medipharm.com', notes: 'Premium supplier', status: 'Active', dueAmount: 15000 },
     { id: 2, name: 'HealthLine Supply', contactPerson: 'Fatima Khan', phone: '+880-1812-345678', email: 'fatima@healthline.com', address: '78 Health Ave, Chittagong', companyName: 'HealthLine Supply Co.', tradeLicense: 'TL-2024-2345', drugLicense: 'DL-2024-6789', website: 'www.healthline.com', notes: 'Reliable partner', status: 'Active', dueAmount: 0 },
@@ -59,6 +65,50 @@ export class SupplierComponent implements OnInit {
 
   ngOnInit(): void {
     this.filteredSuppliers = [...this.suppliers];
+
+  suppliers: SupplierModel[] = [];
+  filteredSuppliers: SupplierModel[] = [];
+  searchTerm: string = '';
+  showModal: boolean = false;
+  showDeleteModal: boolean = false;
+  editingSupplier: SupplierModel | null = null;
+  supplierToDelete: SupplierModel | null = null;
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  loading = false;
+  error = '';
+
+  formModel: Partial<SupplierModel> = this.getEmptyForm();
+
+  getEmptyForm(): Partial<SupplierModel> {
+    return { name: '', contactPerson: '', phone: '', email: '', address: '', companyName: '', tradeLicense: '', drugLicense: '', website: '', notes: '', active: true };
+  }
+
+  get totalSuppliers(): number { return this.suppliers.length; }
+  get activeSuppliers(): number { return this.suppliers.filter(s => s.active !== false).length; }
+  get dueAmountSuppliers(): number { return this.suppliers.filter(s => (s.totalDue ?? 0) > 0).length; }
+
+  constructor(private supplierService: SupplierService) {}
+
+  ngOnInit(): void {
+    this.loadSuppliers();
+  }
+
+  loadSuppliers(): void {
+    this.loading = true;
+    this.error = '';
+    this.supplierService.getAll().subscribe({
+      next: (data: SupplierModel[]) => {
+        this.suppliers = data;
+        this.filterSuppliers();
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load suppliers. Please try again.';
+        this.loading = false;
+      }
+    });
+
   }
 
   filterSuppliers(): void {
@@ -95,7 +145,11 @@ export class SupplierComponent implements OnInit {
     this.showModal = true;
   }
 
+
   openEditModal(supplier: Supplier): void {
+
+  openEditModal(supplier: SupplierModel): void {
+
     this.editingSupplier = supplier;
     this.formModel = { ...supplier };
     this.showModal = true;
@@ -107,6 +161,7 @@ export class SupplierComponent implements OnInit {
   }
 
   saveSupplier(): void {
+
     if (this.editingSupplier) {
       const idx = this.suppliers.findIndex(s => s.id === this.editingSupplier!.id);
       if (idx !== -1) {
@@ -121,23 +176,62 @@ export class SupplierComponent implements OnInit {
   }
 
   confirmDelete(supplier: Supplier): void {
+
+    if (this.editingSupplier && this.editingSupplier.id) {
+      this.supplierService.update(this.editingSupplier.id, this.formModel as SupplierModel).subscribe({
+        next: () => {
+          this.loadSuppliers();
+          this.closeModal();
+        },
+        error: () => { this.error = 'Failed to update supplier.'; }
+      });
+    } else {
+      this.supplierService.create(this.formModel as SupplierModel).subscribe({
+        next: () => {
+          this.loadSuppliers();
+          this.closeModal();
+        },
+        error: () => { this.error = 'Failed to create supplier.'; }
+      });
+    }
+  }
+
+  confirmDelete(supplier: SupplierModel): void {
+
     this.supplierToDelete = supplier;
     this.showDeleteModal = true;
   }
 
   deleteSupplier(): void {
+
     if (this.supplierToDelete) {
       this.suppliers = this.suppliers.filter(s => s.id !== this.supplierToDelete!.id);
       this.filterSuppliers();
     }
     this.showDeleteModal = false;
     this.supplierToDelete = null;
+
+    if (this.supplierToDelete && this.supplierToDelete.id) {
+      this.supplierService.delete(this.supplierToDelete.id).subscribe({
+        next: () => {
+          this.loadSuppliers();
+          this.showDeleteModal = false;
+          this.supplierToDelete = null;
+        },
+        error: () => { this.error = 'Failed to delete supplier.'; }
+      });
+    } else {
+      this.showDeleteModal = false;
+      this.supplierToDelete = null;
+    }
+
   }
 
   cancelDelete(): void {
     this.showDeleteModal = false;
     this.supplierToDelete = null;
   }
+
 
   getStatusClass(status: string): string {
     switch (status) {
@@ -146,5 +240,17 @@ export class SupplierComponent implements OnInit {
       case 'Suspended': return 'badge-suspended';
       default: return '';
     }
+
+  getStatusClass(supplier: SupplierModel): string {
+    if (supplier.active === false) return 'badge-inactive';
+    if ((supplier.totalDue ?? 0) > 0) return 'badge-suspended';
+    return 'badge-active';
+  }
+
+  getStatusLabel(supplier: SupplierModel): string {
+    if (supplier.active === false) return 'Inactive';
+    if ((supplier.totalDue ?? 0) > 0) return 'Active (Due)';
+    return 'Active';
+
   }
 }

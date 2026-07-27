@@ -1,0 +1,118 @@
+<div class="dietary-page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Kitchen Command Center</h1>
+      <p class="page-subtitle">Real-time kitchen operations and meal preparation tracking</p>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading kitchen data...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Current Meal Indicator -->
+    <div class="current-meal-banner glass" *ngIf="currentMeal">
+      <div class="meal-icon">🍽️</div>
+      <div class="meal-info">
+        <h3>{{ currentMeal.mealName }}</h3>
+        <p>Serving at {{ currentMeal.servingTime }}</p>
+      </div>
+      <span class="badge badge-info">{{ currentMeal.totalOrdersToday }} orders</span>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-row">
+      <div class="kpi-card glass">
+        <div class="kpi-icon" style="background: rgba(253,126,20,0.15); color: #fd7e14;">📋</div>
+        <div class="kpi-body"><span class="kpi-value">{{ orderCounts['PENDING'] || 0 }}</span><span class="kpi-label">Pending</span></div>
+      </div>
+      <div class="kpi-card glass">
+        <div class="kpi-icon" style="background: rgba(13,110,253,0.15); color: #0d6efd;">🔥</div>
+        <div class="kpi-body"><span class="kpi-value">{{ orderCounts['COOKING'] || 0 }}</span><span class="kpi-label">Cooking</span></div>
+      </div>
+      <div class="kpi-card glass">
+        <div class="kpi-icon" style="background: rgba(13,202,240,0.15); color: #0dcaf0;">👨‍🍳</div>
+        <div class="kpi-body"><span class="kpi-value">{{ orderCounts['PREPARING'] || 0 }}</span><span class="kpi-label">Preparing</span></div>
+      </div>
+      <div class="kpi-card glass">
+        <div class="kpi-icon" style="background: rgba(25,135,84,0.15); color: #198754;">✅</div>
+        <div class="kpi-body"><span class="kpi-value">{{ orderCounts['READY'] || 0 }}</span><span class="kpi-label">Ready</span></div>
+      </div>
+      <div class="kpi-card glass">
+        <div class="kpi-icon" style="background: rgba(25,135,84,0.15); color: #20c997;">🚚</div>
+        <div class="kpi-body"><span class="kpi-value">{{ orderCounts['DELIVERED'] || 0 }}</span><span class="kpi-label">Delivered</span></div>
+      </div>
+      <div class="kpi-card glass">
+        <div class="kpi-icon" style="background: rgba(220,53,69,0.15); color: #dc3545;">❌</div>
+        <div class="kpi-body"><span class="kpi-value">{{ orderCounts['CANCELLED'] || 0 }}</span><span class="kpi-label">Cancelled</span></div>
+      </div>
+    </div>
+
+    <!-- Status Flow -->
+    <div class="status-flow glass">
+      <h3 class="section-title">Order Pipeline</h3>
+      <div class="pipeline">
+        <div class="pipeline-step" [class.active]="(orderCounts['PENDING']||0) > 0">
+          <div class="step-dot pending">PENDING</div>
+          <span class="step-count">{{ orderCounts['PENDING'] || 0 }}</span>
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step" [class.active]="(orderCounts['PREPARING']||0) > 0">
+          <div class="step-dot preparing">PREPARING</div>
+          <span class="step-count">{{ orderCounts['PREPARING'] || 0 }}</span>
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step" [class.active]="(orderCounts['COOKING']||0) > 0">
+          <div class="step-dot cooking">COOKING</div>
+          <span class="step-count">{{ orderCounts['COOKING'] || 0 }}</span>
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step" [class.active]="(orderCounts['READY']||0) > 0">
+          <div class="step-dot ready">READY</div>
+          <span class="step-count">{{ orderCounts['READY'] || 0 }}</span>
+        </div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step" [class.active]="(orderCounts['DELIVERED']||0) > 0">
+          <div class="step-dot delivered">DELIVERED</div>
+          <span class="step-count">{{ orderCounts['DELIVERED'] || 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="panel glass">
+      <div class="panel-head">
+        <h2 class="panel-title">Today's Kitchen Orders</h2>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr><th>Order #</th><th>Patient</th><th>Meal</th><th>Diet Type</th><th>Priority</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of todayOrders">
+              <td class="cell-bold">{{ order.orderNumber }}</td>
+              <td>{{ order.patient?.name || 'N/A' }}</td>
+              <td>{{ order.mealTime }}</td>
+              <td><span class="badge badge-info">{{ order.dietType }}</span></td>
+              <td><span class="badge" [ngClass]="getPriorityClass(order.priority)">{{ order.priority }}</span></td>
+              <td><span class="badge" [ngClass]="getStatusClass(order.status)">{{ order.status }}</span></td>
+              <td class="action-cell">
+                <div class="action-buttons">
+                  <button class="btn-sm btn-prep" *ngIf="order.status === 'PENDING'" (click)="updateOrderStatus(order.id, 'PREPARING')">Accept</button>
+                  <button class="btn-sm btn-cook" *ngIf="order.status === 'PREPARING'" (click)="updateOrderStatus(order.id, 'COOKING')">Cook</button>
+                  <button class="btn-sm btn-ready" *ngIf="order.status === 'COOKING'" (click)="updateOrderStatus(order.id, 'READY')">Ready</button>
+                  <button class="btn-sm btn-deliver" *ngIf="order.status === 'READY'" (click)="updateOrderStatus(order.id, 'DELIVERED')">Deliver</button>
+                  <button class="btn-sm btn-cancel" *ngIf="order.status !== 'DELIVERED' && order.status !== 'CANCELLED'" (click)="updateOrderStatus(order.id, 'CANCELLED')">Cancel</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="todayOrders.length === 0"><td colspan="7" class="empty-row">No orders today</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
