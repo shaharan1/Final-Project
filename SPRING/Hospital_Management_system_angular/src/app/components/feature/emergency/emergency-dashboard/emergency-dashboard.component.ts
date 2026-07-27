@@ -77,9 +77,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
       next: (data) => {
         this.dashboard = data;
         this.updateCards();
-        this.buildTriageDistribution();
         this.loading = false;
-        this.buildCharts();
       },
       error: () => {
         this.error = 'Failed to load dashboard';
@@ -94,9 +92,10 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         this.patients = data;
         this.filterByStatus(this.selectedStatus);
         this.buildTriageDistribution();
-        this.buildCharts();
       },
-      error: () => {}
+      error: () => {
+        this.loading = false;
+      }
     });
   }
 
