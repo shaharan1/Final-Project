@@ -22,6 +22,9 @@ public interface InfrastructureService {
     List<BedResponse> getBedsByStatus(BedStatus status);
     BedResponse updateBedStatus(Long id, BedStatus status);
 
+    WardResponse updateWard(Long id, WardRequest request);
+    void deleteWard(Long id);
+    void deleteBed(Long id);
 
     // ================= NEW =================
 

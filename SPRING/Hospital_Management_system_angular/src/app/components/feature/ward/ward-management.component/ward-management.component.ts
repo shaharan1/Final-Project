@@ -125,6 +125,96 @@ export class WardManagementComponent implements OnInit {
     });
   }
 
+  // ── Create Ward ──
+  showCreateWardModal = false;
+  newWard = { name: '', departmentId: 0, roomType: 'GENERAL_WARD', totalBeds: 10, basePricePerDay: 0 };
+  roomTypes = ['GENERAL_WARD', 'SEMI_PRIVATE', 'PRIVATE_CABIN', 'ICU', 'CCU', 'NICU', 'EMERGENCY'];
+  departments: { id: number; name: string }[] = [];
+
+  openCreateWardModal(): void {
+    this.newWard = { name: '', departmentId: 0, roomType: 'GENERAL_WARD', totalBeds: 10, basePricePerDay: 0 };
+    this.showCreateWardModal = true;
+  }
+
+  closeCreateWardModal(): void {
+    this.showCreateWardModal = false;
+  }
+
+  createWard(): void {
+    if (!this.newWard.name || !this.newWard.departmentId) {
+      alert('Please fill in ward name and department');
+      return;
+    }
+    this.infraService.createWard(this.newWard).subscribe({
+      next: () => {
+        alert('Ward created successfully');
+        this.closeCreateWardModal();
+        this.loadData();
+      },
+      error: () => alert('Failed to create ward')
+    });
+  }
+
+  // ── Delete Ward ──
+  deleteWard(ward: WardModel, event: Event): void {
+    event.stopPropagation();
+    if (!confirm(`Delete ward "${ward.name}" and all its beds?`)) return;
+    this.infraService.deleteWard(ward.id!).subscribe({
+      next: () => {
+        alert('Ward deleted');
+        if (this.selectedWard?.id === ward.id) {
+          this.backToWards();
+        }
+        this.loadData();
+      },
+      error: () => alert('Failed to delete ward')
+    });
+  }
+
+  // ── Create Bed ──
+  showCreateBedModal = false;
+  newBed = { bedNumber: '', wardId: 0, status: 'AVAILABLE' };
+
+  openCreateBedModal(): void {
+    this.newBed = { bedNumber: '', wardId: this.selectedWard?.id || 0, status: 'AVAILABLE' };
+    this.showCreateBedModal = true;
+  }
+
+  closeCreateBedModal(): void {
+    this.showCreateBedModal = false;
+  }
+
+  createBed(): void {
+    if (!this.newBed.bedNumber || !this.newBed.wardId) {
+      alert('Please fill in bed number');
+      return;
+    }
+    this.infraService.createBed(this.newBed).subscribe({
+      next: () => {
+        alert('Bed created successfully');
+        this.closeCreateBedModal();
+        this.loadData();
+      },
+      error: () => alert('Failed to create bed')
+    });
+  }
+
+  // ── Delete Bed ──
+  deleteBed(bed: BedModel): void {
+    if (bed.status === 'OCCUPIED') {
+      alert('Cannot delete an occupied bed. Discharge the patient first.');
+      return;
+    }
+    if (!confirm(`Delete bed "${bed.bedNumber}"?`)) return;
+    this.infraService.deleteBed(bed.id).subscribe({
+      next: () => {
+        alert('Bed deleted');
+        this.loadData();
+      },
+      error: () => alert('Failed to delete bed')
+    });
+  }
+
   computeStats(): void {
     this.totalBeds = this.allBeds.length;
     this.availableBeds = this.allBeds.filter(b => b.status === 'AVAILABLE').length;

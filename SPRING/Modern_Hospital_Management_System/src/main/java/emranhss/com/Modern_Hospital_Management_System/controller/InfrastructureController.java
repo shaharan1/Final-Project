@@ -86,4 +86,21 @@ public class InfrastructureController {
         return ResponseEntity.ok(infraService.updateBedFacilities(id, facilityIds));
     }
 
+    @PutMapping("/wards/{id}")
+    public ResponseEntity<WardResponse> updateWard(@PathVariable Long id, @RequestBody WardRequest request) {
+        return ResponseEntity.ok(infraService.updateWard(id, request));
+    }
+
+    @DeleteMapping("/wards/{id}")
+    public ResponseEntity<Void> deleteWard(@PathVariable Long id) {
+        infraService.deleteWard(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/beds/{id}")
+    public ResponseEntity<Void> deleteBed(@PathVariable Long id) {
+        infraService.deleteBed(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

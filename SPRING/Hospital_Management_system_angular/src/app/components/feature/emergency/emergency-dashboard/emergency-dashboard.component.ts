@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -6,6 +6,9 @@ import { EmergencyPatientService } from '../../../../services/emergency/emergenc
 import { AmbulanceService } from '../../../../services/emergency/ambulance.service';
 import { EmergencyBedService } from '../../../../services/emergency/emergency-bed.service';
 import { EmergencyDashboard } from '../../../../models/emergency';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-emergency-dashboard',
@@ -14,11 +17,14 @@ import { EmergencyDashboard } from '../../../../models/emergency';
   templateUrl: './emergency-dashboard.component.html',
   styleUrls: ['./emergency-dashboard.component.css']
 })
-export class EmergencyDashboardComponent implements OnInit, OnDestroy {
+export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   private patientService = inject(EmergencyPatientService);
   private ambulanceService = inject(AmbulanceService);
   private bedService = inject(EmergencyBedService);
   private router = inject(Router);
+
+  @ViewChild('triagePieChart') triagePieChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('statusBarChart') statusBarChartRef!: ElementRef<HTMLCanvasElement>;
 
   dashboard: EmergencyDashboard = {};
   loading = true;
@@ -26,6 +32,8 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy {
   patients: any[] = [];
   recentActivity: any[] = [];
   refreshInterval: any;
+  triageChart: Chart | null = null;
+  statusChart: Chart | null = null;
 
   dashboardCards = [
     { label: 'Patients Today', value: 0, icon: 'bi-people-fill', color: '#dc3545', key: 'emergencyPatientsToday', route: '/emergency/registration' },
@@ -54,8 +62,14 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy {
     this.refreshInterval = setInterval(() => this.loadDashboard(), 30000);
   }
 
+  ngAfterViewInit(): void {
+    this.buildCharts();
+  }
+
   ngOnDestroy(): void {
     if (this.refreshInterval) clearInterval(this.refreshInterval);
+    this.triageChart?.destroy();
+    this.statusChart?.destroy();
   }
 
   loadDashboard(): void {
@@ -65,6 +79,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy {
         this.updateCards();
         this.buildTriageDistribution();
         this.loading = false;
+        this.buildCharts();
       },
       error: () => {
         this.error = 'Failed to load dashboard';
@@ -78,6 +93,8 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.patients = data;
         this.filterByStatus(this.selectedStatus);
+        this.buildTriageDistribution();
+        this.buildCharts();
       },
       error: () => {}
     });
@@ -168,6 +185,94 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
+    });
+  }
+
+  buildCharts(): void {
+    this.buildTriagePieChart();
+    this.buildStatusBarChart();
+  }
+
+  private buildTriagePieChart(): void {
+    if (!this.triagePieChartRef?.nativeElement) return;
+    if (this.triageChart) this.triageChart.destroy();
+
+    const counts = [1, 2, 3, 4, 5].map(level =>
+      this.patients.filter(p => p.triageLevel === level).length
+    );
+
+    this.triageChart = new Chart(this.triagePieChartRef.nativeElement, {
+      type: 'doughnut',
+      data: {
+        labels: ['Resuscitation', 'Emergency', 'Urgent', 'Semi-Urgent', 'Non-Urgent'],
+        datasets: [{
+          data: counts,
+          backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#198754', '#0d6efd'],
+          borderColor: '#0a0e27',
+          borderWidth: 3,
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: 'rgba(255,255,255,0.7)', padding: 16, font: { size: 12 } }
+          }
+        }
+      }
+    });
+  }
+
+  private buildStatusBarChart(): void {
+    if (!this.statusBarChartRef?.nativeElement) return;
+    if (this.statusChart) this.statusChart.destroy();
+
+    const statuses = ['REGISTERED', 'TRIAGE_PENDING', 'TREATING', 'ADMITTED', 'DISCHARGED', 'CRITICAL'];
+    const counts = statuses.map(s => this.patients.filter(p => p.status === s).length);
+
+    this.statusChart = new Chart(this.statusBarChartRef.nativeElement, {
+      type: 'bar',
+      data: {
+        labels: ['Registered', 'Waiting Triage', 'Treating', 'Admitted', 'Discharged', 'Critical'],
+        datasets: [{
+          label: 'Patients',
+          data: counts,
+          backgroundColor: [
+            'rgba(13,202,240,0.6)',
+            'rgba(255,193,7,0.6)',
+            'rgba(13,110,253,0.6)',
+            'rgba(25,135,84,0.6)',
+            'rgba(108,117,125,0.6)',
+            'rgba(220,53,69,0.6)'
+          ],
+          borderColor: [
+            '#0dcaf0', '#ffc107', '#0d6efd', '#198754', '#6c757d', '#dc3545'
+          ],
+          borderWidth: 1,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 11 } },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: 'rgba(255,255,255,0.5)', stepSize: 1 },
+            grid: { color: 'rgba(255,255,255,0.06)' }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
     });
   }
 }

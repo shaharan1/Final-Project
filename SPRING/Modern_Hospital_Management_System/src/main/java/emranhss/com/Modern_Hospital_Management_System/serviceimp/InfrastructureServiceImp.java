@@ -236,4 +236,43 @@ public class InfrastructureServiceImp implements InfrastructureService {
 
         return mapBedResponse(bedRepository.save(bed));
     }
+
+    @Override
+    @Transactional
+    public WardResponse updateWard(Long id, WardRequest request) {
+        Ward ward = wardRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ward not found with id: " + id));
+
+        if (request.getName() != null) ward.setName(request.getName());
+        if (request.getRoomType() != null) ward.setRoomType(request.getRoomType());
+        if (request.getTotalBeds() != null) ward.setTotalBeds(request.getTotalBeds());
+        if (request.getBasePricePerDay() != null) ward.setBasePricePerDay(request.getBasePricePerDay());
+        if (request.getDepartmentId() != null) {
+            Department dept = departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+            ward.setDepartment(dept);
+        }
+
+        return mapWardResponse(wardRepository.save(ward));
+    }
+
+    @Override
+    @Transactional
+    public void deleteWard(Long id) {
+        Ward ward = wardRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ward not found with id: " + id));
+        List<Bed> beds = bedRepository.findByWardId(id);
+        if (!beds.isEmpty()) {
+            bedRepository.deleteAll(beds);
+        }
+        wardRepository.delete(ward);
+    }
+
+    @Override
+    @Transactional
+    public void deleteBed(Long id) {
+        Bed bed = bedRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Bed not found with id: " + id));
+        bedRepository.delete(bed);
+    }
 }

@@ -47,7 +47,10 @@
 
   <!-- Ward List View -->
   <div *ngIf="!selectedWard">
-    <h2 class="wm-section-title">Hospital Wards</h2>
+    <div class="wm-section-header">
+      <h2 class="wm-section-title">Hospital Wards</h2>
+      <button class="wm-add-btn" (click)="openCreateWardModal()">+ New Ward</button>
+    </div>
     <div class="wm-ward-grid">
       <div class="wm-ward-card" *ngFor="let ward of wards" (click)="selectWard(ward)">
         <div class="wm-ward-header">
@@ -68,7 +71,10 @@
           <span>{{ getWardTotal(ward) }} beds</span>
           <span>&#2547; {{ ward.basePricePerDay }}/day</span>
         </div>
-        <button class="wm-ward-btn">View Beds</button>
+        <div class="wm-ward-actions">
+          <button class="wm-ward-btn">View Beds</button>
+          <button class="wm-ward-btn-delete" (click)="deleteWard(ward, $event)">Delete</button>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +96,7 @@
         <button class="wm-pill wm-pill-occupied" [class.active]="statusFilter==='OCCUPIED'" (click)="statusFilter='OCCUPIED'">Occupied</button>
         <button class="wm-pill wm-pill-maintenance" [class.active]="statusFilter==='MAINTENANCE'" (click)="statusFilter='MAINTENANCE'">Maintenance</button>
       </div>
+      <button class="wm-add-btn" (click)="openCreateBedModal()">+ New Bed</button>
     </div>
 
     <!-- Bed Cards Grid -->
@@ -182,6 +189,9 @@
           </button>
           <button class="wm-bed-btn wm-bed-btn-discharge" *ngIf="bed.status==='OCCUPIED'" (click)="dischargePatient(bed)">
             Discharge
+          </button>
+          <button class="wm-bed-btn wm-bed-btn-delete" (click)="deleteBed(bed)">
+            Delete
           </button>
         </div>
       </div>
@@ -280,6 +290,60 @@
       <div class="wm-modal-footer">
         <button class="wm-btn-cancel" (click)="closeAdmitModal()">Cancel</button>
         <button class="wm-btn-confirm" (click)="admitPatient()">Confirm Admission</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Ward Modal -->
+  <div class="wm-modal-overlay" *ngIf="showCreateWardModal" (click)="closeCreateWardModal()">
+    <div class="wm-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Create New Ward</h3>
+        <button class="wm-modal-close" (click)="closeCreateWardModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body">
+        <div class="wm-form-group">
+          <label>Ward Name</label>
+          <input class="wm-form-input" type="text" [(ngModel)]="newWard.name" placeholder="e.g. Cardiac Ward A">
+        </div>
+        <div class="wm-form-group">
+          <label>Room Type</label>
+          <select class="wm-form-select" [(ngModel)]="newWard.roomType">
+            <option *ngFor="let rt of roomTypes" [value]="rt">{{ rt.replace('_', ' ') }}</option>
+          </select>
+        </div>
+        <div class="wm-form-group">
+          <label>Total Beds</label>
+          <input class="wm-form-input" type="number" [(ngModel)]="newWard.totalBeds" min="1">
+        </div>
+        <div class="wm-form-group">
+          <label>Base Price Per Day (&#2547;)</label>
+          <input class="wm-form-input" type="number" [(ngModel)]="newWard.basePricePerDay" min="0">
+        </div>
+      </div>
+      <div class="wm-modal-footer">
+        <button class="wm-btn-cancel" (click)="closeCreateWardModal()">Cancel</button>
+        <button class="wm-btn-confirm" (click)="createWard()">Create Ward</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Bed Modal -->
+  <div class="wm-modal-overlay" *ngIf="showCreateBedModal" (click)="closeCreateBedModal()">
+    <div class="wm-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Add New Bed</h3>
+        <button class="wm-modal-close" (click)="closeCreateBedModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body">
+        <div class="wm-form-group">
+          <label>Bed Number</label>
+          <input class="wm-form-input" type="text" [(ngModel)]="newBed.bedNumber" placeholder="e.g. B-101">
+        </div>
+        <div class="wm-modal-footer">
+          <button class="wm-btn-cancel" (click)="closeCreateBedModal()">Cancel</button>
+          <button class="wm-btn-confirm" (click)="createBed()">Create Bed</button>
+        </div>
       </div>
     </div>
   </div>

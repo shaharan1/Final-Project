@@ -126,17 +126,17 @@ export class NavigationService {
        {
          label: 'Emergency & Ambulance',
          items: [
-           { label: 'ED Dashboard', icon: 'bi-heart-pulse-fill', route: '/emergency/dashboard', section: 'Emergency' },
-           { label: 'Registration', icon: 'bi-person-plus-fill', route: '/emergency/registration', section: 'Emergency' },
-           { label: 'Triage', icon: 'bi-clipboard2-pulse-fill', route: '/emergency/triage', section: 'Emergency' },
-           { label: 'Doctor Assignment', icon: 'bi-person-workspace', route: '/emergency/assignments', section: 'Emergency' },
-           { label: 'Ward & Beds', icon: 'bi-bed-fill', route: '/emergency/beds', section: 'Emergency' },
-           { label: 'Ambulance', icon: 'bi-truck', route: '/emergency/ambulances', section: 'Emergency' },
-           { label: 'Medicine', icon: 'bi-capsule', route: '/emergency/medicine', section: 'Emergency' },
-           { label: 'Lab Orders', icon: 'bi-lab', route: '/emergency/lab-orders', section: 'Emergency' },
-           { label: 'Billing', icon: 'bi-receipt', route: '/emergency/billing', section: 'Emergency' },
-           { label: 'Timeline', icon: 'bi-clock-history', route: '/emergency/timeline', section: 'Emergency' },
-           { label: 'Status Board', icon: 'bi-display', route: '/emergency/status-board', section: 'Emergency' }
+           { label: 'ED Dashboard', icon: '♥', route: '/emergency/dashboard', section: 'Emergency' },
+           { label: 'Registration', icon: '+', route: '/emergency/registration', section: 'Emergency' },
+           { label: 'Triage', icon: 'Ⓣ', route: '/emergency/triage', section: 'Emergency' },
+           { label: 'Doctor Assignment', icon: 'Ⓓ', route: '/emergency/assignments', section: 'Emergency' },
+           { label: 'Ward & Beds', icon: 'Ⓑ', route: '/emergency/beds', section: 'Emergency' },
+           { label: 'Ambulance', icon: 'ambulance', route: '/emergency/ambulances', section: 'Emergency' },
+           { label: 'Medicine', icon: 'Ⓜ', route: '/emergency/medicine', section: 'Emergency' },
+           { label: 'Lab Orders', icon: 'Ⓛ', route: '/emergency/lab-orders', section: 'Emergency' },
+           { label: 'Billing', icon: 'Ⓑ', route: '/emergency/billing', section: 'Emergency' },
+           { label: 'Timeline', icon: '⏰', route: '/emergency/timeline', section: 'Emergency' },
+           { label: 'Status Board', icon: '📊', route: '/emergency/status-board', section: 'Emergency' }
          ],
        },
        {
@@ -264,9 +264,9 @@ export class NavigationService {
       {
         label: 'Emergency',
         items: [
-          { label: 'ED Dashboard', icon: 'bi-heart-pulse-fill', route: '/emergency/dashboard', section: 'Emergency' },
-          { label: 'Registration', icon: 'bi-person-plus-fill', route: '/emergency/registration', section: 'Emergency' },
-          { label: 'Status Board', icon: 'bi-display', route: '/emergency/status-board', section: 'Emergency' }
+          { label: 'ED Dashboard', icon: '♥', route: '/emergency/dashboard', section: 'Emergency' },
+          { label: 'Registration', icon: '+', route: '/emergency/registration', section: 'Emergency' },
+          { label: 'Status Board', icon: '📊', route: '/emergency/status-board', section: 'Emergency' }
         ],
       },
       {

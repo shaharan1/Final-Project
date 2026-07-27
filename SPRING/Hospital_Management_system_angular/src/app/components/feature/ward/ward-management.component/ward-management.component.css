@@ -216,6 +216,37 @@
 .wm-bed-btn-discharge { background: linear-gradient(135deg, #dc3545, #e83e8c); color: #fff; }
 
 .wm-empty { text-align: center; padding: 48px; color: #6c757d; font-size: 16px; }
+
+/* ── Add / Delete Buttons ── */
+.wm-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.wm-section-header .wm-section-title { margin: 0; }
+.wm-add-btn {
+  padding: 10px 22px; border: none; border-radius: 10px;
+  background: linear-gradient(135deg, #198754, #20c997); color: #fff;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+.wm-add-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(25,135,84,.3); }
+.wm-ward-actions { display: flex; gap: 8px; }
+.wm-ward-actions .wm-ward-btn { flex: 1; }
+.wm-ward-btn-delete {
+  width: 100%; padding: 10px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, #dc3545, #e83e8c); color: #fff;
+  font-weight: 600; font-size: 14px; cursor: pointer;
+  transition: opacity .2s;
+}
+.wm-ward-btn-delete:hover { opacity: 0.9; }
+.wm-bed-btn-delete {
+  background: rgba(220, 53, 69, 0.1) !important; color: #dc3545 !important;
+  border: 1px solid rgba(220, 53, 69, 0.3) !important;
+  padding: 6px 12px !important; border-radius: 8px !important;
+  font-size: .75rem !important; font-weight: 600 !important;
+  cursor: pointer !important; transition: all .15s !important;
+}
+.wm-bed-btn-delete:hover {
+  background: #dc3545 !important; color: #fff !important;
+  transform: translateY(-1px);
+}
 .wm-modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.5);
