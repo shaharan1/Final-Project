@@ -7,6 +7,7 @@ import { DietAssignmentService } from '../../../../services/dietary/diet-assignm
 import { DietPlanService } from '../../../../services/dietary/diet-plan.service';
 import { DietHistoryService } from '../../../../services/dietary/diet-history.service';
 import { PatientDietAlertService } from '../../../../services/dietary/patient-diet-alert.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-patient-diet',
@@ -24,7 +25,7 @@ export class PatientDietComponent implements OnInit {
   searchTerm = '';
   filterWard = '';
   filterStatus = '';
-  
+
   showModal = false;
   showDetailModal = false;
   showAlertModal = false;
@@ -32,7 +33,7 @@ export class PatientDietComponent implements OnInit {
   patientAssignments: any[] = [];
   patientAlerts: any[] = [];
   patientHistory: any[] = [];
-  
+
   assignmentForm: any = {
     patientId: null,
     dietPlanId: null,
@@ -74,26 +75,27 @@ export class PatientDietComponent implements OnInit {
 
   loadData(): void {
     this.loading = true;
-    this.patientService.getAll().subscribe({
-      next: (patients) => {
-        this.patients = patients;
-        this.filteredPatients = [...patients];
-        this.dietPlanService.getActive().subscribe({
-          next: (plans) => {
-            this.dietPlans = plans;
-            this.assignmentService.getAll().subscribe({
-              next: (assignments) => {
-                this.assignments = assignments;
-                this.loading = false;
-                this.cdr.detectChanges();
-              },
-              error: () => { this.loading = false; this.cdr.detectChanges(); }
-            });
-          },
-          error: () => { this.loading = false; this.cdr.detectChanges(); }
-        });
+    this.msg = '';
+    forkJoin({
+      patients: this.patientService.getAll(),
+      plans: this.dietPlanService.getActive(),
+      assignments: this.assignmentService.getAll()
+    }).subscribe({
+      next: (result) => {
+        this.patients = result.patients || [];
+        this.filteredPatients = [...this.patients];
+        this.dietPlans = result.plans || [];
+        this.assignments = result.assignments || [];
+        this.loading = false;
+        this.cdr.detectChanges();
       },
-      error: () => { this.loading = false; this.cdr.detectChanges(); }
+      error: (err) => {
+        console.error('Failed to load diet data:', err);
+        this.msg = 'Failed to load patient diet data. Please try again.';
+        this.msgType = 'error';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -101,7 +103,7 @@ export class PatientDietComponent implements OnInit {
     let result = [...this.patients];
     if (this.searchTerm) {
       const term = this.searchTerm.toLowerCase();
-      result = result.filter(p => 
+      result = result.filter(p =>
         (p.name && p.name.toLowerCase().includes(term)) ||
         (p.patientCode && p.patientCode.toLowerCase().includes(term)) ||
         (p.phone && p.phone.includes(term))
@@ -136,15 +138,29 @@ export class PatientDietComponent implements OnInit {
       targetWeight: null
     };
     this.showModal = true;
+    this.msg = '';
   }
 
   saveAssignment(): void {
     if (!this.assignmentForm.dietPlanId) {
-      this.msg = 'Please select a diet plan'; this.msgType = 'error'; return;
+      this.msg = 'Please select a diet plan';
+      this.msgType = 'error';
+      this.cdr.detectChanges();
+      return;
     }
     this.assignmentService.create(this.assignmentForm).subscribe({
-      next: () => { this.showModal = false; this.msg = 'Diet assigned successfully'; this.msgType = 'success'; this.loadData(); },
-      error: () => { this.msg = 'Failed to assign diet'; this.msgType = 'error'; }
+      next: () => {
+        this.showModal = false;
+        this.msg = 'Diet assigned successfully';
+        this.msgType = 'success';
+        this.loadData();
+      },
+      error: (err) => {
+        console.error('Failed to assign diet:', err);
+        this.msg = 'Failed to assign diet. Please try again.';
+        this.msgType = 'error';
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -152,10 +168,11 @@ export class PatientDietComponent implements OnInit {
     this.selectedPatient = patient;
     this.patientAssignments = this.assignments.filter(a => a.patient?.id === patient.id);
     this.historyService.getByPatientId(patient.id).subscribe({
-      next: (history) => { this.patientHistory = history; },
-      error: () => {}
+      next: (history) => { this.patientHistory = history || []; },
+      error: () => { this.patientHistory = []; }
     });
     this.showDetailModal = true;
+    this.msg = '';
   }
 
   openAddAlert(patient: any): void {
@@ -169,15 +186,29 @@ export class PatientDietComponent implements OnInit {
       specialInstructions: ''
     };
     this.showAlertModal = true;
+    this.msg = '';
   }
 
   saveAlert(): void {
     if (!this.alertForm.description) {
-      this.msg = 'Please enter a description'; this.msgType = 'error'; return;
+      this.msg = 'Please enter a description';
+      this.msgType = 'error';
+      this.cdr.detectChanges();
+      return;
     }
     this.alertService.create(this.alertForm).subscribe({
-      next: () => { this.showAlertModal = false; this.msg = 'Alert created successfully'; this.msgType = 'success'; this.loadData(); },
-      error: () => { this.msg = 'Failed to create alert'; this.msgType = 'error'; }
+      next: () => {
+        this.showAlertModal = false;
+        this.msg = 'Alert created successfully';
+        this.msgType = 'success';
+        this.loadData();
+      },
+      error: (err) => {
+        console.error('Failed to create alert:', err);
+        this.msg = 'Failed to create alert. Please try again.';
+        this.msgType = 'error';
+        this.cdr.detectChanges();
+      }
     });
   }
 
