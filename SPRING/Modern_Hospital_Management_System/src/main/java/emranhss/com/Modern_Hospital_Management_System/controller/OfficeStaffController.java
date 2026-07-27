@@ -1,13 +1,24 @@
 package emranhss.com.Modern_Hospital_Management_System.controller;
 
+import emranhss.com.Modern_Hospital_Management_System.dto.mapper.OfficeStaffMapper;
 import emranhss.com.Modern_Hospital_Management_System.dto.request.OfficeStaffRequest;
 import emranhss.com.Modern_Hospital_Management_System.dto.response.OfficeStaffResponse;
+import emranhss.com.Modern_Hospital_Management_System.entity.OfficeStaff;
+import emranhss.com.Modern_Hospital_Management_System.repository.OfficeStaffRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.OfficeStaffService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/office-staff")
@@ -16,6 +27,11 @@ import java.util.List;
 public class OfficeStaffController {
 
     private final OfficeStaffService officeStaffService;
+    private final OfficeStaffRepository officeStaffRepository;
+    private final OfficeStaffMapper officeStaffMapper;
+
+    @Value("${image.upload.dir}")
+    private String uploadDir;
 
     @PostMapping("/create")
     public ResponseEntity<OfficeStaffResponse> createOfficeStaff(
@@ -72,6 +88,23 @@ public class OfficeStaffController {
         officeStaffService.deleteOfficeStaff(id);
 
         return ResponseEntity.ok("Office Staff Deleted Successfully");
+    }
+
+    @PostMapping("/{id}/photo")
+    public ResponseEntity<?> uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        try {
+            OfficeStaff staff = officeStaffRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Office Staff not found"));
+            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path path = Paths.get(uploadDir + "office-staff/" + filename);
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+            staff.setPhoto("/images/office-staff/" + filename);
+            officeStaffRepository.save(staff);
+            return ResponseEntity.ok(officeStaffMapper.toResponse(staff));
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body(Map.of("error", "Failed to upload photo: " + e.getMessage()));
+        }
     }
 
 }
