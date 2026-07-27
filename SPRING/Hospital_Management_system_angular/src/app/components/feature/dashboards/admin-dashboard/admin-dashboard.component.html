@@ -1,86 +1,13 @@
 <app-layout pageTitle="Admin Dashboard">
-
   <app-profile-card></app-profile-card>
 
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loader-spinner"></div>
+    <p>Loading dashboard data...</p>
+  </div>
 
-  <section class="hero">
-    <div class="hero-text">
-      <p class="eyebrow">System Overview</p>
-      <h1>Welcome back, Admin</h1>
-      <p class="hero-desc">Monitor hospital operations, admissions, appointments, and revenue across all departments from a single view.</p>
-      <div class="hero-actions">
-        <a routerLink="/admittedpatient" class="btn-primary">+ Admit New Patient</a>
-        <a routerLink="/report" class="btn-ghost">View Reports</a>
-      </div>
-    </div>
-    <div class="hero-pulse" aria-hidden="true">
-      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
-        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </div>
-  </section>
-
-  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
-
-  <!-- Hospital Stats -->
-  <section *ngIf="!loading" class="stats-grid">
-    <div class="stat-card">
-      <span class="stat-label">Total Patients</span>
-      <span class="stat-value">{{ stats!.totalPatients | number }}</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Today's Appointments</span>
-      <span class="stat-value">{{ stats!.todayAppointments | number }}</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Available Beds</span>
-      <span class="stat-value">{{ stats!.availableBeds | number }}</span>
-      <span class="stat-delta">/ {{ stats!.totalBeds | number }} total</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Revenue (Monthly)</span>
-      <span class="stat-value">{{ stats!.monthlyRevenue | number }}</span>
-    </div>
-  </section>
-
-  <!-- Lab Workflow Stats -->
-  <section *ngIf="labStats" class="lab-workflow-section">
-    <div class="section-head">
-      <h2>Laboratory Workflow</h2>
-      <a routerLink="/lab-reception" class="panel-link">Open Lab Reception →</a>
-    </div>
-    <div class="lab-flow-grid">
-      <a routerLink="/lab-reception" class="lab-flow-card lab-flow-pending">
-        <span class="lab-flow-value">{{ labStats.pending }}</span>
-        <span class="lab-flow-label">Pending Orders</span>
-      </a>
-      <a routerLink="/sample-collection" class="lab-flow-card lab-flow-collected">
-        <span class="lab-flow-value">{{ labStats.sampleCollected }}</span>
-        <span class="lab-flow-label">Sample Collected</span>
-      </a>
-      <a routerLink="/result-entry" class="lab-flow-card lab-flow-received">
-        <span class="lab-flow-value">{{ labStats.sampleReceived }}</span>
-        <span class="lab-flow-label">Sample Received</span>
-      </a>
-      <a routerLink="/result-entry" class="lab-flow-card lab-flow-testing">
-        <span class="lab-flow-value">{{ labStats.testing }}</span>
-        <span class="lab-flow-label">Testing</span>
-      </a>
-      <a routerLink="/lab-verification" class="lab-flow-card lab-flow-result">
-        <span class="lab-flow-value">{{ labStats.resultEntered }}</span>
-        <span class="lab-flow-label">Results Entered</span>
-      </a>
-      <a routerLink="/lab-verification" class="lab-flow-card lab-flow-verified">
-        <span class="lab-flow-value">{{ labStats.verified }}</span>
-        <span class="lab-flow-label">Verified</span>
-      </a>
-    </div>
-  </section>
-
-  <section *ngIf="!loading" class="grid-2col">
-    <div class="panel">
-
-  <!-- HERO -->
+  <!-- HERO BANNER -->
   <section class="hero-banner">
     <div class="hero-bg-shapes">
       <div class="shape shape-1"></div>
@@ -101,7 +28,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Admit Patient
           </a>
-          <a routerLink="/reports" class="hero-btn hero-btn--outline">
+          <a routerLink="/pharmacy-reports" class="hero-btn hero-btn--outline">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
             View Reports
           </a>
@@ -124,17 +51,11 @@
     </div>
   </section>
 
-  <!-- LOADING -->
-  <div *ngIf="loading" class="loading-state">
-    <div class="loader-spinner"></div>
-    <p>Loading dashboard data...</p>
-  </div>
-
   <!-- STATS CARDS -->
   <section *ngIf="stats && !loading" class="stats-row">
     <div class="kpi-card kpi-card--blue">
       <div class="kpi-icon-wrap kpi-icon-wrap--blue">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
       <div class="kpi-body">
         <span class="kpi-label">Total Patients</span>
@@ -142,10 +63,9 @@
       </div>
       <div class="kpi-glow kpi-glow--blue"></div>
     </div>
-
     <div class="kpi-card kpi-card--green">
       <div class="kpi-icon-wrap kpi-icon-wrap--green">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </div>
       <div class="kpi-body">
         <span class="kpi-label">Today's Appointments</span>
@@ -153,10 +73,9 @@
       </div>
       <div class="kpi-glow kpi-glow--green"></div>
     </div>
-
     <div class="kpi-card kpi-card--teal">
       <div class="kpi-icon-wrap kpi-icon-wrap--teal">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v4a1 1 0 0 0 1 1h3"/><path d="M7 7v4a1 1 0 0 0 1 1h3"/><path d="M21 11V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v4a1 1 0 0 0 1 1h3"/><path d="M7 7v4a1 1 0 0 0 1 1h3"/><path d="M21 11V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>
       </div>
       <div class="kpi-body">
         <span class="kpi-label">Available Beds</span>
@@ -164,10 +83,9 @@
       </div>
       <div class="kpi-glow kpi-glow--teal"></div>
     </div>
-
     <div class="kpi-card kpi-card--purple">
       <div class="kpi-icon-wrap kpi-icon-wrap--purple">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       </div>
       <div class="kpi-body">
         <span class="kpi-label">Revenue (Monthly)</span>
@@ -179,8 +97,7 @@
 
   <!-- LAB WORKFLOW -->
   <section *ngIf="labStats && !loading" class="panel-section">
-    <div class="panel glass-panel">
->>>>>>> 740ab58ac7e2ae9bd7c5ddcd3297be86ffdf6a7b
+    <div class="glass-panel">
       <div class="panel-head">
         <div class="panel-title-group">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d4aa" stroke-width="2"><path d="M9 3h6v7.5l4 7.5H5l4-7.5V3z"/><line x1="9" y1="3" x2="15" y2="3"/></svg>
@@ -197,41 +114,31 @@
           <div class="lab-step-label">Pending</div>
           <div class="lab-step-bar"><div class="lab-step-fill" style="width:100%"></div></div>
         </a>
-        <div class="lab-arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
+        <div class="lab-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
         <a routerLink="/sample-collection" class="lab-step lab-step--collected">
           <div class="lab-step-num">{{ labStats.sampleCollected }}</div>
           <div class="lab-step-label">Collected</div>
           <div class="lab-step-bar"><div class="lab-step-fill" style="width:100%"></div></div>
         </a>
-        <div class="lab-arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
+        <div class="lab-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
         <a routerLink="/result-entry" class="lab-step lab-step--received">
           <div class="lab-step-num">{{ labStats.sampleReceived }}</div>
           <div class="lab-step-label">Received</div>
           <div class="lab-step-bar"><div class="lab-step-fill" style="width:100%"></div></div>
         </a>
-        <div class="lab-arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
+        <div class="lab-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
         <a routerLink="/result-entry" class="lab-step lab-step--testing">
           <div class="lab-step-num">{{ labStats.testing }}</div>
           <div class="lab-step-label">Testing</div>
           <div class="lab-step-bar"><div class="lab-step-fill" style="width:100%"></div></div>
         </a>
-        <div class="lab-arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
+        <div class="lab-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
         <a routerLink="/lab-verification" class="lab-step lab-step--result">
           <div class="lab-step-num">{{ labStats.resultEntered }}</div>
           <div class="lab-step-label">Results</div>
           <div class="lab-step-bar"><div class="lab-step-fill" style="width:100%"></div></div>
         </a>
-        <div class="lab-arrow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
+        <div class="lab-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg></div>
         <a routerLink="/lab-verification" class="lab-step lab-step--verified">
           <div class="lab-step-num">{{ labStats.verified }}</div>
           <div class="lab-step-label">Verified</div>
@@ -243,17 +150,13 @@
 
   <!-- WARD + ADMISSIONS -->
   <section *ngIf="!loading" class="grid-2col">
-
-    <!-- Ward Occupancy -->
-    <div class="panel glass-panel">
+    <div class="glass-panel">
       <div class="panel-head">
         <div class="panel-title-group">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4f8cff" stroke-width="2"><path d="M3 7v4a1 1 0 0 0 1 1h3"/><path d="M7 7v4a1 1 0 0 0 1 1h3"/><path d="M21 11V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>
           <h2>Ward Occupancy</h2>
         </div>
-        <span class="live-badge">
-          <span class="live-dot"></span> Live
-        </span>
+        <span class="live-badge"><span class="live-dot"></span> Live</span>
       </div>
       <div class="ward-list">
         <div class="ward-row" *ngFor="let ward of wards">
@@ -267,8 +170,7 @@
       </div>
     </div>
 
-    <!-- Recent Admissions -->
-    <div class="panel glass-panel">
+    <div class="glass-panel">
       <div class="panel-head">
         <div class="panel-title-group">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
@@ -304,26 +206,8 @@
   </section>
 
   <!-- SYSTEM MODULES -->
-  <section class="panel glass-panel modules-panel">
+  <section class="glass-panel modules-panel">
     <div class="panel-head">
-
-      <h2>System Modules</h2>
-      <span class="panel-tag">12 Modules</span>
-    </div>
-    <div class="module-grid">
-      <a routerLink="/doctor" class="module-card"><span class="module-ic">D</span>Doctor Management</a>
-      <a routerLink="/patient" class="module-card"><span class="module-ic">P</span>Patient Management</a>
-      <a routerLink="/ward-management" class="module-card"><span class="module-ic">W</span>Ward Management</a>
-      <a routerLink="/admittedpatient" class="module-card"><span class="module-ic">A</span>Admissions</a>
-      <a routerLink="/appointment-list" class="module-card"><span class="module-ic">Ap</span>Appointments</a>
-      <a routerLink="/lab-reception" class="module-card"><span class="module-ic">LR</span>Lab Reception</a>
-      <a routerLink="/sample-collection" class="module-card"><span class="module-ic">SC</span>Sample Collection</a>
-      <a routerLink="/result-entry" class="module-card"><span class="module-ic">RE</span>Result Entry</a>
-      <a routerLink="/lab-verification" class="module-card"><span class="module-ic">LV</span>Lab Verification</a>
-      <a routerLink="/medicine" class="module-card"><span class="module-ic">M</span>Pharmacy</a>
-      <a routerLink="/billing" class="module-card"><span class="module-ic">B</span>Billing</a>
-      <a routerLink="/report" class="module-card"><span class="module-ic">R</span>Reports</a>
-
       <div class="panel-title-group">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffb347" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         <h2>System Modules</h2>
@@ -332,91 +216,66 @@
     </div>
     <div class="module-grid">
       <a routerLink="/doctor" class="module-card">
-        <div class="module-ic module-ic--blue">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
+        <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
         <span class="module-name">Doctors</span>
         <span class="module-desc">Manage staff</span>
       </a>
       <a routerLink="/patient-list" class="module-card">
-        <div class="module-ic module-ic--green">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        </div>
+        <div class="module-ic module-ic--green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
         <span class="module-name">Patients</span>
         <span class="module-desc">Patient records</span>
       </a>
       <a routerLink="/appointment-list" class="module-card">
-        <div class="module-ic module-ic--purple">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-        </div>
+        <div class="module-ic module-ic--purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></div>
         <span class="module-name">Appointments</span>
         <span class="module-desc">Schedule visits</span>
       </a>
       <a routerLink="/ward-management" class="module-card">
-        <div class="module-ic module-ic--teal">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v4a1 1 0 0 0 1 1h3"/><path d="M7 7v4a1 1 0 0 0 1 1h3"/><path d="M21 11V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>
-        </div>
+        <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v4a1 1 0 0 0 1 1h3"/><path d="M7 7v4a1 1 0 0 0 1 1h3"/><path d="M21 11V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg></div>
         <span class="module-name">Wards & Beds</span>
         <span class="module-desc">Bed management</span>
       </a>
       <a routerLink="/admission" class="module-card">
-        <div class="module-ic module-ic--red">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        </div>
+        <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
         <span class="module-name">Admissions</span>
         <span class="module-desc">New admission</span>
       </a>
       <a routerLink="/lab-reception" class="module-card">
-        <div class="module-ic module-ic--orange">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6v7.5l4 7.5H5l4-7.5V3z"/></svg>
-        </div>
+        <div class="module-ic module-ic--orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6v7.5l4 7.5H5l4-7.5V3z"/></svg></div>
         <span class="module-name">Lab Reception</span>
         <span class="module-desc">Test orders</span>
       </a>
       <a routerLink="/sample-collection" class="module-card">
-        <div class="module-ic module-ic--cyan">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="9" r="3"/><path d="M18 12v6"/></svg>
-        </div>
+        <div class="module-ic module-ic--cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v12"/><circle cx="18" cy="9" r="3"/><path d="M18 12v6"/></svg></div>
         <span class="module-name">Sample Collection</span>
         <span class="module-desc">Collect samples</span>
       </a>
       <a routerLink="/result-entry" class="module-card">
-        <div class="module-ic module-ic--pink">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-        </div>
+        <div class="module-ic module-ic--pink"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div>
         <span class="module-name">Result Entry</span>
         <span class="module-desc">Enter results</span>
       </a>
       <a routerLink="/lab-verification" class="module-card">
-        <div class="module-ic module-ic--indigo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
-        </div>
+        <div class="module-ic module-ic--indigo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg></div>
         <span class="module-name">Lab Verification</span>
         <span class="module-desc">Verify reports</span>
       </a>
       <a routerLink="/medicine-stock" class="module-card">
-        <div class="module-ic module-ic--green">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        </div>
+        <div class="module-ic module-ic--green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
         <span class="module-name">Pharmacy</span>
         <span class="module-desc">Medicine stock</span>
       </a>
-      <a routerLink="/billing-dashboard" class="module-card">
-        <div class="module-ic module-ic--yellow">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
+      <a routerLink="/billing-clerk-dashboard" class="module-card">
+        <div class="module-ic module-ic--yellow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
         <span class="module-name">Billing</span>
         <span class="module-desc">Finance & billing</span>
       </a>
-      <a routerLink="/reports" class="module-card">
-        <div class="module-ic module-ic--gray">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-        </div>
+      <a routerLink="/pharmacy-reports" class="module-card">
+        <div class="module-ic module-ic--gray"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
         <span class="module-name">Reports</span>
         <span class="module-desc">Analytics & BI</span>
       </a>
-
     </div>
   </section>
 
-<app-layout>
+</app-layout>
