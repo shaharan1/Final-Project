@@ -1,0 +1,34 @@
+export interface EmergencyPatient {
+  id?: number;
+  emergencyNumber?: string;
+  patientName: string;
+  age?: number;
+  gender?: string;
+  phone?: string;
+  nationalId?: string;
+  bloodGroup?: string;
+  address?: string;
+  patientId?: number;
+  isUnknownPatient?: boolean;
+  isPoliceCase?: boolean;
+  isReferral?: boolean;
+  referralHospital?: string;
+  ambulanceId?: string;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  emergencyContactRelation?: string;
+  symptoms?: string;
+  chiefComplaint?: string;
+  injuryDetails?: string;
+  accidentType?: string;
+  emergencyNotes?: string;
+  severityLevel?: string;
+  status?: string;
+  triageLevel?: number;
+  arrivalTime?: string;
+  triageTime?: string;
+  doctorAssignedTime?: string;
+  dischargeTime?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

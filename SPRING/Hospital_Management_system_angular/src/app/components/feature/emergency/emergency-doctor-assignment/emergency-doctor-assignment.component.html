@@ -1,0 +1,218 @@
+<div class="assignment-container">
+  <div class="page-header">
+    <div class="header-title">
+      <h1>Emergency Doctor Assignment</h1>
+      <p class="subtitle">Assign and manage doctors for emergency patients</p>
+    </div>
+  </div>
+
+  <div *ngIf="msg" class="alert" [ngClass]="{'alert-success': msgType==='success', 'alert-error': msgType==='error', 'alert-warning': msgType==='warning'}">
+    {{ msg }}
+    <button class="alert-close" (click)="msg=''">&times;</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value">{{ statsTotal }}</div>
+      <div class="stat-label">Total Assigned</div>
+    </div>
+    <div class="stat-card stat-primary">
+      <div class="stat-value">{{ statsPrimary }}</div>
+      <div class="stat-label">Primary</div>
+    </div>
+    <div class="stat-card stat-consultant">
+      <div class="stat-value">{{ statsConsultant }}</div>
+      <div class="stat-label">Consultant</div>
+    </div>
+    <div class="stat-card stat-resident">
+      <div class="stat-value">{{ statsResident }}</div>
+      <div class="stat-label">Resident</div>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="panel-main">
+      <div class="glass-card">
+        <div class="card-header">
+          <h2>Patients Awaiting Assignment</h2>
+          <select class="filter-select" [(ngModel)]="statusFilter" (ngModelChange)="onStatusFilterChange()">
+            <option value="ALL">All</option>
+            <option value="TRIAGE_PENDING">Triage Pending</option>
+            <option value="TREATING">Treating</option>
+            <option value="REGISTERED">Registered</option>
+          </select>
+        </div>
+        <div class="patients-grid" *ngIf="!loading; else loadingTpl">
+          <div *ngIf="filteredPatients.length === 0" class="empty-state">
+            <span class="empty-icon">&#x1F3E5;</span>
+            <p>No patients awaiting assignment</p>
+          </div>
+          <div *ngFor="let p of filteredPatients" class="patient-card"
+               [class.selected]="selectedPatient?.id === p.id"
+               (click)="selectPatient(p)">
+            <div class="patient-card-header">
+              <span class="emergency-badge">{{ p.emergencyNumber }}</span>
+              <span class="status-badge" [attr.data-status]="p.status">{{ p.status }}</span>
+            </div>
+            <div class="patient-card-name">{{ p.patientName }}</div>
+            <div class="patient-card-details">
+              <span>{{ p.age || 'N/A' }}y / {{ p.gender || 'N/A' }}</span>
+              <span class="triage-indicator" *ngIf="p.triageLevel">L{{ p.triageLevel }}</span>
+            </div>
+            <div class="patient-card-symptoms">{{ p.symptoms || p.chiefComplaint || 'No symptoms recorded' }}</div>
+          </div>
+        </div>
+        <ng-template #loadingTpl>
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading patients...</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="glass-card" *ngIf="activeAssignments.length > 0">
+        <div class="card-header">
+          <h2>Active Assignments</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Emergency #</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Nurse</th>
+                <th>Type</th>
+                <th>Assigned At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let a of activeAssignments">
+                <td class="mono">{{ a.emergencyNumber }}</td>
+                <td>{{ a.doctorName ? 'Patient #' + a.emergencyNumber : '-' }}</td>
+                <td class="doctor-cell">Dr. {{ a.doctorName }}</td>
+                <td>{{ a.nurseName || '-' }}</td>
+                <td>
+                  <span class="type-badge" [style.background]="getAssignmentTypeColor(a.assignmentType!)">
+                    {{ a.assignmentType }}
+                  </span>
+                </td>
+                <td class="mono">{{ formatTime(a.assignedAt || a.createdAt || '') }}</td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-action btn-unassign" (click)="unassign(a.id)" title="Unassign">
+                      &#x2716;
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-side">
+      <div class="glass-card" *ngIf="selectedPatient; else noSelectionTpl">
+        <div class="card-header">
+          <h2>Assign Doctor</h2>
+          <button class="btn-close" (click)="selectedPatient = null">&times;</button>
+        </div>
+
+        <div class="selected-patient-info">
+          <div class="info-row">
+            <span class="info-label">Emergency #</span>
+            <span class="info-value">{{ selectedPatient.emergencyNumber }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Patient</span>
+            <span class="info-value">{{ selectedPatient.patientName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Status</span>
+            <span class="info-value">{{ selectedPatient.status }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Symptoms</span>
+            <span class="info-value small">{{ selectedPatient.symptoms || selectedPatient.chiefComplaint || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-field">
+            <label>Select Doctor *</label>
+            <select [(ngModel)]="assignmentForm.doctorId" class="form-select">
+              <option [ngValue]="null">-- Choose Doctor --</option>
+              <option *ngFor="let d of doctors" [ngValue]="d.id">
+                Dr. {{ d.name }} - {{ d.specialization }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Select Nurse</label>
+            <select [(ngModel)]="assignmentForm.nurseId" class="form-select">
+              <option [ngValue]="null">-- Choose Nurse (Optional) --</option>
+              <option *ngFor="let n of nurses" [ngValue]="n.id">
+                {{ n.name }} - {{ n.assignedWard || 'General' }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label>Assignment Type *</label>
+            <div class="radio-group">
+              <label *ngFor="let type of ['PRIMARY','CONSULTANT','RESIDENT','SPECIALIST']" class="radio-option">
+                <input type="radio" [(ngModel)]="assignmentForm.assignmentType" [value]="type">
+                <span class="radio-custom" [style.border-color]="getAssignmentTypeColor(type)"></span>
+                <span class="radio-label">{{ type }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Notes</label>
+            <textarea [(ngModel)]="assignmentForm.notes" rows="3" placeholder="Assignment notes..."></textarea>
+          </div>
+
+          <button class="btn-submit" (click)="assignDoctor()" [disabled]="saving || !assignmentForm.doctorId">
+            <span *ngIf="saving" class="spinner-sm"></span>
+            {{ saving ? 'Assigning...' : 'Assign Doctor' }}
+          </button>
+        </div>
+      </div>
+
+      <ng-template #noSelectionTpl>
+        <div class="glass-card empty-selection">
+          <div class="empty-state">
+            <span class="empty-icon-large">&#x1FA7A;</span>
+            <h3>Select a Patient</h3>
+            <p>Click a patient card to assign a doctor</p>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="glass-card workload-panel">
+        <h2>Doctor Workload</h2>
+        <div class="workload-list">
+          <div *ngFor="let d of doctors" class="workload-item">
+            <div class="workload-info">
+              <span class="workload-name">Dr. {{ d.name }}</span>
+              <span class="workload-count">{{ getDoctorAssignmentCount(d.id!) }} / 5</span>
+            </div>
+            <div class="workload-bar-track">
+              <div class="workload-bar-fill" [style.width.%]="getDoctorWorkloadPercent(d.id!)"
+                   [class.bar-high]="getDoctorAssignmentCount(d.id!) >= 4"
+                   [class.bar-med]="getDoctorAssignmentCount(d.id!) === 3"
+                   [class.bar-ok]="getDoctorAssignmentCount(d.id!) < 3"></div>
+            </div>
+          </div>
+          <div *ngIf="doctors.length === 0" class="empty-state-sm">
+            <p>No doctors available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

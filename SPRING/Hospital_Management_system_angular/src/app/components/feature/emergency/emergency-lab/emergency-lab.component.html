@@ -1,0 +1,162 @@
+<div class="emergency-lab-container">
+  <div class="page-header">
+    <h1>Emergency Laboratory & Radiology</h1>
+    <div class="header-actions">
+      <span class="critical-badge" *ngIf="criticalOrders.length > 0">
+        <span class="pulse-dot"></span>
+        {{ criticalOrders.length }} Critical Alerts
+      </span>
+    </div>
+  </div>
+
+  <div class="critical-alerts" *ngIf="criticalOrders.length > 0">
+    <div class="alert-banner" *ngFor="let order of criticalOrders">
+      <span class="alert-icon">⚠️</span>
+      <span class="alert-text">CRITICAL RESULT: {{ order.testName }} — Patient #{{ order.emergencyPatientId || 'N/A' }}</span>
+      <span class="alert-time">{{ formatTime(order.updatedAt || '') }}</span>
+    </div>
+  </div>
+
+  <div class="alert" *ngIf="msg" [ngClass]="msgType === 'success' ? 'alert-success' : 'alert-error'">
+    {{ msg }}
+  </div>
+
+  <div class="content-grid">
+    <div class="left-panel">
+      <div class="glass-card patient-selector">
+        <h3>Select Patient</h3>
+        <div class="patient-list">
+          <div class="patient-item" *ngFor="let p of patients"
+               [class.selected]="selectedPatient?.id === p.id"
+               (click)="selectPatient(p)">
+            <span class="patient-name">{{ p.patientName }}</span>
+            <span class="patient-id">#{{ p.id }}</span>
+            <span class="triage-badge" [ngClass]="'triage-' + p.triageLevel">T{{ p.triageLevel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card quick-order">
+        <h3>Quick Order</h3>
+        <div class="quick-grid">
+          <div class="quick-card" *ngFor="let test of quickTests" (click)="prefillTest(test)">
+            <span class="quick-icon">{{ test.icon }}</span>
+            <span class="quick-name">{{ test.name }}</span>
+            <span class="priority-badge" [ngClass]="'priority-' + test.priority.toLowerCase()">{{ test.priority }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="glass-card order-form" *ngIf="selectedPatient">
+        <h3>Order Test for {{ selectedPatient.patientName }}</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Order Type</label>
+            <select class="glass-select" [(ngModel)]="orderForm.orderType">
+              <option value="LAB">Laboratory</option>
+              <option value="RADIOLOGY">Radiology</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Test Name</label>
+            <select class="glass-select" [(ngModel)]="orderForm.testName">
+              <option value="">Select Test</option>
+              <ng-container *ngIf="orderForm.orderType === 'LAB'">
+                <option *ngFor="let t of labTests" [value]="t">{{ t }}</option>
+              </ng-container>
+              <ng-container *ngIf="orderForm.orderType === 'RADIOLOGY'">
+                <option *ngFor="let t of radiologyTests" [value]="t">{{ t }}</option>
+              </ng-container>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select class="glass-select" [(ngModel)]="orderForm.priority">
+              <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ordered By</label>
+            <input type="text" class="glass-input" [(ngModel)]="orderForm.orderedBy" placeholder="Doctor name">
+          </div>
+          <div class="form-group full-width">
+            <label>Notes</label>
+            <textarea class="glass-textarea" [(ngModel)]="orderForm.notes" rows="2" placeholder="Clinical notes..."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" (click)="orderTest()" [disabled]="loading">
+          {{ loading ? 'Ordering...' : 'Order Test' }}
+        </button>
+      </div>
+
+      <div class="glass-card orders-section" *ngIf="selectedPatient">
+        <div class="section-tabs">
+          <button class="tab" [class.active]="activeTab === 'lab'" (click)="activeTab = 'lab'">Laboratory</button>
+          <button class="tab" [class.active]="activeTab === 'radiology'" (click)="activeTab = 'radiology'">Radiology</button>
+        </div>
+
+        <div *ngIf="activeTab === 'lab'">
+          <h3>Laboratory Orders</h3>
+          <div class="orders-list">
+            <div class="order-card" *ngFor="let order of getLabOrders()">
+              <div class="order-header">
+                <span class="test-name">{{ order.testName }}</span>
+                <span class="priority-badge" [ngClass]="'priority-' + (order.priority || '').toLowerCase()">{{ order.priority }}</span>
+                <span class="status-badge" [ngClass]="'status-' + (order.status || '').toLowerCase()">{{ order.status }}</span>
+              </div>
+              <div class="status-timeline">
+                <div class="step" *ngFor="let step of getStatusSteps()"
+                     [class.completed]="isStepCompleted(order, step)"
+                     [class.current]="isCurrentStep(order, step)">
+                  <div class="step-dot"></div>
+                  <span class="step-label">{{ step }}</span>
+                </div>
+              </div>
+              <div class="order-actions">
+                <button class="btn-sm btn-success" *ngIf="order.status === 'PROCESSING'"
+                        (click)="updateStatus(order.id!, 'COMPLETED')">Mark Completed</button>
+                <button class="btn-sm btn-danger" *ngIf="order.status === 'COMPLETED'"
+                        (click)="updateStatus(order.id!, 'CRITICAL')">Mark Critical</button>
+              </div>
+            </div>
+            <div class="empty-state" *ngIf="getLabOrders().length === 0">No lab orders</div>
+          </div>
+        </div>
+
+        <div *ngIf="activeTab === 'radiology'">
+          <h3>Radiology Orders</h3>
+          <div class="orders-list">
+            <div class="order-card" *ngFor="let order of getRadiologyOrders()">
+              <div class="order-header">
+                <span class="test-name">{{ order.testName }}</span>
+                <span class="priority-badge" [ngClass]="'priority-' + (order.priority || '').toLowerCase()">{{ order.priority }}</span>
+                <span class="status-badge" [ngClass]="'status-' + (order.status || '').toLowerCase()">{{ order.status }}</span>
+              </div>
+              <div class="status-timeline">
+                <div class="step" *ngFor="let step of getStatusSteps()"
+                     [class.completed]="isStepCompleted(order, step)"
+                     [class.current]="isCurrentStep(order, step)">
+                  <div class="step-dot"></div>
+                  <span class="step-label">{{ step }}</span>
+                </div>
+              </div>
+              <div class="order-actions">
+                <button class="btn-sm btn-success" *ngIf="order.status === 'PROCESSING'"
+                        (click)="updateStatus(order.id!, 'COMPLETED')">Mark Completed</button>
+              </div>
+            </div>
+            <div class="empty-state" *ngIf="getRadiologyOrders().length === 0">No radiology orders</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card empty-patient" *ngIf="!selectedPatient">
+        <div class="empty-icon">🔬</div>
+        <h3>Select a Patient</h3>
+        <p>Choose an emergency patient to order and track lab/radiology tests</p>
+      </div>
+    </div>
+  </div>
+</div>

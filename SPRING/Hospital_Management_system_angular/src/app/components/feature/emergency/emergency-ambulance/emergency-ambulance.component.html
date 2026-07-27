@@ -1,0 +1,446 @@
+<div class="ambulance-wrapper">
+  <!-- Skeleton Loader -->
+  <div *ngIf="loading" class="skeleton-container">
+    <div class="skeleton-block skeleton-header"></div>
+    <div class="skeleton-stats">
+      <div class="skeleton-block skeleton-stat-card" *ngFor="let i of [1,2,3,4]"></div>
+    </div>
+    <div class="skeleton-fleet">
+      <div class="skeleton-block skeleton-amb-card" *ngFor="let i of [1,2,3,4]"></div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="ambulance-content">
+    <!-- Message Toast -->
+    <div *ngIf="msg" class="toast" [class.toast-success]="msgType === 'success'" [class.toast-error]="msgType === 'error'">
+      <i [class]="msgType === 'success' ? 'bi bi-check-circle-fill' : 'bi bi-exclamation-triangle-fill'"></i>
+      <span>{{ msg }}</span>
+    </div>
+
+    <!-- Hero Header -->
+    <header class="hero-header glass">
+      <div class="hero-left">
+        <div class="hero-title-row">
+          <div class="pulse-indicator">
+            <span class="pulse-dot"></span>
+            <span class="pulse-ring"></span>
+          </div>
+          <div>
+            <h1 class="hero-title">Ambulance Management</h1>
+            <p class="hero-subtitle">Fleet of {{ getFleetStats().total }} vehicles &middot; {{ getFleetStats().available }} available</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="action-btn action-request" (click)="toggleRequestPanel()">
+          <i class="bi bi-send-fill"></i>
+          <span>Request Ambulance</span>
+        </button>
+        <button class="action-btn action-create" (click)="toggleCreateForm()">
+          <i class="bi" [ngClass]="showCreateForm ? 'bi-x-lg' : 'bi-plus-lg'"></i>
+          <span>{{ showCreateForm ? 'Cancel' : 'Add Ambulance' }}</span>
+        </button>
+        <button class="action-btn action-refresh" (click)="loadAmbulances()">
+          <i class="bi bi-arrow-clockwise"></i>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Fleet Stats -->
+    <section class="fleet-stats">
+      <div class="stat-card glass">
+        <div class="stat-icon" style="background: rgba(255,255,255,0.06); color: #4da3ff;">
+          <i class="bi bi-truck"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getFleetStats().total }}</span>
+          <span class="stat-label">Total Fleet</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon" style="background: rgba(25,135,84,0.15); color: #4ade80;">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getFleetStats().available }}</span>
+          <span class="stat-label">Available</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon" style="background: rgba(253,126,20,0.15); color: #fd7e14;">
+          <i class="bi bi-lightning-fill"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getFleetStats().onDuty }}</span>
+          <span class="stat-label">On Duty</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-icon" style="background: rgba(108,117,125,0.15); color: #adb5bd;">
+          <i class="bi bi-tools"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-value">{{ getFleetStats().maintenance }}</span>
+          <span class="stat-label">Maintenance</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Create Ambulance Form -->
+    <section *ngIf="showCreateForm" class="create-form-section glass">
+      <h2 class="section-title">
+        <i class="bi bi-plus-circle"></i>
+        Add New Ambulance
+      </h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Ambulance Number</label>
+          <input type="text" [(ngModel)]="ambulanceForm.ambulanceNumber" placeholder="e.g., AMB-001" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Vehicle Type</label>
+          <select [(ngModel)]="ambulanceForm.vehicleType" class="form-select">
+            <option *ngFor="let type of vehicleTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>License Plate</label>
+          <input type="text" [(ngModel)]="ambulanceForm.vehiclePlate" placeholder="e.g., ABC-1234" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Driver Name</label>
+          <input type="text" [(ngModel)]="ambulanceForm.driverName" placeholder="Driver name" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Driver Phone</label>
+          <input type="text" [(ngModel)]="ambulanceForm.driverPhone" placeholder="Phone number" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Paramedic Name</label>
+          <input type="text" [(ngModel)]="ambulanceForm.paramedicName" placeholder="Paramedic name" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Paramedic Phone</label>
+          <input type="text" [(ngModel)]="ambulanceForm.paramedicPhone" placeholder="Phone number" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Fuel Status (%)</label>
+          <input type="number" [(ngModel)]="ambulanceForm.fuelStatus" placeholder="100" min="0" max="100" class="form-input" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="createAmbulance()">
+          <i class="bi bi-check-lg"></i> Add Ambulance
+        </button>
+      </div>
+    </section>
+
+    <!-- Request Ambulance Panel -->
+    <section *ngIf="showRequestPanel" class="request-panel glass">
+      <h2 class="section-title">
+        <i class="bi bi-send-fill"></i>
+        Request Ambulance Dispatch
+      </h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Select Patient</label>
+          <select [(ngModel)]="tripForm.emergencyPatientId" class="form-select">
+            <option [ngValue]="undefined">-- Select Patient --</option>
+            <option *ngFor="let p of patients" [ngValue]="p.id">
+              {{ p.emergencyNumber }} - {{ p.patientName }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Assign Ambulance</label>
+          <select [(ngModel)]="tripForm.ambulanceId" class="form-select">
+            <option [ngValue]="undefined">-- Select Ambulance --</option>
+            <option *ngFor="let a of ambulances" [ngValue]="a.id" [disabled]="a.status !== 'AVAILABLE'">
+              {{ a.ambulanceNumber }} ({{ a.vehicleType }}) - {{ a.status }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Pickup Location</label>
+          <input type="text" [(ngModel)]="tripForm.pickupLocation" placeholder="Address or landmark" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Trip Type</label>
+          <select [(ngModel)]="tripForm.tripType" class="form-select">
+            <option value="EMERGENCY">Emergency</option>
+            <option value="TRANSFER">Transfer</option>
+            <option value="INTER_HOSPITAL">Inter-Hospital</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-secondary" (click)="toggleRequestPanel()">Cancel</button>
+        <button class="btn btn-primary" (click)="dispatchTrip()" [disabled]="!tripForm.ambulanceId || !tripForm.emergencyPatientId">
+          <i class="bi bi-send-fill"></i> Dispatch Now
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <section class="tab-nav glass">
+      <button class="tab-btn" [class.active]="activeTab === 'fleet'" (click)="setActiveTab('fleet')">
+        <i class="bi bi-truck"></i> Fleet
+        <span class="tab-count">{{ ambulances.length }}</span>
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'trips'" (click)="setActiveTab('trips')">
+        <i class="bi bi-lightning-fill"></i> Active Trips
+        <span class="tab-count">{{ getActiveTrips().length }}</span>
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 'history'" (click)="setActiveTab('history')">
+        <i class="bi bi-clock-history"></i> Trip History
+        <span class="tab-count">{{ getCompletedTrips().length }}</span>
+      </button>
+    </section>
+
+    <!-- Fleet Tab -->
+    <section *ngIf="activeTab === 'fleet'" class="fleet-section">
+      <!-- Status Filter -->
+      <div class="filter-bar glass">
+        <div class="filter-group">
+          <label class="filter-label"><i class="bi bi-funnel"></i> Filter</label>
+          <select [(ngModel)]="statusFilter" class="form-select filter-select">
+            <option value="ALL">All Status</option>
+            <option *ngFor="let s of ambulanceStatuses" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+        <span class="filter-result">{{ getFilteredAmbulances().length }} vehicles</span>
+      </div>
+
+      <div class="fleet-grid">
+        <div
+          *ngFor="let amb of getFilteredAmbulances()"
+          class="ambulance-card glass"
+          [style.--amb-color]="getStatusColor(amb.status)"
+          (click)="openAmbulanceModal(amb)"
+        >
+          <div class="amb-header">
+            <div class="amb-type-badge" [style.background]="getVehicleTypeColor(amb.vehicleType) + '22'" [style.color]="getVehicleTypeColor(amb.vehicleType)">
+              <i class="bi" [ngClass]="getVehicleTypeIcon(amb.vehicleType)"></i>
+              {{ amb.vehicleType }}
+            </div>
+            <div class="amb-status-indicator" [style.background]="getStatusColor(amb.status)">
+              <span class="status-pulse" [style.border-color]="getStatusColor(amb.status)"></span>
+            </div>
+          </div>
+
+          <div class="amb-body">
+            <h3 class="amb-number">{{ amb.ambulanceNumber }}</h3>
+            <div class="amb-plate">{{ amb.vehiclePlate }}</div>
+
+            <div class="amb-driver" *ngIf="amb.driverName">
+              <i class="bi bi-person-fill"></i>
+              <div class="driver-info">
+                <span class="driver-name">{{ amb.driverName }}</span>
+                <span class="driver-phone">{{ amb.driverPhone }}</span>
+              </div>
+            </div>
+
+            <div class="amb-fuel">
+              <div class="fuel-header">
+                <span class="fuel-label"><i class="bi bi-fuel-pump"></i> Fuel</span>
+                <span class="fuel-value" [style.color]="getFuelColor(amb.fuelStatus || 0)">{{ amb.fuelStatus || 0 }}%</span>
+              </div>
+              <div class="fuel-bar">
+                <div class="fuel-fill" [style.width]="(amb.fuelStatus || 0) + '%'" [style.background]="getFuelColor(amb.fuelStatus || 0)"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="amb-footer">
+            <span class="amb-status-label" [style.color]="getStatusColor(amb.status)">{{ amb.status }}</span>
+            <div class="amb-actions">
+              <button *ngIf="amb.status === 'AVAILABLE'" class="amb-action-btn dispatch-btn" title="Dispatch" (click)="$event.stopPropagation(); requestAmbulance(0)">
+                <i class="bi bi-send-fill"></i>
+              </button>
+              <button *ngIf="amb.status === 'ON_DUTY'" class="amb-action-btn complete-btn" title="Mark Return" (click)="$event.stopPropagation(); updateStatus(amb.id!, 'RETURNING')">
+                <i class="bi bi-arrow-return-left"></i>
+              </button>
+              <button *ngIf="amb.status === 'RETURNING'" class="amb-action-btn available-btn" title="Mark Available" (click)="$event.stopPropagation(); updateStatus(amb.id!, 'AVAILABLE')">
+                <i class="bi bi-check-lg"></i>
+              </button>
+              <button *ngIf="amb.status !== 'MAINTENANCE'" class="amb-action-btn maintenance-btn" title="Maintenance" (click)="$event.stopPropagation(); updateStatus(amb.id!, 'MAINTENANCE')">
+                <i class="bi bi-tools"></i>
+              </button>
+              <button *ngIf="amb.status === 'MAINTENANCE'" class="amb-action-btn available-btn" title="Back to Service" (click)="$event.stopPropagation(); updateStatus(amb.id!, 'AVAILABLE')">
+                <i class="bi bi-arrow-repeat"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Trips Tab -->
+    <section *ngIf="activeTab === 'trips'" class="trips-section glass">
+      <h2 class="section-title">
+        <i class="bi bi-lightning-fill"></i>
+        Active Trips
+      </h2>
+
+      <div *ngIf="getActiveTrips().length > 0" class="trips-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Ambulance</th>
+              <th>Patient</th>
+              <th>Pickup</th>
+              <th>Trip Type</th>
+              <th>Status</th>
+              <th>Dispatched</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trip of getActiveTrips()" class="table-row">
+              <td class="cell-id">#{{ trip.id }}</td>
+              <td>{{ getAmbulanceNumber(trip.ambulanceId) }}</td>
+              <td>{{ getPatientName(trip.emergencyPatientId) }}</td>
+              <td>{{ trip.pickupLocation }}</td>
+              <td>
+                <span class="trip-type-badge">{{ trip.tripType }}</span>
+              </td>
+              <td>
+                <span class="status-badge" [style.background]="getStatusColor(trip.status) + '22'" [style.color]="getStatusColor(trip.status)">
+                  {{ trip.status }}
+                </span>
+              </td>
+              <td class="cell-time">{{ trip.dispatchTime | date:'short' }}</td>
+              <td class="cell-actions">
+                <button *ngIf="trip.status === 'DISPATCHED' || trip.status === 'EN_ROUTE'" class="table-action-btn complete-btn" title="Complete Trip" (click)="completeTrip(trip.id!)">
+                  <i class="bi bi-check-lg"></i>
+                </button>
+                <button class="table-action-btn cancel-btn" title="Cancel Trip" (click)="cancelTrip(trip.id!)">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="getActiveTrips().length === 0" class="empty-state">
+        <i class="bi bi-check-circle"></i>
+        <p>No active trips. All ambulances are idle.</p>
+      </div>
+    </section>
+
+    <!-- Trip History Tab -->
+    <section *ngIf="activeTab === 'history'" class="history-section glass">
+      <h2 class="section-title">
+        <i class="bi bi-clock-history"></i>
+        Trip History
+      </h2>
+
+      <div *ngIf="getCompletedTrips().length > 0" class="trips-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Ambulance</th>
+              <th>Patient</th>
+              <th>Pickup</th>
+              <th>Distance</th>
+              <th>Response Time</th>
+              <th>Status</th>
+              <th>Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trip of getCompletedTrips()" class="table-row">
+              <td class="cell-id">#{{ trip.id }}</td>
+              <td>{{ getAmbulanceNumber(trip.ambulanceId) }}</td>
+              <td>{{ getPatientName(trip.emergencyPatientId) }}</td>
+              <td>{{ trip.pickupLocation }}</td>
+              <td>{{ trip.distanceTravelled ? trip.distanceTravelled + ' km' : '-' }}</td>
+              <td>{{ trip.responseTimeMinutes ? trip.responseTimeMinutes + ' min' : '-' }}</td>
+              <td>
+                <span class="status-badge" [style.background]="getStatusColor(trip.status) + '22'" [style.color]="getStatusColor(trip.status)">
+                  {{ trip.status }}
+                </span>
+              </td>
+              <td class="cell-time">{{ trip.completionTime | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="getCompletedTrips().length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <p>No trip history yet.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Ambulance Detail Modal -->
+  <div *ngIf="showModal && selectedAmbulance" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content glass" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <div class="amb-type-badge modal-type" [style.background]="getVehicleTypeColor(selectedAmbulance.vehicleType!) + '22'" [style.color]="getVehicleTypeColor(selectedAmbulance.vehicleType!)">
+            <i class="bi" [ngClass]="getVehicleTypeIcon(selectedAmbulance.vehicleType!)"></i>
+            {{ selectedAmbulance.vehicleType }}
+          </div>
+          <h3>{{ selectedAmbulance.ambulanceNumber }}</h3>
+        </div>
+        <button class="modal-close" (click)="closeModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-row">
+            <span class="detail-label">Vehicle Plate</span>
+            <span class="detail-value">{{ selectedAmbulance.vehiclePlate }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Status</span>
+            <span class="status-badge" [style.background]="getStatusColor(selectedAmbulance.status!) + '22'" [style.color]="getStatusColor(selectedAmbulance.status!)">
+              {{ selectedAmbulance.status }}
+            </span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Driver</span>
+            <span class="detail-value">{{ selectedAmbulance.driverName }}<br><small style="color:rgba(255,255,255,0.4)">{{ selectedAmbulance.driverPhone }}</small></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Paramedic</span>
+            <span class="detail-value">{{ selectedAmbulance.paramedicName || 'N/A' }}<br><small style="color:rgba(255,255,255,0.4)">{{ selectedAmbulance.paramedicPhone || '' }}</small></span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Fuel Status</span>
+            <div class="fuel-bar modal-fuel" style="width: 120px;">
+              <div class="fuel-fill" [style.width]="(selectedAmbulance.fuelStatus || 0) + '%'" [style.background]="getFuelColor(selectedAmbulance.fuelStatus || 0)"></div>
+            </div>
+            <span class="detail-value" [style.color]="getFuelColor(selectedAmbulance.fuelStatus || 0)">{{ selectedAmbulance.fuelStatus || 0 }}%</span>
+          </div>
+          <div *ngIf="selectedAmbulance.lastServiceDate" class="detail-row">
+            <span class="detail-label">Last Service</span>
+            <span class="detail-value">{{ selectedAmbulance.lastServiceDate | date:'mediumDate' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button *ngIf="selectedAmbulance.status === 'AVAILABLE'" class="btn btn-primary" (click)="closeModal(); requestAmbulance(0)">
+          <i class="bi bi-send-fill"></i> Dispatch
+        </button>
+        <button *ngIf="selectedAmbulance.status === 'ON_DUTY'" class="btn btn-success" (click)="updateStatus(selectedAmbulance.id!, 'RETURNING'); closeModal()">
+          <i class="bi bi-arrow-return-left"></i> Mark Returning
+        </button>
+        <button *ngIf="selectedAmbulance.status === 'RETURNING'" class="btn btn-success" (click)="updateStatus(selectedAmbulance.id!, 'AVAILABLE'); closeModal()">
+          <i class="bi bi-check-lg"></i> Mark Available
+        </button>
+        <button *ngIf="selectedAmbulance.status !== 'MAINTENANCE'" class="btn btn-secondary" (click)="updateStatus(selectedAmbulance.id!, 'MAINTENANCE'); closeModal()">
+          <i class="bi bi-tools"></i> Maintenance
+        </button>
+        <button *ngIf="selectedAmbulance.status === 'MAINTENANCE'" class="btn btn-success" (click)="updateStatus(selectedAmbulance.id!, 'AVAILABLE'); closeModal()">
+          <i class="bi bi-arrow-repeat"></i> Back to Service
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

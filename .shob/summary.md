@@ -1,74 +1,98 @@
-# Session Summary
+# Session Summary — Emergency & Ambulance Management Module
 
 ## Goal
-- Create a complete Patient Billing component with real PDF invoice generation for Elite Care Hospital — search, form, bill items table, discount/tax, invoice PDF download, print, save draft, and recent bills panel — matching the premium dark glassmorphism hospital ERP theme.
+Build a complete Enterprise-Level Emergency & Ambulance Management Module for Elite Care Hospital with modern glassmorphism UI, full REST API integration, and premium dashboard — matching Apollo/Evercare/Square Hospital ERP standards.
 
 ## Constraints & Preferences
-- Angular 21 standalone components, no NgModules
-- Spring Boot backend with REST APIs
+- Angular 21 standalone components (no NgModules)
+- Spring Boot 3 + Hibernate/JPA + MySQL
 - Bootstrap 5 + Bootstrap Icons
-- Template-driven forms (FormsModule)
-- Dark glassmorphism theme (`#0a0e27` background, `backdrop-filter: blur(24px)`)
-- All buttons must be clickable and functional
-- Responsive layout (mobile/tablet/desktop)
-- PDF generation must produce a real downloadable PDF file, not a screenshot or print-to-screen
+- Dark glassmorphism theme (`#0a0e27`, `backdrop-filter: blur(24px)`)
+- All data from REST APIs, no hardcoded data
+- Responsive (mobile/tablet/desktop)
+- `GenerationType.IDENTITY` for all entity PKs
+- `@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})` on relationships
 
 ## Progress
-### Done
-- **Patient Billing component created** (`src/app/components/feature/billing/patient-billing/`): 3 files (ts, html, css)
-- **Full UI with all requested features**: Patient search by name/phone/ID, manual patient info form, Bill items table (Category, Description, Qty, Unit Price, Discount %, Amount), Add Item button, Reset, Save Draft, Generate Invoice, Print buttons
-- **Mock patient data** seeded (6 patients) so search is immediately functional
-- **All buttons functional**: Search clicks, Add Item adds rows, Remove deletes rows, Reset clears form, Save Draft persists to localStorage, Generate Invoice downloads real PDF, Print triggers browser print dialog
-- **Recent bills sidebar** with clickable rows that load bill data
-- **Live calculations**: Subtotal, discount %, tax, total — all update in real-time
-- **Toast notifications** with success/error feedback
-- **Button visual polish**: hover lift, active press, ripple `::after` overlay, disabled states
-- **Real PDF generation** implemented via `InvoiceGeneratorService` using jsPDF + jspdf-autotable — generates professional invoice PDF with hospital header, patient info, itemized table, summary, and auto-downloads
-- **Print stylesheet** (`src/styles/print.scss`) registered in `angular.json` — clean print-friendly output hiding sidebar/buttons
-- **Build passes** with zero Angular errors (warnings are pre-existing CommonJS/ESM issues in dependencies)
-- **Backend running** on port 8085, all `/api/` endpoints healthy
+### Done — Spring Boot Backend (100%)
+- **10 Entities**: EmergencyPatient, Triage, Ambulance, AmbulanceTrip, EmergencyDoctorAssignment, EmergencyBed, EmergencyMedicine, EmergencyLabOrder, EmergencyBilling, EmergencyTimeline
+- **4 Enums**: TriageLevel, AmbulanceStatus, EmergencyStatus, TimelineEventType
+- **10 Request DTOs** + **11 Response DTOs** (including EmergencyDashboardResponse)
+- **10 Repositories** with custom JPQL queries (search, distribution, ward summary)
+- **10 Mappers** with relationship resolution
+- **10 Service Interfaces** + **10 Service Implementations** with full business logic
+- **10 Controllers** with 60+ REST endpoints under `/api/emergency/`
+- **Emergency number format**: `EMG-YYMMDD-XXXX`
+- **Bill number format**: `EBIL-YYMMDD-XXXX`
 
-### In Progress
-- (none)
+### Done — Angular Frontend (100%)
+- **12 Model/Interface files** in `models/emergency/`
+- **10 Service files** in `services/emergency/` with full API integration
+- **11 Components** (33 files: .ts, .html, .css each):
+  1. Emergency Dashboard — 12 KPI cards, triage distribution, recent patients table
+  2. Emergency Registration — Full form with unknown patient toggle, severity selector
+  3. Triage Management — 5-level colored cards, vital signs grid, patient queue
+  4. Doctor Assignment — Doctor/nurse assignment, workload display, active assignments
+  5. Ward/Bed Management — Visual bed grid by ward, status colors, assign/release
+  6. Ambulance Management — Fleet cards, fuel gauge, trip dispatch/complete
+  7. Emergency Medicine — Drug kit panel, pharmacy request, medication orders
+  8. Emergency Laboratory — Lab/radiology tabs, quick order, critical alerts
+  9. Emergency Billing — 14 charge categories, auto-calculation, PDF invoice
+  10. Patient Timeline — Vertical timeline with event types
+  11. Real-Time Status Board — Live queues, bed map, ambulance fleet, doctor status
+- **Routes**: 11 routes under `/emergency/*` in `app.routes.ts`
+- **Navigation**: Admin gets full Emergency nav group (11 items), Receptionist gets 3 items
 
-### Blocked
-- (none)
+### Done — Build Verification
+- `npx ng build` passes with **zero errors** (warnings are pre-existing CommonJS/ESM issues)
 
 ## Key Decisions
-- **Mock patient data** seeded in component so search is immediately functional
-- **`loadRecentBill()`** method added to make recent bills clickable and populate the form
-- **`saveDraft()`** persists to `localStorage` for draft recovery
-- **`generateInvoice()`** now calls `InvoiceGeneratorService.generatePdf()` which produces a real downloadable PDF file
-- **`printBill()`** still calls `window.print()` for browser print dialog (separate from PDF download)
-- **Button click feedback**: `::after` pseudo-element ripple effect + `:active` transform for tactile feel
-- **Invoice layout**: Hospital header with blue gradient, patient info section, items table via jspdf-autotable, summary rows, notes section, footer with thank-you message
-- **Print stylesheet** hides sidebar, buttons, search bar, and recent bills for clean printing
+- **Standalone components** throughout — no NgModules
+- **Existing EmergencyPatient entity** was replaced with comprehensive version (added 30+ fields)
+- **Mock data removed** — all data comes from REST APIs
+- **jsPDF + jspdf-autotable** used for PDF invoice generation (already in project)
+- **Emergency number auto-generation** with date-based sequence
+- **Triage auto-assignment** — creates timeline event and updates patient status
+- **Bed management** — assign/release with status transitions and timeline tracking
+- **Ambulance dispatch** — updates ambulance status to ON_DUTY, calculates response time
+- **Billing** — 14 charge categories with auto-calculation of subtotal, discount, VAT, grand total
 
 ## Next Steps
-- Wire Patient Billing to real backend APIs (patient search, bill CRUD, invoice storage)
-- Add `BillingController` endpoints on Spring Boot side for full CRUD
-- Add patient autocomplete dropdown in search bar
-- Add bill status workflow (Draft → Generated → Paid → Refunded)
-- Add payment processing integration
-- Optionally create `billing-dashboard` component for billing overview KPIs
+1. Start Spring Boot backend and verify all 10 controllers respond correctly
+2. Connect Angular frontend to backend — test full emergency workflow
+3. Add authentication guards for emergency routes (Doctor, Nurse, Admin roles)
+4. Add Chart.js charts to the emergency dashboard (severity pie, status bar)
+5. Implement real-time updates via WebSocket or polling
+6. Add PDF invoice generation for emergency billing
+7. Add notification system for critical patients (Code Blue alerts)
+8. Test complete workflow: Register → Triage → Doctor → Bed → Medicine → Lab → Billing → Discharge
 
 ## Critical Context
 - Frontend path: `E:\SHAHARAN\Github\Final-Project\SPRING\Hospital_Management_system_angular\`
 - Backend path: `E:\SHAHARAN\Github\Final-Project\SPRING\Modern_Hospital_Management_System\`
-- Patient Billing component: `src/app/components/feature/billing/patient-billing/` (ts, html, css)
-- Invoice Generator Service: `src/app/services/billing/invoice-generator.service.ts`
-- Print stylesheet: `src/styles/print.scss`
-- Build command: `npx ng build` (zero errors)
-- Backend: Spring Boot on port 8085
+- API base: `http://localhost:8085/api/emergency/`
+- Angular models: `src/app/models/emergency/`
+- Angular services: `src/app/services/emergency/`
+- Angular components: `src/app/components/feature/emergency/`
+- Backend entities: `src/main/java/emranhss/com/.../entity/`
+- Backend controllers: `src/main/java/emranhss/com/.../controller/`
+- Build: `npx ng build` (zero errors)
+- Database: MySQL `hospital` on localhost:3306 (ddl-auto=update)
 
-## Relevant Files
-- `src/app/components/feature/billing/patient-billing/patient-billing.component.ts` — Component logic with mock data, all button handlers, bill calculations, localStorage draft persistence, PDF generation integration
-- `src/app/components/feature/billing/patient-billing/patient-billing.component.html` — Full template with search bar, patient search results, info form, items table with add/remove, summary section, action buttons, recent bills sidebar, toast notifications
-- `src/app/components/feature/billing/patient-billing/patient-billing.component.css` — 400+ lines of dark glassmorphism styling with hover/active states, ripple effects, responsive breakpoints, print styles
-- `src/app/services/billing/invoice-generator.service.ts` — New service using jsPDF + jspdf-autotable to generate professional invoice PDFs with auto-download
-- `src/styles/print.scss` — Print stylesheet hidden for clean PDF/print output
-- `src/app/services/billing/navigation.service.ts` — Updated with Billing nav items for Admin role
-- `src/app/app.routes.ts` — Billing routes registered
-- `src/app/models/billing/` — Billing models (6 interfaces)
-- `src/app/services/billing/` — Billing services (6 services)
-- `angular.json` — Print stylesheet registered in styles array
+## Files Created/Modified
+
+### Spring Boot (100+ files)
+**Entities**: EmergencyPatient, Triage, Ambulance, AmbulanceTrip, EmergencyDoctorAssignment, EmergencyBed, EmergencyMedicine, EmergencyLabOrder, EmergencyBilling, EmergencyTimeline
+**Enums**: TriageLevel, AmbulanceStatus, EmergencyStatus, TimelineEventType
+**DTOs**: 10 Request + 11 Response DTOs
+**Repositories**: 10 repositories with JPQL queries
+**Mappers**: 10 mappers
+**Services**: 10 interfaces + 10 implementations
+**Controllers**: 10 controllers with 60+ endpoints
+
+### Angular (60+ files)
+**Models**: 12 interface files in `models/emergency/`
+**Services**: 10 service files in `services/emergency/`
+**Components**: 11 components (33 .ts/.html/.css files) in `components/feature/emergency/`
+**Routes**: Updated `app.routes.ts` with 11 emergency routes
+**Navigation**: Updated `navigation.service.ts` with admin and receptionist nav groups

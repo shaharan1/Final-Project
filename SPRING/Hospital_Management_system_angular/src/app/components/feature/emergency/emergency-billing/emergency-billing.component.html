@@ -1,0 +1,213 @@
+<div class="emergency-billing-container">
+  <div class="page-header">
+    <h1>Emergency Billing</h1>
+    <div class="header-actions">
+      <span class="revenue-display">Today: {{ formatCurrency(getTodayRevenue()) }}</span>
+    </div>
+  </div>
+
+  <div class="alert" *ngIf="msg" [ngClass]="msgType === 'success' ? 'alert-success' : 'alert-error'">
+    {{ msg }}
+  </div>
+
+  <div class="content-grid">
+    <div class="left-panel">
+      <div class="glass-card patient-selector">
+        <h3>Select Patient</h3>
+        <div class="patient-list">
+          <div class="patient-item" *ngFor="let p of patients"
+               [class.selected]="selectedPatient?.id === p.id"
+               (click)="selectPatient(p)">
+            <span class="patient-name">{{ p.patientName }}</span>
+            <span class="patient-id">#{{ p.id }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card summary-panel" *ngIf="selectedPatient">
+        <h3>Financial Summary</h3>
+        <div class="summary-rows">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ formatCurrency(getSubtotal()) }}</span>
+          </div>
+          <div class="summary-row discount">
+            <span>Discount ({{ billForm.discountPercent }}%)</span>
+            <span>-{{ formatCurrency(getDiscountAmount()) }}</span>
+          </div>
+          <div class="summary-row vat">
+            <span>VAT ({{ billForm.vatPercent }}%)</span>
+            <span>+{{ formatCurrency(getVatAmount()) }}</span>
+          </div>
+          <div class="summary-row insurance" *ngIf="billForm.insuranceCoverage > 0">
+            <span>Insurance Coverage</span>
+            <span>-{{ formatCurrency(billForm.insuranceCoverage) }}</span>
+          </div>
+          <div class="summary-row advance" *ngIf="billForm.advancePaid > 0">
+            <span>Advance Paid</span>
+            <span>-{{ formatCurrency(billForm.advancePaid) }}</span>
+          </div>
+          <div class="summary-row grand-total">
+            <span>Grand Total</span>
+            <span>{{ formatCurrency(getGrandTotal()) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="glass-card billing-form" *ngIf="selectedPatient">
+        <h3>Bill for {{ selectedPatient.patientName }}</h3>
+
+        <div class="section-header">Clinical Charges</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Consultation Fee</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.consultationFee" min="0">
+          </div>
+          <div class="form-group">
+            <label>Doctor Fee</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.doctorFee" min="0">
+          </div>
+          <div class="form-group">
+            <label>Nursing Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.nursingCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Medicine Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.medicineCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Lab Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.labCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Radiology Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.radiologyCharge" min="0">
+          </div>
+        </div>
+
+        <div class="section-header">Facility Charges</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Registration Fee</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.registrationFee" min="0">
+          </div>
+          <div class="form-group">
+            <label>Bed Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.bedCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Ambulance Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.ambulanceCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Consumables Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.consumablesCharge" min="0">
+          </div>
+        </div>
+
+        <div class="section-header">Additional Charges</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Procedure Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.procedureCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Operation Charge</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.operationCharge" min="0">
+          </div>
+          <div class="form-group">
+            <label>Other Charges</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.otherCharges" min="0">
+          </div>
+        </div>
+
+        <div class="section-header">Financial Summary</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Discount %</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.discountPercent" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label>VAT %</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.vatPercent" min="0" max="100">
+          </div>
+          <div class="form-group">
+            <label>Advance Paid</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.advancePaid" min="0">
+          </div>
+          <div class="form-group">
+            <label>Insurance Coverage</label>
+            <input type="number" class="glass-input" [(ngModel)]="billForm.insuranceCoverage" min="0">
+          </div>
+          <div class="form-group">
+            <label>Insurance Provider</label>
+            <input type="text" class="glass-input" [(ngModel)]="billForm.insuranceProvider" placeholder="Provider name">
+          </div>
+          <div class="form-group">
+            <label>Policy Number</label>
+            <input type="text" class="glass-input" [(ngModel)]="billForm.insurancePolicyNumber" placeholder="Policy #">
+          </div>
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="billForm.isInsuranceClaimed">
+              <span class="checkmark"></span>
+              Insurance Claimed
+            </label>
+          </div>
+          <div class="form-group full-width">
+            <label>Notes</label>
+            <textarea class="glass-textarea" [(ngModel)]="billForm.notes" rows="2" placeholder="Additional notes..."></textarea>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-primary" (click)="generateBill()" [disabled]="loading">
+            {{ loading ? 'Generating...' : 'Generate Invoice' }}
+          </button>
+          <button class="btn btn-secondary">Download PDF</button>
+          <button class="btn btn-secondary">Print</button>
+        </div>
+      </div>
+
+      <div class="glass-card recent-bills" *ngIf="selectedPatient">
+        <h3>Recent Bills</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Bill #</th>
+              <th>Patient</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Payment</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bill of getPatientBills()">
+              <td>#{{ bill.id }}</td>
+              <td>{{ bill.emergencyNumber }}</td>
+              <td>{{ formatCurrency(bill.grandTotal || 0) }}</td>
+              <td><span class="status-badge" [ngClass]="'status-' + (bill.status || '').toLowerCase()">{{ bill.status }}</span></td>
+              <td><span class="payment-badge" [ngClass]="'payment-' + (bill.paymentStatus || '').toLowerCase()">{{ bill.paymentStatus }}</span></td>
+              <td class="actions">
+                <button class="btn-sm btn-success" *ngIf="bill.paymentStatus === 'PENDING'" (click)="updatePaymentStatus(bill.id!, 'PAID')">Mark Paid</button>
+                <button class="btn-sm btn-warning" *ngIf="bill.isInsuranceClaimed && bill.paymentStatus !== 'PAID'" (click)="processInsuranceClaim(bill.id!)">Process Claim</button>
+              </td>
+            </tr>
+            <tr *ngIf="getPatientBills().length === 0">
+              <td colspan="6" class="empty-state">No bills for this patient</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="glass-card empty-patient" *ngIf="!selectedPatient">
+        <div class="empty-icon">💰</div>
+        <h3>Select a Patient</h3>
+        <p>Choose an emergency patient to manage billing</p>
+      </div>
+    </div>
+  </div>
+</div>

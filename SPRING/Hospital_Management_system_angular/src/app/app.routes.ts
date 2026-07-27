@@ -65,6 +65,18 @@ import { RefundManagementComponent } from './components/feature/billing/refund-m
 import { InsuranceComponent } from './components/feature/billing/insurance/insurance.component';
 import { BillingReportsComponent } from './components/feature/billing/billing-reports/billing-reports.component';
 
+import { EmergencyDashboardComponent } from './components/feature/emergency/emergency-dashboard/emergency-dashboard.component';
+import { EmergencyRegistrationComponent } from './components/feature/emergency/emergency-registration/emergency-registration.component';
+import { EmergencyTriageComponent } from './components/feature/emergency/emergency-triage/emergency-triage.component';
+import { EmergencyDoctorAssignmentComponent } from './components/feature/emergency/emergency-doctor-assignment/emergency-doctor-assignment.component';
+import { EmergencyBedComponent } from './components/feature/emergency/emergency-bed/emergency-bed.component';
+import { EmergencyAmbulanceComponent } from './components/feature/emergency/emergency-ambulance/emergency-ambulance.component';
+import { EmergencyMedicineComponent } from './components/feature/emergency/emergency-medicine/emergency-medicine.component';
+import { EmergencyLabComponent } from './components/feature/emergency/emergency-lab/emergency-lab.component';
+import { EmergencyBillingComponent } from './components/feature/emergency/emergency-billing/emergency-billing.component';
+import { EmergencyTimelineComponent } from './components/feature/emergency/emergency-timeline/emergency-timeline.component';
+import { EmergencyStatusBoardComponent } from './components/feature/emergency/emergency-status-board/emergency-status-board.component';
+
 import { ReportsDashboardComponent } from './components/feature/reports/reports-dashboard/reports-dashboard.component';
 import { PatientReportsComponent } from './components/feature/reports/patient-reports/patient-reports.component';
 import { AppointmentReportsComponent } from './components/feature/reports/appointment-reports/appointment-reports.component';
@@ -191,6 +203,22 @@ export const routes: Routes = [
   { path: 'refunds', component: RefundManagementComponent },
   { path: 'insurance', component: InsuranceComponent },
   { path: 'billing-reports', component: BillingReportsComponent },
+
+  // ============ Emergency Module ============
+  { path: 'emergency', children: [
+    { path: 'dashboard', component: EmergencyDashboardComponent },
+    { path: 'registration', component: EmergencyRegistrationComponent },
+    { path: 'triage', component: EmergencyTriageComponent },
+    { path: 'assignments', component: EmergencyDoctorAssignmentComponent },
+    { path: 'beds', component: EmergencyBedComponent },
+    { path: 'ambulances', component: EmergencyAmbulanceComponent },
+    { path: 'medicine', component: EmergencyMedicineComponent },
+    { path: 'lab-orders', component: EmergencyLabComponent },
+    { path: 'billing', component: EmergencyBillingComponent },
+    { path: 'timeline', component: EmergencyTimelineComponent },
+    { path: 'status-board', component: EmergencyStatusBoardComponent },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+  ]},
 
   // ============ Reports & Analytics ============
   { path: 'reports', component: ReportsDashboardComponent },

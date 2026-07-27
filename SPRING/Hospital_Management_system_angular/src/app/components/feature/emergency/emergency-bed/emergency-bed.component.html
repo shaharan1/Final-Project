@@ -1,0 +1,255 @@
+<div class="bed-wrapper">
+  <!-- Skeleton Loader -->
+  <div *ngIf="loading" class="skeleton-container">
+    <div class="skeleton-block skeleton-header"></div>
+    <div class="skeleton-wards">
+      <div class="skeleton-block skeleton-ward-card" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+    <div class="skeleton-bed-grid">
+      <div class="skeleton-block skeleton-bed" *ngFor="let i of [1,2,3,4,5,6,7,8]"></div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="bed-content">
+    <!-- Message Toast -->
+    <div *ngIf="msg" class="toast" [class.toast-success]="msgType === 'success'" [class.toast-error]="msgType === 'error'">
+      <i [class]="msgType === 'success' ? 'bi bi-check-circle-fill' : 'bi bi-exclamation-triangle-fill'"></i>
+      <span>{{ msg }}</span>
+    </div>
+
+    <!-- Hero Header -->
+    <header class="hero-header glass">
+      <div class="hero-left">
+        <div class="hero-title-row">
+          <div class="pulse-indicator">
+            <span class="pulse-dot"></span>
+            <span class="pulse-ring"></span>
+          </div>
+          <div>
+            <h1 class="hero-title">Emergency Ward & Bed Management</h1>
+            <p class="hero-subtitle">{{ getTotalBeds() }} Total Beds &middot; {{ getAvailableBeds() }} Available &middot; {{ getOccupiedBeds() }} Occupied</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="action-btn action-create" (click)="toggleCreateForm()">
+          <i class="bi" [ngClass]="showCreateForm ? 'bi-x-lg' : 'bi-plus-lg'"></i>
+          <span>{{ showCreateForm ? 'Cancel' : 'Add Bed' }}</span>
+        </button>
+        <button class="action-btn action-refresh" (click)="loadBeds()">
+          <i class="bi bi-arrow-clockwise"></i>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Create Bed Form -->
+    <section *ngIf="showCreateForm" class="create-form-section glass">
+      <h2 class="section-title">
+        <i class="bi bi-plus-circle"></i>
+        Create New Bed
+      </h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Bed Number</label>
+          <input type="text" [(ngModel)]="bedForm.bedNumber" placeholder="e.g., EM-01" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Ward</label>
+          <select [(ngModel)]="bedForm.wardName" class="form-select">
+            <option *ngFor="let ward of wards" [value]="ward">{{ ward }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Bed Type</label>
+          <select [(ngModel)]="bedForm.bedType" class="form-select">
+            <option *ngFor="let type of bedTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="bedForm.status" class="form-select">
+            <option *ngFor="let s of bedStatuses" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="createBed()">
+          <i class="bi bi-check-lg"></i> Create Bed
+        </button>
+      </div>
+    </section>
+
+    <!-- Ward Overview Cards -->
+    <section class="ward-overview">
+      <div class="ward-card glass" *ngFor="let ws of wardSummary" [class.active-ward]="wardFilter === ws.ward" (click)="filterByWard(wardFilter === ws.ward ? 'ALL' : ws.ward)">
+        <div class="ward-header-bar" [style.background]="ws.ward === 'EMERGENCY' ? '#dc3545' : ws.ward === 'TRAUMA' ? '#fd7e14' : ws.ward === 'RESUSCITATION' ? '#6610f2' : ws.ward === 'OBSERVATION' ? '#0dcaf0' : '#198754'"></div>
+        <div class="ward-content">
+          <h3 class="ward-name">{{ ws.ward }}</h3>
+          <div class="ward-stats">
+            <span class="ward-total">{{ ws.total }} beds</span>
+            <span class="ward-available">{{ ws.available }} free</span>
+          </div>
+          <div class="ward-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width]="ws.utilization + '%'" [style.background]="ws.ward === 'EMERGENCY' ? '#dc3545' : ws.ward === 'TRAUMA' ? '#fd7e14' : ws.ward === 'RESUSCITATION' ? '#6610f2' : ws.ward === 'OBSERVATION' ? '#0dcaf0' : '#198754'"></div>
+            </div>
+            <span class="progress-label">{{ ws.utilization }}% occupied</span>
+          </div>
+          <div class="ward-status-row">
+            <span class="status-dot available"></span> {{ ws.available }}
+            <span class="status-dot occupied"></span> {{ ws.occupied }}
+            <span class="status-dot cleaning"></span> {{ ws.cleaning }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-bar glass">
+      <div class="filter-group">
+        <label class="filter-label"><i class="bi bi-building"></i> Ward</label>
+        <select [(ngModel)]="wardFilter" (ngModelChange)="filterByWard($event)" class="form-select filter-select">
+          <option value="ALL">All Wards</option>
+          <option *ngFor="let ward of wards" [value]="ward">{{ ward }}</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label"><i class="bi bi-circle-fill"></i> Status</label>
+        <select [(ngModel)]="statusFilter" (ngModelChange)="filterByStatus($event)" class="form-select filter-select">
+          <option value="ALL">All Statuses</option>
+          <option *ngFor="let s of bedStatuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+      <div class="filter-result">
+        <span class="result-count">{{ filteredBeds.length }}</span> beds found
+      </div>
+    </section>
+
+    <!-- Bed Grid by Ward -->
+    <ng-container *ngFor="let ward of wards">
+    <section *ngIf="getBedsForWard(ward).length > 0" class="ward-section glass">
+      <div class="ward-section-header">
+        <h2 class="section-title">
+          <i class="bi bi-building"></i>
+          {{ ward }} Ward
+        </h2>
+        <span class="bed-count">{{ getBedsForWard(ward).length }} beds</span>
+      </div>
+      <div class="bed-grid">
+        <div
+          *ngFor="let bed of getBedsForWard(ward)"
+          class="bed-card"
+          [class.bed-available]="bed.status === 'AVAILABLE'"
+          [class.bed-occupied]="bed.status === 'OCCUPIED'"
+          [class.bed-cleaning]="bed.status === 'CLEANING'"
+          [class.bed-reserved]="bed.status === 'RESERVED'"
+          [class.bed-maintenance]="bed.status === 'MAINTENANCE'"
+          (click)="openBedModal(bed)"
+        >
+          <div class="bed-status-bar" [style.background]="getBedStatusColor(bed.status)"></div>
+          <div class="bed-icon-area">
+            <i class="bi" [ngClass]="getBedIcon(bed.status)" [style.color]="getBedStatusColor(bed.status)"></i>
+          </div>
+          <div class="bed-info">
+            <span class="bed-number">{{ bed.bedNumber }}</span>
+            <span class="bed-status-label">{{ bed.status }}</span>
+            <span *ngIf="bed.status === 'OCCUPIED' && bed.emergencyPatientId" class="bed-patient">
+              <i class="bi bi-person-fill"></i> {{ getPatientName(bed.emergencyPatientId) }}
+            </span>
+          </div>
+          <div class="bed-type-badge">{{ bed.bedType }}</div>
+        </div>
+      </div>
+    </section>
+    </ng-container>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredBeds.length === 0 && !loading" class="empty-state glass">
+      <i class="bi bi-inbox"></i>
+      <p>No beds found for the selected filters.</p>
+    </div>
+  </div>
+
+  <!-- Bed Detail Modal -->
+  <div *ngIf="showModal && selectedBed" class="modal-overlay" (click)="closeBedModal()">
+    <div class="modal-content glass" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Bed Details</h3>
+        <button class="modal-close" (click)="closeBedModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-row">
+          <span class="detail-label">Bed Number</span>
+          <span class="detail-value">{{ selectedBed.bedNumber }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Ward</span>
+          <span class="detail-value">{{ selectedBed.wardName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Bed Type</span>
+          <span class="detail-value">{{ selectedBed.bedType }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Status</span>
+          <span class="status-badge" [style.background]="getBedStatusColor(selectedBed.status) + '22'" [style.color]="getBedStatusColor(selectedBed.status)">
+            {{ selectedBed.status }}
+          </span>
+        </div>
+        <div *ngIf="selectedBed.status === 'OCCUPIED' && selectedBed.emergencyPatientId" class="detail-row">
+          <span class="detail-label">Patient</span>
+          <span class="detail-value">{{ getPatientName(selectedBed.emergencyPatientId) }}</span>
+        </div>
+        <div *ngIf="selectedBed.assignedAt" class="detail-row">
+          <span class="detail-label">Assigned At</span>
+          <span class="detail-value">{{ selectedBed.assignedAt | date:'short' }}</span>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button *ngIf="selectedBed.status === 'AVAILABLE'" class="btn btn-primary" (click)="openAssignModal(selectedBed)">
+          <i class="bi bi-person-plus-fill"></i> Assign Patient
+        </button>
+        <button *ngIf="selectedBed.status === 'OCCUPIED'" class="btn btn-success" (click)="releaseBed(selectedBed.id!)">
+          <i class="bi bi-box-arrow-right"></i> Release Bed
+        </button>
+        <div *ngIf="selectedBed.status !== 'OCCUPIED' && selectedBed.status !== 'AVAILABLE'" class="status-change-group">
+          <select class="form-select" #statusSelect>
+            <option value="">Change Status...</option>
+            <option *ngFor="let s of bedStatuses" [value]="s">{{ s }}</option>
+          </select>
+          <button class="btn btn-secondary" (click)="updateStatus(selectedBed.id!, statusSelect.value)" [disabled]="!statusSelect.value">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Patient Modal -->
+  <div *ngIf="showAssignModal && selectedBed" class="modal-overlay" (click)="closeBedModal()">
+    <div class="modal-content glass" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Assign Patient to {{ selectedBed.bedNumber }}</h3>
+        <button class="modal-close" (click)="closeBedModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Select Emergency Patient</label>
+          <select [(ngModel)]="assignPatientId" class="form-select">
+            <option [ngValue]="null">-- Select Patient --</option>
+            <option *ngFor="let p of patients" [ngValue]="p.id">
+              {{ p.emergencyNumber }} - {{ p.patientName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeBedModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="assignBed(selectedBed.id!, assignPatientId!)" [disabled]="!assignPatientId">
+          <i class="bi bi-check-lg"></i> Assign
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

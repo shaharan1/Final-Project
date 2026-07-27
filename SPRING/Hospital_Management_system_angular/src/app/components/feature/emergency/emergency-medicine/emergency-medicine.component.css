@@ -1,0 +1,407 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #0a0e27;
+  color: #e0e6f0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.emergency-medicine-container {
+  padding: 24px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #60a5fa, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.order-count {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #60a5fa;
+}
+
+.alert {
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease;
+}
+
+.alert-success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #4ade80;
+}
+
+.alert-error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+}
+
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.glass-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #c4ccdc;
+}
+
+.glass-input, .glass-select, .glass-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #e0e6f0;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.glass-input:focus, .glass-select:focus, .glass-textarea:focus {
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+.glass-select option {
+  background: #1a1f3a;
+  color: #e0e6f0;
+}
+
+.patient-list {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.patient-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.patient-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.patient-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+}
+
+.patient-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.patient-item.selected {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.patient-name {
+  font-size: 13px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.patient-id {
+  font-size: 11px;
+  color: #8892a4;
+}
+
+.triage-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.triage-1 { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.triage-2 { background: rgba(249, 115, 22, 0.2); color: #fb923c; }
+.triage-3 { background: rgba(234, 179, 8, 0.2); color: #facc15; }
+.triage-4 { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.triage-5 { background: rgba(107, 114, 128, 0.2); color: #9ca3af; }
+
+.drug-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.drug-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.drug-card:hover {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.drug-icon {
+  font-size: 24px;
+}
+
+.drug-name {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  color: #c4ccdc;
+}
+
+.drug-dose {
+  font-size: 10px;
+  color: #8892a4;
+}
+
+.route-badge {
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.route-iv { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.route-oral { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.route-im { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+.route-sc { background: rgba(6, 182, 212, 0.2); color: #22d3ee; }
+.route-topical { background: rgba(234, 179, 8, 0.2); color: #facc15; }
+.route-inhalation { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+
+.freq-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  background: rgba(99, 102, 241, 0.2);
+  color: #818cf8;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8892a4;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  gap: 20px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #c4ccdc;
+}
+
+.checkbox-label input[type="checkbox"] {
+  accent-color: #60a5fa;
+}
+
+.btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+}
+
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-sm {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-success { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+.btn-warning { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+.btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+.btn-sm:hover { transform: translateY(-1px); }
+
+.orders-table table, .billing-form table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8892a4;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+table td.actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-prepared { background: rgba(234, 179, 8, 0.2); color: #facc15; }
+.status-administered { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.status-cancelled { background: rgba(107, 114, 128, 0.2); color: #9ca3af; }
+
+.pharmacy-status {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.pharmacy-status.fulfilled { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.pharmacy-status.pending { background: rgba(234, 179, 8, 0.2); color: #facc15; }
+.no-request { color: #555d6e; }
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: #555d6e;
+  font-size: 13px;
+}
+
+.empty-patient {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-patient h3 {
+  color: #c4ccdc;
+  margin-bottom: 8px;
+}
+
+.empty-patient p {
+  color: #555d6e;
+  font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
