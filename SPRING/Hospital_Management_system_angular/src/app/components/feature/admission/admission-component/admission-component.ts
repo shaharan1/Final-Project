@@ -25,6 +25,8 @@ export class AdmissionComponent implements OnInit {
   wards: WardModel[] = [];
   beds: BedModel[] = [];
 
+  selectedWardId: number = 0;
+
   admission: AdmissionRequest = {
     patientId: 0,
     doctorId: 0,

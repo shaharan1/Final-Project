@@ -21,7 +21,7 @@ import emranhss.com.Modern_Hospital_Management_System.repository.DepartmentRepos
 import emranhss.com.Modern_Hospital_Management_System.repository.FacilityRepository;
 import emranhss.com.Modern_Hospital_Management_System.repository.WardRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.InfrastructureService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -198,6 +198,7 @@ public class InfrastructureServiceImp implements InfrastructureService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BedResponse> getBedsByWard(Long wardId) {
 
         return bedRepository.findByWardId(wardId)
