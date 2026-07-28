@@ -89,7 +89,7 @@ export class DashboardService {
       map(data => {
         const today = new Date().toISOString().split('T')[0];
         const todayAppts = data.appointments.filter(a => a.appointmentDate === today);
-        const activeAdmissions = data.admissions.filter(a => a.status === 'ACTIVE');
+        const activeAdmissions = data.admissions.filter(a => a.status === 'ADMITTED');
         const totalBeds = data.wards.reduce((sum, w) => sum + (w.totalBeds || 0), 0);
 
         return {
@@ -119,7 +119,7 @@ export class DashboardService {
       admissions: this.admissionService.getAll(),
     }).pipe(
       map(data => {
-        const activeAdmissions = data.admissions.filter(a => a.status === 'ACTIVE');
+        const activeAdmissions = data.admissions.filter(a => a.status === 'ADMITTED');
         return data.wards.map(ward => {
           const occupied = activeAdmissions.filter(a => a.wardName === ward.name).length;
           const total = ward.totalBeds || 0;
@@ -207,7 +207,7 @@ export class DashboardService {
       wards: this.infrastructureService.getAllWards(),
     }).pipe(
       map(data => {
-        const active = data.admissions.filter(a => a.status === 'ACTIVE');
+        const active = data.admissions.filter(a => a.status === 'ADMITTED');
         const totalBeds = data.wards.reduce((sum, w) => sum + (w.totalBeds || 0), 0);
         return {
           totalPatients: active.length,
@@ -245,7 +245,7 @@ export class DashboardService {
           availableBeds: 0,
           totalBeds: 0,
           monthlyRevenue: 0,
-          admittedPatients: data.admissions.filter(a => a.status === 'ACTIVE').length,
+          admittedPatients: data.admissions.filter(a => a.status === 'ADMITTED').length,
           totalDoctors: 0,
           totalNurses: 0,
           totalMedicines: 0,
@@ -324,7 +324,7 @@ export class DashboardService {
           availableBeds: 0,
           totalBeds: 0,
           monthlyRevenue: 0,
-          admittedPatients: data.admissions.filter(a => a.status === 'ACTIVE').length,
+          admittedPatients: data.admissions.filter(a => a.status === 'ADMITTED').length,
           totalDoctors: data.doctors.length,
           totalNurses: 0,
           totalMedicines: 0,
@@ -333,7 +333,7 @@ export class DashboardService {
           totalOfficeStaff: 0,
           lowStockMedicines: 0,
           pendingAdmissions: data.admissions.filter(a => a.status === 'PENDING').length,
-          activeAdmissions: data.admissions.filter(a => a.status === 'ACTIVE').length,
+          activeAdmissions: data.admissions.filter(a => a.status === 'ADMITTED').length,
         };
       })
     );
@@ -374,7 +374,7 @@ export class DashboardService {
       wards: this.infrastructureService.getAllWards(),
     }).pipe(
       map(data => {
-        const active = data.admissions.filter(a => a.status === 'ACTIVE');
+        const active = data.admissions.filter(a => a.status === 'ADMITTED');
         const totalBeds = data.wards.reduce((sum, w) => sum + (w.totalBeds || 0), 0);
         return {
           totalPatients: active.length,
