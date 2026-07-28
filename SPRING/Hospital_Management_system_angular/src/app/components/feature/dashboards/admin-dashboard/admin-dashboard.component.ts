@@ -19,6 +19,7 @@ export class AdminDashboardComponent implements OnInit {
   wards: WardOccupancy[] = [];
   recentAdmissions: RecentAdmission[] = [];
   todayAppointments: RecentAppointment[] = [];
+  financialSummary: any = null;
   labStats: LabStats | null = null;
   loading = true;
 
@@ -44,6 +45,10 @@ export class AdminDashboardComponent implements OnInit {
     });
     this.dashboardService.getTodayAppointments().subscribe(appts => {
       this.todayAppointments = appts;
+      this.cdr.detectChanges();
+    });
+    this.dashboardService.getFinancialSummary().subscribe(fin => {
+      this.financialSummary = fin;
       this.cdr.detectChanges();
     });
     this.testOrderService.getStats().subscribe({

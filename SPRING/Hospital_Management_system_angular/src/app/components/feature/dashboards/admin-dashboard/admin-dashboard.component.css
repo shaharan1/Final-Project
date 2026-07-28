@@ -483,6 +483,71 @@
   border-radius: 12px;
 }
 
+/* DEBITS & CREDITS */
+.dc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.dc-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+.dc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.dc-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dc-card--credit .dc-icon {
+  background: rgba(5, 150, 105, 0.12);
+  color: #059669;
+}
+.dc-card--debit .dc-icon {
+  background: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+.dc-card--balance .dc-icon {
+  background: rgba(13, 110, 253, 0.12);
+  color: #0d6efd;
+}
+.dc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dc-label {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.dc-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: #1e293b;
+}
+.dc-value.positive { color: #059669; }
+.dc-value.negative { color: #dc2626; }
+.dc-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .stats-row { grid-template-columns: repeat(2, 1fr); }
@@ -500,6 +565,7 @@
   .module-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .lab-flow { flex-wrap: wrap; justify-content: center; }
   .lab-arrow { display: none; }
+  .dc-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .stats-row { grid-template-columns: 1fr; }

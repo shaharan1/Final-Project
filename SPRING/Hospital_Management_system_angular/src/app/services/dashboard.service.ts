@@ -11,6 +11,10 @@ import { InfrastructureService } from './infrastructure.service';
 import { TestMasterService } from './test-master.service';
 import { OfficeStaffService } from './office-staff.service';
 import { StorageService } from './storage.service';
+import { PharmacySaleService } from './pharmacy-sale.service';
+import { PurchasePharmacyService } from './purchase-pharmacy.service';
+import { PaymentService } from './billing/payment.service';
+import { InvoiceService } from './billing/invoice.service';
 
 export interface DashboardStats {
   totalPatients: number;
@@ -76,6 +80,10 @@ export class DashboardService {
     private testService: TestMasterService,
     private officeStaffService: OfficeStaffService,
     private storage: StorageService,
+    private pharmacySaleService: PharmacySaleService,
+    private purchaseService: PurchasePharmacyService,
+    private paymentService: PaymentService,
+    private invoiceService: InvoiceService,
   ) {}
 
   getAdminStats(): Observable<DashboardStats> {
@@ -435,6 +443,40 @@ export class DashboardService {
           todayAppointmentFees: 0,
           totalAppointments: 0,
           confirmedAppointments: 0,
+        };
+      })
+    );
+  }
+
+  getFinancialSummary(): Observable<any> {
+    return forkJoin({
+      appointments: this.appointmentService.getAllAppointments(),
+      pharmacySales: this.pharmacySaleService.getAll(),
+      purchases: this.purchaseService.getAll(),
+      payments: this.paymentService.getAll(),
+    }).pipe(
+      map(data => {
+        const appointmentFees = data.appointments.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0);
+        const pharmacyRevenue = data.pharmacySales.reduce((sum: number, s: any) => sum + (s.netPayable || s.totalAmount || 0), 0);
+        const purchaseExpenses = data.purchases.reduce((sum: number, p: any) => sum + (p.netAmount || 0), 0);
+        const paymentIncome = data.payments.reduce((sum: number, p: any) => sum + (p.amount || 0), 0);
+
+        const totalCredit = pharmacyRevenue + paymentIncome + appointmentFees;
+        const totalDebit = purchaseExpenses;
+        const netBalance = totalCredit - totalDebit;
+
+        return {
+          totalCredit,
+          totalDebit,
+          netBalance,
+          appointmentFees,
+          pharmacyRevenue,
+          purchaseExpenses,
+          paymentIncome,
+          totalSalesCount: data.pharmacySales.length,
+          totalPurchasesCount: data.purchases.length,
+          totalPaymentsCount: data.payments.length,
+          totalAppointmentsCount: data.appointments.length,
         };
       })
     );

@@ -251,6 +251,48 @@
     </table>
   </section>
 
+  <!-- DEBITS & CREDITS -->
+  <section *ngIf="financialSummary && !loading" class="glass-panel">
+    <div class="panel-head">
+      <div class="panel-title-group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <h2>Debits & Credits</h2>
+      </div>
+    </div>
+    <div class="dc-grid">
+      <div class="dc-card dc-card--credit">
+        <div class="dc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="dc-body">
+          <span class="dc-label">Total Credits</span>
+          <span class="dc-value">{{ formatCurrency(financialSummary.totalCredit) }}</span>
+          <span class="dc-sub">Appointment: {{ formatCurrency(financialSummary.appointmentFees) }} + Pharmacy: {{ formatCurrency(financialSummary.pharmacyRevenue) }} + Payments: {{ formatCurrency(financialSummary.paymentIncome) }}</span>
+        </div>
+      </div>
+      <div class="dc-card dc-card--debit">
+        <div class="dc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="dc-body">
+          <span class="dc-label">Total Debits</span>
+          <span class="dc-value">{{ formatCurrency(financialSummary.totalDebit) }}</span>
+          <span class="dc-sub">Purchases: {{ formatCurrency(financialSummary.purchaseExpenses) }}</span>
+        </div>
+      </div>
+      <div class="dc-card dc-card--balance">
+        <div class="dc-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+        </div>
+        <div class="dc-body">
+          <span class="dc-label">Net Balance</span>
+          <span class="dc-value" [class.positive]="financialSummary.netBalance >= 0" [class.negative]="financialSummary.netBalance < 0">{{ formatCurrency(financialSummary.netBalance) }}</span>
+          <span class="dc-sub">{{ financialSummary.totalSalesCount }} sales &bull; {{ financialSummary.totalPurchasesCount }} purchases &bull; {{ financialSummary.totalPaymentsCount }} payments</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SYSTEM MODULES -->
   <section class="glass-panel modules-panel">
     <div class="panel-head">
