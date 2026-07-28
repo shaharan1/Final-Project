@@ -422,3 +422,67 @@ tbody tr:last-child td {
     justify-content: center;
   }
 }
+
+.nr-photo-upload {
+  max-width: 200px;
+}
+
+.nr-photo-preview {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 3px solid #e2e8f0;
+  overflow: hidden;
+  margin: 0 auto 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.nr-photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nr-photo-default {
+  background: #f1f5f9;
+}
+
+.nr-photo-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  border: 2px solid white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.nr-photo-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nr-text-muted {
+  color: #64748b;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.nr-text-danger {
+  color: #ef4444;
+}

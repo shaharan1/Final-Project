@@ -34,6 +34,12 @@ export class Nurse implements OnInit {
     remarks: ''
   };
 
+  photoFile?: File;
+
+  previewUrl = '';
+
+  photoSizeError = '';
+
   constructor(private nurseService: NurseService) { }
 
   ngOnInit(): void {
@@ -47,21 +53,76 @@ export class Nurse implements OnInit {
     });
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      if (!file.type.match(/^image\/(jpeg|jpg|png|webp)$/)) {
+        this.photoSizeError = 'Please select a valid image file (JPG, PNG, WebP).';
+        this.photoFile = undefined;
+        this.previewUrl = '';
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        this.photoSizeError = 'Image size must be under 2 MB.';
+        this.photoFile = undefined;
+        this.previewUrl = '';
+        return;
+      }
+      this.photoSizeError = '';
+      this.photoFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto(): void {
+    this.photoFile = undefined;
+    this.previewUrl = '';
+    this.photoSizeError = '';
+    this.nurse.photo = '';
+  }
+
+  getPhotoPreview(): string {
+    if (this.previewUrl) return this.previewUrl;
+    return this.nurse.photo || 'assets/images/doctor.png';
+  }
+
+  hasPhoto(): boolean {
+    return !!this.previewUrl || !!this.nurse.photo;
+  }
 
   saveNurse() {
 
-    this.nurseService.createNurse(this.nurse).subscribe({
-      next: (data) => {
-        alert("Nurse Saved Successfully");
-        this.loadNurses();
-        this.resetForm();
-        console.log(data);
-      },
-      error: (err) => {
-        console.error(err);
-      }
-
-    });
+    if (this.photoFile) {
+      this.nurseService.createNurse(this.nurse).subscribe({
+        next: (data) => {
+          this.nurseService.uploadPhoto(data.id!, this.photoFile!).subscribe(() => {
+            alert('Nurse Saved Successfully');
+            this.loadNurses();
+            this.resetForm();
+          });
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    } else {
+      this.nurseService.createNurse(this.nurse).subscribe({
+        next: (data) => {
+          alert('Nurse Saved Successfully');
+          this.loadNurses();
+          this.resetForm();
+          console.log(data);
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    }
 
   }
 

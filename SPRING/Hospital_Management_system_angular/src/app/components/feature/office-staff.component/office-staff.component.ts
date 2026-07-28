@@ -11,11 +11,17 @@ import { CommonModule } from '@angular/common';
   styleUrl: './office-staff.component.css',
 })
 export class OfficeStaffComponent {
-
   officeStaffForm!: FormGroup;
+
   isEdit = false;
+
   officeStaffId!: number;
 
+  photoFile?: File;
+
+  previewUrl = '';
+
+  photoSizeError = '';
   roles = [
     { value: 'OfficeStaff', label: 'Office Staff' },
     { value: 'Receptionist', label: 'Receptionist' },
@@ -78,14 +84,33 @@ export class OfficeStaffComponent {
       this.officeStaffForm.markAllAsTouched();
       return;
     }
+    this.uploadPhotoAndSave();
+  }
 
+  private uploadPhotoAndSave(): void {
+    if (!this.photoFile) {
+      this.submitOfficeStaff(this.officeStaffForm.value);
+      return;
+    }
+    const formData = new FormData();
+    const rawValue = this.officeStaffForm.value;
+    Object.keys(rawValue).forEach(key => {
+      if (key !== 'photo') {
+        formData.append(key, rawValue[key] != null ? String(rawValue[key]) : '');
+      }
+    });
+    formData.append('photo', this.photoFile);
+    this.submitOfficeStaff(formData);
+  }
+
+  private submitOfficeStaff(data: FormData | any): void {
     if (this.isEdit) {
       this.officeStaffService.update(
         this.officeStaffId,
-        this.officeStaffForm.value
+        data
       ).subscribe({
         next: () => {
-          alert("Office Staff Updated Successfully");
+          alert('Office Staff Updated Successfully');
           this.router.navigate(['/office-staff']);
         },
         error: (err) => {
@@ -94,10 +119,10 @@ export class OfficeStaffComponent {
       });
     } else {
       this.officeStaffService.create(
-        this.officeStaffForm.value
+        data
       ).subscribe({
         next: () => {
-          alert("Office Staff Saved Successfully");
+          alert('Office Staff Saved Successfully');
           this.router.navigate(['/office-staff']);
         },
         error: (err) => {
@@ -105,6 +130,55 @@ export class OfficeStaffComponent {
         }
       });
     }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      if (!file.type.match(/^image\/(jpeg|jpg|png|webp)$/)) {
+        this.photoSizeError = 'Please select a valid image file (JPG, PNG, WebP).';
+        this.photoFile = undefined;
+        this.previewUrl = '';
+        this.cdr.markForCheck();
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        this.photoSizeError = 'Image size must be under 2 MB.';
+        this.photoFile = undefined;
+        this.previewUrl = '';
+        this.cdr.markForCheck();
+        return;
+      }
+      this.photoSizeError = '';
+      this.photoFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+        this.cdr.markForCheck();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto(): void {
+    this.photoFile = undefined;
+    this.previewUrl = '';
+    this.photoSizeError = '';
+    this.officeStaffForm.patchValue({ photo: '' });
+    this.cdr.markForCheck();
+  }
+
+  getPhotoPreview(): string {
+    if (this.previewUrl) return this.previewUrl;
+    if (this.isEdit && this.officeStaffForm.get('photo')?.value) {
+      return this.officeStaffForm.get('photo')!.value as string;
+    }
+    return 'assets/images/doctor.png';
+  }
+
+  hasPhoto(): boolean {
+    return !!this.previewUrl || (this.isEdit && !!this.officeStaffForm.get('photo')?.value);
   }
 
 }

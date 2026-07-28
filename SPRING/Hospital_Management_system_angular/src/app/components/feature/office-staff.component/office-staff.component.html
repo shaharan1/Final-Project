@@ -108,8 +108,29 @@
         </div>
 
         <div class="os-field os-field-full">
-          <label class="os-label">Photo URL</label>
-          <input type="text" class="os-input" formControlName="photo" placeholder="https://example.com/photo.jpg">
+          <label class="os-label">Staff Photo</label>
+          <div class="os-photo-upload">
+            <div class="os-photo-preview" *ngIf="hasPhoto(); else defaultAvatarStaff">
+              <img [src]="getPhotoPreview()" alt="Staff Photo">
+              <button type="button" class="os-photo-remove" (click)="removePhoto()">✕</button>
+            </div>
+            <ng-template #defaultAvatarStaff>
+              <div class="os-photo-preview os-photo-default">
+                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" stroke="#adb5bd" stroke-width="2">
+                  <circle cx="50" cy="35" r="25"/>
+                  <path d="M30 85 C30 60 70 60 70 85"/>
+                </svg>
+              </div>
+            </ng-template>
+            <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" (change)="onFileSelected($event)" hidden #fileInputStaff>
+            <div class="os-photo-actions">
+              <button type="button" class="os-btn os-btn-outline-primary" (click)="fileInputStaff.click()">Choose Photo</button>
+              <button type="button" class="os-btn os-btn-outline-danger" *ngIf="previewUrl" (click)="removePhoto()">Remove</button>
+            </div>
+            <small class="os-text-muted" *ngIf="photoFile">{{ photoFile.name }} ({{ (photoFile.size / 1024 | number:'1.0-0') }} KB)</small>
+            <div class="os-text-danger small" *ngIf="photoSizeError">{{ photoSizeError }}</div>
+            <div class="os-text-muted small">JPG, PNG or WebP. Max 2 MB.</div>
+          </div>
         </div>
 
       </div>

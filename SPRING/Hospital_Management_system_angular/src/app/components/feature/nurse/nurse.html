@@ -62,8 +62,29 @@
         </div>
 
         <div class="nr-field nr-field-full">
-          <label class="nr-label">Photo URL</label>
-          <input type="text" class="nr-input" [(ngModel)]="nurse.photo" name="photo" placeholder="https://example.com/photo.jpg">
+          <label class="nr-label">Nurse Photo</label>
+          <div class="nr-photo-upload">
+            <div class="nr-photo-preview" *ngIf="hasPhoto(); else defaultAvatarNurse">
+              <img [src]="getPhotoPreview()" alt="Nurse Photo">
+              <button type="button" class="nr-photo-remove" (click)="removePhoto()">✕</button>
+            </div>
+            <ng-template #defaultAvatarNurse>
+              <div class="nr-photo-preview nr-photo-default">
+                <svg width="80" height="80" viewBox="0 0 100 100" fill="none" stroke="#adb5bd" stroke-width="2">
+                  <circle cx="50" cy="35" r="25"/>
+                  <path d="M30 85 C30 60 70 60 70 85"/>
+                </svg>
+              </div>
+            </ng-template>
+            <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" (change)="onFileSelected($event)" hidden #fileInputNurse>
+            <div class="nr-photo-actions">
+              <button type="button" class="nr-btn nr-btn-primary" (click)="fileInputNurse.click()">Choose Photo</button>
+              <button type="button" class="nr-btn nr-btn-danger" *ngIf="previewUrl" (click)="removePhoto()">Remove</button>
+            </div>
+            <small class="nr-text-muted" *ngIf="photoFile">{{ photoFile.name }} ({{ (photoFile.size / 1024 | number:'1.0-0') }} KB)</small>
+            <div class="nr-text-danger small" *ngIf="photoSizeError">{{ photoSizeError }}</div>
+            <div class="nr-text-muted small">JPG, PNG or WebP. Max 2 MB.</div>
+          </div>
         </div>
 
         <div class="nr-section-title nr-section-full">

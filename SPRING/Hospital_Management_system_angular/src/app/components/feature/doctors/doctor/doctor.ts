@@ -13,9 +13,6 @@ import { DoctorsDepartmentService } from '../../../../services/doctors-departmen
 })
 export class Doctor {
 
-
-
-
   doctorForm!: FormGroup;
 
   isEdit = false;
@@ -23,6 +20,12 @@ export class Doctor {
   doctorId!: number;
 
   departments: any[] = [];
+
+  photoFile?: File;
+
+  previewUrl = '';
+
+  photoSizeError = '';
 
   constructor(
     private fb: FormBuilder,
@@ -114,13 +117,73 @@ export class Doctor {
 
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      if (!file.type.match(/^image\/(jpeg|jpg|png|webp)$/)) {
+        this.photoSizeError = 'Please select a valid image file (JPG, PNG, WebP).';
+        this.photoFile = undefined;
+        this.previewUrl = '';
+        this.cdr.detectChanges();
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        this.photoSizeError = 'Image size must be under 2 MB.';
+        this.photoFile = undefined;
+        this.previewUrl = '';
+        this.cdr.detectChanges();
+        return;
+      }
+      this.photoSizeError = '';
+      this.photoFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+        this.cdr.detectChanges();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removePhoto(): void {
+    this.photoFile = undefined;
+    this.previewUrl = '';
+    this.photoSizeError = '';
+    this.doctorForm.patchValue({ photo: '' });
+    this.cdr.detectChanges();
+  }
+
+  getPhotoPreview(): string {
+    if (this.previewUrl) return this.previewUrl;
+    if (this.isEdit && this.doctorForm.get('photo')?.value) return this.doctorForm.get('photo')!.value as string;
+    return 'assets/images/doctor.png';
+  }
+
+  hasPhoto(): boolean {
+    return !!(this.previewUrl || (this.isEdit && this.doctorForm.get('photo')?.value));
+  }
+
   save() {
 
     if (this.doctorForm.invalid) return;
 
+    const formData = new FormData();
+    const rawValue = this.doctorForm.value;
+
+    Object.keys(rawValue).forEach(key => {
+      if (key !== 'photo' || !this.photoFile) {
+        formData.append(key, rawValue[key] != null ? String(rawValue[key]) : '');
+      }
+    });
+
+    if (this.photoFile) {
+      formData.append('photo', this.photoFile);
+    }
+
     if (this.isEdit) {
 
-      this.doctorService.update(this.doctorId, this.doctorForm.value)
+      this.doctorService.update(this.doctorId, formData)
         .subscribe(() => {
 
           alert("Doctor Updated");
@@ -131,7 +194,7 @@ export class Doctor {
 
     } else {
 
-      this.doctorService.create(this.doctorForm.value)
+      this.doctorService.create(formData)
         .subscribe(() => {
 
           alert("Doctor Saved");
