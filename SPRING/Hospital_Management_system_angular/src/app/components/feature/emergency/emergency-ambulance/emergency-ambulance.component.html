@@ -130,7 +130,7 @@
         </div>
       </div>
       <div class="form-actions">
-        <button class="btn btn-primary" (click)="createAmbulance()">
+        <button class="btn btn-primary" (click)="createAmbulance()" [disabled]="saving">
           <i class="bi bi-check-lg"></i> Add Ambulance
         </button>
       </div>
@@ -176,7 +176,7 @@
       </div>
       <div class="form-actions">
         <button class="btn btn-secondary" (click)="toggleRequestPanel()">Cancel</button>
-        <button class="btn btn-primary" (click)="dispatchTrip()" [disabled]="!tripForm.ambulanceId || !tripForm.emergencyPatientId">
+        <button class="btn btn-primary" (click)="dispatchTrip()" [disabled]="!tripForm.ambulanceId || !tripForm.emergencyPatientId || saving">
           <i class="bi bi-send-fill"></i> Dispatch Now
         </button>
       </div>
@@ -313,12 +313,12 @@
               </td>
               <td class="cell-time">{{ trip.dispatchTime | date:'short' }}</td>
               <td class="cell-actions">
-                <button *ngIf="trip.status === 'DISPATCHED' || trip.status === 'EN_ROUTE'" class="table-action-btn complete-btn" title="Complete Trip" (click)="completeTrip(trip.id!)">
-                  <i class="bi bi-check-lg"></i>
-                </button>
-                <button class="table-action-btn cancel-btn" title="Cancel Trip" (click)="cancelTrip(trip.id!)">
-                  <i class="bi bi-x-lg"></i>
-                </button>
+                 <button *ngIf="trip.status === 'DISPATCHED' || trip.status === 'EN_ROUTE'" class="table-action-btn complete-btn" title="Complete Trip" (click)="completeTrip(trip.id!)" [disabled]="saving">
+                   <i class="bi bi-check-lg"></i>
+                 </button>
+                 <button class="table-action-btn cancel-btn" title="Cancel Trip" (click)="cancelTrip(trip.id!)" [disabled]="saving">
+                   <i class="bi bi-x-lg"></i>
+                 </button>
               </td>
             </tr>
           </tbody>

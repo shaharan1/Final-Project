@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmergencyBedService } from '../../../../services/emergency/emergency-bed.service';
@@ -16,12 +16,14 @@ import { EmergencyPatient } from '../../../../models/emergency/emergency-patient
 export class EmergencyBedComponent implements OnInit {
   private bedService = inject(EmergencyBedService);
   private patientService = inject(EmergencyPatientService);
+  private cdr = inject(ChangeDetectorRef);
 
   beds: EmergencyBed[] = [];
   patients: EmergencyPatient[] = [];
   filteredBeds: EmergencyBed[] = [];
   selectedBed: EmergencyBed | null = null;
   loading = true;
+  saving = false;
   msg = '';
   msgType: 'success' | 'error' = 'success';
   wardFilter = 'ALL';
@@ -51,76 +53,96 @@ export class EmergencyBedComponent implements OnInit {
         this.applyFilters();
         this.getWardSummary();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showMessage('Failed to load beds', 'error');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   loadPatients(): void {
     this.patientService.getAll().subscribe({
-      next: (data) => this.patients = data,
+      next: (data) => { this.patients = data; this.cdr.detectChanges(); },
       error: () => {}
     });
   }
 
   createBed(): void {
+    if (this.saving) return;
+    this.saving = true;
     this.bedService.create(this.bedForm).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage('Bed created successfully', 'success');
         this.showCreateForm = false;
         this.bedForm = this.getEmptyBedForm();
         this.loadBeds();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to create bed', 'error')
+      error: () => { this.showMessage('Failed to create bed', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   assignBed(bedId: number, patientId: number): void {
+    if (this.saving) return;
+    this.saving = true;
     this.bedService.assignBed(bedId, patientId).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage('Patient assigned to bed successfully', 'success');
         this.showAssignModal = false;
         this.assignPatientId = null;
         this.selectedBed = null;
         this.loadBeds();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to assign bed', 'error')
+      error: () => { this.showMessage('Failed to assign bed', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   releaseBed(bedId: number): void {
+    if (this.saving) return;
+    this.saving = true;
     this.bedService.releaseBed(bedId).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage('Bed released successfully', 'success');
         this.selectedBed = null;
         this.loadBeds();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to release bed', 'error')
+      error: () => { this.showMessage('Failed to release bed', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   updateStatus(bedId: number, status: string): void {
+    if (this.saving) return;
+    this.saving = true;
     this.bedService.updateStatus(bedId, status).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage(`Bed status updated to ${status}`, 'success');
         this.selectedBed = null;
         this.loadBeds();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to update bed status', 'error')
+      error: () => { this.showMessage('Failed to update bed status', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   filterByWard(ward: string): void {
     this.wardFilter = ward;
     this.applyFilters();
+    this.cdr.detectChanges();
   }
 
   filterByStatus(status: string): void {
     this.statusFilter = status;
     this.applyFilters();
+    this.cdr.detectChanges();
   }
 
   applyFilters(): void {
@@ -129,6 +151,7 @@ export class EmergencyBedComponent implements OnInit {
       const matchStatus = this.statusFilter === 'ALL' || b.status === this.statusFilter;
       return matchWard && matchStatus;
     });
+    this.cdr.detectChanges();
   }
 
   getWardSummary(): void {
@@ -143,6 +166,7 @@ export class EmergencyBedComponent implements OnInit {
       const utilization = total > 0 ? Math.round((occupied / total) * 100) : 0;
       return { ward, total, available, occupied, cleaning, reserved, maintenance, utilization };
     });
+    this.cdr.detectChanges();
   }
 
   getBedsForWard(ward: string): EmergencyBed[] {
@@ -198,6 +222,7 @@ export class EmergencyBedComponent implements OnInit {
   openBedModal(bed: EmergencyBed): void {
     this.selectedBed = bed;
     this.showModal = true;
+    this.cdr.detectChanges();
   }
 
   closeBedModal(): void {
@@ -205,11 +230,13 @@ export class EmergencyBedComponent implements OnInit {
     this.showModal = false;
     this.showAssignModal = false;
     this.assignPatientId = null;
+    this.cdr.detectChanges();
   }
 
   openAssignModal(bed: EmergencyBed): void {
     this.selectedBed = bed;
     this.showAssignModal = true;
+    this.cdr.detectChanges();
   }
 
   toggleCreateForm(): void {
@@ -217,6 +244,7 @@ export class EmergencyBedComponent implements OnInit {
     if (!this.showCreateForm) {
       this.bedForm = this.getEmptyBedForm();
     }
+    this.cdr.detectChanges();
   }
 
   private getEmptyBedForm(): Partial<EmergencyBed> {

@@ -74,7 +74,7 @@
         </div>
       </div>
       <div class="form-actions">
-        <button class="btn btn-primary" (click)="createBed()">
+        <button class="btn btn-primary" (click)="createBed()" [disabled]="saving">
           <i class="bi bi-check-lg"></i> Create Bed
         </button>
       </div>
@@ -210,7 +210,7 @@
         <button *ngIf="selectedBed.status === 'AVAILABLE'" class="btn btn-primary" (click)="openAssignModal(selectedBed)">
           <i class="bi bi-person-plus-fill"></i> Assign Patient
         </button>
-        <button *ngIf="selectedBed.status === 'OCCUPIED'" class="btn btn-success" (click)="releaseBed(selectedBed.id!)">
+        <button *ngIf="selectedBed.status === 'OCCUPIED'" class="btn btn-success" (click)="releaseBed(selectedBed.id!)" [disabled]="saving">
           <i class="bi bi-box-arrow-right"></i> Release Bed
         </button>
         <div *ngIf="selectedBed.status !== 'OCCUPIED' && selectedBed.status !== 'AVAILABLE'" class="status-change-group">
@@ -218,7 +218,7 @@
             <option value="">Change Status...</option>
             <option *ngFor="let s of bedStatuses" [value]="s">{{ s }}</option>
           </select>
-          <button class="btn btn-secondary" (click)="updateStatus(selectedBed.id!, statusSelect.value)" [disabled]="!statusSelect.value">
+          <button class="btn btn-secondary" (click)="updateStatus(selectedBed.id!, statusSelect.value)" [disabled]="!statusSelect.value || saving">
             <i class="bi bi-arrow-repeat"></i> Update
           </button>
         </div>
@@ -246,7 +246,7 @@
       </div>
       <div class="modal-actions">
         <button class="btn btn-secondary" (click)="closeBedModal()">Cancel</button>
-        <button class="btn btn-primary" (click)="assignBed(selectedBed.id!, assignPatientId!)" [disabled]="!assignPatientId">
+        <button class="btn btn-primary" (click)="assignBed(selectedBed.id!, assignPatientId!)" [disabled]="!assignPatientId || saving">
           <i class="bi bi-check-lg"></i> Assign
         </button>
       </div>

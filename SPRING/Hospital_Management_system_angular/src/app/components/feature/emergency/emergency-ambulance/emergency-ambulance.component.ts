@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AmbulanceService } from '../../../../services/emergency/ambulance.service';
@@ -18,12 +18,14 @@ export class EmergencyAmbulanceComponent implements OnInit {
   private ambulanceService = inject(AmbulanceService);
   private tripService = inject(AmbulanceTripService);
   private patientService = inject(EmergencyPatientService);
+  private cdr = inject(ChangeDetectorRef);
 
   ambulances: Ambulance[] = [];
   trips: AmbulanceTrip[] = [];
   patients: EmergencyPatient[] = [];
   selectedAmbulance: Ambulance | null = null;
   loading = true;
+  saving = false;
   msg = '';
   msgType: 'success' | 'error' = 'success';
   statusFilter = 'ALL';
@@ -51,47 +53,57 @@ export class EmergencyAmbulanceComponent implements OnInit {
       next: (data) => {
         this.ambulances = data;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showMessage('Failed to load ambulances', 'error');
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   loadTrips(): void {
     this.tripService.getAll().subscribe({
-      next: (data) => this.trips = data,
+      next: (data) => { this.trips = data; this.cdr.detectChanges(); },
       error: () => {}
     });
   }
 
   loadPatients(): void {
     this.patientService.getAll().subscribe({
-      next: (data) => this.patients = data,
+      next: (data) => { this.patients = data; this.cdr.detectChanges(); },
       error: () => {}
     });
   }
 
   createAmbulance(): void {
+    if (this.saving) return;
+    this.saving = true;
     this.ambulanceService.create(this.ambulanceForm).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage('Ambulance added successfully', 'success');
         this.showCreateForm = false;
         this.ambulanceForm = this.getEmptyAmbulanceForm();
         this.loadAmbulances();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to add ambulance', 'error')
+      error: () => { this.showMessage('Failed to add ambulance', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   updateStatus(id: number, status: string): void {
+    if (this.saving) return;
+    this.saving = true;
     this.ambulanceService.updateStatus(id, status).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage(`Ambulance status updated to ${status}`, 'success');
         this.loadAmbulances();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to update status', 'error')
+      error: () => { this.showMessage('Failed to update status', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
@@ -100,42 +112,54 @@ export class EmergencyAmbulanceComponent implements OnInit {
       this.showMessage('Please select an ambulance and patient', 'error');
       return;
     }
+    if (this.saving) return;
+    this.saving = true;
     this.tripService.create(this.tripForm).subscribe({
       next: (trip) => {
         this.tripService.dispatchTrip(trip.id!).subscribe({
           next: () => {
+            this.saving = false;
             this.showMessage('Trip dispatched successfully', 'success');
             this.showRequestPanel = false;
             this.tripForm = this.getEmptyTripForm();
             this.loadTrips();
             this.loadAmbulances();
+            this.cdr.detectChanges();
           },
-          error: () => this.showMessage('Failed to dispatch trip', 'error')
+          error: () => { this.showMessage('Failed to dispatch trip', 'error'); this.saving = false; this.cdr.detectChanges(); }
         });
       },
-      error: () => this.showMessage('Failed to create trip', 'error')
+      error: () => { this.showMessage('Failed to create trip', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   completeTrip(tripId: number): void {
+    if (this.saving) return;
+    this.saving = true;
     this.tripService.completeTrip(tripId).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage('Trip completed successfully', 'success');
         this.loadTrips();
         this.loadAmbulances();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to complete trip', 'error')
+      error: () => { this.showMessage('Failed to complete trip', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
   cancelTrip(tripId: number): void {
+    if (this.saving) return;
+    this.saving = true;
     this.tripService.cancelTrip(tripId).subscribe({
       next: () => {
+        this.saving = false;
         this.showMessage('Trip cancelled', 'success');
         this.loadTrips();
         this.loadAmbulances();
+        this.cdr.detectChanges();
       },
-      error: () => this.showMessage('Failed to cancel trip', 'error')
+      error: () => { this.showMessage('Failed to cancel trip', 'error'); this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
@@ -234,6 +258,7 @@ export class EmergencyAmbulanceComponent implements OnInit {
   closeModal(): void {
     this.selectedAmbulance = null;
     this.showModal = false;
+    this.cdr.detectChanges();
   }
 
   toggleCreateForm(): void {
@@ -241,6 +266,7 @@ export class EmergencyAmbulanceComponent implements OnInit {
     if (!this.showCreateForm) {
       this.ambulanceForm = this.getEmptyAmbulanceForm();
     }
+    this.cdr.detectChanges();
   }
 
   toggleRequestPanel(): void {
@@ -248,10 +274,12 @@ export class EmergencyAmbulanceComponent implements OnInit {
     if (!this.showRequestPanel) {
       this.tripForm = this.getEmptyTripForm();
     }
+    this.cdr.detectChanges();
   }
 
   setActiveTab(tab: 'fleet' | 'trips' | 'history'): void {
     this.activeTab = tab;
+    this.cdr.detectChanges();
   }
 
   private getEmptyAmbulanceForm(): Partial<Ambulance> {

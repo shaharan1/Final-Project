@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -26,6 +26,7 @@ export class MedicineStockComponent implements OnInit {
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
   loading = false;
+  saving = false;
   error = '';
 
   showAddModal = false;
@@ -63,7 +64,8 @@ export class MedicineStockComponent implements OnInit {
 
   constructor(
     private stockService: StockService,
-    private supplierService: SupplierService
+    private supplierService: SupplierService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -79,17 +81,19 @@ export class MedicineStockComponent implements OnInit {
         this.medicines = data;
         this.filterMedicines();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error = 'Failed to load stock. Please try again.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   loadSuppliers(): void {
     this.supplierService.getAll().subscribe({
-      next: (data: SupplierModel[]) => { this.suppliers = data; },
+      next: (data: SupplierModel[]) => { this.suppliers = data; this.cdr.detectChanges(); },
       error: () => {}
     });
   }
@@ -115,6 +119,7 @@ export class MedicineStockComponent implements OnInit {
       case 'Expiring Soon': result = result.filter(m => { const exp = new Date(m.expiryDate); return exp >= now && exp <= thirtyDays; }); break;
     }
     this.filteredMedicines = result;
+    this.cdr.detectChanges();
   }
 
   sort(column: string): void {
@@ -132,6 +137,7 @@ export class MedicineStockComponent implements OnInit {
       }
       return this.sortDirection === 'asc' ? (valA ?? 0) - (valB ?? 0) : (valB ?? 0) - (valA ?? 0);
     });
+    this.cdr.detectChanges();
   }
 
   getMedicineStatus(medicine: MedicineStockModel): string {
@@ -164,19 +170,25 @@ export class MedicineStockComponent implements OnInit {
   openAddModal(): void {
     this.addFormModel = this.getEmptyAddForm();
     this.showAddModal = true;
+    this.cdr.detectChanges();
   }
 
   closeAddModal(): void {
     this.showAddModal = false;
+    this.cdr.detectChanges();
   }
 
   saveMedicine(): void {
+    if (this.saving) return;
+    this.saving = true;
     this.stockService.addStock(this.addFormModel as MedicineStockModel).subscribe({
       next: () => {
+        this.saving = false;
         this.loadStock();
         this.closeAddModal();
+        this.cdr.detectChanges();
       },
-      error: () => { this.error = 'Failed to add stock.'; }
+      error: () => { this.error = 'Failed to add stock.'; this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
@@ -184,20 +196,26 @@ export class MedicineStockComponent implements OnInit {
     this.selectedMedicine = medicine;
     this.adjustFormModel = { medicineStockId: medicine.id!, adjustmentType: 'ADD', quantityChange: 0, reason: '', performedBy: 'Admin' };
     this.showAdjustModal = true;
+    this.cdr.detectChanges();
   }
 
   closeAdjustModal(): void {
     this.showAdjustModal = false;
     this.selectedMedicine = null;
+    this.cdr.detectChanges();
   }
 
   saveAdjustment(): void {
+    if (this.saving) return;
+    this.saving = true;
     this.stockService.adjustStock(this.adjustFormModel).subscribe({
       next: () => {
+        this.saving = false;
         this.loadStock();
         this.closeAdjustModal();
+        this.cdr.detectChanges();
       },
-      error: () => { this.error = 'Failed to adjust stock.'; }
+      error: () => { this.error = 'Failed to adjust stock.'; this.saving = false; this.cdr.detectChanges(); }
     });
   }
 
@@ -210,9 +228,11 @@ export class MedicineStockComponent implements OnInit {
       next: (data: StockHistoryModel[]) => {
         this.stockHistory = data;
         this.loadingHistory = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loadingHistory = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -221,5 +241,6 @@ export class MedicineStockComponent implements OnInit {
     this.showHistoryModal = false;
     this.selectedMedicine = null;
     this.stockHistory = [];
+    this.cdr.detectChanges();
   }
 }

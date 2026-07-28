@@ -219,7 +219,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" (click)="closeAddModal()">Cancel</button>
-          <button class="btn btn-primary" (click)="saveMedicine()">Save Stock</button>
+          <button class="btn btn-primary" (click)="saveMedicine()" [disabled]="saving">Save Stock</button>
         </div>
       </div>
     </div>
