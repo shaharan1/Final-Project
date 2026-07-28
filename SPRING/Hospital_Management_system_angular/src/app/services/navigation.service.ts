@@ -131,7 +131,7 @@ export class NavigationService {
            { label: 'Triage', icon: 'Ⓣ', route: '/emergency/triage', section: 'Emergency' },
            { label: 'Doctor Assignment', icon: 'Ⓓ', route: '/emergency/assignments', section: 'Emergency' },
            { label: 'Ward & Beds', icon: 'Ⓑ', route: '/emergency/beds', section: 'Emergency' },
-           { label: 'Ambulance', icon: 'ambulance', route: '/emergency/ambulances', section: 'Emergency' },
+           { label: 'Ambulance', icon: '🚑', route: '/emergency/ambulances', section: 'Emergency' },
            { label: 'Medicine', icon: 'Ⓜ', route: '/emergency/medicine', section: 'Emergency' },
            { label: 'Lab Orders', icon: 'Ⓛ', route: '/emergency/lab-orders', section: 'Emergency' },
            { label: 'Billing', icon: 'Ⓑ', route: '/emergency/billing', section: 'Emergency' },
