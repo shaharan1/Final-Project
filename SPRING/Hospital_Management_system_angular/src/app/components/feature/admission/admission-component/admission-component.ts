@@ -79,6 +79,8 @@ export class AdmissionComponent implements OnInit {
       next: (res) => {
         this.beds = res.filter(b => b.status === 'AVAILABLE');
         this.cdr.markForCheck();
+        console.log(res);
+        console.log(wardId);
       },
       error: (err) => { console.log(err); }
     });

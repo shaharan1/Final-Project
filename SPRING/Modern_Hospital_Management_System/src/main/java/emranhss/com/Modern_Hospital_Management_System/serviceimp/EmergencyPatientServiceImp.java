@@ -8,6 +8,7 @@ import emranhss.com.Modern_Hospital_Management_System.dto.response.EmergencyDash
 import emranhss.com.Modern_Hospital_Management_System.dto.response.EmergencyPatientResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.EmergencyPatient;
 import emranhss.com.Modern_Hospital_Management_System.entity.EmergencyTimeline;
+import emranhss.com.Modern_Hospital_Management_System.entity.Patient;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
 import emranhss.com.Modern_Hospital_Management_System.service.EmergencyPatientService;
@@ -34,6 +35,7 @@ public class EmergencyPatientServiceImp implements EmergencyPatientService {
     private final EmergencyDoctorAssignmentRepository emergencyDoctorAssignmentRepository;
     private final EmergencyBedRepository emergencyBedRepository;
     private final EmergencyBillingRepository emergencyBillingRepository;
+    private final PatientRepository patientRepository;
 
     @Override
     @Transactional
@@ -43,6 +45,23 @@ public class EmergencyPatientServiceImp implements EmergencyPatientService {
         patient.setSeverityLevel("MODERATE");
         patient.setStatus("WAITING");
         patient.setTriageLevel(3);
+
+        Patient p = new Patient();
+
+        p.setName(request.getPatientName());
+        p.setPhone(request.getPhone());
+        p.setAddress(request.getAddress());
+       p.setNationalId(request.getNationalId());
+       p.setBloodGroup(request.getBloodGroup());
+       p.setEmergencyContactName(request.getEmergencyContactName());
+       p.setEmergencyContactNumber(request.getEmergencyContactPhone());
+       p.setRelationship(request.getEmergencyContactRelation());
+       p.setPatientCode(generatePatientCode());
+
+
+       Patient savedPatient = patientRepository.save(p);
+
+       patient.setPatient(savedPatient);
 
         EmergencyPatient saved = emergencyPatientRepository.save(patient);
 
@@ -152,5 +171,20 @@ public class EmergencyPatientServiceImp implements EmergencyPatientService {
         long todayCount = emergencyPatientRepository.countByArrivalTimeBetween(todayStart, todayEnd);
         int seq = (int) todayCount + 1;
         return "EMG-" + datePart + "-" + String.format("%04d", seq);
+    }
+
+    private String generatePatientCode() {
+
+        Patient lastPatient = patientRepository.findTopByOrderByIdDesc();
+
+        if (lastPatient == null || lastPatient.getPatientCode() == null) {
+            return "PAT000001";
+        }
+
+        String lastCode = lastPatient.getPatientCode(); // PAT000125
+        int number = Integer.parseInt(lastCode.substring(3));
+        number++;
+
+        return String.format("PAT%06d", number);
     }
 }
