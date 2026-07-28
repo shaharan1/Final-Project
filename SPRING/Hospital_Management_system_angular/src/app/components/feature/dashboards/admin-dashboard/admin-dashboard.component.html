@@ -58,8 +58,8 @@
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       </div>
       <div class="kpi-body">
-        <span class="kpi-label">Revenue (Monthly)</span>
-        <span class="kpi-value">{{ stats.monthlyRevenue | number }}</span>
+        <span class="kpi-label">Total Appointment Fees</span>
+        <span class="kpi-value">৳{{ stats.totalAppointmentFees | number }}</span>
       </div>
       <div class="kpi-glow kpi-glow--purple"></div>
     </div>
@@ -68,8 +68,8 @@
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </div>
       <div class="kpi-body">
-        <span class="kpi-label">Total Patients</span>
-        <span class="kpi-value">{{ stats.totalPatients | number }}</span>
+        <span class="kpi-label">Total Appointments</span>
+        <span class="kpi-value">{{ stats.totalAppointments | number }}</span>
       </div>
       <div class="kpi-glow kpi-glow--blue"></div>
     </div>
@@ -78,18 +78,18 @@
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       </div>
       <div class="kpi-body">
-        <span class="kpi-label">Today's Appointments</span>
-        <span class="kpi-value">{{ stats.todayAppointments | number }}</span>
+        <span class="kpi-label">Today's Fees</span>
+        <span class="kpi-value">৳{{ stats.todayAppointmentFees | number }}</span>
       </div>
       <div class="kpi-glow kpi-glow--green"></div>
     </div>
     <div class="kpi-card kpi-card--teal">
       <div class="kpi-icon-wrap kpi-icon-wrap--teal">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v4a1 1 0 0 0 1 1h3"/><path d="M7 7v4a1 1 0 0 0 1 1h3"/><path d="M21 11V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>
       </div>
       <div class="kpi-body">
-        <span class="kpi-label">Available Beds</span>
-        <span class="kpi-value">{{ stats.availableBeds | number }}<span class="kpi-sub">/ {{ stats.totalBeds | number }}</span></span>
+        <span class="kpi-label">Confirmed</span>
+        <span class="kpi-value">{{ stats.confirmedAppointments | number }}</span>
       </div>
       <div class="kpi-glow kpi-glow--teal"></div>
     </div>
@@ -203,6 +203,52 @@
         </tbody>
       </table>
     </div>
+  </section>
+
+  <!-- TODAY'S APPOINTMENTS WITH FEES -->
+  <section *ngIf="!loading" class="glass-panel">
+    <div class="panel-head">
+      <div class="panel-title-group">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <h2>Today's Appointments & Fees</h2>
+      </div>
+      <a routerLink="/appointment-list" class="panel-link">
+        View All
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9,18 15,12 9,6"/></svg>
+      </a>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Time</th>
+          <th>Fee</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appt of todayAppointments; let i = index">
+          <td style="font-weight:600; color:#4f8cff;">{{ i + 1 }}</td>
+          <td>
+            <div class="patient-cell">
+              <span class="pt-avatar">{{ getInitials(appt.patientName) }}</span>
+              {{ appt.patientName }}
+            </div>
+          </td>
+          <td>{{ appt.doctorName }}</td>
+          <td>{{ appt.appointmentTime }}</td>
+          <td style="font-weight:700; color:#059669;">{{ formatCurrency(appt.feeCharged || 0) }}</td>
+          <td>
+            <span class="badge" [ngClass]="getAppointmentBadgeClass(appt.status)">{{ appt.status }}</span>
+          </td>
+        </tr>
+        <tr *ngIf="todayAppointments.length === 0">
+          <td colspan="6" class="empty-state">No appointments today</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 
   <!-- SYSTEM MODULES -->

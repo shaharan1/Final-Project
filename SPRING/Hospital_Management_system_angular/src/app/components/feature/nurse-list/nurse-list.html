@@ -1,135 +1,137 @@
-<div class="container">
+<div class="nl-container">
 
-    <div class="card">
+  <div class="nl-card">
 
-        <h2>Nurse List</h2>
-
-        <div class="toolbar">
-
-            <input
-                class="form-control"
-                placeholder="Search..."
-                [(ngModel)]="searchText"
-                (keyup)="search()">
-
-            <input
-                class="form-control"
-                placeholder="Ward Name"
-                [(ngModel)]="ward">
-
-            <button
-                class="btn btn-primary"
-                (click)="searchWard()">
-                Ward Search
-            </button>
-
-            <button
-                class="btn btn-success"
-                (click)="loadOnDuty()">
-                On Duty
-            </button>
-
-            <button
-                class="btn btn-secondary"
-                (click)="reset()">
-                Refresh
-            </button>
-
-        </div>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                <tr>
-
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Ward</th>
-                    <th>Shift</th>
-                    <th>Experience</th>
-                    <th>Duty</th>
-                    <th>Status</th>
-                    <th>Action</th>
-
-                </tr>
-
-                </thead>
-
-                <tbody>
-
-                <tr *ngFor="let nurse of filteredNurses">
-
-                    <td>{{ nurse.id }}</td>
-
-                    <td>{{ nurse.name }}</td>
-
-                    <td>{{ nurse.email }}</td>
-
-                    <td>{{ nurse.phone }}</td>
-
-                    <td>{{ nurse.assignedWard }}</td>
-
-                    <td>{{ nurse.shift }}</td>
-
-                    <td>{{ nurse.experienceYears }} Years</td>
-
-                    <td>
-
-                        <span
-                            class="badge"
-                            [ngClass]="nurse.onDuty ? 'badge-success':'badge-danger'">
-
-                            {{ nurse.onDuty ? 'ON DUTY':'OFF DUTY' }}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <span
-                            class="badge"
-                            [ngClass]="nurse.active ? 'badge-success':'badge-warning'">
-
-                            {{ nurse.active ? 'ACTIVE':'INACTIVE' }}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <div class="action-buttons">
-
-                            <button
-                                class="btn btn-success"
-                                (click)="changeDutyStatus(nurse)">
-                                Duty
-                            </button>
-
-                            <button
-                                class="btn btn-warning"
-                                (click)="changeActiveStatus(nurse)">
-                                Active
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
+    <div class="nl-header">
+      <div class="nl-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z" />
+          <path d="M9 14h6" />
+          <path d="M12 14v4" />
+          <path d="M8 22h8" />
+          <path d="M9 18h6" />
+        </svg>
+      </div>
+      <div class="nl-header-text">
+        <h2>Nurse Management</h2>
+        <p>Monitor and manage nursing staff across all wards</p>
+      </div>
     </div>
+
+    <div class="nl-toolbar">
+      <div class="nl-search-group">
+        <div class="nl-search-wrapper">
+          <svg class="nl-search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input class="nl-input nl-search-input" placeholder="Search by name, email or phone..."
+            [(ngModel)]="searchText" (keyup)="search()" />
+        </div>
+      </div>
+
+      <div class="nl-filter-group">
+        <div class="nl-search-wrapper">
+          <svg class="nl-search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" />
+            <path d="M3 9l2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
+          </svg>
+          <input class="nl-input nl-ward-input" placeholder="Ward Name" [(ngModel)]="ward" />
+        </div>
+        <button class="nl-btn nl-btn-ward" (click)="searchWard()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          Ward Search
+        </button>
+      </div>
+
+      <div class="nl-action-group">
+        <button class="nl-btn nl-btn-duty" (click)="loadOnDuty()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          On Duty
+        </button>
+        <button class="nl-btn nl-btn-refresh" (click)="reset()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <div class="nl-table-wrapper">
+      <table class="nl-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Ward</th>
+            <th>Shift</th>
+            <th>Experience</th>
+            <th>Duty</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nurse of filteredNurses" class="nl-table-row">
+            <td class="nl-id-cell">{{ nurse.id }}</td>
+            <td>
+              <div class="nl-name-cell">
+                <div class="nl-avatar">{{ nurse.name.charAt(0) }}</div>
+                <span>{{ nurse.name }}</span>
+              </div>
+            </td>
+            <td class="nl-email-cell">{{ nurse.email }}</td>
+            <td>{{ nurse.phone }}</td>
+            <td>
+              <span class="nl-ward-tag">{{ nurse.assignedWard }}</span>
+            </td>
+            <td>
+              <span class="nl-shift-tag">{{ nurse.shift }}</span>
+            </td>
+            <td>{{ nurse.experienceYears }} Years</td>
+            <td>
+              <span class="nl-badge" [ngClass]="nurse.onDuty ? 'nl-badge-on' : 'nl-badge-off'">
+                <span class="nl-badge-dot"></span>
+                {{ nurse.onDuty ? 'ON DUTY' : 'OFF DUTY' }}
+              </span>
+            </td>
+            <td>
+              <span class="nl-badge" [ngClass]="nurse.active ? 'nl-badge-active' : 'nl-badge-inactive'">
+                <span class="nl-badge-dot"></span>
+                {{ nurse.active ? 'ACTIVE' : 'INACTIVE' }}
+              </span>
+            </td>
+            <td>
+              <div class="nl-action-buttons">
+                <button class="nl-action-btn nl-action-duty" (click)="changeDutyStatus(nurse)">
+                  Duty
+                </button>
+                <button class="nl-action-btn nl-action-active" (click)="changeActiveStatus(nurse)">
+                  Active
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 
 </div>

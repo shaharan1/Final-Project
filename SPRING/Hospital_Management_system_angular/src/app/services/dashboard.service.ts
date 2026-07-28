@@ -28,6 +28,10 @@ export interface DashboardStats {
   lowStockMedicines: number;
   pendingAdmissions: number;
   activeAdmissions: number;
+  totalAppointmentFees: number;
+  todayAppointmentFees: number;
+  totalAppointments: number;
+  confirmedAppointments: number;
 }
 
 export interface WardOccupancy {
@@ -54,6 +58,7 @@ export interface RecentAppointment {
   appointmentTime: string;
   status: string;
   problemDescription: string;
+  feeCharged: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -108,6 +113,10 @@ export class DashboardService {
           lowStockMedicines: 0,
           pendingAdmissions: data.admissions.filter(a => a.status === 'PENDING').length,
           activeAdmissions: activeAdmissions.length,
+          totalAppointmentFees: data.appointments.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          todayAppointmentFees: todayAppts.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          totalAppointments: data.appointments.length,
+          confirmedAppointments: data.appointments.filter((a: any) => a.status === 'CONFIRMED').length,
         };
       })
     );
@@ -167,6 +176,7 @@ export class DashboardService {
             appointmentTime: a.appointmentTime,
             status: a.status ?? 'PENDING',
             problemDescription: a.problemDescription ?? '',
+            feeCharged: a.feeCharged ?? 0,
           }));
       })
     );
@@ -187,6 +197,10 @@ export class DashboardService {
           totalPatients: uniquePatients.size,
           todayAppointments: todayAppts.length,
           pendingReports: appts.filter(a => a.status === 'PENDING').length,
+          totalAppointmentFees: appts.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          todayAppointmentFees: todayAppts.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          totalAppointments: appts.length,
+          confirmedAppointments: appts.filter((a: any) => a.status === 'CONFIRMED').length,
           appointments: todayAppts.slice(0, 10).map(a => ({
             id: a.id,
             patientName: a.patientName,
@@ -195,6 +209,7 @@ export class DashboardService {
             appointmentTime: a.appointmentTime,
             status: a.status,
             problemDescription: a.problemDescription,
+            feeCharged: a.feeCharged ?? 0,
           })),
         };
       })
@@ -225,6 +240,10 @@ export class DashboardService {
           lowStockMedicines: 0,
           pendingAdmissions: data.admissions.filter(a => a.status === 'PENDING').length,
           activeAdmissions: active.length,
+          totalAppointmentFees: 0,
+          todayAppointmentFees: 0,
+          totalAppointments: 0,
+          confirmedAppointments: 0,
         };
       })
     );
@@ -255,6 +274,10 @@ export class DashboardService {
           lowStockMedicines: 0,
           pendingAdmissions: 0,
           activeAdmissions: 0,
+          totalAppointmentFees: data.appointments.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          todayAppointmentFees: todayAppts.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          totalAppointments: data.appointments.length,
+          confirmedAppointments: data.appointments.filter((a: any) => a.status === 'CONFIRMED').length,
         };
       })
     );
@@ -281,6 +304,10 @@ export class DashboardService {
         lowStockMedicines: Math.min(data.medicines.length, 5),
         pendingAdmissions: 0,
         activeAdmissions: 0,
+        totalAppointmentFees: 0,
+        todayAppointmentFees: 0,
+        totalAppointments: 0,
+        confirmedAppointments: 0,
       }))
     );
   }
@@ -305,6 +332,10 @@ export class DashboardService {
         lowStockMedicines: 0,
         pendingAdmissions: 0,
         activeAdmissions: 0,
+        totalAppointmentFees: 0,
+        todayAppointmentFees: 0,
+        totalAppointments: 0,
+        confirmedAppointments: 0,
       }))
     );
   }
@@ -334,6 +365,10 @@ export class DashboardService {
           lowStockMedicines: 0,
           pendingAdmissions: data.admissions.filter(a => a.status === 'PENDING').length,
           activeAdmissions: data.admissions.filter(a => a.status === 'ADMITTED').length,
+          totalAppointmentFees: data.appointments.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          todayAppointmentFees: data.appointments.filter((a: any) => a.appointmentDate === today).reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
+          totalAppointments: data.appointments.length,
+          confirmedAppointments: data.appointments.filter((a: any) => a.status === 'CONFIRMED').length,
         };
       })
     );
@@ -363,6 +398,10 @@ export class DashboardService {
           lowStockMedicines: Math.min(data.medicines.length, 3),
           pendingAdmissions: 0,
           activeAdmissions: 0,
+          totalAppointmentFees: 0,
+          todayAppointmentFees: 0,
+          totalAppointments: 0,
+          confirmedAppointments: 0,
         };
       })
     );
@@ -392,6 +431,10 @@ export class DashboardService {
           lowStockMedicines: 0,
           pendingAdmissions: data.admissions.filter(a => a.status === 'PENDING').length,
           activeAdmissions: active.length,
+          totalAppointmentFees: 0,
+          todayAppointmentFees: 0,
+          totalAppointments: 0,
+          confirmedAppointments: 0,
         };
       })
     );

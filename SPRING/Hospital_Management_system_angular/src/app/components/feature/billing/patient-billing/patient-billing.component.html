@@ -21,15 +21,18 @@
   <div class="search-section glass">
     <div class="search-bar">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" class="search-input" placeholder="Search patient by name, phone or ID..." [(ngModel)]="searchTerm" (ngModelChange)="searchPatients()">
-      <button class="btn btn-primary btn-sm" (click)="searchPatients()">Search</button>
+      <input type="text" class="search-input" placeholder="Search patient by name, phone or ID..."
+        [(ngModel)]="searchTerm" (ngModelChange)="searchPatients()" (keyup.enter)="searchPatients()">
+      <button class="btn btn-primary btn-sm" (click)="searchPatients()" [disabled]="searching">
+        {{ searching ? 'Searching...' : 'Search' }}
+      </button>
     </div>
   </div>
 
   <!-- Patient Search Results -->
   <div class="patient-results glass" *ngIf="showPatientSearch && filteredPatients.length > 0">
     <div class="result-item" *ngFor="let patient of filteredPatients" (click)="selectPatient(patient)">
-      <div class="result-avatar">{{ patient.name.charAt(0) }}</div>
+      <div class="result-avatar">{{ patient.name?.charAt(0) }}</div>
       <div class="result-info">
         <strong>{{ patient.name }}</strong>
         <span>{{ patient.patientCode }} • {{ patient.phone }}</span>
@@ -37,7 +40,7 @@
       <span class="badge badge-info">{{ patient.gender }}</span>
     </div>
   </div>
-  <div class="patient-results glass" *ngIf="showPatientSearch && searchTerm && filteredPatients.length === 0">
+  <div class="patient-results glass" *ngIf="showPatientSearch && searchTerm && filteredPatients.length === 0 && !searching">
     <p class="no-results">No patients found for "{{ searchTerm }}"</p>
   </div>
 
@@ -49,7 +52,9 @@
       <div class="info-card glass">
         <div class="card-header">
           <h2>Patient Information</h2>
-          <span class="badge badge-success">Manual Entry</span>
+          <span class="badge" [ngClass]="selectedPatient ? 'badge-success' : 'badge-secondary'">
+            {{ selectedPatient ? 'FROM DATABASE' : 'MANUAL ENTRY' }}
+          </span>
         </div>
         <div class="form-grid">
           <div class="form-group">
@@ -146,12 +151,12 @@
             <span class="summary-value">{{ formatCurrency(calculateSubtotal()) }}</span>
           </div>
           <div class="summary-row">
-            <span>Discount ({{ discountPercent }}%)</span>
-            <span class="summary-value discount">{{ formatCurrency(calculateDiscount()) }}</span>
-          </div>
-          <div class="summary-row">
             <label for="discountInput">Discount %</label>
             <input id="discountInput" type="number" class="discount-input" [(ngModel)]="discountPercent" min="0" max="100" (ngModelChange)="calculateTotals()">
+          </div>
+          <div class="summary-row">
+            <span>Discount ({{ discountPercent }}%)</span>
+            <span class="summary-value discount">{{ formatCurrency(calculateDiscount()) }}</span>
           </div>
           <div class="summary-row">
             <span>Tax ({{ (taxRate * 100).toFixed(0) }}%)</span>
@@ -207,6 +212,10 @@
             <span class="info-value">{{ billForm.patientName || 'N/A' }}</span>
           </div>
           <div class="info-row">
+            <span class="info-label">Patient Code</span>
+            <span class="info-value font-mono">{{ billForm.patientCode || 'N/A' }}</span>
+          </div>
+          <div class="info-row">
             <span class="info-label">Items</span>
             <span class="info-value">{{ billItems.length }}</span>
           </div>
@@ -225,19 +234,25 @@
       <div class="info-card glass recent-bills-card" *ngIf="showRecentBills">
         <div class="card-header">
           <h2>Recent Bills</h2>
+          <button class="btn btn-outline btn-sm" (click)="loadRecentBills()" style="padding: 4px 10px; font-size: 0.7rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
         </div>
         <div class="recent-list">
-  <div class="recent-item" *ngFor="let bill of recentBills" (click)="loadRecentBill(bill)">
-    <div class="recent-main">
-      <span class="recent-bill-num">{{ bill.billNumber }}</span>
-      <span class="recent-patient">{{ bill.patientName }}</span>
-    </div>
-    <div class="recent-meta">
-      <span class="recent-date">{{ bill.date }}</span>
-      <span class="recent-total">{{ formatCurrency(bill.total) }}</span>
-      <span class="badge" [ngClass]="getStatusClass(bill.status)">{{ bill.status }}</span>
-    </div>
-  </div>
+          <div class="recent-item" *ngFor="let bill of recentBills" (click)="loadRecentBill(bill)">
+            <div class="recent-main">
+              <span class="recent-bill-num">{{ bill.billNumber }}</span>
+              <span class="recent-patient">{{ bill.patientName }}</span>
+            </div>
+            <div class="recent-meta">
+              <span class="recent-date">{{ bill.date }}</span>
+              <span class="recent-total">{{ formatCurrency(bill.total) }}</span>
+              <span class="badge" [ngClass]="getStatusClass(bill.status)">{{ bill.status }}</span>
+            </div>
+          </div>
+          <div *ngIf="recentBills.length === 0" style="text-align:center; padding:16px; color:rgba(255,255,255,0.4); font-size:0.8rem;">
+            No recent bills found
+          </div>
         </div>
       </div>
 
@@ -249,19 +264,19 @@
         <div class="stats-list">
           <div class="stat-item">
             <span class="stat-label">Today's Bills</span>
-            <span class="stat-value">12</span>
+            <span class="stat-value">{{ dashboardStats?.todayPayments ?? '-' }}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Today's Revenue</span>
-            <span class="stat-value">৳1,25,000</span>
+            <span class="stat-value">{{ formatCurrency(dashboardStats?.todayRevenue ?? 0) }}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">Pending Payments</span>
-            <span class="stat-value" style="color: #fd7e14;">3</span>
+            <span class="stat-value" style="color: #fd7e14;">{{ dashboardStats?.pendingPayments ?? '-' }}</span>
           </div>
           <div class="stat-item">
-            <span class="stat-label">Paid Today</span>
-            <span class="stat-value" style="color: #198754;">9</span>
+            <span class="stat-label">Total Revenue</span>
+            <span class="stat-value" style="color: #198754;">{{ formatCurrency(dashboardStats?.totalRevenue ?? 0) }}</span>
           </div>
         </div>
       </div>

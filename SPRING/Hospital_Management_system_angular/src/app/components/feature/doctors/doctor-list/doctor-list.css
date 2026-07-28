@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dl-container {
+  font-family: 'Inter', sans-serif;
+  padding: 24px;
+  background: #f0fdf4;
+  min-height: 100vh;
+}
+
+.dl-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(5, 150, 105, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.dl-header {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dl-header-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+}
+
+.dl-header-text h2 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.dl-header-text p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.dl-table-wrapper {
+  overflow-x: auto;
+  padding: 0;
+}
+
+.dl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.dl-table thead {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+}
+
+.dl-table thead th {
+  padding: 14px 16px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+  white-space: nowrap;
+  border: none;
+}
+
+.dl-table thead th:first-child {
+  padding-left: 24px;
+}
+
+.dl-table thead th:last-child {
+  padding-right: 24px;
+}
+
+.dl-table-row {
+  transition: background 0.15s ease;
+}
+
+.dl-table-row:hover {
+  background: #f0fdf4;
+}
+
+.dl-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dl-table tbody td {
+  padding: 14px 16px;
+  color: #374151;
+  vertical-align: middle;
+}
+
+.dl-table tbody td:first-child {
+  padding-left: 24px;
+}
+
+.dl-table tbody td:last-child {
+  padding-right: 24px;
+}
+
+.dl-id-cell {
+  font-weight: 600;
+  color: #059669;
+  font-size: 13px;
+}
+
+.dl-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dl-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.dl-dept-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #ecfdf5;
+  color: #059669;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  border: 1px solid #d1fae5;
+}
+
+.dl-spec-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #f0f9ff;
+  color: #0284c7;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  border: 1px solid #e0f2fe;
+}
+
+.dl-fee {
+  font-weight: 700;
+  color: #059669;
+}
+
+.dl-action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.dl-action-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dl-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.dl-action-edit {
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  color: #ffffff;
+}
+
+.dl-action-delete {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #ffffff;
+}
+
+.dl-empty {
+  text-align: center;
+  padding: 40px 16px !important;
+  color: #9ca3af;
+}
+
+.dl-empty svg {
+  margin-bottom: 12px;
+}
+
+.dl-empty p {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .dl-container {
+    padding: 12px;
+  }
+
+  .dl-header {
+    padding: 20px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .dl-table thead th:first-child,
+  .dl-table tbody td:first-child {
+    padding-left: 16px;
+  }
+
+  .dl-table thead th:last-child,
+  .dl-table tbody td:last-child {
+    padding-right: 16px;
+  }
+
+  .dl-action-buttons {
+    flex-direction: column;
+  }
+}

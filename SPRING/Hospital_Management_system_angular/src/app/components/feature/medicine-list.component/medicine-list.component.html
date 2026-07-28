@@ -1,58 +1,89 @@
-<div class="container mt-4">
+<div class="ml-container">
 
-    <div class="card shadow">
+  <div class="ml-card">
 
-        <div class="card-header bg-success text-white">
-            <h4>Medicine List</h4>
-        </div>
-
-        <div class="card-body">
-
-            <table class="table table-bordered table-hover">
-
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Medicine</th>
-                        <th>Generic</th>
-                        <th>Dosage</th>
-                        <!-- <th>Prescription ID</th> -->
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr *ngFor="let m of medicines; let i = index">
-
-                        <td>{{ i + 1 }}</td>
-                        <td>{{ m.medicineName }}</td>
-                        <td>{{ m.genericName }}</td>
-                        <td>{{ m.dosage }}</td>
-                        <!-- <td>{{ m.prescriptionId }}</td> -->
-
-                        <td>
-                            <button
-                                class="btn btn-warning btn-sm me-2"
-                                (click)="edit(m.id!)">
-                                Update
-                            </button>
-
-                            <button
-                                class="btn btn-danger btn-sm"
-                                (click)="delete(m.id!)">
-                                Delete
-                            </button>
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
+    <div class="ml-header">
+      <div class="ml-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+          <polyline points="17 21 17 13 7 13 7 21" />
+          <polyline points="7 3 7 8 15 8" />
+        </svg>
+      </div>
+      <div class="ml-header-text">
+        <h2>Medicine Management</h2>
+        <p>Track and manage all medicines in the pharmacy inventory</p>
+      </div>
     </div>
+
+    <div class="ml-table-wrapper">
+      <table class="ml-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Medicine</th>
+            <th>Generic</th>
+            <th>Dosage</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of medicines; let i = index" class="ml-table-row">
+            <td class="ml-id-cell">{{ i + 1 }}</td>
+            <td>
+              <div class="ml-name-cell">
+                <div class="ml-avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                  </svg>
+                </div>
+                <span>{{ m.medicineName }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="ml-generic-tag">{{ m.genericName }}</span>
+            </td>
+            <td>
+              <span class="ml-dosage-tag">{{ m.dosage }}</span>
+            </td>
+            <td>
+              <div class="ml-action-buttons">
+                <button class="ml-action-btn ml-action-edit" (click)="edit(m.id!)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                  </svg>
+                  Update
+                </button>
+                <button class="ml-action-btn ml-action-delete" (click)="delete(m.id!)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  </svg>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="medicines.length === 0">
+            <td colspan="5" class="ml-empty">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                <polyline points="17 21 17 13 7 13 7 21" />
+              </svg>
+              <p>No medicines found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 
 </div>

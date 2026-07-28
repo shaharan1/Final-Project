@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
 import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
-import { DashboardService, DashboardStats, WardOccupancy, RecentAdmission } from '../../../../services/dashboard.service';
+import { DashboardService, DashboardStats, WardOccupancy, RecentAdmission, RecentAppointment } from '../../../../services/dashboard.service';
 import { TestOrderService } from '../../../../services/test-order.service';
 import { LabStats } from '../../../../models/test-order.model';
 
@@ -18,6 +18,7 @@ export class AdminDashboardComponent implements OnInit {
   stats: DashboardStats | null = null;
   wards: WardOccupancy[] = [];
   recentAdmissions: RecentAdmission[] = [];
+  todayAppointments: RecentAppointment[] = [];
   labStats: LabStats | null = null;
   loading = true;
 
@@ -39,6 +40,10 @@ export class AdminDashboardComponent implements OnInit {
     this.dashboardService.getRecentAdmissions().subscribe(admissions => {
       this.recentAdmissions = admissions;
       this.loading = false;
+      this.cdr.detectChanges();
+    });
+    this.dashboardService.getTodayAppointments().subscribe(appts => {
+      this.todayAppointments = appts;
       this.cdr.detectChanges();
     });
     this.testOrderService.getStats().subscribe({
@@ -73,5 +78,18 @@ export class AdminDashboardComponent implements OnInit {
     if (percentage >= 90) return 'high';
     if (percentage <= 40) return 'low';
     return '';
+  }
+
+  formatCurrency(amount: number): string {
+    return '৳' + (amount || 0).toLocaleString('en-BD');
+  }
+
+  getAppointmentBadgeClass(status: string): string {
+    switch (status?.toUpperCase()) {
+      case 'CONFIRMED': return 'badge--green';
+      case 'PENDING_VERIFICATION': return 'badge--yellow';
+      case 'CANCELLED': return 'badge--red';
+      default: return 'badge--default';
+    }
   }
 }

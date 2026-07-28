@@ -1,267 +1,230 @@
-<div class="container-fluid mt-4">
-
-    <div class="card shadow">
-
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-
-            <h4 class="mb-0">
-                {{ isDoctor ? 'My Appointments' : 'Appointment Management' }}
-            </h4>
-
-            <button class="btn btn-light btn-sm" (click)="loadAppointments()">
-
-                <i class="bi bi-arrow-clockwise"></i>
-                Refresh
-
-            </button>
-
-        </div>
-
-        <div class="card-body">
-
-            <!-- ================= Filter Section ================= -->
-
-            <div class="row g-3 mb-4" *ngIf="!isDoctor">
-
-                <div class="col-md-4">
-
-                    <label class="form-label fw-bold">
-                        Doctor
-                    </label>
-
-                    <select class="form-select" [(ngModel)]="doctorId">
-
-                        <option [ngValue]="undefined">
-                            All Doctors
-                        </option>
-
-                        <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
-
-                            {{doctor.name}}
-
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <label class="form-label fw-bold">
-                        Appointment Date
-                    </label>
-
-                    <input type="date" class="form-control" [(ngModel)]="appointmentDate">
-
-                </div>
-
-                <div class="col-md-5 d-flex align-items-end flex-wrap">
-
-                    <button class="btn btn-primary me-2 mb-2" (click)="search()">
-
-                        <i class="bi bi-search"></i>
-                        Search
-
-                    </button>
-
-                    <button class="btn btn-secondary me-2 mb-2" (click)="reset()">
-
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                        Reset
-
-                    </button>
-
-                    <button class="btn btn-success mb-2" (click)="downloadDoctorWisePdf()">
-
-                        <i class="bi bi-file-earmark-pdf-fill"></i>
-                        Download Report
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div class="row g-3 mb-4" *ngIf="isDoctor">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Appointment Date</label>
-                    <input type="date" class="form-control" [(ngModel)]="appointmentDate">
-                </div>
-                <div class="col-md-8 d-flex align-items-end flex-wrap">
-                    <button class="btn btn-primary me-2 mb-2" (click)="search()">Search</button>
-                    <button class="btn btn-secondary me-2 mb-2" (click)="reset()">Reset</button>
-                    <button class="btn btn-success mb-2" (click)="downloadDoctorWisePdf()">Download Report</button>
-                </div>
-            </div>
-
-            <!-- ================= Table ================= -->
-
-            <div class="table-responsive">
-
-                <table class="table table-bordered table-hover align-middle">
-
-                    <thead class="table-primary">
-
-                        <tr>
-
-                            <th>#</th>
-
-                            <th>Appointment No</th>
-
-                            <th>Patient</th>
-
-                            <th>Mobile</th>
-
-                            <th>Doctor</th>
-
-                            <th>Specialization</th>
-
-                            <th>Date</th>
-
-                            <th>Time</th>
-
-                            <th>Fee</th>
-
-                            <th>Status</th>
-
-                            <th>Payment</th>
-
-                            <th width="220">
-                                Action
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr *ngFor="let appointment of appointments; let i=index">
-
-                            <td>{{i+1}}</td>
-
-                            <td>
-
-                                {{appointment.appointmentNumber}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.patientName}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.mobileNumber}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.doctorName}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.doctorSpecialization}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.appointmentDate}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.appointmentTime}}
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.feeCharged}} Tk
-
-                            </td>
-
-                            <td>
-
-                                <span class="badge" [ngClass]="{
-
-                                    'bg-success': appointment.status=='CONFIRMED',
-
-                                    'bg-warning text-dark': appointment.status=='PENDING_VERIFICATION',
-
-                                    'bg-danger': appointment.status=='CANCELLED'
-
-                                }">
-
-                                    {{appointment.status}}
-
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                {{appointment.paymentMethod}}
-
-                            </td>
-
-                            <td>
-
-                                <button class="btn btn-info btn-sm me-1" (click)="printSlip(appointment)">
-
-                                    Slip
-
-                                </button>
-
-                                <button class="btn btn-success btn-sm me-1" (click)="downloadPdf(appointment)">
-
-                                    PDF
-
-                                </button>
-
-                                <a *ngIf="isDoctor && appointment.status !== 'CANCELLED'"
-                                   [routerLink]="['/prescriptions/create', appointment.id]"
-                                   class="btn btn-warning btn-sm me-1">
-                                    Rx
-                                </a>
-
-                                <button class="btn btn-danger btn-sm" (click)="cancel(appointment.id!)"
-                                    [disabled]="appointment.status=='CANCELLED'"
-                                    *ngIf="!isDoctor">
-
-                                    Cancel
-
-                                </button>
-
-                            </td>
-
-                        </tr>
-
-                        <tr *ngIf="appointments.length==0">
-
-                            <td colspan="12" class="text-center text-danger fw-bold">
-
-                                No Appointment Found
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </div>
-
+<div class="al-container">
+
+  <div class="al-card">
+
+    <div class="al-header">
+      <div class="al-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
+      </div>
+      <div class="al-header-text">
+        <h2>{{ isDoctor ? 'My Appointments' : 'Appointment Management' }}</h2>
+        <p>Track, manage and print appointment records</p>
+      </div>
+      <button class="al-btn al-btn-refresh" (click)="loadAppointments()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10" />
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+        </svg>
+        Refresh
+      </button>
     </div>
+
+    <!-- Filter Section (Admin) -->
+    <div class="al-toolbar" *ngIf="!isDoctor">
+      <div class="al-filter-group">
+        <div class="al-filter-item">
+          <label class="al-label">Doctor</label>
+          <div class="al-select-wrapper">
+            <select class="al-input" [(ngModel)]="doctorId">
+              <option [ngValue]="undefined">All Doctors</option>
+              <option *ngFor="let doctor of doctors" [ngValue]="doctor.id">
+                {{ doctor.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="al-filter-item">
+          <label class="al-label">Appointment Date</label>
+          <input type="date" class="al-input" [(ngModel)]="appointmentDate" />
+        </div>
+        <div class="al-filter-actions">
+          <button class="al-btn al-btn-search" (click)="search()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Search
+          </button>
+          <button class="al-btn al-btn-reset" (click)="reset()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
+            Reset
+          </button>
+          <button class="al-btn al-btn-pdf" (click)="downloadDoctorWisePdf()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="12" y1="18" x2="12" y2="12" />
+              <polyline points="9 15 12 12 15 15" />
+            </svg>
+            Download Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Section (Doctor) -->
+    <div class="al-toolbar" *ngIf="isDoctor">
+      <div class="al-filter-group">
+        <div class="al-filter-item">
+          <label class="al-label">Appointment Date</label>
+          <input type="date" class="al-input" [(ngModel)]="appointmentDate" />
+        </div>
+        <div class="al-filter-actions">
+          <button class="al-btn al-btn-search" (click)="search()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            Search
+          </button>
+          <button class="al-btn al-btn-reset" (click)="reset()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+            </svg>
+            Reset
+          </button>
+          <button class="al-btn al-btn-pdf" (click)="downloadDoctorWisePdf()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="12" y1="18" x2="12" y2="12" />
+              <polyline points="9 15 12 12 15 15" />
+            </svg>
+            Download Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="al-table-wrapper">
+      <table class="al-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Appointment No</th>
+            <th>Patient</th>
+            <th>Mobile</th>
+            <th>Doctor</th>
+            <th>Specialization</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Fee</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appointment of appointments; let i = index" class="al-table-row">
+            <td class="al-id-cell">{{ i + 1 }}</td>
+            <td>
+              <span class="al-appt-number">{{ appointment.appointmentNumber }}</span>
+            </td>
+            <td>
+              <div class="al-name-cell">
+                <div class="al-avatar">{{ appointment.patientName?.charAt(0) }}</div>
+                <span>{{ appointment.patientName }}</span>
+              </div>
+            </td>
+            <td>{{ appointment.mobileNumber }}</td>
+            <td>
+              <div class="al-name-cell">
+                <div class="al-avatar al-avatar-doctor">{{ appointment.doctorName?.charAt(0) }}</div>
+                <span>{{ appointment.doctorName }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="al-spec-tag">{{ appointment.doctorSpecialization }}</span>
+            </td>
+            <td>{{ appointment.appointmentDate }}</td>
+            <td>
+              <span class="al-time-tag">{{ appointment.appointmentTime }}</span>
+            </td>
+            <td>
+              <span class="al-fee">{{ appointment.feeCharged }} Tk</span>
+            </td>
+            <td>
+              <span class="al-badge" [ngClass]="{
+                'al-badge-confirmed': appointment.status == 'CONFIRMED',
+                'al-badge-pending': appointment.status == 'PENDING_VERIFICATION',
+                'al-badge-cancelled': appointment.status == 'CANCELLED'
+              }">
+                <span class="al-badge-dot"></span>
+                {{ appointment.status }}
+              </span>
+            </td>
+            <td>{{ appointment.paymentMethod }}</td>
+            <td>
+              <div class="al-action-buttons">
+                <button class="al-action-btn al-action-slip" (click)="printSlip(appointment)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9" />
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                    <rect x="6" y="14" width="12" height="8" />
+                  </svg>
+                  Slip
+                </button>
+                <button class="al-action-btn al-action-pdf" (click)="downloadPdf(appointment)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                  </svg>
+                  PDF
+                </button>
+                <a *ngIf="isDoctor && appointment.status !== 'CANCELLED'"
+                  [routerLink]="['/prescriptions/create', appointment.id]"
+                  class="al-action-btn al-action-rx">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                  </svg>
+                  Rx
+                </a>
+                <button class="al-action-btn al-action-cancel" (click)="cancel(appointment.id!)"
+                  [disabled]="appointment.status == 'CANCELLED'" *ngIf="!isDoctor">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="15" y1="9" x2="9" y2="15" />
+                    <line x1="9" y1="9" x2="15" y2="15" />
+                  </svg>
+                  Cancel
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="appointments.length === 0">
+            <td colspan="12" class="al-empty">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+              <p>No Appointments Found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 
 </div>
