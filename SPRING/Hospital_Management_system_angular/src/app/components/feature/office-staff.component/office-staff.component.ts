@@ -84,46 +84,39 @@ export class OfficeStaffComponent {
       this.officeStaffForm.markAllAsTouched();
       return;
     }
-    this.uploadPhotoAndSave();
-  }
-
-  private uploadPhotoAndSave(): void {
-    if (!this.photoFile) {
-      this.submitOfficeStaff(this.officeStaffForm.value);
-      return;
+    const staffData = { ...this.officeStaffForm.value };
+    if (this.photoFile) {
+      delete staffData.photo;
     }
-    const formData = new FormData();
-    const rawValue = this.officeStaffForm.value;
-    Object.keys(rawValue).forEach(key => {
-      if (key !== 'photo') {
-        formData.append(key, rawValue[key] != null ? String(rawValue[key]) : '');
-      }
-    });
-    formData.append('photo', this.photoFile);
-    this.submitOfficeStaff(formData);
-  }
-
-  private submitOfficeStaff(data: FormData | any): void {
     if (this.isEdit) {
-      this.officeStaffService.update(
-        this.officeStaffId,
-        data
-      ).subscribe({
+      this.officeStaffService.update(this.officeStaffId, staffData).subscribe({
         next: () => {
-          alert('Office Staff Updated Successfully');
-          this.router.navigate(['/office-staff']);
+          if (this.photoFile) {
+            this.officeStaffService.uploadPhoto(this.officeStaffId, this.photoFile).subscribe(() => {
+              alert('Office Staff Updated Successfully');
+              this.router.navigate(['/office-staff']);
+            });
+          } else {
+            alert('Office Staff Updated Successfully');
+            this.router.navigate(['/office-staff']);
+          }
         },
         error: (err) => {
           console.error(err);
         }
       });
     } else {
-      this.officeStaffService.create(
-        data
-      ).subscribe({
-        next: () => {
-          alert('Office Staff Saved Successfully');
-          this.router.navigate(['/office-staff']);
+      this.officeStaffService.create(staffData).subscribe({
+        next: (response) => {
+          if (this.photoFile) {
+            this.officeStaffService.uploadPhoto(response.id, this.photoFile).subscribe(() => {
+              alert('Office Staff Saved Successfully');
+              this.router.navigate(['/office-staff']);
+            });
+          } else {
+            alert('Office Staff Saved Successfully');
+            this.router.navigate(['/office-staff']);
+          }
         },
         error: (err) => {
           console.error(err);
