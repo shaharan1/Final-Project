@@ -184,7 +184,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" (click)="closeModal()">Cancel</button>
-          <button class="btn btn-primary" (click)="saveSupplier()">{{ editingSupplier ? 'Update' : 'Save' }}</button>
+          <button class="btn btn-primary" (click)="saveSupplier()" [disabled]="saving">{{ editingSupplier ? 'Update' : 'Save' }}</button>
         </div>
       </div>
     </div>
@@ -205,7 +205,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
-          <button class="btn btn-danger" (click)="deleteSupplier()">Delete</button>
+          <button class="btn btn-danger" (click)="deleteSupplier()" [disabled]="saving">Delete</button>
         </div>
       </div>
     </div>

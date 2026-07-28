@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -25,6 +25,7 @@ export class SupplierComponent implements OnInit {
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
   loading = false;
+  saving = false;
   error = '';
 
   formModel: Partial<SupplierModel> = this.getEmptyForm();
@@ -37,7 +38,7 @@ export class SupplierComponent implements OnInit {
   get activeSuppliers(): number { return this.suppliers.filter(s => s.active !== false).length; }
   get dueAmountSuppliers(): number { return this.suppliers.filter(s => (s.totalDue ?? 0) > 0).length; }
 
-  constructor(private supplierService: SupplierService) {}
+  constructor(private supplierService: SupplierService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadSuppliers();
@@ -59,10 +60,12 @@ export class SupplierComponent implements OnInit {
         this.suppliers = data ?? [];
         this.filterSuppliers();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error = 'Failed to load suppliers. Please try again.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -76,6 +79,7 @@ export class SupplierComponent implements OnInit {
       (s.email ?? '').toLowerCase().includes(term) ||
       (s.companyName ?? '').toLowerCase().includes(term)
     );
+    this.cdr.detectChanges();
   }
 
   sort(column: string): void {
@@ -93,57 +97,69 @@ export class SupplierComponent implements OnInit {
       }
       return this.sortDirection === 'asc' ? (valA ?? 0) - (valB ?? 0) : (valB ?? 0) - (valA ?? 0);
     });
+    this.cdr.detectChanges();
   }
 
   openAddModal(): void {
     this.editingSupplier = null;
     this.formModel = this.getEmptyForm();
     this.showModal = true;
+    this.cdr.detectChanges();
   }
 
   openEditModal(supplier: SupplierModel): void {
     this.editingSupplier = supplier;
     this.formModel = { ...supplier };
     this.showModal = true;
+    this.cdr.detectChanges();
   }
 
   closeModal(): void {
     this.showModal = false;
     this.editingSupplier = null;
+    this.cdr.detectChanges();
   }
 
   saveSupplier(): void {
+    if (this.saving) return;
+    this.saving = true;
     if (this.editingSupplier && this.editingSupplier.id) {
       this.supplierService.update(this.editingSupplier.id, this.formModel as SupplierModel).pipe(
         catchError(err => {
           console.error('Failed to update supplier', err);
           this.error = 'Failed to update supplier.';
+          this.saving = false;
           return of(null);
         })
       ).subscribe({
         next: (result) => {
+          this.saving = false;
           if (result) {
             this.loadSuppliers();
             this.closeModal();
           }
+          this.cdr.detectChanges();
         },
-        error: () => { this.error = 'Failed to update supplier.'; }
+        error: () => { this.error = 'Failed to update supplier.'; this.saving = false; this.cdr.detectChanges(); }
       });
     } else {
       this.supplierService.create(this.formModel as SupplierModel).pipe(
         catchError(err => {
           console.error('Failed to create supplier', err);
           this.error = 'Failed to create supplier.';
+          this.saving = false;
           return of(null);
         })
       ).subscribe({
         next: (result) => {
+          this.saving = false;
           if (result) {
             this.loadSuppliers();
             this.closeModal();
           }
+          this.cdr.detectChanges();
         },
-        error: () => { this.error = 'Failed to create supplier.'; }
+        error: () => { this.error = 'Failed to create supplier.'; this.saving = false; this.cdr.detectChanges(); }
       });
     }
   }
@@ -151,33 +167,41 @@ export class SupplierComponent implements OnInit {
   confirmDelete(supplier: SupplierModel): void {
     this.supplierToDelete = supplier;
     this.showDeleteModal = true;
+    this.cdr.detectChanges();
   }
 
   deleteSupplier(): void {
+    if (this.saving) return;
     if (this.supplierToDelete && this.supplierToDelete.id) {
+      this.saving = true;
       this.supplierService.delete(this.supplierToDelete.id).pipe(
         catchError(err => {
           console.error('Failed to delete supplier', err);
           this.error = 'Failed to delete supplier.';
+          this.saving = false;
           return of(null);
         })
       ).subscribe({
         next: () => {
+          this.saving = false;
           this.loadSuppliers();
           this.showDeleteModal = false;
           this.supplierToDelete = null;
+          this.cdr.detectChanges();
         },
-        error: () => { this.error = 'Failed to delete supplier.'; }
+        error: () => { this.error = 'Failed to delete supplier.'; this.saving = false; this.cdr.detectChanges(); }
       });
     } else {
       this.showDeleteModal = false;
       this.supplierToDelete = null;
+      this.cdr.detectChanges();
     }
   }
 
   cancelDelete(): void {
     this.showDeleteModal = false;
     this.supplierToDelete = null;
+    this.cdr.detectChanges();
   }
 
   getStatusClass(supplier: SupplierModel): string {
