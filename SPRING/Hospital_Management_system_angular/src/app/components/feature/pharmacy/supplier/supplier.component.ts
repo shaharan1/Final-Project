@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { catchError, of, timeout } from 'rxjs';
 import { SupplierService } from '../../../../services/supplier.service';
 import { SupplierModel } from '../../../../models/supplier.model';
 
@@ -45,9 +46,17 @@ export class SupplierComponent implements OnInit {
   loadSuppliers(): void {
     this.loading = true;
     this.error = '';
-    this.supplierService.getAll().subscribe({
+    this.supplierService.getAll().pipe(
+      timeout(15000),
+      catchError(err => {
+        console.error('Failed to load suppliers', err);
+        this.error = 'Failed to load suppliers. Please try again.';
+        this.loading = false;
+        return of([]);
+      })
+    ).subscribe({
       next: (data: SupplierModel[]) => {
-        this.suppliers = data;
+        this.suppliers = data ?? [];
         this.filterSuppliers();
         this.loading = false;
       },
@@ -61,11 +70,11 @@ export class SupplierComponent implements OnInit {
   filterSuppliers(): void {
     const term = this.searchTerm.toLowerCase();
     this.filteredSuppliers = this.suppliers.filter(s =>
-      s.name.toLowerCase().includes(term) ||
-      s.contactPerson.toLowerCase().includes(term) ||
-      s.phone.includes(term) ||
-      s.email.toLowerCase().includes(term) ||
-      s.companyName.toLowerCase().includes(term)
+      (s.name ?? '').toLowerCase().includes(term) ||
+      (s.contactPerson ?? '').toLowerCase().includes(term) ||
+      (s.phone ?? '').includes(term) ||
+      (s.email ?? '').toLowerCase().includes(term) ||
+      (s.companyName ?? '').toLowerCase().includes(term)
     );
   }
 
@@ -105,18 +114,34 @@ export class SupplierComponent implements OnInit {
 
   saveSupplier(): void {
     if (this.editingSupplier && this.editingSupplier.id) {
-      this.supplierService.update(this.editingSupplier.id, this.formModel as SupplierModel).subscribe({
-        next: () => {
-          this.loadSuppliers();
-          this.closeModal();
+      this.supplierService.update(this.editingSupplier.id, this.formModel as SupplierModel).pipe(
+        catchError(err => {
+          console.error('Failed to update supplier', err);
+          this.error = 'Failed to update supplier.';
+          return of(null);
+        })
+      ).subscribe({
+        next: (result) => {
+          if (result) {
+            this.loadSuppliers();
+            this.closeModal();
+          }
         },
         error: () => { this.error = 'Failed to update supplier.'; }
       });
     } else {
-      this.supplierService.create(this.formModel as SupplierModel).subscribe({
-        next: () => {
-          this.loadSuppliers();
-          this.closeModal();
+      this.supplierService.create(this.formModel as SupplierModel).pipe(
+        catchError(err => {
+          console.error('Failed to create supplier', err);
+          this.error = 'Failed to create supplier.';
+          return of(null);
+        })
+      ).subscribe({
+        next: (result) => {
+          if (result) {
+            this.loadSuppliers();
+            this.closeModal();
+          }
         },
         error: () => { this.error = 'Failed to create supplier.'; }
       });
@@ -130,7 +155,13 @@ export class SupplierComponent implements OnInit {
 
   deleteSupplier(): void {
     if (this.supplierToDelete && this.supplierToDelete.id) {
-      this.supplierService.delete(this.supplierToDelete.id).subscribe({
+      this.supplierService.delete(this.supplierToDelete.id).pipe(
+        catchError(err => {
+          console.error('Failed to delete supplier', err);
+          this.error = 'Failed to delete supplier.';
+          return of(null);
+        })
+      ).subscribe({
         next: () => {
           this.loadSuppliers();
           this.showDeleteModal = false;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -34,6 +34,12 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
   refreshInterval: any;
   triageChart: Chart | null = null;
   statusChart: Chart | null = null;
+
+  constructor(
+
+
+    private cdr: ChangeDetectorRef
+  ) { }
 
   dashboardCards = [
     { label: 'Patients Today', value: 0, icon: 'bi-people-fill', color: '#dc3545', key: 'emergencyPatientsToday', route: '/emergency/registration' },
@@ -78,6 +84,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         this.dashboard = data;
         this.updateCards();
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.error = 'Failed to load dashboard';
@@ -92,6 +99,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         this.patients = data;
         this.filterByStatus(this.selectedStatus);
         this.buildTriageDistribution();
+        this.cdr.markForCheck();
       },
       error: () => {
         this.loading = false;

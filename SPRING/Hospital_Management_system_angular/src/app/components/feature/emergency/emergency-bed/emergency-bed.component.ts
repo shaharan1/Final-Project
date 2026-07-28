@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EmergencyBedService } from '../../../../services/emergency/emergency-bed.service';
@@ -38,6 +38,12 @@ export class EmergencyBedComponent implements OnInit {
   bedStatuses = ['AVAILABLE', 'OCCUPIED', 'CLEANING', 'RESERVED', 'MAINTENANCE'];
   bedTypes = ['STANDARD', 'MONITORED', 'VENTILATOR', 'ISOLATION', 'BARIATRIC'];
 
+  constructor(
+
+
+    private cdr: ChangeDetectorRef
+  ) { }
+
   ngOnInit(): void {
     this.loadBeds();
     this.loadPatients();
@@ -51,6 +57,7 @@ export class EmergencyBedComponent implements OnInit {
         this.applyFilters();
         this.getWardSummary();
         this.loading = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.showMessage('Failed to load beds', 'error');
@@ -62,7 +69,7 @@ export class EmergencyBedComponent implements OnInit {
   loadPatients(): void {
     this.patientService.getAll().subscribe({
       next: (data) => this.patients = data,
-      error: () => {}
+      error: () => { }
     });
   }
 
