@@ -43,6 +43,7 @@ export class Nurse implements OnInit {
   loadNurses() {
     this.nurseService.getAllNurses().subscribe(res => {
       this.nurses = res;
+      console.log(this.nurses);
     });
   }
 

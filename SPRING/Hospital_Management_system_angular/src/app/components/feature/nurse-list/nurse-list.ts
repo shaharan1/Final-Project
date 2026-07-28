@@ -35,6 +35,7 @@ export class NurseList implements OnInit {
         this.nurses = data;
         this.filteredNurses = data;
         this.cdr.markForCheck();
+        console.log(this.nurses)
       },
       error: (err) => console.error(err)
     });

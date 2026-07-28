@@ -37,7 +37,7 @@ public class OfficeStaffServiceImp implements OfficeStaffService {
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.OfficeStaff);
+        user.setRole(Role.valueOf(request.getRole() != null ? request.getRole() : "OfficeStaff"));
         user.setActive(true);
 
         User savedUser = userRepository.save(user);
@@ -103,6 +103,10 @@ public class OfficeStaffServiceImp implements OfficeStaffService {
         officeStaff.getUser().setName(request.getName());
         officeStaff.getUser().setEmail(request.getEmail());
         officeStaff.getUser().setPhone(request.getPhone());
+
+        if (request.getRole() != null && !request.getRole().trim().isEmpty()) {
+            officeStaff.getUser().setRole(Role.valueOf(request.getRole()));
+        }
 
         if (request.getPassword() != null &&
                 !request.getPassword().trim().isEmpty()) {

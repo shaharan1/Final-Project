@@ -13,25 +13,16 @@ import java.util.Date;
 public class OfficeStaffRequest {
 
     private String name;
-
     private String email;
-
     private String phone;
-
     private String password;
-
     private Gender gender;
-
+    private String role;
     private String position;
-
     private String age;
-
     private String department;
-
     private String workingHours;
-
     private Date joinDate;
-
     private String photo;
 
 }

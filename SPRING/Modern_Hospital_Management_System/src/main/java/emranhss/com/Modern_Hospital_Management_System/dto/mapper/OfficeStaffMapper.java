@@ -40,6 +40,9 @@ public class OfficeStaffMapper {
 
         // Office Staff Information
         response.setGender(officeStaff.getGender());
+        if (officeStaff.getUser() != null) {
+            response.setRole(officeStaff.getUser().getRole().name());
+        }
         response.setPosition(officeStaff.getPosition());
         response.setAge(officeStaff.getAge());
         response.setDepartment(officeStaff.getDepartment());
