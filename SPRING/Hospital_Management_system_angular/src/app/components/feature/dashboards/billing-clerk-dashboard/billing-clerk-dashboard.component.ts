@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+
 import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, DashboardStats, RecentAdmission } from '../../../../services/dashboard.service';
 
 @Component({
   selector: 'app-billing-clerk-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
+  imports: [CommonModule, RouterModule, ProfileCardComponent],
   templateUrl: './billing-clerk-dashboard.component.html',
   styleUrl: './billing-clerk-dashboard.component.css',
 })

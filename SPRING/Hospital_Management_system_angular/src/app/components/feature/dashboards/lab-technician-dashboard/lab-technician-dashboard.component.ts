@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+
 import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { TestOrderModel, LabStats } from '../../../../models/test-order.model';
 import { TestOrderService } from '../../../../services/test-order.service';
@@ -11,7 +11,7 @@ import { TestMasterModel } from '../../../../models/testMasterModel';
 @Component({
   selector: 'app-lab-technician-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
+  imports: [CommonModule, RouterModule, ProfileCardComponent],
   templateUrl: './lab-technician-dashboard.component.html',
   styleUrl: './lab-technician-dashboard.component.css',
 })

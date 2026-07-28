@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+
 import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, DashboardStats } from '../../../../services/dashboard.service';
 
 @Component({
   selector: 'app-pharmacist-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
+  imports: [CommonModule, RouterModule, ProfileCardComponent],
   templateUrl: './pharmacist-dashboard.component.html',
   styleUrl: './pharmacist-dashboard.component.css',
 })

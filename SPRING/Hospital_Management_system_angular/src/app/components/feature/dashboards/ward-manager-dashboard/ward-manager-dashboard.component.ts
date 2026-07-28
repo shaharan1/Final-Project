@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from '../../../shared/layout/layout/layout.component';
+
 import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, DashboardStats, WardOccupancy, RecentAdmission } from '../../../../services/dashboard.service';
 
 @Component({
   selector: 'app-ward-manager-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, ProfileCardComponent],
+  imports: [CommonModule, RouterModule, ProfileCardComponent],
   templateUrl: './ward-manager-dashboard.component.html',
   styleUrl: './ward-manager-dashboard.component.css',
 })
