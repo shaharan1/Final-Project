@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
 import { StorageService } from '../../../../services/storage.service';
 import { AuthService } from '../../../../services/auth.service';
 import { NavigationService } from '../../../../services/navigation.service';
@@ -13,9 +14,9 @@ import { NavGroup } from '../../../../models/nav-item.model';
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })
-export class LayoutComponent implements AfterViewInit {
+export class LayoutComponent implements AfterViewInit, OnInit {
 
-  @Input() pageTitle = 'Dashboard';
+  pageTitle = 'Dashboard';
 
   navGroups: NavGroup[] = [];
   userName = '';
@@ -28,6 +29,7 @@ export class LayoutComponent implements AfterViewInit {
     private storage: StorageService,
     private auth: AuthService,
     private navService: NavigationService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,10 @@ export class LayoutComponent implements AfterViewInit {
     this.userInitials = this.getInitials(this.userName);
     this.navGroups = this.navService.getNavGroups();
     this.greeting = this.getGreeting();
+
+    this.route.firstChild?.data.subscribe(data => {
+      this.pageTitle = data['title'] ?? 'Dashboard';
+    });
   }
 
   ngAfterViewInit(): void {
