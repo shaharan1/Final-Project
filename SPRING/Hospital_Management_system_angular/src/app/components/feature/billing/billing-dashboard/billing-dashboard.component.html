@@ -47,7 +47,7 @@
         </div>
         <div class="stat-body">
           <span class="stat-label">Today's Revenue</span>
-          <span class="stat-value">${{ getAnimated('todayRevenue') | number }}</span>
+          <span class="stat-value">৳{{ getAnimated('todayRevenue') | number }}</span>
           <span class="stat-change" [class.stat-change--up]="summary.todayRevenueChange >= 0" [class.stat-change--down]="summary.todayRevenueChange < 0">
             <svg *ngIf="summary.todayRevenueChange >= 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/></svg>
             <svg *ngIf="summary.todayRevenueChange < 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,18 13.5,8.5 8.5,13.5 1,6"/></svg>
@@ -65,7 +65,7 @@
         </div>
         <div class="stat-body">
           <span class="stat-label">Monthly Revenue</span>
-          <span class="stat-value">${{ getAnimated('monthlyRevenue') | number }}</span>
+          <span class="stat-value">৳{{ getAnimated('monthlyRevenue') | number }}</span>
           <span class="stat-change" [class.stat-change--up]="summary.monthlyRevenueChange >= 0" [class.stat-change--down]="summary.monthlyRevenueChange < 0">
             <svg *ngIf="summary.monthlyRevenueChange >= 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/></svg>
             <svg *ngIf="summary.monthlyRevenueChange < 0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23,18 13.5,8.5 8.5,13.5 1,6"/></svg>
@@ -140,7 +140,7 @@
         </div>
         <div class="stat-body">
           <span class="stat-label">Refund Amount</span>
-          <span class="stat-value stat-value--orange">${{ getAnimated('refundAmount') | number }}</span>
+          <span class="stat-value stat-value--orange">৳{{ getAnimated('refundAmount') | number }}</span>
           <span class="stat-sub">Total refunds</span>
         </div>
         <div class="stat-glow stat-glow--orange"></div>
@@ -174,7 +174,7 @@
               <div class="bar-chart__bar-wrapper">
                 <div class="bar-chart__bar bar-chart__bar--blue"
                      [style.height.%]="getDailyBarHeight(item.revenue)">
-                  <span class="bar-chart__tooltip">${{ item.revenue | number }}</span>
+                  <span class="bar-chart__tooltip">৳{{ item.revenue | number }}</span>
                 </div>
               </div>
               <span class="bar-chart__label">{{ formatDayLabel(item.date) }}</span>
@@ -197,7 +197,7 @@
               <div class="monthly-chart__bar-wrapper">
                 <div class="monthly-chart__bar monthly-chart__bar--green"
                      [style.height.%]="getMonthlyBarHeight(item.revenue)">
-                  <span class="monthly-chart__tooltip">${{ item.revenue | number }}</span>
+                  <span class="monthly-chart__tooltip">৳{{ item.revenue | number }}</span>
                 </div>
               </div>
               <span class="monthly-chart__label">{{ formatMonthLabel(item.date) }}</span>
@@ -244,7 +244,7 @@
         <div class="dept-item" *ngFor="let dept of departmentRevenue">
           <div class="dept-info">
             <span class="dept-name">{{ dept.department }}</span>
-            <span class="dept-amount">${{ dept.revenue | number }}</span>
+            <span class="dept-amount">৳{{ dept.revenue | number }}</span>
           </div>
           <div class="progress-bar">
             <div class="progress-bar__fill progress-bar__fill--animated"
@@ -280,7 +280,7 @@
                 <span class="badge" [ngClass]="getStatusClass(act.status)">{{ act.status }}</span>
               </div>
               <div class="timeline-bottom">
-                <span class="timeline-amount" *ngIf="act.amount">${{ act.amount | number }}</span>
+                <span class="timeline-amount" *ngIf="act.amount">৳{{ act.amount | number }}</span>
                 <span class="timeline-time">{{ act.time }}</span>
               </div>
             </div>
