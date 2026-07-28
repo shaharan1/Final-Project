@@ -23,7 +23,6 @@ import { PatientListComponent } from './components/feature/patient-list.componen
 import { LoginComponent } from './components/auth/login-component/login-component';
 import { RoleRedirect } from './components/auth/role-redirect/role-redirect';
 import { authGuard, roleGuard } from './guard/auth-guard-guard';
-import { DoctorDashboardComponent } from './components/feature/doctors/doctor-dashboard-component/doctor-dashboard-component';
 import { TestMasterComponent } from './components/feature/test-master.component/test-master.component';
 import { TestListComponent } from './components/feature/test-list.component/test-list.component';
 import { AdmissionComponent } from './components/feature/admission/admission-component/admission-component';
@@ -97,150 +96,159 @@ import { DietReportsComponent } from './components/feature/dietary/diet-reports/
 import { DietAlertsComponent } from './components/feature/dietary/diet-alerts/diet-alerts.component';
 import { DietHistoryComponent } from './components/feature/dietary/diet-history/diet-history.component';
 
+import { LayoutComponent } from './components/shared/layout/layout/layout.component';
+
 export const routes: Routes = [
 
-  // ============ Auth ============
+  // ============ Public ============
   { path: 'login', component: LoginComponent },
+  { path: '', component: LandingPageComponent },
+
+  // ============ Dashboard redirect ============
   { path: 'dashboard', component: RoleRedirect, canActivate: [authGuard] },
 
-  // ============ Role Dashboards ============
-  { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Admin Dashboard' } },
-  { path: 'doctor-dashboard', component: DoctorDashboardHomeComponent, canActivate: [authGuard, roleGuard(['Doctor'])], data: { title: 'Doctor Dashboard' } },
-  { path: 'nurse-dashboard', component: NurseDashboardComponent, canActivate: [authGuard, roleGuard(['Nurse'])], data: { title: 'Nurse Dashboard' } },
-  { path: 'office-staff-dashboard', component: OfficeStaffDashboardComponent, canActivate: [authGuard, roleGuard(['OfficeStaff'])], data: { title: 'Office Staff Dashboard' } },
-  { path: 'receptionist-dashboard', component: ReceptionistDashboardComponent, canActivate: [authGuard, roleGuard(['Receptionist'])], data: { title: 'Receptionist Dashboard' } },
-  { path: 'pharmacist-dashboard', component: PharmacistDashboardComponent, canActivate: [authGuard, roleGuard(['Pharmacist'])], data: { title: 'Pharmacist Dashboard' } },
-  { path: 'lab-technician-dashboard', component: LabTechnicianDashboardComponent, canActivate: [authGuard, roleGuard(['LabTechnician'])], data: { title: 'Lab Technician Dashboard' } },
-  { path: 'billing-clerk-dashboard', component: BillingClerkDashboardComponent, canActivate: [authGuard, roleGuard(['BillingClerk'])], data: { title: 'Billing Clerk Dashboard' } },
-  { path: 'inventory-manager-dashboard', component: InventoryManagerDashboardComponent, canActivate: [authGuard, roleGuard(['InventoryManager'])], data: { title: 'Inventory Manager Dashboard' } },
-  { path: 'ward-manager-dashboard', component: WardManagerDashboardComponent, canActivate: [authGuard, roleGuard(['WardManager'])], data: { title: 'Ward Manager Dashboard' } },
+  // ============ All authenticated routes under persistent layout ============
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [authGuard],
+    children: [
 
-  // ============ Doctors ============
-  { path: 'doctor-departments', component: DoctorDepartment, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Receptionist'])], data: { title: 'Doctor Departments' } },
-  { path: 'doctor/create', component: Doctor, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Add Doctor' } },
-  { path: 'doctor/edit/:id', component: Doctor, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Edit Doctor' } },
-  { path: 'doctor', component: DoctorList, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Receptionist'])], data: { title: 'Doctors' } },
-  { path: 'doctor/prescription/:appointmentId', component: PrescriptionComponent, canActivate: [authGuard, roleGuard(['Doctor'])], data: { title: 'Write Prescription' } },
+      // ============ Role Dashboards ============
+      { path: 'admin-dashboard', component: AdminDashboardComponent, data: { title: 'Admin Dashboard' } },
+      { path: 'doctor-dashboard', component: DoctorDashboardHomeComponent, data: { title: 'Doctor Dashboard' } },
+      { path: 'nurse-dashboard', component: NurseDashboardComponent, data: { title: 'Nurse Dashboard' } },
+      { path: 'office-staff-dashboard', component: OfficeStaffDashboardComponent, data: { title: 'Office Staff Dashboard' } },
+      { path: 'receptionist-dashboard', component: ReceptionistDashboardComponent, data: { title: 'Receptionist Dashboard' } },
+      { path: 'pharmacist-dashboard', component: PharmacistDashboardComponent, data: { title: 'Pharmacist Dashboard' } },
+      { path: 'lab-technician-dashboard', component: LabTechnicianDashboardComponent, data: { title: 'Lab Technician Dashboard' } },
+      { path: 'billing-clerk-dashboard', component: BillingClerkDashboardComponent, data: { title: 'Billing Clerk Dashboard' } },
+      { path: 'inventory-manager-dashboard', component: InventoryManagerDashboardComponent, data: { title: 'Inventory Manager Dashboard' } },
+      { path: 'ward-manager-dashboard', component: WardManagerDashboardComponent, data: { title: 'Ward Manager Dashboard' } },
 
-  // ============ Nurses ============
-  { path: 'nurses/create', component: Nurse, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Add Nurse' } },
-  { path: 'nurses', component: NurseList, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse'])], data: { title: 'Nurses' } },
+      // ============ Doctors ============
+      { path: 'doctor-departments', component: DoctorDepartment, data: { title: 'Doctor Departments' } },
+      { path: 'doctor/create', component: Doctor, data: { title: 'Add Doctor' } },
+      { path: 'doctor/edit/:id', component: Doctor, data: { title: 'Edit Doctor' } },
+      { path: 'doctor', component: DoctorList, data: { title: 'Doctors' } },
+      { path: 'doctor/prescription/:appointmentId', component: PrescriptionComponent, data: { title: 'Write Prescription' } },
 
-  // ============ Office Staff ============
-  { path: 'office-staff/create', component: OfficeStaffComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Add Office Staff' } },
-  { path: 'office-staff/edit/:id', component: OfficeStaffComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Edit Office Staff' } },
-  { path: 'office-staff', component: OfficeStaffList, canActivate: [authGuard, roleGuard(['Admin', 'OfficeStaff'])], data: { title: 'Office Staff' } },
+      // ============ Nurses ============
+      { path: 'nurses/create', component: Nurse, data: { title: 'Add Nurse' } },
+      { path: 'nurses', component: NurseList, data: { title: 'Nurses' } },
 
-  // ============ Schedule Slot ============
-  { path: 'schedule-slot', component: ScheduleSlotComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Receptionist'])], data: { title: 'Schedule Slots' } },
+      // ============ Office Staff ============
+      { path: 'office-staff/create', component: OfficeStaffComponent, data: { title: 'Add Office Staff' } },
+      { path: 'office-staff/edit/:id', component: OfficeStaffComponent, data: { title: 'Edit Office Staff' } },
+      { path: 'office-staff', component: OfficeStaffList, data: { title: 'Office Staff' } },
 
-  // ============ Appointments ============
-  { path: 'appointments', component: AppointmentComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Appointments' } },
-  { path: 'appointment-list', component: AppointmentList, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor', 'Nurse'])], data: { title: 'Appointment List' } },
-  { path: 'appointments/create', component: AppointmentComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist'])], data: { title: 'Book Appointment' } },
-  { path: 'appointments/edit/:id', component: AppointmentComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist'])], data: { title: 'Edit Appointment' } },
-  { path: 'appointment-slip', component: AppointmentSlip, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Appointment Slip' } },
+      // ============ Schedule Slot ============
+      { path: 'schedule-slot', component: ScheduleSlotComponent, data: { title: 'Schedule Slots' } },
 
-  // ============ Medicine ============
-  { path: 'medicines/create', component: MedicineComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist'])], data: { title: 'Add Medicine' } },
-  { path: 'medicine-list', component: MedicineListComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist', 'Doctor'])], data: { title: 'Medicine List' } },
-  { path: 'medicine/:id', component: MedicineComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist'])], data: { title: 'Edit Medicine' } },
+      // ============ Appointments ============
+      { path: 'appointments', component: AppointmentComponent, data: { title: 'Appointments' } },
+      { path: 'appointment-list', component: AppointmentList, data: { title: 'Appointment List' } },
+      { path: 'appointments/create', component: AppointmentComponent, data: { title: 'Book Appointment' } },
+      { path: 'appointments/edit/:id', component: AppointmentComponent, data: { title: 'Edit Appointment' } },
+      { path: 'appointment-slip', component: AppointmentSlip, data: { title: 'Appointment Slip' } },
 
-  // ============ Generics ============
-  { path: 'generics', component: Generic, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist'])], data: { title: 'Add Generic' } },
-  { path: 'generic-list', component: GenericListComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist'])], data: { title: 'Generic List' } },
+      // ============ Medicine ============
+      { path: 'medicines/create', component: MedicineComponent, data: { title: 'Add Medicine' } },
+      { path: 'medicine-list', component: MedicineListComponent, data: { title: 'Medicine List' } },
+      { path: 'medicine/:id', component: MedicineComponent, data: { title: 'Edit Medicine' } },
 
-  // ============ Prescriptions ============
-  { path: 'prescriptions', component: PrescriptionListComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse', 'Pharmacist'])], data: { title: 'Prescriptions' } },
-  { path: 'prescriptions/edit/:id', component: PrescriptionComponent, canActivate: [authGuard, roleGuard(['Doctor'])], data: { title: 'Edit Prescription' } },
-  { path: 'prescriptions/create/:appointmentId', component: PrescriptionComponent, canActivate: [authGuard, roleGuard(['Doctor'])], data: { title: 'Create Prescription' } },
+      // ============ Generics ============
+      { path: 'generics', component: Generic, data: { title: 'Add Generic' } },
+      { path: 'generic-list', component: GenericListComponent, data: { title: 'Generic List' } },
 
-  // ============ Patients ============
-  { path: 'patient', component: PatientComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Add Patient' } },
-  { path: 'patient/edit/:id', component: PatientComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Edit Patient' } },
-  { path: 'patient-list', component: PatientListComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor', 'Nurse'])], data: { title: 'Patient List' } },
+      // ============ Prescriptions ============
+      { path: 'prescriptions', component: PrescriptionListComponent, data: { title: 'Prescriptions' } },
+      { path: 'prescriptions/edit/:id', component: PrescriptionComponent, data: { title: 'Edit Prescription' } },
+      { path: 'prescriptions/create/:appointmentId', component: PrescriptionComponent, data: { title: 'Create Prescription' } },
 
-  // ============ Tests ============
-  { path: 'tests/create', component: TestMasterComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Add Test' } },
-  { path: 'tests/edit/:id', component: TestMasterComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Edit Test' } },
-  { path: 'test-list', component: TestListComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician', 'Doctor'])], data: { title: 'Test List' } },
+      // ============ Patients ============
+      { path: 'patient', component: PatientComponent, data: { title: 'Add Patient' } },
+      { path: 'patient/edit/:id', component: PatientComponent, data: { title: 'Edit Patient' } },
+      { path: 'patient-list', component: PatientListComponent, data: { title: 'Patient List' } },
 
-  // ============ Admission ============
-  { path: 'admission', component: AdmissionComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Patient Admission' } },
-  { path: 'admission-list', component: AdmissionListComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Doctor', 'Nurse'])], data: { title: 'Admission List' } },
+      // ============ Tests ============
+      { path: 'tests/create', component: TestMasterComponent, data: { title: 'Add Test' } },
+      { path: 'tests/edit/:id', component: TestMasterComponent, data: { title: 'Edit Test' } },
+      { path: 'test-list', component: TestListComponent, data: { title: 'Test List' } },
 
-  // ============ Wards & Beds ============
-  { path: 'ward-management', component: WardManagementComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager'])], data: { title: 'Ward Management' } },
-  { path: 'ward', component: WardComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager'])], data: { title: 'Add Ward' } },
-  { path: 'ward-list', component: WardListComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager', 'Doctor', 'Nurse'])], data: { title: 'Ward List' } },
-  { path: 'bed-management', component: BedManagementComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager'])], data: { title: 'Bed Management' } },
+      // ============ Admission ============
+      { path: 'admission', component: AdmissionComponent, data: { title: 'Patient Admission' } },
+      { path: 'admission-list', component: AdmissionListComponent, data: { title: 'Admission List' } },
 
-  // ============ Laboratory ============
-  { path: 'lab-reception', component: LabReceptionComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician', 'Receptionist'])], data: { title: 'Lab Reception' } },
-  { path: 'sample-collection', component: SampleCollectionComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician', 'Nurse'])], data: { title: 'Sample Collection' } },
-  { path: 'result-entry', component: ResultEntryComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Result Entry' } },
-  { path: 'lab-verification', component: LabVerificationComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician', 'Doctor'])], data: { title: 'Lab Verification' } },
-  { path: 'doctor-lab-reports', component: DoctorLabReportComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'LabTechnician'])], data: { title: 'Lab Reports' } },
+      // ============ Wards & Beds ============
+      { path: 'ward-management', component: WardManagementComponent, data: { title: 'Ward Management' } },
+      { path: 'ward', component: WardComponent, data: { title: 'Add Ward' } },
+      { path: 'ward-list', component: WardListComponent, data: { title: 'Ward List' } },
+      { path: 'bed-management', component: BedManagementComponent, data: { title: 'Bed Management' } },
 
-  // ============ Pharmacy Module ============
-  { path: 'pharmacy-dashboard', component: PharmacyDashboardComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist', 'InventoryManager'])], data: { title: 'Pharmacy Dashboard' } },
-  { path: 'suppliers', component: SupplierComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist', 'InventoryManager'])], data: { title: 'Suppliers' } },
-  { path: 'medicine-stock', component: MedicineStockComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist', 'InventoryManager'])], data: { title: 'Medicine Stock' } },
-  { path: 'purchase-orders', component: PurchaseOrderComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist', 'InventoryManager'])], data: { title: 'Purchase Orders' } },
-  { path: 'pharmacy-sale', component: PharmacySaleComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist'])], data: { title: 'Pharmacy Sale' } },
-  { path: 'pharmacy-reports', component: PharmacyReportComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist', 'InventoryManager'])], data: { title: 'Pharmacy Reports' } },
+      // ============ Laboratory ============
+      { path: 'lab-reception', component: LabReceptionComponent, data: { title: 'Lab Reception' } },
+      { path: 'sample-collection', component: SampleCollectionComponent, data: { title: 'Sample Collection' } },
+      { path: 'result-entry', component: ResultEntryComponent, data: { title: 'Result Entry' } },
+      { path: 'lab-verification', component: LabVerificationComponent, data: { title: 'Lab Verification' } },
+      { path: 'doctor-lab-reports', component: DoctorLabReportComponent, data: { title: 'Lab Reports' } },
 
-  // ============ Billing Module ============
-  { path: 'billing-dashboard', component: BillingDashboardComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Billing Dashboard' } },
-  { path: 'patient-billing', component: PatientBillingComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk', 'Receptionist'])], data: { title: 'Patient Billing' } },
-  { path: 'payments', component: PaymentModuleComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Payments' } },
-  { path: 'invoices', component: InvoiceComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Invoices' } },
-  { path: 'refunds', component: RefundManagementComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Refunds' } },
-  { path: 'insurance', component: InsuranceComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Insurance' } },
-  { path: 'billing-reports', component: BillingReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Billing Reports' } },
+      // ============ Pharmacy Module ============
+      { path: 'pharmacy-dashboard', component: PharmacyDashboardComponent, data: { title: 'Pharmacy Dashboard' } },
+      { path: 'suppliers', component: SupplierComponent, data: { title: 'Suppliers' } },
+      { path: 'medicine-stock', component: MedicineStockComponent, data: { title: 'Medicine Stock' } },
+      { path: 'purchase-orders', component: PurchaseOrderComponent, data: { title: 'Purchase Orders' } },
+      { path: 'pharmacy-sale', component: PharmacySaleComponent, data: { title: 'Pharmacy Sale' } },
+      { path: 'pharmacy-reports', component: PharmacyReportComponent, data: { title: 'Pharmacy Reports' } },
 
-  // ============ Emergency Module ============
-  { path: 'emergency', children: [
-    { path: 'dashboard', component: EmergencyDashboardComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse', 'Receptionist'])], data: { title: 'Emergency Dashboard' } },
-    { path: 'registration', component: EmergencyRegistrationComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist', 'Nurse'])], data: { title: 'Emergency Registration' } },
-    { path: 'triage', component: EmergencyTriageComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse'])], data: { title: 'Triage' } },
-    { path: 'assignments', component: EmergencyDoctorAssignmentComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse'])], data: { title: 'Doctor Assignments' } },
-    { path: 'beds', component: EmergencyBedComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager', 'Nurse'])], data: { title: 'Emergency Beds' } },
-    { path: 'ambulances', component: EmergencyAmbulanceComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager', 'Nurse'])], data: { title: 'Ambulances' } },
-    { path: 'medicine', component: EmergencyMedicineComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse', 'Pharmacist'])], data: { title: 'Emergency Medicine' } },
-    { path: 'lab-orders', component: EmergencyLabComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse', 'LabTechnician'])], data: { title: 'Emergency Lab Orders' } },
-    { path: 'billing', component: EmergencyBillingComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Emergency Billing' } },
-    { path: 'timeline', component: EmergencyTimelineComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse'])], data: { title: 'Emergency Timeline' } },
-    { path: 'status-board', component: EmergencyStatusBoardComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse', 'Receptionist'])], data: { title: 'Emergency Status Board' } },
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-  ]},
+      // ============ Billing Module ============
+      { path: 'billing-dashboard', component: BillingDashboardComponent, data: { title: 'Billing Dashboard' } },
+      { path: 'patient-billing', component: PatientBillingComponent, data: { title: 'Patient Billing' } },
+      { path: 'payments', component: PaymentModuleComponent, data: { title: 'Payments' } },
+      { path: 'invoices', component: InvoiceComponent, data: { title: 'Invoices' } },
+      { path: 'refunds', component: RefundManagementComponent, data: { title: 'Refunds' } },
+      { path: 'insurance', component: InsuranceComponent, data: { title: 'Insurance' } },
+      { path: 'billing-reports', component: BillingReportsComponent, data: { title: 'Billing Reports' } },
 
-  // ============ Reports & Analytics ============
-  { path: 'reports', component: ReportsDashboardComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Reports Dashboard' } },
-  { path: 'reports/patient', component: PatientReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse'])], data: { title: 'Patient Reports' } },
-  { path: 'reports/appointment', component: AppointmentReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Receptionist'])], data: { title: 'Appointment Reports' } },
-  { path: 'reports/doctor', component: DoctorReportsComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Doctor Reports' } },
-  { path: 'reports/revenue', component: RevenueReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Revenue Reports' } },
-  { path: 'reports/lab', component: LabReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Lab Reports' } },
-  { path: 'reports/pharmacy', component: PharmacyReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Pharmacist'])], data: { title: 'Pharmacy Reports' } },
-  { path: 'reports/bed', component: BedReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'WardManager'])], data: { title: 'Bed Reports' } },
-  { path: 'reports/emergency', component: EmergencyReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor'])], data: { title: 'Emergency Reports' } },
+      // ============ Emergency Module ============
+      { path: 'emergency/dashboard', component: EmergencyDashboardComponent, data: { title: 'Emergency Dashboard' } },
+      { path: 'emergency/registration', component: EmergencyRegistrationComponent, data: { title: 'Emergency Registration' } },
+      { path: 'emergency/triage', component: EmergencyTriageComponent, data: { title: 'Triage' } },
+      { path: 'emergency/assignments', component: EmergencyDoctorAssignmentComponent, data: { title: 'Doctor Assignments' } },
+      { path: 'emergency/beds', component: EmergencyBedComponent, data: { title: 'Emergency Beds' } },
+      { path: 'emergency/ambulances', component: EmergencyAmbulanceComponent, data: { title: 'Ambulances' } },
+      { path: 'emergency/medicine', component: EmergencyMedicineComponent, data: { title: 'Emergency Medicine' } },
+      { path: 'emergency/lab-orders', component: EmergencyLabComponent, data: { title: 'Emergency Lab Orders' } },
+      { path: 'emergency/billing', component: EmergencyBillingComponent, data: { title: 'Emergency Billing' } },
+      { path: 'emergency/timeline', component: EmergencyTimelineComponent, data: { title: 'Emergency Timeline' } },
+      { path: 'emergency/status-board', component: EmergencyStatusBoardComponent, data: { title: 'Emergency Status Board' } },
+      { path: 'emergency', redirectTo: 'emergency/dashboard', pathMatch: 'full' },
 
-  // ============ Dietary & Nutrition Module ============
-  { path: 'dietary/dashboard', component: DietaryDashboardComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician', 'Nurse'])], data: { title: 'Dietary Dashboard' } },
-  { path: 'dietary/patient-diet', component: PatientDietComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Nurse', 'Dietician'])], data: { title: 'Patient Diet' } },
-  { path: 'dietary/diet-plans', component: DietPlanComponent, canActivate: [authGuard, roleGuard(['Admin', 'Dietician'])], data: { title: 'Diet Plans' } },
-  { path: 'dietary/dieticians', component: DieticianManagementComponent, canActivate: [authGuard, roleGuard(['Admin'])], data: { title: 'Dietician Management' } },
-  { path: 'dietary/meal-schedule', component: MealScheduleComponent, canActivate: [authGuard, roleGuard(['Admin', 'Dietician', 'Nurse', 'WardManager'])], data: { title: 'Meal Schedule' } },
-  { path: 'dietary/kitchen-dashboard', component: KitchenDashboardComponent, canActivate: [authGuard, roleGuard(['Admin', 'Nurse', 'WardManager'])], data: { title: 'Kitchen Dashboard' } },
-  { path: 'dietary/kitchen-orders', component: KitchenOrdersComponent, canActivate: [authGuard, roleGuard(['Admin', 'Nurse', 'WardManager'])], data: { title: 'Kitchen Orders' } },
-  { path: 'dietary/nutrition-analytics', component: NutritionAnalyticsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Nutrition Analytics' } },
-  { path: 'dietary/diet-reports', component: DietReportsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet Reports' } },
-  { path: 'dietary/diet-alerts', component: DietAlertsComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician', 'Nurse'])], data: { title: 'Diet Alerts' } },
-  { path: 'dietary/diet-history', component: DietHistoryComponent, canActivate: [authGuard, roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet History' } },
+      // ============ Reports & Analytics ============
+      { path: 'reports', component: ReportsDashboardComponent, data: { title: 'Reports Dashboard' } },
+      { path: 'reports/patient', component: PatientReportsComponent, data: { title: 'Patient Reports' } },
+      { path: 'reports/appointment', component: AppointmentReportsComponent, data: { title: 'Appointment Reports' } },
+      { path: 'reports/doctor', component: DoctorReportsComponent, data: { title: 'Doctor Reports' } },
+      { path: 'reports/revenue', component: RevenueReportsComponent, data: { title: 'Revenue Reports' } },
+      { path: 'reports/lab', component: LabReportsComponent, data: { title: 'Lab Reports' } },
+      { path: 'reports/pharmacy', component: PharmacyReportsComponent, data: { title: 'Pharmacy Reports' } },
+      { path: 'reports/bed', component: BedReportsComponent, data: { title: 'Bed Reports' } },
+      { path: 'reports/emergency', component: EmergencyReportsComponent, data: { title: 'Emergency Reports' } },
 
-  // ============ Public ============
-  { path: '', component: LandingPageComponent },
+      // ============ Dietary & Nutrition Module ============
+      { path: 'dietary/dashboard', component: DietaryDashboardComponent, data: { title: 'Dietary Dashboard' } },
+      { path: 'dietary/patient-diet', component: PatientDietComponent, data: { title: 'Patient Diet' } },
+      { path: 'dietary/diet-plans', component: DietPlanComponent, data: { title: 'Diet Plans' } },
+      { path: 'dietary/dieticians', component: DieticianManagementComponent, data: { title: 'Dietician Management' } },
+      { path: 'dietary/meal-schedule', component: MealScheduleComponent, data: { title: 'Meal Schedule' } },
+      { path: 'dietary/kitchen-dashboard', component: KitchenDashboardComponent, data: { title: 'Kitchen Dashboard' } },
+      { path: 'dietary/kitchen-orders', component: KitchenOrdersComponent, data: { title: 'Kitchen Orders' } },
+      { path: 'dietary/nutrition-analytics', component: NutritionAnalyticsComponent, data: { title: 'Nutrition Analytics' } },
+      { path: 'dietary/diet-reports', component: DietReportsComponent, data: { title: 'Diet Reports' } },
+      { path: 'dietary/diet-alerts', component: DietAlertsComponent, data: { title: 'Diet Alerts' } },
+      { path: 'dietary/diet-history', component: DietHistoryComponent, data: { title: 'Diet History' } },
+    ]
+  },
 
   // ============ Default ============
   { path: '**', redirectTo: '' },
