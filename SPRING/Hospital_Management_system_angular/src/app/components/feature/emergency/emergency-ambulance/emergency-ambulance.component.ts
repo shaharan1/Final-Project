@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AmbulanceService } from '../../../../services/emergency/ambulance.service';
@@ -39,12 +39,6 @@ export class EmergencyAmbulanceComponent implements OnInit {
   vehicleTypes = ['BASIC', 'ADVANCED', 'ICU', 'AIR'];
   tripStatuses = ['DISPATCHED', 'EN_ROUTE', 'ARRIVED', 'COMPLETED', 'CANCELLED'];
 
-  constructor(
-
-
-    private cdr: ChangeDetectorRef
-  ) { }
-
   ngOnInit(): void {
     this.loadAmbulances();
     this.loadTrips();
@@ -57,7 +51,6 @@ export class EmergencyAmbulanceComponent implements OnInit {
       next: (data) => {
         this.ambulances = data;
         this.loading = false;
-        this.cdr.markForCheck();
       },
       error: () => {
         this.showMessage('Failed to load ambulances', 'error');
@@ -69,14 +62,14 @@ export class EmergencyAmbulanceComponent implements OnInit {
   loadTrips(): void {
     this.tripService.getAll().subscribe({
       next: (data) => this.trips = data,
-      error: () => { }
+      error: () => {}
     });
   }
 
   loadPatients(): void {
     this.patientService.getAll().subscribe({
       next: (data) => this.patients = data,
-      error: () => { }
+      error: () => {}
     });
   }
 
