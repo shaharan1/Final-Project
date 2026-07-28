@@ -155,7 +155,7 @@
           </svg>
         </div>
         <div class="kpi-body">
-          <span class="kpi-value">${{ getAnimated('labIncome') | number }}</span>
+          <span class="kpi-value">৳{{ getAnimated('labIncome') | number }}</span>
           <span class="kpi-label">Lab Income</span>
         </div>
         <div class="kpi-glow kpi-glow--teal"></div>
@@ -332,7 +332,7 @@
               }">{{ act.status }}</span>
             </div>
             <div class="timeline-bottom">
-              <span class="timeline-amount" *ngIf="act.amount">${{ act.amount | number }}</span>
+              <span class="timeline-amount" *ngIf="act.amount">৳{{ act.amount | number }}</span>
               <span class="timeline-time">{{ act.date }}</span>
             </div>
           </div>
