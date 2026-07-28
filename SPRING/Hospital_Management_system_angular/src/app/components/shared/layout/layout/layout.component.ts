@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, RouterModule } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { StorageService } from '../../../../services/storage.service';
 import { AuthService } from '../../../../services/auth.service';
 import { NavigationService } from '../../../../services/navigation.service';
@@ -30,6 +30,7 @@ export class LayoutComponent implements AfterViewInit, OnInit {
     private auth: AuthService,
     private navService: NavigationService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -40,9 +41,18 @@ export class LayoutComponent implements AfterViewInit, OnInit {
     this.navGroups = this.navService.getNavGroups();
     this.greeting = this.getGreeting();
 
-    this.route.firstChild?.data.subscribe(data => {
-      this.pageTitle = data['title'] ?? 'Dashboard';
-    });
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(() => this.resolvePageTitle());
+    this.resolvePageTitle();
+  }
+
+  private resolvePageTitle(): void {
+    let route = this.route.firstChild;
+    while (route?.firstChild) {
+      route = route.firstChild;
+    }
+    this.pageTitle = route?.snapshot.data?.['title'] ?? 'Dashboard';
   }
 
   ngAfterViewInit(): void {
