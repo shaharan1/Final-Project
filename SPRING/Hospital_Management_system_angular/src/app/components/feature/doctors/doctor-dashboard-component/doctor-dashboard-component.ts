@@ -28,6 +28,8 @@ export class DoctorDashboardComponent {
   totalPatients = 0;
   todayAppointments = 0;
   pendingReports = 0;
+  photoUploading = false;
+  selectedPhotoFile: File | null = null;
 
   loading = true;
 
@@ -64,13 +66,12 @@ export class DoctorDashboardComponent {
       this.doctorService.findByUserId(this.user.userId).subscribe({
         next: (res) => {
           this.doctor= res;
-           this.loadAppointments();
-           this.loadPrescriptions(res.id!);
-           this.storage.saveData(KEYS.Doctor, res);
-           this.loading = false;
-           this.cdr.markForCheck();
+            this.loadAppointments();
+            this.loadPrescriptions(res.id!);
+            this.storage.saveData(KEYS.Doctor, res);
+            this.loading = false;
+            this.cdr.markForCheck();
 
-          console.log("Doctor "+ this.doctor);
         },
         error: () => { this.loading = false; }
       });
@@ -142,9 +143,32 @@ export class DoctorDashboardComponent {
   this.router.navigate(['/prescriptions']);
 }
 
+onPhotoSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files[0]) {
+    this.selectedPhotoFile = input.files[0];
+    this.uploadPhoto();
+  }
+}
 
-
-
-
+uploadPhoto(): void {
+  if (!this.selectedPhotoFile || !this.doctor?.id) return;
+  this.photoUploading = true;
+  this.doctorService.uploadPhoto(this.doctor.id, this.selectedPhotoFile).subscribe({
+    next: (res: any) => {
+      this.photoUploading = false;
+      this.selectedPhotoFile = null;
+      if (res && res.photo) {
+        this.doctor = { ...this.doctor, photo: res.photo } as DoctorResponseModel;
+      }
+      this.cdr.detectChanges();
+    },
+    error: () => {
+      this.photoUploading = false;
+      this.selectedPhotoFile = null;
+      this.cdr.detectChanges();
+    }
+  });
+}
 
 }
