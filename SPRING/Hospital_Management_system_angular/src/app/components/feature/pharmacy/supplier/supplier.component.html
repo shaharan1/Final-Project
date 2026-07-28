@@ -1,195 +1,4 @@
 <div class="supplier-page">
-  <section class="hero-section">
-    <div class="hero-bg">
-      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
-      </svg>
-    </div>
-    <div class="hero-content">
-      <div class="hero-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <h1>Supplier Management</h1>
-      <p>Manage your pharmaceutical suppliers and distribution partners</p>
-    </div>
-  </section>
-
-
-  <div class="stats-row">
-    <div class="stat-card glass-card">
-      <div class="stat-icon blue"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <div class="stat-info">
-        <span class="stat-number" [class.count-up]="true">{{ totalSuppliers }}</span>
-        <span class="stat-label">Total Suppliers</span>
-      </div>
-    </div>
-    <div class="stat-card glass-card">
-      <div class="stat-icon green"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <div class="stat-info">
-        <span class="stat-number">{{ activeSuppliers }}</span>
-        <span class="stat-label">Active</span>
-      </div>
-    </div>
-    <div class="stat-card glass-card">
-      <div class="stat-icon orange"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-      <div class="stat-info">
-        <span class="stat-number">{{ dueAmountSuppliers }}</span>
-        <span class="stat-label">With Due Amount</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="toolbar glass-card">
-    <div class="search-box">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" [(ngModel)]="searchTerm" (input)="filterSuppliers()" placeholder="Search suppliers...">
-    </div>
-    <button class="btn btn-primary" (click)="openAddModal()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Add Supplier
-    </button>
-  </div>
-
-  <div class="table-container glass-card desktop-only">
-    <table>
-      <thead>
-        <tr>
-          <th (click)="sort('name')">Name <span class="sort-icon" *ngIf="sortColumn==='name'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('contactPerson')">Contact Person <span class="sort-icon" *ngIf="sortColumn==='contactPerson'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('phone')">Phone <span class="sort-icon" *ngIf="sortColumn==='phone'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('email')">Email <span class="sort-icon" *ngIf="sortColumn==='email'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th (click)="sort('companyName')">Company <span class="sort-icon" *ngIf="sortColumn==='companyName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-          <th>Trade License</th>
-          <th>Drug License</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let supplier of filteredSuppliers">
-          <td class="fw-semibold">{{ supplier.name }}</td>
-          <td>{{ supplier.contactPerson }}</td>
-          <td>{{ supplier.phone }}</td>
-          <td>{{ supplier.email }}</td>
-          <td>{{ supplier.companyName }}</td>
-          <td><code>{{ supplier.tradeLicense }}</code></td>
-          <td><code>{{ supplier.drugLicense }}</code></td>
-          <td><span class="badge" [ngClass]="getStatusClass(supplier)">{{ getStatusLabel(supplier) }}</span></td>
-          <td class="actions-cell">
-            <button class="btn-icon edit" (click)="openEditModal(supplier)" title="Edit">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="btn-icon delete" (click)="confirmDelete(supplier)" title="Delete">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="empty-state" *ngIf="filteredSuppliers.length === 0">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <p>No suppliers found</p>
-    </div>
-  </div>
-
-  <div class="mobile-cards mobile-only">
-    <div class="supplier-card glass-card" *ngFor="let supplier of filteredSuppliers">
-      <div class="card-header">
-        <h3>{{ supplier.name }}</h3>
-        <span class="badge" [ngClass]="getStatusClass(supplier)">{{ getStatusLabel(supplier) }}</span>
-      </div>
-      <div class="card-body">
-        <div class="card-row"><span class="label">Contact:</span><span>{{ supplier.contactPerson }}</span></div>
-        <div class="card-row"><span class="label">Phone:</span><span>{{ supplier.phone }}</span></div>
-        <div class="card-row"><span class="label">Email:</span><span>{{ supplier.email }}</span></div>
-        <div class="card-row"><span class="label">Company:</span><span>{{ supplier.companyName }}</span></div>
-        <div class="card-row"><span class="label">Trade License:</span><code>{{ supplier.tradeLicense }}</code></div>
-        <div class="card-row"><span class="label">Drug License:</span><code>{{ supplier.drugLicense }}</code></div>
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-sm btn-outline" (click)="openEditModal(supplier)">Edit</button>
-        <button class="btn btn-sm btn-danger" (click)="confirmDelete(supplier)">Delete</button>
-      </div>
-    </div>
-    <div class="empty-state" *ngIf="filteredSuppliers.length === 0">
-      <p>No suppliers found</p>
-    </div>
-  </div>
-
-  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-    <div class="modal glass-card" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>{{ editingSupplier ? 'Edit Supplier' : 'Add New Supplier' }}</h2>
-        <button class="btn-close" (click)="closeModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Name</label>
-            <input type="text" [(ngModel)]="formModel.name" placeholder="Supplier name">
-          </div>
-          <div class="form-group">
-            <label>Contact Person</label>
-            <input type="text" [(ngModel)]="formModel.contactPerson" placeholder="Contact person">
-          </div>
-          <div class="form-group">
-            <label>Phone</label>
-            <input type="text" [(ngModel)]="formModel.phone" placeholder="+880-XXXX-XXXXXX">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" [(ngModel)]="formModel.email" placeholder="email@example.com">
-          </div>
-          <div class="form-group full-width">
-            <label>Address</label>
-            <input type="text" [(ngModel)]="formModel.address" placeholder="Full address">
-          </div>
-          <div class="form-group">
-            <label>Company Name</label>
-            <input type="text" [(ngModel)]="formModel.companyName" placeholder="Company name">
-          </div>
-          <div class="form-group">
-            <label>Trade License</label>
-            <input type="text" [(ngModel)]="formModel.tradeLicense" placeholder="TL-XXXX-XXXX">
-          </div>
-          <div class="form-group">
-            <label>Drug License</label>
-            <input type="text" [(ngModel)]="formModel.drugLicense" placeholder="DL-XXXX-XXXX">
-          </div>
-          <div class="form-group">
-            <label>Website</label>
-            <input type="text" [(ngModel)]="formModel.website" placeholder="www.example.com">
-          </div>
-          <div class="form-group full-width">
-            <label>Notes</label>
-            <textarea [(ngModel)]="formModel.notes" rows="3" placeholder="Additional notes"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" (click)="closeModal()">Cancel</button>
-        <button class="btn btn-primary" (click)="saveSupplier()">{{ editingSupplier ? 'Update' : 'Save' }}</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()">
-    <div class="modal modal-sm glass-card" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Confirm Delete</h2>
-        <button class="btn-close" (click)="cancelDelete()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="delete-warning">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <p>Are you sure you want to delete <strong>{{ supplierToDelete?.name }}</strong>?</p>
-          <span class="text-muted">This action cannot be undone.</span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
-        <button class="btn btn-danger" (click)="deleteSupplier()">Delete</button>
-
   <!-- Loading -->
   <div class="loading-container" *ngIf="loading">
     <div class="spinner"></div>
@@ -206,6 +15,21 @@
   </div>
 
   <div *ngIf="!loading && !error">
+    <section class="hero-section">
+      <div class="hero-bg">
+        <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+          <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+        </svg>
+      </div>
+      <div class="hero-content">
+        <div class="hero-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h1>Supplier Management</h1>
+        <p>Manage your pharmaceutical suppliers and distribution partners</p>
+      </div>
+    </section>
+
     <div class="stats-row">
       <div class="stat-card glass-card">
         <div class="stat-icon blue"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
@@ -245,11 +69,11 @@
       <table>
         <thead>
           <tr>
-            <th (click)="sort('name')">Name <span class="sort-icon" *ngIf="sortColumn==='name'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-            <th (click)="sort('contactPerson')">Contact Person <span class="sort-icon" *ngIf="sortColumn==='contactPerson'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-            <th (click)="sort('phone')">Phone <span class="sort-icon" *ngIf="sortColumn==='phone'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-            <th (click)="sort('email')">Email <span class="sort-icon" *ngIf="sortColumn==='email'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
-            <th (click)="sort('companyName')">Company <span class="sort-icon" *ngIf="sortColumn==='companyName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+            <th (click)="sort('name')">Name <span class="sort-icon" *ngIf="sortColumn==='name'">{{ sortDirection === 'asc' ? '&#9650;' : '&#9660;' }}</span></th>
+            <th (click)="sort('contactPerson')">Contact Person <span class="sort-icon" *ngIf="sortColumn==='contactPerson'">{{ sortDirection === 'asc' ? '&#9650;' : '&#9660;' }}</span></th>
+            <th (click)="sort('phone')">Phone <span class="sort-icon" *ngIf="sortColumn==='phone'">{{ sortDirection === 'asc' ? '&#9650;' : '&#9660;' }}</span></th>
+            <th (click)="sort('email')">Email <span class="sort-icon" *ngIf="sortColumn==='email'">{{ sortDirection === 'asc' ? '&#9650;' : '&#9660;' }}</span></th>
+            <th (click)="sort('companyName')">Company <span class="sort-icon" *ngIf="sortColumn==='companyName'">{{ sortDirection === 'asc' ? '&#9650;' : '&#9660;' }}</span></th>
             <th>Trade License</th>
             <th>Drug License</th>
             <th>Status</th>
@@ -317,7 +141,7 @@
         <div class="modal-body">
           <div class="form-grid">
             <div class="form-group">
-              <label>Name</label>
+              <label>Name *</label>
               <input type="text" [(ngModel)]="formModel.name" placeholder="Supplier name">
             </div>
             <div class="form-group">
@@ -325,7 +149,7 @@
               <input type="text" [(ngModel)]="formModel.contactPerson" placeholder="Contact person">
             </div>
             <div class="form-group">
-              <label>Phone</label>
+              <label>Phone *</label>
               <input type="text" [(ngModel)]="formModel.phone" placeholder="+880-XXXX-XXXXXX">
             </div>
             <div class="form-group">
@@ -383,7 +207,6 @@
           <button class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
           <button class="btn btn-danger" (click)="deleteSupplier()">Delete</button>
         </div>
-
       </div>
     </div>
   </div>

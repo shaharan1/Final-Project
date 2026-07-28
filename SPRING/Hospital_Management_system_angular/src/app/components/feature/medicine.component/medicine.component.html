@@ -1,72 +1,52 @@
-<div class="container mt-4">
-
-  <div class="card shadow">
-
-    <div class="card-header bg-primary text-white">
-      <h4>Add Medicine</h4>
+<div class="pharma-page">
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
     </div>
+    <div class="hero-content">
+      <div class="hero-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      </div>
+      <h1>{{ isEditMode ? 'Edit Medicine' : 'Add New Medicine' }}</h1>
+      <p>{{ isEditMode ? 'Update medicine information in the catalog' : 'Register a new medicine to the pharmacy catalog' }}</p>
+    </div>
+  </section>
 
-    <div class="card-body">
-
-      <div class="row">
-
-        <!-- Generic Name -->
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Generic Name</label>
-
-          <select class="form-select" [(ngModel)]="selectedGenericId" name="genericId" (change)="onGenericChange()">
-
+  <div class="form-card glass-card">
+    <div class="form-card-header">
+      <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Medicine Information</h2>
+    </div>
+    <div class="form-card-body">
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label>Generic Name *</label>
+          <select [(ngModel)]="selectedGenericId" (change)="onGenericChange()">
             <option [ngValue]="null">Select Generic</option>
-
-            <option *ngFor="let g of generics" [ngValue]="g.id">
-
-              {{ g.genericName }}
-
-            </option>
-
+            <option *ngFor="let g of generics" [ngValue]="g.id">{{ g.genericName }}</option>
           </select>
-
         </div>
-
-        <!-- Medicine Name -->
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Medicine Name</label>
-
-          <input type="text" class="form-control" [(ngModel)]="medicine.medicineName" name="medicineName"
-            placeholder="Enter Medicine Name">
-
+        <div class="form-group">
+          <label>Medicine Name *</label>
+          <input type="text" [(ngModel)]="medicine.medicineName" placeholder="Enter medicine name">
         </div>
-
-        <!-- Dosage -->
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Dosage</label>
-
-          <input type="text" class="form-control" [(ngModel)]="medicine.dosage" name="dosage">
-
+        <div class="form-group">
+          <label>Dosage</label>
+          <input type="text" [(ngModel)]="medicine.dosage" placeholder="e.g., 500mg, 10ml">
         </div>
-
-        <!-- Prescription -->
-        <!-- <div class="col-md-6 mb-3">
-          <label class="form-label">Prescription Id</label>
-
-          <input type="number" class="form-control" [(ngModel)]="medicine.prescriptionId" name="prescriptionId">
-
-        </div> -->
-
-        <div class="col-12 mt-4">
-
-          <button class="btn btn-success" (click)="save()">
-
-            Save Medicine
-
-          </button>
-
-        </div>
-
       </div>
 
+      <div class="form-actions">
+        <button class="btn btn-outline" routerLink="/medicine-list">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to List
+        </button>
+        <button class="btn btn-primary" (click)="save()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          {{ isEditMode ? 'Update Medicine' : 'Save Medicine' }}
+        </button>
+      </div>
     </div>
-
   </div>
-
 </div>
