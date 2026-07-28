@@ -61,13 +61,22 @@ export class DietAlertsComponent implements OnInit {
   }
 
   openAddModal(): void {
-    this.formModel = { patientId: null, alertType: 'FOOD_ALLERGY', description: '', severity: 'MEDIUM', allergenName: '', specialInstructions: '' };
+    this.formModel = { patientId: null, alertType: 'FOOD_ALLERGY', description: '', severity: 'MEDIUM', allergenName: '', specialInstructions: '', status: 'ACTIVE' };
     this.showModal = true;
   }
 
   saveAlert(): void {
-    if (!this.formModel.patientId || !this.formModel.description) { this.msg = 'All required fields must be filled'; this.msgType = 'error'; return; }
-    this.alertService.create(this.formModel).subscribe({
+    if (!this.formModel.patientId || !this.formModel.description) { this.msg = 'Patient ID and description are required'; this.msgType = 'error'; return; }
+    const payload: any = {
+      patient: { id: Number(this.formModel.patientId) },
+      alertType: this.formModel.alertType,
+      description: this.formModel.description,
+      severity: this.formModel.severity || 'MEDIUM',
+      status: 'ACTIVE',
+      allergenName: this.formModel.allergenName || '',
+      specialInstructions: this.formModel.specialInstructions || ''
+    };
+    this.alertService.create(payload).subscribe({
       next: () => { this.showModal = false; this.msg = 'Alert created'; this.msgType = 'success'; this.loadData(); },
       error: () => { this.msg = 'Failed to create alert'; this.msgType = 'error'; }
     });

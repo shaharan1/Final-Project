@@ -20,7 +20,7 @@ export class DietPlanService {
     return this.http.get<DietPlan[]>(`${this.api}/active`);
   }
   getByDietType(dietType: string): Observable<DietPlan[]> {
-    return this.http.get<DietPlan[]>(`${this.api}/diet-type/${dietType}`);
+    return this.http.get<DietPlan[]>(`${this.api}/type/${dietType}`);
   }
   search(keyword: string): Observable<DietPlan[]> {
     return this.http.get<DietPlan[]>(`${this.api}/search`, { params: { keyword } });

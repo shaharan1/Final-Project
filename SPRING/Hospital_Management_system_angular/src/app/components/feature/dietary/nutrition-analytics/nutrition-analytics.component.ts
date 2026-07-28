@@ -1,7 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DietaryDashboardService } from '../../../../services/dietary/dietary-dashboard.service';
+import { forkJoin } from 'rxjs';
+import { DietPlanService } from '../../../../services/dietary/diet-plan.service';
+import { DietAssignmentService } from '../../../../services/dietary/diet-assignment.service';
+import { KitchenOrderService } from '../../../../services/dietary/kitchen-order.service';
 
 @Component({
   selector: 'app-nutrition-analytics',
@@ -20,18 +23,34 @@ export class NutritionAnalyticsComponent implements OnInit {
   completionData: any[] = [];
   chartType = 'bar';
 
-  constructor(private dashboardService: DietaryDashboardService, private cdr: ChangeDetectorRef) {}
+  private allOrders: any[] = [];
+  private allPlans: any[] = [];
+  private allAssignments: any[] = [];
+
+  constructor(
+    private planService: DietPlanService,
+    private assignmentService: DietAssignmentService,
+    private orderService: KitchenOrderService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void { this.loadAnalytics(); }
 
   loadAnalytics(): void {
     this.loading = true;
-    this.dashboardService.getDashboardStats().subscribe({
+    forkJoin({
+      plans: this.planService.getAll(),
+      assignments: this.assignmentService.getAll(),
+      orders: this.orderService.getAll()
+    }).subscribe({
       next: (data: any) => {
-        this.dietTypeData = this.generateDietTypeData(data);
-        this.wardData = this.generateWardData(data);
-        this.dailyCalories = this.generateCalorieData(data);
-        this.completionData = this.generateCompletionData(data);
+        this.allPlans = data.plans || [];
+        this.allAssignments = data.assignments || [];
+        this.allOrders = data.orders || [];
+        this.buildDietTypeData();
+        this.buildWardData();
+        this.buildCalorieData();
+        this.buildCompletionData();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -39,44 +58,61 @@ export class NutritionAnalyticsComponent implements OnInit {
     });
   }
 
-  generateDietTypeData(data: any): any[] {
-    return [
-      { type: 'Regular', count: 45, color: '#0d6efd' },
-      { type: 'Diabetic', count: 28, color: '#dc3545' },
-      { type: 'Low Salt', count: 22, color: '#fd7e14' },
-      { type: 'Cardiac', count: 18, color: '#6610f2' },
-      { type: 'High Protein', count: 15, color: '#198754' },
-      { type: 'Liquid', count: 12, color: '#0dcaf0' },
-      { type: 'Other', count: 10, color: '#6c757d' }
-    ];
+  private buildDietTypeData(): void {
+    const typeColors: Record<string, string> = {
+      'Regular': '#0d6efd', 'Diabetic': '#dc3545', 'LowSalt': '#fd7e14',
+      'Cardiac': '#6610f2', 'HighProtein': '#198754', 'Liquid': '#0dcaf0',
+      'Soft': '#ffc107', 'Renal': '#20c997', 'Pediatric': '#e83e8c',
+      'LowFat': '#6f42c1', 'Pregnancy': '#fd7e14', 'PostSurgery': '#dc3545', 'Special': '#6c757d'
+    };
+    const counts: Record<string, number> = {};
+    for (const p of this.allPlans) {
+      const t = p.dietType || 'Other';
+      counts[t] = (counts[t] || 0) + 1;
+    }
+    this.dietTypeData = Object.entries(counts).map(([type, count]) => ({
+      type, count, color: typeColors[type] || '#6c757d'
+    })).sort((a, b) => b.count - a.count);
   }
 
-  generateWardData(data: any): any[] {
-    return [
-      { ward: 'Ward A', meals: 120, color: '#0d6efd' },
-      { ward: 'Ward B', meals: 95, color: '#6610f2' },
-      { ward: 'Ward C', meals: 78, color: '#198754' },
-      { ward: 'ICU', meals: 45, color: '#dc3545' },
-      { ward: 'Pediatrics', meals: 38, color: '#fd7e14' },
-      { ward: 'Maternity', meals: 32, color: '#0dcaf0' }
-    ];
+  private buildWardData(): void {
+    const wardColors = ['#0d6efd', '#6610f2', '#198754', '#dc3545', '#fd7e14', '#0dcaf0', '#ffc107', '#20c997'];
+    const wardCounts: Record<string, number> = {};
+    for (const o of this.allOrders) {
+      const ward = o.bedNumber ? 'Ward ' + o.bedNumber.replace('BED-', '') : 'General';
+      wardCounts[ward] = (wardCounts[ward] || 0) + 1;
+    }
+    this.wardData = Object.entries(wardCounts).map(([ward, meals], i) => ({
+      ward, meals, color: wardColors[i % wardColors.length]
+    })).sort((a, b) => b.meals - a.meals);
   }
 
-  generateCalorieData(data: any): any[] {
-    return Array.from({ length: 30 }, (_, i) => ({
+  private buildCalorieData(): void {
+    const days = this.period === 'week' ? 7 : this.period === 'year' ? 30 : 30;
+    const avgCalories = this.allPlans.length > 0
+      ? this.allPlans.reduce((s, p) => s + (p.totalCalories || 2000), 0) / this.allPlans.length
+      : 2000;
+    this.dailyCalories = Array.from({ length: days }, (_, i) => ({
       day: `Day ${i + 1}`,
-      calories: Math.floor(1800 + Math.random() * 600),
-      target: 2200
+      calories: Math.round(avgCalories + (Math.random() - 0.5) * 400),
+      target: Math.round(avgCalories)
     }));
   }
 
-  generateCompletionData(data: any): any[] {
-    return [
-      { label: 'Breakfast', delivered: 85, prepared: 100 },
-      { label: 'Lunch', delivered: 78, prepared: 95 },
-      { label: 'Dinner', delivered: 82, prepared: 90 },
-      { label: 'Snacks', delivered: 90, prepared: 95 }
-    ];
+  private buildCompletionData(): void {
+    const mealTimes = ['BREAKFAST', 'LUNCH', 'DINNER', 'MORNING_SNACKS', 'EVENING_SNACKS'];
+    const labels = ['Breakfast', 'Lunch', 'Dinner', 'Morning Snacks', 'Evening Snacks'];
+    this.completionData = mealTimes.map((mt, i) => {
+      const mealOrders = this.allOrders.filter(o => o.mealTime === mt);
+      const prepared = mealOrders.length;
+      const delivered = mealOrders.filter(o => o.status === 'DELIVERED' || o.status === 'READY').length;
+      return { label: labels[i], delivered, prepared };
+    }).filter(d => d.prepared > 0 || d.delivered > 0);
+    if (this.completionData.length === 0) {
+      this.completionData = mealTimes.map((mt, i) => ({
+        label: labels[i], delivered: 0, prepared: 0
+      }));
+    }
   }
 
   onPeriodChange(period: string): void {
@@ -90,8 +126,9 @@ export class NutritionAnalyticsComponent implements OnInit {
 
   getAverageCompletion(): number {
     if (!this.completionData.length) return 0;
-    const avg = this.completionData.reduce((s: number, d: any) => s + (d.delivered || 0), 0);
-    return Math.round(avg / this.completionData.length);
+    const total = this.completionData.reduce((s: number, d: any) => s + d.prepared, 0);
+    const delivered = this.completionData.reduce((s: number, d: any) => s + d.delivered, 0);
+    return total > 0 ? Math.round((delivered / total) * 100) : 0;
   }
 
   getTotalMeals(): number {

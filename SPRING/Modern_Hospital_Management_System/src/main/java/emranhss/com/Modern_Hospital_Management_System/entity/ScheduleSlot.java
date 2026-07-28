@@ -1,6 +1,7 @@
 package emranhss.com.Modern_Hospital_Management_System.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,5 +37,6 @@ public class ScheduleSlot {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reports", "slots"})
     private Doctor doctor;
 }

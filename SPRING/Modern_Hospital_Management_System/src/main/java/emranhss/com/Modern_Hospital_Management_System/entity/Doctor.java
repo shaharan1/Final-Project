@@ -51,11 +51,12 @@ public class Doctor {
 
 
     @OneToMany(mappedBy = "doctor")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "slots"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "doctor"})
     private List<ScheduleSlot> slots;
 
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "doctor"})
     private List<Report> reports;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

@@ -7,7 +7,7 @@ import { DietAssignmentService } from '../../../../services/dietary/diet-assignm
 import { DietPlanService } from '../../../../services/dietary/diet-plan.service';
 import { DietHistoryService } from '../../../../services/dietary/diet-history.service';
 import { PatientDietAlertService } from '../../../../services/dietary/patient-diet-alert.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-patient-diet',
@@ -29,31 +29,15 @@ export class PatientDietComponent implements OnInit {
   showModal = false;
   showDetailModal = false;
   showAlertModal = false;
+  isEditMode = false;
+  editingAssignmentId: number | null = null;
   selectedPatient: any = null;
   patientAssignments: any[] = [];
   patientAlerts: any[] = [];
   patientHistory: any[] = [];
 
-  assignmentForm: any = {
-    patientId: null,
-    dietPlanId: null,
-    startDate: '',
-    endDate: '',
-    status: 'ACTIVE',
-    reason: '',
-    specialInstructions: '',
-    targetCalories: null,
-    targetWeight: null
-  };
-
-  alertForm: any = {
-    patientId: null,
-    alertType: 'FOOD_ALLERGY',
-    description: '',
-    severity: 'MEDIUM',
-    allergenName: '',
-    specialInstructions: ''
-  };
+  assignmentForm: any = {};
+  alertForm: any = {};
 
   alertTypes = ['DIABETIC', 'LOW_SODIUM', 'ALLERGY', 'NPO', 'FASTING', 'CRITICAL', 'FOOD_ALLERGY', 'KITCHEN_ALERT', 'LATE_DELIVERY'];
   severities = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
@@ -77,46 +61,62 @@ export class PatientDietComponent implements OnInit {
     this.loading = true;
     this.msg = '';
     forkJoin({
-      patients: this.patientService.getAll(),
-      plans: this.dietPlanService.getActive(),
-      assignments: this.assignmentService.getAll()
+      patients: this.patientService.getAll().pipe(catchError(() => of([]))),
+      plans: this.dietPlanService.getActive().pipe(catchError(() => of([]))),
+      assignments: this.assignmentService.getAll().pipe(catchError(() => of([])))
     }).subscribe({
       next: (result) => {
-        this.patients = result.patients || [];
+        this.patients = Array.isArray(result.patients) ? result.patients : [];
         this.filteredPatients = [...this.patients];
-        this.dietPlans = result.plans || [];
-        this.assignments = result.assignments || [];
+        this.dietPlans = Array.isArray(result.plans) ? result.plans : [];
+        this.assignments = Array.isArray(result.assignments) ? result.assignments : [];
         this.loading = false;
-        this.cdr.detectChanges();
+        this.safeDetectChanges();
       },
-      error: (err) => {
-        console.error('Failed to load diet data:', err);
-        this.msg = 'Failed to load patient diet data. Please try again.';
+      error: () => {
+        this.msg = 'Failed to load data. Please refresh.';
         this.msgType = 'error';
         this.loading = false;
-        this.cdr.detectChanges();
+        this.safeDetectChanges();
       }
     });
   }
 
   filterPatients(): void {
-    let result = [...this.patients];
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      result = result.filter(p =>
-        (p.name && p.name.toLowerCase().includes(term)) ||
-        (p.patientCode && p.patientCode.toLowerCase().includes(term)) ||
-        (p.phone && p.phone.includes(term))
-      );
+    try {
+      let result = [...this.patients];
+      if (this.searchTerm) {
+        const term = this.searchTerm.toLowerCase();
+        result = result.filter(p =>
+          (p.name && p.name.toLowerCase().includes(term)) ||
+          (p.patientCode && p.patientCode.toLowerCase().includes(term)) ||
+          (p.phone && p.phone.includes(term))
+        );
+      }
+      if (this.filterWard) {
+        result = result.filter(p => p.ward?.name === this.filterWard);
+      }
+      if (this.filterStatus === 'ACTIVE') {
+        result = result.filter(p => this.hasActiveAssignment(p.id));
+      } else if (this.filterStatus === 'NO_DIET') {
+        result = result.filter(p => !this.hasActiveAssignment(p.id));
+      }
+      this.filteredPatients = result;
+    } catch (e) {
+      console.error('Filter error:', e);
     }
-    if (this.filterWard) {
-      result = result.filter(p => p.ward?.name === this.filterWard);
-    }
-    this.filteredPatients = result;
+  }
+
+  hasActiveAssignment(patientId: number): boolean {
+    try {
+      return this.assignments.some(a => a.patient?.id === patientId && a.status === 'ACTIVE');
+    } catch { return false; }
   }
 
   getAssignmentForPatient(patientId: number): any {
-    return this.assignments.find(a => a.patient?.id === patientId && a.status === 'ACTIVE');
+    try {
+      return this.assignments.find(a => a.patient?.id === patientId && a.status === 'ACTIVE');
+    } catch { return null; }
   }
 
   getPatientInitials(name: string): string {
@@ -125,78 +125,165 @@ export class PatientDietComponent implements OnInit {
   }
 
   openAssignDiet(patient: any): void {
-    this.selectedPatient = patient;
-    this.assignmentForm = {
-      patientId: patient.id,
-      dietPlanId: null,
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: '',
-      status: 'ACTIVE',
-      reason: '',
-      specialInstructions: '',
-      targetCalories: null,
-      targetWeight: null
-    };
-    this.showModal = true;
-    this.msg = '';
+    try {
+      this.selectedPatient = patient;
+      this.isEditMode = false;
+      this.editingAssignmentId = null;
+      this.assignmentForm = {
+        patientId: patient.id,
+        dietPlanId: '',
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: '',
+        status: 'ACTIVE',
+        reason: '',
+        specialInstructions: '',
+        targetCalories: null,
+        targetWeight: null
+      };
+      this.showModal = true;
+      this.msg = '';
+      this.safeDetectChanges();
+    } catch (e) {
+      console.error('Open assign error:', e);
+    }
+  }
+
+  openUpdateDiet(patient: any): void {
+    try {
+      const existing = this.getAssignmentForPatient(patient.id);
+      if (!existing) {
+        this.openAssignDiet(patient);
+        return;
+      }
+      this.selectedPatient = patient;
+      this.isEditMode = true;
+      this.editingAssignmentId = existing.id;
+      this.assignmentForm = {
+        patientId: patient.id,
+        dietPlanId: existing.dietPlan?.id || '',
+        startDate: existing.startDate || new Date().toISOString().split('T')[0],
+        endDate: existing.endDate || '',
+        status: existing.status || 'ACTIVE',
+        reason: existing.reason || '',
+        specialInstructions: existing.specialInstructions || '',
+        targetCalories: existing.targetCalories || null,
+        targetWeight: existing.targetWeight || null
+      };
+      this.showModal = true;
+      this.msg = '';
+      this.safeDetectChanges();
+    } catch (e) {
+      console.error('Open update error:', e);
+    }
   }
 
   saveAssignment(): void {
     if (!this.assignmentForm.dietPlanId) {
       this.msg = 'Please select a diet plan';
       this.msgType = 'error';
-      this.cdr.detectChanges();
+      this.safeDetectChanges();
       return;
     }
-    this.assignmentService.create(this.assignmentForm).subscribe({
+    const payload: any = {
+      patient: { id: Number(this.assignmentForm.patientId) },
+      dietPlan: { id: Number(this.assignmentForm.dietPlanId) },
+      startDate: this.assignmentForm.startDate,
+      endDate: this.assignmentForm.endDate || null,
+      status: this.assignmentForm.status || 'ACTIVE',
+      reason: this.assignmentForm.reason || '',
+      specialInstructions: this.assignmentForm.specialInstructions || '',
+      targetCalories: this.assignmentForm.targetCalories || null,
+      targetWeight: this.assignmentForm.targetWeight || null
+    };
+
+    const obs = this.isEditMode && this.editingAssignmentId
+      ? this.assignmentService.update(this.editingAssignmentId, payload)
+      : this.assignmentService.create(payload);
+
+    obs.subscribe({
       next: () => {
         this.showModal = false;
-        this.msg = 'Diet assigned successfully';
+        this.msg = this.isEditMode ? 'Diet updated successfully' : 'Diet assigned successfully';
         this.msgType = 'success';
+        this.isEditMode = false;
+        this.editingAssignmentId = null;
         this.loadData();
       },
       error: (err) => {
-        console.error('Failed to assign diet:', err);
-        this.msg = 'Failed to assign diet. Please try again.';
+        console.error('Save assignment error:', err);
+        this.msg = 'Failed to save. Please try again.';
         this.msgType = 'error';
-        this.cdr.detectChanges();
+        this.safeDetectChanges();
       }
     });
   }
 
   viewPatientDiet(patient: any): void {
-    this.selectedPatient = patient;
-    this.patientAssignments = this.assignments.filter(a => a.patient?.id === patient.id);
-    this.historyService.getByPatientId(patient.id).subscribe({
-      next: (history) => { this.patientHistory = history || []; },
-      error: () => { this.patientHistory = []; }
-    });
-    this.showDetailModal = true;
-    this.msg = '';
+    try {
+      this.selectedPatient = patient;
+      this.patientAssignments = this.assignments.filter(a => a.patient?.id === patient.id);
+      this.patientHistory = [];
+      this.showDetailModal = true;
+      this.msg = '';
+      this.safeDetectChanges();
+
+      this.historyService.getByPatientId(patient.id).pipe(
+        catchError(() => of([]))
+      ).subscribe({
+        next: (history) => {
+          this.patientHistory = Array.isArray(history) ? history : [];
+          this.safeDetectChanges();
+        },
+        error: () => {
+          this.patientHistory = [];
+          this.safeDetectChanges();
+        }
+      });
+    } catch (e) {
+      console.error('View diet error:', e);
+      this.showDetailModal = true;
+      this.patientHistory = [];
+      this.safeDetectChanges();
+    }
   }
 
   openAddAlert(patient: any): void {
-    this.selectedPatient = patient;
-    this.alertForm = {
-      patientId: patient.id,
-      alertType: 'FOOD_ALLERGY',
-      description: '',
-      severity: 'MEDIUM',
-      allergenName: '',
-      specialInstructions: ''
-    };
-    this.showAlertModal = true;
-    this.msg = '';
+    try {
+      this.selectedPatient = patient;
+      this.alertForm = {
+        patientId: patient.id,
+        alertType: 'FOOD_ALLERGY',
+        description: '',
+        severity: 'MEDIUM',
+        allergenName: '',
+        specialInstructions: ''
+      };
+      this.showAlertModal = true;
+      this.msg = '';
+      this.safeDetectChanges();
+    } catch (e) {
+      console.error('Open alert error:', e);
+    }
   }
 
   saveAlert(): void {
     if (!this.alertForm.description) {
       this.msg = 'Please enter a description';
       this.msgType = 'error';
-      this.cdr.detectChanges();
+      this.safeDetectChanges();
       return;
     }
-    this.alertService.create(this.alertForm).subscribe({
+    const payload: any = {
+      patient: { id: Number(this.alertForm.patientId) },
+      alertType: this.alertForm.alertType,
+      description: this.alertForm.description,
+      severity: this.alertForm.severity,
+      status: 'ACTIVE',
+      allergenName: this.alertForm.allergenName || '',
+      specialInstructions: this.alertForm.specialInstructions || '',
+      createdBy: 'Admin'
+    };
+    this.alertService.create(payload).subscribe({
       next: () => {
         this.showAlertModal = false;
         this.msg = 'Alert created successfully';
@@ -204,10 +291,10 @@ export class PatientDietComponent implements OnInit {
         this.loadData();
       },
       error: (err) => {
-        console.error('Failed to create alert:', err);
-        this.msg = 'Failed to create alert. Please try again.';
+        console.error('Save alert error:', err);
+        this.msg = 'Failed to create alert.';
         this.msgType = 'error';
-        this.cdr.detectChanges();
+        this.safeDetectChanges();
       }
     });
   }
@@ -225,7 +312,8 @@ export class PatientDietComponent implements OnInit {
       'Diabetic': 'badge-danger', 'LowSalt': 'badge-info', 'LowFat': 'badge-warning',
       'Cardiac': 'badge-danger', 'HighProtein': 'badge-primary', 'Liquid': 'badge-info',
       'Soft': 'badge-secondary', 'Renal': 'badge-warning', 'Pediatric': 'badge-success',
-      'Pregnancy': 'badge-info', 'PostSurgery': 'badge-warning', 'Special': 'badge-primary'
+      'Pregnancy': 'badge-info', 'PostSurgery': 'badge-warning', 'Special': 'badge-primary',
+      'Regular': 'badge-secondary'
     };
     return map[dietType] || 'badge-secondary';
   }
@@ -234,27 +322,32 @@ export class PatientDietComponent implements OnInit {
     this.showModal = false;
     this.showDetailModal = false;
     this.showAlertModal = false;
+    this.isEditMode = false;
+    this.editingAssignmentId = null;
     this.msg = '';
   }
 
   getUniqueWards(): string[] {
-    const wards = this.patients.map(p => p.ward?.name).filter((w: string) => w);
-    return [...new Set(wards)];
+    const wards = this.patients.map(p => p.ward?.name).filter((w: any) => w);
+    return [...new Set(wards)] as string[];
   }
 
   calculateAge(dateOfBirth: string): number {
     if (!dateOfBirth) return 0;
-    const birth = new Date(dateOfBirth);
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
-    return age;
+    try {
+      const birth = new Date(dateOfBirth);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age--;
+      }
+      return age;
+    } catch { return 0; }
   }
 
   getMeals(plan: any): { time: string; name: string; content: string }[] {
+    if (!plan) return [];
     return [
       { time: plan.breakfastTime || '07:30', name: 'Breakfast', content: plan.breakfast || '-' },
       { time: plan.morningSnacksTime || '10:00', name: 'Morning Snacks', content: plan.morningSnacks || '-' },
@@ -272,5 +365,13 @@ export class PatientDietComponent implements OnInit {
       'MEAL_CHANGED': 'badge-secondary'
     };
     return map[action] || 'badge-secondary';
+  }
+
+  trackById(index: number, item: any): number {
+    return item.id || index;
+  }
+
+  private safeDetectChanges(): void {
+    try { this.cdr.detectChanges(); } catch (e) { console.error('Change detection error:', e); }
   }
 }

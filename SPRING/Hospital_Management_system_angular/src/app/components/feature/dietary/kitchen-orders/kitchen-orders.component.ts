@@ -63,7 +63,23 @@ export class KitchenOrdersComponent implements OnInit {
   }
 
   saveOrder(): void {
-    this.orderService.create(this.formModel).subscribe({
+    if (!this.formModel.patientId || !this.formModel.mealTime || !this.formModel.mealType) {
+      this.msg = 'Patient ID, Meal Time, and Meal Description are required';
+      this.msgType = 'error';
+      return;
+    }
+    const payload: any = {
+      patient: { id: Number(this.formModel.patientId) },
+      mealTime: this.formModel.mealTime,
+      mealType: this.formModel.mealType,
+      dietType: this.formModel.dietType || '',
+      priority: this.formModel.priority || 'NORMAL',
+      status: this.formModel.status || 'PENDING',
+      kitchenNotes: this.formModel.kitchenNotes || '',
+      bedNumber: this.formModel.bedNumber || '',
+      specialDiet: this.formModel.specialDiet || false
+    };
+    this.orderService.create(payload).subscribe({
       next: () => { this.showModal = false; this.msg = 'Order created'; this.msgType = 'success'; this.loadData(); },
       error: () => { this.msg = 'Failed to create order'; this.msgType = 'error'; }
     });

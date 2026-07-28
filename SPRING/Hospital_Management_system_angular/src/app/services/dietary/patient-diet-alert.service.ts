@@ -23,7 +23,7 @@ export class PatientDietAlertService {
     return this.http.get<PatientDietAlert[]>(`${this.api}/patient/${patientId}`);
   }
   getByAlertType(alertType: string): Observable<PatientDietAlert[]> {
-    return this.http.get<PatientDietAlert[]>(`${this.api}/alert-type/${alertType}`);
+    return this.http.get<PatientDietAlert[]>(`${this.api}/type/${alertType}`);
   }
   updateStatus(id: number, status: string): Observable<PatientDietAlert> {
     return this.http.put<PatientDietAlert>(`${this.api}/${id}/status?status=${status}`, {});

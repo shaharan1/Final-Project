@@ -11,7 +11,8 @@ public enum Role {
     LabTechnician,
     BillingClerk,
     InventoryManager,
-    WardManager;
+    WardManager,
+    Dietician;
 
 
     // Returns Spring Security compatible authority string

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { DietaryDashboardService } from '../../../../services/dietary/dietary-dashboard.service';
 
 @Component({
@@ -44,7 +44,8 @@ export class DietaryDashboardComponent implements OnInit {
 
   constructor(
     private dashboardService: DietaryDashboardService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -114,11 +115,11 @@ this.dashboardService.getDashboardStats().subscribe({
 
   getAlertIcon(type: string): string {
     const map: Record<string, string> = {
-      'DIABETIC': 'dYc,', 'LOW_SODIUM': 'dY,', 'ALLERGY': '�s��,?',
-      'NPO': 'dYs�', 'FASTING': '�?�', 'CRITICAL': 'dYs"',
-      'FOOD_ALLERGY': 'dY�o', 'KITCHEN_ALERT': 'dY?3', 'LATE_DELIVERY': 'dY"�'
+      'DIABETIC': '💉', 'LOW_SODIUM': '🧂', 'ALLERGY': '⚠️',
+      'NPO': '🚫', 'FASTING': '⏳', 'CRITICAL': '🚨',
+      'FOOD_ALLERGY': '🍎', 'KITCHEN_ALERT': '🔥', 'LATE_DELIVERY': '⏰'
     };
-    return map[type] || '�s��,?';
+    return map[type] || '⚠️';
   }
 
   getProgressPercent(value: number): number {
@@ -131,6 +132,6 @@ this.dashboardService.getDashboardStats().subscribe({
   }
 
   goToOrder(id: number): void {
-    /* Navigate to order detail */
+    this.router.navigate(['/dietary/kitchen-orders']);
   }
 }
