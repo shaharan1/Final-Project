@@ -229,28 +229,28 @@ export class InvoiceComponent implements OnInit {
 
         doc.setFont('helvetica', 'normal');
         doc.text(`Subtotal:`, 130, finalY);
-        doc.text(`$${inv.subtotal.toFixed(2)}`, 185, finalY, { align: 'right' });
+        doc.text(`৳${inv.subtotal.toFixed(2)}`, 185, finalY, { align: 'right' });
 
         if (inv.totalDiscount > 0) {
           finalY += 7;
           doc.text(`Discount:`, 130, finalY);
-          doc.text(`-$${inv.totalDiscount.toFixed(2)}`, 185, finalY, { align: 'right' });
+          doc.text(`-৳${inv.totalDiscount.toFixed(2)}`, 185, finalY, { align: 'right' });
         }
 
         finalY += 7;
         doc.text(`VAT (18%):`, 130, finalY);
-        doc.text(`$${inv.vat.toFixed(2)}`, 185, finalY, { align: 'right' });
+        doc.text(`৳${inv.vat.toFixed(2)}`, 185, finalY, { align: 'right' });
 
         if (inv.serviceCharge > 0) {
           finalY += 7;
           doc.text(`Service Charge:`, 130, finalY);
-          doc.text(`$${inv.serviceCharge.toFixed(2)}`, 185, finalY, { align: 'right' });
+          doc.text(`৳${inv.serviceCharge.toFixed(2)}`, 185, finalY, { align: 'right' });
         }
 
         if (inv.insuranceCoverage > 0) {
           finalY += 7;
           doc.text(`Insurance Coverage:`, 130, finalY);
-          doc.text(`-$${inv.insuranceCoverage.toFixed(2)}`, 185, finalY, { align: 'right' });
+          doc.text(`-৳${inv.insuranceCoverage.toFixed(2)}`, 185, finalY, { align: 'right' });
         }
 
         finalY += 7;
@@ -259,16 +259,16 @@ export class InvoiceComponent implements OnInit {
         doc.line(130, finalY - 2, 198, finalY - 2);
         doc.setFont('helvetica', 'bold');
         doc.text(`Net Payable:`, 130, finalY);
-        doc.text(`$${inv.netPayable.toFixed(2)}`, 185, finalY, { align: 'right' });
+        doc.text(`৳${inv.netPayable.toFixed(2)}`, 185, finalY, { align: 'right' });
 
         finalY += 10;
         doc.setFont('helvetica', 'normal');
         doc.text(`Paid Amount:`, 130, finalY);
-        doc.text(`$${inv.paidAmount.toFixed(2)}`, 185, finalY, { align: 'right' });
+        doc.text(`৳${inv.paidAmount.toFixed(2)}`, 185, finalY, { align: 'right' });
 
         finalY += 7;
         doc.text(`Due Amount:`, 130, finalY);
-        doc.text(`$${inv.dueAmount.toFixed(2)}`, 185, finalY, { align: 'right' });
+        doc.text(`৳${inv.dueAmount.toFixed(2)}`, 185, finalY, { align: 'right' });
 
         finalY += 20;
         doc.setFontSize(8);

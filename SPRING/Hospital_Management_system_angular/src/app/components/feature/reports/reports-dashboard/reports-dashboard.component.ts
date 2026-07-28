@@ -182,7 +182,7 @@ export class ReportsDashboardComponent implements OnInit, AfterViewInit, OnDestr
           plugins: { legend: { display: false } },
           scales: {
             x: { grid: { color: gridColor }, ticks: { maxTicksLimit: 10 } },
-            y: { grid: { color: gridColor }, ticks: { callback: (v: any) => '$' + v } }
+            y: { grid: { color: gridColor }, ticks: { callback: (v: any) => '৳' + v } }
           }
         }
       }));
@@ -287,9 +287,9 @@ export class ReportsDashboardComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   formatCurrency(val: number): string {
-    if (val >= 1000000) return '$' + (val / 1000000).toFixed(1) + 'M';
-    if (val >= 1000) return '$' + (val / 1000).toFixed(1) + 'K';
-    return '$' + val;
+    if (val >= 1000000) return '৳' + (val / 1000000).toFixed(1) + 'M';
+    if (val >= 1000) return '৳' + (val / 1000).toFixed(1) + 'K';
+    return '৳' + val;
   }
 
   applyFilters(): void {

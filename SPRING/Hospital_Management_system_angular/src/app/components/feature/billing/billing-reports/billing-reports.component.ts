@@ -733,7 +733,7 @@ export class BillingReportsComponent implements OnInit {
   }
 
   formatCurrency(value: number): string {
-    return '$' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    return '৳' + value.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   }
 
   formatMonthLabel(dateStr: string): string {

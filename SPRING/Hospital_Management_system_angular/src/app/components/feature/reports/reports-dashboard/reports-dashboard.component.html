@@ -111,9 +111,7 @@
 
       <div class="kpi-card">
         <div class="kpi-icon kpi-icon--emerald">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
+          <span style="font-size:24px;font-weight:700;">৳</span>
         </div>
         <div class="kpi-body">
           <span class="kpi-value">৳{{ getAnimated('todayRevenue') | number }}</span>
@@ -280,9 +278,7 @@
           <svg *ngIf="report.icon === 'stethoscope'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/>
           </svg>
-          <svg *ngIf="report.icon === 'dollar'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
+          <span *ngIf="report.icon === 'dollar'" style="font-size:28px;font-weight:700;">৳</span>
           <svg *ngIf="report.icon === 'flask'" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 3h6v11l-3 3-3-3z"/><path d="M6 21h12"/>
           </svg>
