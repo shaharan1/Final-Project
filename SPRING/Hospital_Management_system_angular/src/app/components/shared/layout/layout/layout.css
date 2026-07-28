@@ -294,9 +294,9 @@
 }
 
 .content {
-  padding: 28px 0;
-  max-width: 1180px;
-  margin: 0 auto;
+  padding: 0 28px;
+  max-width: none;
+  margin: 0;
 }
 
 /* ---------- FOOTER ---------- */

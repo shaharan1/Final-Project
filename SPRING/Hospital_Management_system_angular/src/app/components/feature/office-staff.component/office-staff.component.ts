@@ -109,7 +109,7 @@ export class OfficeStaffComponent {
       this.officeStaffService.create(staffData).subscribe({
         next: (response) => {
           if (this.photoFile) {
-            this.officeStaffService.uploadPhoto(response.id, this.photoFile).subscribe(() => {
+            this.officeStaffService.uploadPhoto(response.id!, this.photoFile).subscribe(() => {
               alert('Office Staff Saved Successfully');
               this.router.navigate(['/office-staff']);
             });
