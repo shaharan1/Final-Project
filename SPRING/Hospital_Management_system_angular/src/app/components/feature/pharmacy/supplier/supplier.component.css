@@ -1,7 +1,19 @@
-.supplier-page {
+﻿.supplier-page {
   min-height: 100vh;
-  background: #f0f2f5;
+  background: #0a0e27;
+  color: #f0f4f8;
   padding-bottom: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+}
+
+.supplier-page::before {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(13, 110, 253, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(102, 16, 242, 0.08) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
 }
 
 .hero-section {
@@ -89,11 +101,11 @@
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.025);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .stat-card {
@@ -131,7 +143,7 @@
 .stat-number {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #f0f4f8;
   line-height: 1;
   animation: countFade 0.6s ease-out;
 }
@@ -143,7 +155,7 @@
 
 .stat-label {
   font-size: 0.82rem;
-  color: #6c757d;
+  color: rgba(255,255,255,0.4);
   margin-top: 0.25rem;
 }
 
@@ -154,11 +166,11 @@
   padding: 1rem 1.5rem;
   max-width: 1200px;
   margin: 0 auto 1.25rem;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.025);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .search-box {
@@ -166,8 +178,8 @@
   align-items: center;
   gap: 0.5rem;
   flex: 1;
-  background: #fff;
-  border: 1px solid #dee2e6;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 10px;
   padding: 0.6rem 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -184,7 +196,7 @@
   background: transparent;
   font-size: 0.92rem;
   width: 100%;
-  color: #212529;
+  color: #f0f4f8;
 }
 
 .btn {
@@ -213,12 +225,12 @@
 
 .btn-outline {
   background: transparent;
-  border: 1px solid #dee2e6;
-  color: #495057;
+  border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.65);
 }
 
 .btn-outline:hover {
-  background: #f8f9fa;
+  background: rgba(255,255,255,0.02);
   border-color: #adb5bd;
 }
 
@@ -250,7 +262,7 @@ table {
 }
 
 thead tr {
-  background: #f8f9fa;
+  background: rgba(255,255,255,0.02);
 }
 
 th {
@@ -260,11 +272,11 @@ th {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #6c757d;
+  color: rgba(255,255,255,0.4);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
 th:hover {
@@ -279,8 +291,8 @@ th:hover {
 td {
   padding: 0.8rem 1rem;
   font-size: 0.88rem;
-  color: #495057;
-  border-bottom: 1px solid #f0f0f0;
+  color: rgba(255,255,255,0.65);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
   vertical-align: middle;
 }
 
@@ -290,15 +302,15 @@ tr:hover td {
 
 .fw-semibold {
   font-weight: 600;
-  color: #212529;
+  color: #f0f4f8;
 }
 
 code {
-  background: #f1f3f5;
+  background: rgba(255,255,255,0.06);
   padding: 0.15rem 0.45rem;
   border-radius: 5px;
   font-size: 0.8rem;
-  color: #e83e8c;
+  color: #c084fc;
 }
 
 .badge {
@@ -317,7 +329,7 @@ code {
 
 .badge-inactive {
   background: rgba(108, 117, 125, 0.12);
-  color: #6c757d;
+  color: rgba(255,255,255,0.4);
 }
 
 .badge-suspended {
@@ -372,14 +384,14 @@ code {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 
 .supplier-card .card-header h3 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #212529;
+  color: #f0f4f8;
 }
 
 .supplier-card .card-body {
@@ -391,7 +403,7 @@ code {
   justify-content: space-between;
   padding: 0.35rem 0;
   font-size: 0.85rem;
-  border-bottom: 1px dashed #f0f0f0;
+  border-bottom: 1px dashed rgba(255,255,255,0.04);
 }
 
 .card-row:last-child {
@@ -399,7 +411,7 @@ code {
 }
 
 .card-row .label {
-  color: #6c757d;
+  color: rgba(255,255,255,0.4);
   font-weight: 500;
 }
 
@@ -407,7 +419,7 @@ code {
   display: flex;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 .card-actions .btn {
@@ -455,7 +467,7 @@ code {
   justify-content: space-between;
   align-items: center;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
 .modal-header h2 {
@@ -468,14 +480,14 @@ code {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #6c757d;
+  color: rgba(255,255,255,0.4);
   cursor: pointer;
   padding: 0;
   line-height: 1;
 }
 
 .btn-close:hover {
-  color: #212529;
+  color: #f0f4f8;
 }
 
 .modal-body {
@@ -487,7 +499,7 @@ code {
   justify-content: flex-end;
   gap: 0.75rem;
   padding: 1rem 1.5rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid rgba(255,255,255,0.04);
 }
 
 .form-grid {
@@ -509,7 +521,7 @@ code {
 .form-group label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #495057;
+  color: rgba(255,255,255,0.65);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -518,12 +530,12 @@ code {
 .form-group textarea,
 .form-group select {
   padding: 0.55rem 0.75rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 8px;
   font-size: 0.88rem;
-  color: #212529;
+  color: #f0f4f8;
   transition: border-color 0.2s, box-shadow 0.2s;
-  background: #fff;
+  background: rgba(255,255,255,0.03);
   font-family: inherit;
 }
 
@@ -546,13 +558,13 @@ code {
 
 .delete-warning p {
   font-size: 1rem;
-  color: #212529;
+  color: #f0f4f8;
   margin: 0 0 0.5rem;
 }
 
 .text-muted {
   font-size: 0.85rem;
-  color: #6c757d;
+  color: rgba(255,255,255,0.4);
 }
 
 .empty-state {
