@@ -168,43 +168,36 @@ export class Doctor {
 
     if (this.doctorForm.invalid) return;
 
-    const formData = new FormData();
-    const rawValue = this.doctorForm.value;
-
-    Object.keys(rawValue).forEach(key => {
-      if (key !== 'photo' || !this.photoFile) {
-        formData.append(key, rawValue[key] != null ? String(rawValue[key]) : '');
-      }
-    });
-
+    const doctorData = { ...this.doctorForm.value };
     if (this.photoFile) {
-      formData.append('photo', this.photoFile);
+      delete doctorData.photo;
     }
 
     if (this.isEdit) {
-
-      this.doctorService.update(this.doctorId, formData)
-        .subscribe(() => {
-
-          alert("Doctor Updated");
-
+      this.doctorService.update(this.doctorId, doctorData).subscribe(() => {
+        if (this.photoFile) {
+          this.doctorService.uploadPhoto(this.doctorId, this.photoFile).subscribe(() => {
+            alert('Doctor Updated');
+            this.router.navigate(['/doctor']);
+          });
+        } else {
+          alert('Doctor Updated');
           this.router.navigate(['/doctor']);
-
-        });
-
+        }
+      });
     } else {
-
-      this.doctorService.create(formData)
-        .subscribe(() => {
-
-          alert("Doctor Saved");
-
+      this.doctorService.create(doctorData).subscribe((response) => {
+        if (this.photoFile) {
+          this.doctorService.uploadPhoto(response.id!, this.photoFile).subscribe(() => {
+            alert('Doctor Saved');
+            this.router.navigate(['/doctor']);
+          });
+        } else {
+          alert('Doctor Saved');
           this.router.navigate(['/doctor']);
-
-        });
-
+        }
+      });
     }
-
   }
 
 }
