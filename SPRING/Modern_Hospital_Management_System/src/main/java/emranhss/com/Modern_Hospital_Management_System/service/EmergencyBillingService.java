@@ -11,7 +11,7 @@ public interface EmergencyBillingService {
 
     EmergencyBillingResponse getById(Long id);
 
-    List<EmergencyBillingResponse> getByEmergencyPatientId(Long emergencyPatientId);
+    EmergencyBillingResponse getByEmergencyPatientId(Long emergencyPatientId);
 
     List<EmergencyBillingResponse> getAll();
 

@@ -44,4 +44,9 @@ public class EmergencyMedicineController {
     public ResponseEntity<EmergencyMedicineResponse> requestPharmacy(@PathVariable Long id) {
         return ResponseEntity.ok(emergencyMedicineService.requestPharmacy(id));
     }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<EmergencyMedicineResponse>> getByStatus(@PathVariable String status) {
+        return ResponseEntity.ok(emergencyMedicineService.getByStatus(status));
+    }
 }

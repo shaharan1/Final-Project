@@ -105,7 +105,7 @@ public class PaymentController {
         if (search != null && !search.isBlank()) {
             return ResponseEntity.ok(paymentService.searchUnpaid(search));
         }
-        return ResponseEntity.ok(paymentService.getUnpaidByPatientId(null));
+        return ResponseEntity.ok(paymentService.searchUnpaid(""));
     }
 
     @PutMapping("/{id}/status")

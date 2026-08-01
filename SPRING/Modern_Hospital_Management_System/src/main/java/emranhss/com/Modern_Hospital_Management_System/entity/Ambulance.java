@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -42,9 +43,9 @@ public class Ambulance {
 
     private Integer fuelStatus;
 
-    private LocalDateTime lastServiceDate;
+    private LocalDate lastServiceDate;
 
-    private LocalDateTime nextServiceDate;
+    private LocalDate nextServiceDate;
 
     private Boolean isActive = true;
 

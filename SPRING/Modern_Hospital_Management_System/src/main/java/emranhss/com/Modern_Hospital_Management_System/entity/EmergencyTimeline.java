@@ -27,8 +27,6 @@ public class EmergencyTimeline {
 
     private String eventType;
 
-    @CreationTimestamp
-    @Column(updatable = false)
     private LocalDateTime eventTime;
 
     @Column(columnDefinition = "TEXT")

@@ -30,4 +30,7 @@ public class EmergencyPatientRequest {
     private String accidentType;
     private String emergencyNotes;
     private String ambulanceId;
+    private String severityLevel;
+    private String status;
+    private Integer triageLevel;
 }

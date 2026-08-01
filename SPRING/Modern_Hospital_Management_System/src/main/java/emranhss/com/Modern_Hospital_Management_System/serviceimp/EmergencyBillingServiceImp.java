@@ -48,10 +48,10 @@ public class EmergencyBillingServiceImp implements EmergencyBillingService {
     }
 
     @Override
-    public List<EmergencyBillingResponse> getByEmergencyPatientId(Long emergencyPatientId) {
-        return emergencyBillingRepository.findByEmergencyPatientId(emergencyPatientId).stream()
-                .map(emergencyBillingMapper::toResponse)
-                .collect(Collectors.toList());
+    public EmergencyBillingResponse getByEmergencyPatientId(Long emergencyPatientId) {
+        EmergencyBilling billing = emergencyBillingRepository.findByEmergencyPatientId(emergencyPatientId)
+                .orElseThrow(() -> new ResourceNotFoundException("No billing found for emergency patient id: " + emergencyPatientId));
+        return emergencyBillingMapper.toResponse(billing);
     }
 
     @Override

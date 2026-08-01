@@ -14,8 +14,8 @@ export class EmergencyDoctorAssignmentService {
     return this.http.post<EmergencyDoctorAssignment>(this.api, assignment);
   }
 
-  getByEmergencyPatientId(emergencyPatientId: number): Observable<EmergencyDoctorAssignment> {
-    return this.http.get<EmergencyDoctorAssignment>(`${this.api}/patient/${emergencyPatientId}`);
+  getByEmergencyPatientId(emergencyPatientId: number): Observable<EmergencyDoctorAssignment[]> {
+    return this.http.get<EmergencyDoctorAssignment[]>(`${this.api}/patient/${emergencyPatientId}`);
   }
 
   getAll(): Observable<EmergencyDoctorAssignment[]> {

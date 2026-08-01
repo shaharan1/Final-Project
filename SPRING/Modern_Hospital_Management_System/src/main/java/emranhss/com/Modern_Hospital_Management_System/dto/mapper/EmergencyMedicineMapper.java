@@ -34,9 +34,6 @@ public class EmergencyMedicineMapper {
             response.setEmergencyPatientId(entity.getEmergencyPatient().getId());
             response.setEmergencyNumber(entity.getEmergencyPatient().getEmergencyNumber());
         }
-        if (entity.getStockAvailable() != null) {
-            response.setStockAvailable(entity.getStockAvailable() ? 1 : 0);
-        }
         return response;
     }
 

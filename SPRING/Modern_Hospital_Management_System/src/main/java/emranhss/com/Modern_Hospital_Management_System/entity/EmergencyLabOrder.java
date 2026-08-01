@@ -32,8 +32,6 @@ public class EmergencyLabOrder {
 
     private String orderedBy;
 
-    @CreationTimestamp
-    @Column(updatable = false)
     private LocalDateTime orderedAt;
 
     private LocalDateTime sampleCollectionTime;

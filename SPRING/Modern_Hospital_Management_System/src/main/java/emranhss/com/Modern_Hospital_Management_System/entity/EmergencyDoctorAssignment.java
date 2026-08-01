@@ -38,8 +38,6 @@ public class EmergencyDoctorAssignment {
 
     private String assignmentType;
 
-    @CreationTimestamp
-    @Column(updatable = false)
     private LocalDateTime assignedAt;
 
     private LocalDateTime unassignedAt;

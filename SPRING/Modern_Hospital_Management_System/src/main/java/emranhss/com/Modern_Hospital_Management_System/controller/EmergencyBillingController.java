@@ -35,7 +35,7 @@ public class EmergencyBillingController {
     }
 
     @GetMapping("/patient/{emergencyPatientId}")
-    public ResponseEntity<List<EmergencyBillingResponse>> getByEmergencyPatientId(
+    public ResponseEntity<EmergencyBillingResponse> getByEmergencyPatientId(
             @PathVariable Long emergencyPatientId) {
         return ResponseEntity.ok(emergencyBillingService.getByEmergencyPatientId(emergencyPatientId));
     }

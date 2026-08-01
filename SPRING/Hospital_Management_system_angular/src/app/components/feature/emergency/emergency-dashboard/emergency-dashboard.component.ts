@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -6,9 +6,6 @@ import { EmergencyPatientService } from '../../../../services/emergency/emergenc
 import { AmbulanceService } from '../../../../services/emergency/ambulance.service';
 import { EmergencyBedService } from '../../../../services/emergency/emergency-bed.service';
 import { EmergencyDashboard } from '../../../../models/emergency';
-import { Chart, registerables } from 'chart.js';
-
-Chart.register(...registerables);
 
 @Component({
   selector: 'app-emergency-dashboard',
@@ -22,6 +19,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
   private ambulanceService = inject(AmbulanceService);
   private bedService = inject(EmergencyBedService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   @ViewChild('triagePieChart') triagePieChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('statusBarChart') statusBarChartRef!: ElementRef<HTMLCanvasElement>;
@@ -32,8 +30,8 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
   patients: any[] = [];
   recentActivity: any[] = [];
   refreshInterval: any;
-  triageChart: Chart | null = null;
-  statusChart: Chart | null = null;
+  triageChart: any = null;
+  statusChart: any = null;
 
   dashboardCards = [
     { label: 'Patients Today', value: 0, icon: 'bi-people-fill', color: '#dc3545', key: 'emergencyPatientsToday', route: '/emergency/registration' },
@@ -63,7 +61,6 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
   }
 
   ngAfterViewInit(): void {
-    this.buildCharts();
   }
 
   ngOnDestroy(): void {
@@ -78,10 +75,13 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         this.dashboard = data;
         this.updateCards();
         this.loading = false;
+        this.cdr.detectChanges();
+        this.buildCharts();
       },
       error: () => {
         this.error = 'Failed to load dashboard';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -92,9 +92,12 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         this.patients = data;
         this.filterByStatus(this.selectedStatus);
         this.buildTriageDistribution();
+        this.cdr.detectChanges();
+        this.buildCharts();
       },
       error: () => {
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -188,11 +191,15 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
   }
 
   buildCharts(): void {
-    this.buildTriagePieChart();
-    this.buildStatusBarChart();
+    if (!this.triagePieChartRef?.nativeElement || !this.statusBarChartRef?.nativeElement) return;
+    import('chart.js').then(({ Chart, registerables }) => {
+      Chart.register(...registerables);
+      this.buildTriagePieChart(Chart);
+      this.buildStatusBarChart(Chart);
+    }).catch(() => {});
   }
 
-  private buildTriagePieChart(): void {
+  private buildTriagePieChart(Chart: any): void {
     if (!this.triagePieChartRef?.nativeElement) return;
     if (this.triageChart) this.triageChart.destroy();
 
@@ -225,7 +232,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
     });
   }
 
-  private buildStatusBarChart(): void {
+  private buildStatusBarChart(Chart: any): void {
     if (!this.statusBarChartRef?.nativeElement) return;
     if (this.statusChart) this.statusChart.destroy();
 

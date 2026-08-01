@@ -81,13 +81,30 @@ export class EmergencyBillingComponent implements OnInit {
     }
     this.loading = true;
     const payload = {
-      ...this.billForm,
-      grandTotal: this.getGrandTotal(),
-      subtotal: this.getSubtotal(),
-      vatAmount: this.getVatAmount(),
-      discountAmount: this.getDiscountAmount()
+      emergencyPatientId: this.selectedPatient.id,
+      registrationFee: this.billForm.registrationFee,
+      consultationFee: this.billForm.consultationFee,
+      bedCharge: this.billForm.bedCharge,
+      medicineCharge: this.billForm.medicineCharge,
+      labCharge: this.billForm.labCharge,
+      radiologyCharge: this.billForm.radiologyCharge,
+      procedureCharge: this.billForm.procedureCharge,
+      operationCharge: this.billForm.operationCharge,
+      ambulanceCharge: this.billForm.ambulanceCharge,
+      consumablesCharge: this.billForm.consumablesCharge,
+      doctorFee: this.billForm.doctorFee,
+      nursingCharge: this.billForm.nursingCharge,
+      otherCharges: this.billForm.otherCharges,
+      discountPercent: this.billForm.discountPercent,
+      vatPercent: this.billForm.vatPercent,
+      insuranceCoverage: this.billForm.insuranceCoverage,
+      advancePaid: this.billForm.advancePaid,
+      insuranceProvider: this.billForm.insuranceProvider,
+      insurancePolicyNumber: this.billForm.insurancePolicyNumber,
+      isInsuranceClaimed: this.billForm.isInsuranceClaimed,
+      notes: this.billForm.notes
     };
-    this.billingService.generateBill(this.selectedPatient.id!).subscribe({
+    this.billingService.create(payload as any).subscribe({
       next: () => {
         this.showMessage('Bill generated successfully', 'success');
         this.resetForm();

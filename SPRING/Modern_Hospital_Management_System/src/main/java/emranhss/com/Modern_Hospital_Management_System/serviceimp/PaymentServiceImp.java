@@ -220,6 +220,9 @@ public class PaymentServiceImp implements PaymentService {
     @Override
     @Transactional(readOnly = true)
     public List<Payment> searchUnpaid(String search) {
+        if (search == null || search.isBlank()) {
+            return paymentRepository.findByPaymentStatus(PaymentStatus.PENDING);
+        }
         return paymentRepository.searchUnpaid(search, PaymentStatus.PENDING);
     }
 }

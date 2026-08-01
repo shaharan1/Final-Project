@@ -19,7 +19,7 @@ public class EmergencyMedicineResponse {
     private String route;
     private String frequency;
     private Integer quantity;
-    private Integer stockAvailable;
+    private Boolean stockAvailable;
     private String administeredBy;
     private LocalDateTime administeredAt;
     private Boolean pharmacyRequestSent;

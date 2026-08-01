@@ -36,30 +36,24 @@ public class EmergencyPatientServiceImp implements EmergencyPatientService {
     private final EmergencyBedRepository emergencyBedRepository;
     private final EmergencyBillingRepository emergencyBillingRepository;
     private final PatientRepository patientRepository;
+    private final NurseRepository nurseRepository;
 
     @Override
     @Transactional
     public EmergencyPatientResponse create(EmergencyPatientRequest request) {
         EmergencyPatient patient = emergencyPatientMapper.toEntity(request);
         patient.setEmergencyNumber(generateEmergencyNumber());
-        patient.setSeverityLevel("MODERATE");
-        patient.setStatus("WAITING");
-        patient.setTriageLevel(3);
+        patient.setSeverityLevel(request.getSeverityLevel() != null ? request.getSeverityLevel() : "MODERATE");
+        patient.setStatus(request.getStatus() != null ? request.getStatus() : "WAITING");
+        patient.setTriageLevel(request.getTriageLevel() != null ? request.getTriageLevel() : 3);
 
-        Patient p = new Patient();
-
-        p.setName(request.getPatientName());
-        p.setPhone(request.getPhone());
-        p.setAddress(request.getAddress());
-       p.setNationalId(request.getNationalId());
-       p.setBloodGroup(request.getBloodGroup());
-       p.setEmergencyContactName(request.getEmergencyContactName());
-       p.setEmergencyContactNumber(request.getEmergencyContactPhone());
-       p.setRelationship(request.getEmergencyContactRelation());
-       p.setPatientCode(generatePatientCode());
-
-
-       Patient savedPatient = patientRepository.save(p);
+        Patient savedPatient;
+        if (request.getPatientId() != null) {
+            savedPatient = patientRepository.findById(request.getPatientId())
+                    .orElseGet(() -> createNewPatient(request));
+        } else {
+            savedPatient = createNewPatient(request);
+        }
 
        patient.setPatient(savedPatient);
 
@@ -71,6 +65,20 @@ public class EmergencyPatientServiceImp implements EmergencyPatientService {
         emergencyTimelineRepository.save(timeline);
 
         return emergencyPatientMapper.toResponse(saved);
+    }
+
+    private Patient createNewPatient(EmergencyPatientRequest request) {
+        Patient p = new Patient();
+        p.setName(request.getPatientName());
+        p.setPhone(request.getPhone());
+        p.setAddress(request.getAddress());
+        p.setNationalId(request.getNationalId());
+        p.setBloodGroup(request.getBloodGroup());
+        p.setEmergencyContactName(request.getEmergencyContactName());
+        p.setEmergencyContactNumber(request.getEmergencyContactPhone());
+        p.setRelationship(request.getEmergencyContactRelation());
+        p.setPatientCode(generatePatientCode());
+        return patientRepository.save(p);
     }
 
     @Override
@@ -139,6 +147,7 @@ public class EmergencyPatientServiceImp implements EmergencyPatientService {
         dashboard.setDoctorsOnDuty(emergencyDoctorAssignmentRepository.countByIsActive(true));
         dashboard.setAvailableEmergencyBeds(emergencyBedRepository.countByStatus("AVAILABLE"));
         dashboard.setIcuBedsAvailable(emergencyBedRepository.countByStatus("AVAILABLE"));
+        dashboard.setNursesOnDuty((long) nurseRepository.findByOnDutyTrueAndActiveTrue().size());
 
         Double todayRevenue = emergencyBillingRepository.findAll().stream()
                 .filter(b -> b.getPaidAt() != null && b.getPaidAt().isAfter(todayStart) && b.getPaidAt().isBefore(todayEnd))

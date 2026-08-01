@@ -82,8 +82,6 @@ public class EmergencyPatient {
 
     private Integer triageLevel;
 
-    @CreationTimestamp
-    @Column(updatable = false)
     private LocalDateTime arrivalTime;
 
     private LocalDateTime triageTime;
