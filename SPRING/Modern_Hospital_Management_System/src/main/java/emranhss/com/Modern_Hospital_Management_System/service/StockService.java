@@ -23,5 +23,6 @@ public interface StockService {
     MedicineStockResponse adjustStock(StockAdjustmentRequest request);
     List<StockHistoryResponse> getStockHistory(Long stockId);
     void decreaseStock(Long stockId, int quantity);
+    void increaseStock(Long stockId, int quantity, String reason, String performedBy);
     void delete(Long id);
 }
