@@ -1,13 +1,20 @@
 package emranhss.com.Modern_Hospital_Management_System.dto.mapper;
 
 import emranhss.com.Modern_Hospital_Management_System.dto.request.PurchaseRequest;
+import emranhss.com.Modern_Hospital_Management_System.dto.response.PurchaseItemResponse;
 import emranhss.com.Modern_Hospital_Management_System.dto.response.PurchaseResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.Purchase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class PurchaseMapper {
+
+    private final PurchaseItemMapper itemMapper;
 
     public Purchase toEntity(PurchaseRequest request) {
         if (request == null) return null;
@@ -37,11 +44,18 @@ public class PurchaseMapper {
         response.setPaidAmount(purchase.getPaidAmount());
         response.setDueAmount(purchase.getDueAmount());
         response.setStatus(purchase.getStatus());
+        response.setPaymentStatus(purchase.getPaymentStatus());
         response.setPaymentMethod(purchase.getPaymentMethod());
         response.setNotes(purchase.getNotes());
         if (purchase.getSupplier() != null) {
             response.setSupplierId(purchase.getSupplier().getId());
             response.setSupplierName(purchase.getSupplier().getName());
+        }
+        if (purchase.getItems() != null) {
+            List<PurchaseItemResponse> itemResponses = purchase.getItems().stream()
+                    .map(itemMapper::toResponse)
+                    .collect(Collectors.toList());
+            response.setItems(itemResponses);
         }
         return response;
     }
