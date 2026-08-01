@@ -27,6 +27,23 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseService.getPurchaseById(id));
     }
 
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<PurchaseResponse> approvePurchase(@PathVariable Long id) {
+        return ResponseEntity.ok(purchaseService.approvePurchase(id));
+    }
+
+    @PutMapping("/{id}/receive")
+    public ResponseEntity<PurchaseResponse> receivePurchase(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "SYSTEM") String performedBy) {
+        return ResponseEntity.ok(purchaseService.receivePurchase(id, performedBy));
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<PurchaseResponse> cancelPurchase(@PathVariable Long id) {
+        return ResponseEntity.ok(purchaseService.cancelPurchase(id));
+    }
+
     @GetMapping
     public ResponseEntity<List<PurchaseResponse>> getAllPurchases() {
         return ResponseEntity.ok(purchaseService.getAllPurchases());
