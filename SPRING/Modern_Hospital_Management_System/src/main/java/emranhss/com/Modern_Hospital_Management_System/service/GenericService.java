@@ -8,6 +8,8 @@ import java.util.List;
 public interface GenericService {
 
     GenericResponse create(GenericRequest gr);
+    GenericResponse getById(Long id);
+    GenericResponse update(Long id, GenericRequest gr);
     List<GenericResponse> getAll();
-
+    void delete(Long id);
 }
