@@ -96,17 +96,36 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
             billingRepository.save(targetBilling);
         }
 
+        // 5. Mark the linked prescription as dispensed so it leaves the pending queue
+        if (request.getPrescriptionId() != null) {
+            prescriptionRepository.findById(request.getPrescriptionId()).ifPresent(p -> {
+                p.setDispensed(true);
+                prescriptionRepository.save(p);
+            });
+        }
+
         PharmacySale savedSale = pharmacySaleRepository.save(sale);
 
-        // 5. Build and return sanitized response payload DTO structure
+        // 6. Build and return sanitized response payload DTO structure
         PharmacySaleResponse response = new PharmacySaleResponse();
         response.setId(savedSale.getId());
         response.setSaleInvoiceNo(savedSale.getSaleInvoiceNo());
         response.setPatientType(savedSale.getPatientType());
+        response.setPatientName(savedSale.getPatientName());
+        response.setPatientPhone(savedSale.getPatientPhone());
+        response.setPatientId(savedSale.getPatientId());
+        response.setDoctorId(savedSale.getDoctorId());
+        response.setDoctorName(savedSale.getDoctorName());
+        response.setPrescriptionId(savedSale.getPrescriptionId());
         response.setTotalAmount(savedSale.getTotalAmount());
         response.setDiscount(savedSale.getDiscount());
+        response.setVat(savedSale.getVat());
         response.setNetPayable(savedSale.getNetPayable());
+        response.setPaidAmount(savedSale.getPaidAmount());
+        response.setChangeAmount(savedSale.getChangeAmount());
+        response.setPaymentMethod(savedSale.getPaymentMethod());
         response.setPaymentStatus(savedSale.getPaymentStatus());
+        response.setSaleType(savedSale.getSaleType());
         response.setSaleDate(savedSale.getSaleDate());
         if (savedSale.getBilling() != null) {
             response.setBillingId(savedSale.getBilling().getId());
