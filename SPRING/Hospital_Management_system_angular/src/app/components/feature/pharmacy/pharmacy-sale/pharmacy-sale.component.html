@@ -272,4 +272,112 @@
       </div>
     </div>
   </div>
+
+  <!-- Prescription Dispense Modal -->
+  <div class="modal-overlay" *ngIf="showPrescriptionModal" (click)="closePrescriptionModal()">
+    <div class="modal modal-lg glass-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h2>Dispense Prescription</h2>
+          <span class="modal-subtitle">Select a pending prescription to load into the cart</span>
+        </div>
+        <button class="btn-close" (click)="closePrescriptionModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <div class="loading-container" *ngIf="loadingPrescriptions">
+          <div class="spinner"></div>
+          <p>Loading pending prescriptions...</p>
+        </div>
+
+        <!-- Step 1: Pick prescription -->
+        <div *ngIf="!loadingPrescriptions && !selectedPrescription">
+          <div class="empty-state" *ngIf="pendingPrescriptions.length === 0">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 8v5a5 5 0 01-5 5H8a5 5 0 01-5-5V8"/></svg>
+            <p>No pending prescriptions</p>
+          </div>
+          <div class="rx-list">
+            <div class="rx-card glass-card" *ngFor="let rx of pendingPrescriptions" (click)="selectPrescription(rx)">
+              <div class="rx-card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="rx-card-info">
+                <span class="rx-no">{{ rx.prescriptionNumber }}</span>
+                <span class="rx-patient"><strong>{{ rx.patientName }}</strong> &middot; {{ rx.patientAge || 'N/A' }}</span>
+                <span class="rx-meta">Dr. {{ rx.doctorName }} &middot; {{ rx.prescriptionItems?.length || 0 }} medicines &middot; {{ rx.createdDate | date:'short' }}</span>
+              </div>
+              <svg class="rx-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Map items to stock -->
+        <div *ngIf="selectedPrescription">
+          <div class="rx-detail-header glass-card">
+            <div>
+              <span class="rx-no">{{ selectedPrescription.prescriptionNumber }}</span>
+              <span class="rx-patient"><strong>{{ selectedPrescription.patientName }}</strong> &middot; Dr. {{ selectedPrescription.doctorName }}</span>
+              <span class="rx-meta">{{ selectedPrescription.diagnosis }}</span>
+            </div>
+            <button class="btn btn-outline" (click)="selectedPrescription = null; dispenseLines = []">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </div>
+
+          <div class="table-scroll" *ngIf="dispenseLines.length > 0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Medicine</th>
+                  <th>Dosage</th>
+                  <th>Stock Item</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let line of dispenseLines; let i = index">
+                  <td>
+                    <span class="fw-semibold">{{ line.medicineName }}</span>
+                    <span class="dose-hint">{{ line.dosage }} &middot; {{ line.duration }} &middot; {{ line.instruction }}</span>
+                  </td>
+                  <td><span class="dose-badge">{{ line.dosage || 'N/A' }}</span></td>
+                  <td>
+                    <div class="stock-match">
+                      <input type="text" [ngModel]="line.stockName" (input)="searchStockForLine(line, $any($event.target).value)" placeholder="Search stock medicine...">
+                      <span class="match-status" [class.matched]="line.stockId > 0" [class.unmatched]="line.stockId === 0">
+                        {{ line.stockId > 0 ? 'Matched' : 'Unmatched' }}
+                      </span>
+                      <div class="match-options" *ngIf="line.options && line.options.length > 0">
+                        <div class="match-option" *ngFor="let stock of line.options" (click)="chooseStockForLine(line, stock)">
+                          <span>{{ stock.medicineName }} <em>{{ stock.strength }} &middot; {{ stock.dosageForm }}</em></span>
+                          <span class="opt-price">&#2547;{{ stock.salePrice }} &middot; {{ stock.availableQuantity }} in stock</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="line.quantity" min="1" class="qty-input" style="width:64px;">
+                  </td>
+                  <td class="fw-semibold text-orange">&#2547;{{ line.unitPrice | number:'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state small" *ngIf="dispenseLines.length === 0">
+            <p>This prescription has no medicines</p>
+          </div>
+
+          <div class="modal-footer rx-footer">
+            <span class="rx-hint">Auto-matched by name; adjust stock item if needed. Quantities are editable in the cart.</span>
+            <button class="btn btn-primary" (click)="addDispenseToCart()" [disabled]="!dispenseReady">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Add to Cart ({{ dispenseLines.length }} items)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
