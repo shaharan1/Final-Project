@@ -32,6 +32,10 @@ body {
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; }
 
+/* Bootstrap ships .modal { display:none } (JS-based modals). This app's modals
+   are Angular *ngIf-driven and always render visible, so force them visible. */
+.modal:not(.d-none) { display: block; }
+
 /* ---------- HERO ---------- */
 .hero {
   position: relative;
