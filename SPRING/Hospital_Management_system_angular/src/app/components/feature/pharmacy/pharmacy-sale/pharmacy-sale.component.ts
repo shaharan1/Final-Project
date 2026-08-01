@@ -4,8 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PharmacySaleService } from '../../../../services/pharmacy-sale.service';
 import { StockService } from '../../../../services/stock.service';
+import { PrescriptionService } from '../../../../services/prescription.service';
 import { PharmacySaleModel, PharmacySaleItemModel } from '../../../../models/pharmacy-sale.model';
 import { MedicineStockModel } from '../../../../models/medicine-stock.model';
+import { PrescriptionModel, PrescriptionItemModel } from '../../../../models/prescriptionModel';
+
+interface DispenseLine {
+  medicineName: string;
+  dosage: string;
+  duration: string;
+  instruction: string;
+  stockId: number;
+  stockName: string;
+  batchNumber: string;
+  quantity: number;
+  unitPrice: number;
+  options: MedicineStockModel[];
+}
 
 @Component({
   selector: 'app-pharmacy-sale',
@@ -26,6 +41,14 @@ export class PharmacySaleComponent implements OnInit {
   showSaleDetailModal: boolean = false;
   selectedSale: PharmacySaleModel | null = null;
   lowStockWarning: string = '';
+
+  showPrescriptionModal: boolean = false;
+  pendingPrescriptions: PrescriptionModel[] = [];
+  loadingPrescriptions: boolean = false;
+  selectedPrescription: PrescriptionModel | null = null;
+  dispenseLines: DispenseLine[] = [];
+  activePrescriptionId: number | null = null;
+  activePrescriptionNo: string = '';
 
   loading = false;
   loadingSales = false;
@@ -48,7 +71,8 @@ export class PharmacySaleComponent implements OnInit {
 
   constructor(
     private saleService: PharmacySaleService,
-    private stockService: StockService
+    private stockService: StockService,
+    private prescriptionService: PrescriptionService
   ) {}
 
   ngOnInit(): void {
@@ -135,6 +159,126 @@ export class PharmacySaleComponent implements OnInit {
     if (this.changeAmount < 0) this.changeAmount = 0;
   }
 
+  openPrescriptionModal(): void {
+    this.showPrescriptionModal = true;
+    this.loadingPrescriptions = true;
+    this.pendingPrescriptions = [];
+    this.prescriptionService.getPending().subscribe({
+      next: (data: PrescriptionModel[]) => {
+        this.pendingPrescriptions = data;
+        this.loadingPrescriptions = false;
+      },
+      error: () => {
+        this.loadingPrescriptions = false;
+        this.error = 'Failed to load pending prescriptions.';
+      }
+    });
+  }
+
+  closePrescriptionModal(): void {
+    this.showPrescriptionModal = false;
+    this.selectedPrescription = null;
+    this.dispenseLines = [];
+  }
+
+  selectPrescription(rx: PrescriptionModel): void {
+    this.selectedPrescription = rx;
+    this.dispenseLines = (rx.prescriptionItems || []).map((item: PrescriptionItemModel) => {
+      const options = (item.suggestions || []).length > 0 ? item.suggestions! : [];
+      return {
+        medicineName: item.medicineName || '',
+        dosage: item.dosage || '',
+        duration: item.duration || '',
+        instruction: item.instruction || '',
+        stockId: 0,
+        stockName: '',
+        batchNumber: '',
+        quantity: 1,
+        unitPrice: 0,
+        options
+      } as DispenseLine;
+    });
+    this.autoMatchDispenseLines();
+  }
+
+  private autoMatchDispenseLines(): void {
+    this.stockService.getAll().subscribe({
+      next: (allStock: MedicineStockModel[]) => {
+        const available = allStock.filter(s => (s.availableQuantity ?? s.stockQuantity ?? 0) > 0);
+        for (const line of this.dispenseLines) {
+          const match = available.find(s => s.medicineName.toLowerCase() === line.medicineName.toLowerCase());
+          if (match) {
+            line.stockId = match.id!;
+            line.stockName = match.medicineName;
+            line.batchNumber = match.batchNumber;
+            line.unitPrice = match.salePrice;
+          }
+        }
+      },
+      error: () => {}
+    });
+  }
+
+  searchStockForLine(line: DispenseLine, term: string): void {
+    if (term.length < 2) { line.options = []; return; }
+    this.stockService.search(term).subscribe({
+      next: (data: MedicineStockModel[]) => {
+        line.options = data.filter(s => (s.availableQuantity ?? s.stockQuantity ?? 0) > 0);
+      },
+      error: () => { line.options = []; }
+    });
+  }
+
+  chooseStockForLine(line: DispenseLine, stock: MedicineStockModel): void {
+    line.stockId = stock.id!;
+    line.stockName = stock.medicineName;
+    line.batchNumber = stock.batchNumber;
+    line.unitPrice = stock.salePrice;
+    line.options = [];
+  }
+
+  get dispenseReady(): boolean {
+    return this.dispenseLines.length > 0 && this.dispenseLines.every(l => l.stockId > 0 && l.quantity > 0);
+  }
+
+  addDispenseToCart(): void {
+    if (!this.dispenseReady) return;
+    if (this.selectedPrescription) {
+      this.patientName = this.selectedPrescription.patientName || '';
+      this.patientPhone = this.selectedPrescription.patientPhone || '';
+      this.patientType = 'OUTPATIENT';
+      this.doctorName = this.selectedPrescription.doctorName || '';
+    }
+    for (const line of this.dispenseLines) {
+      const existing = this.cartItems.find(c => c.medicineStockId === line.stockId);
+      if (existing) {
+        existing.quantity += line.quantity;
+        existing.subtotal = existing.quantity * (existing.unitPrice || 0) - (existing.discount || 0);
+      } else {
+        this.cartItems.push({
+          medicineStockId: line.stockId,
+          medicineName: line.stockName,
+          batchNumber: line.batchNumber,
+          quantity: line.quantity,
+          unitPrice: line.unitPrice,
+          discount: 0,
+          subtotal: line.quantity * line.unitPrice
+        });
+      }
+    }
+    if (this.selectedPrescription?.id) {
+      this.activePrescriptionId = this.selectedPrescription.id;
+      this.activePrescriptionNo = this.selectedPrescription.prescriptionNumber || '';
+    }
+    this.closePrescriptionModal();
+    this.calculateTotals();
+  }
+
+  clearActivePrescription(): void {
+    this.activePrescriptionId = null;
+    this.activePrescriptionNo = '';
+  }
+
   onDiscountChange(): void {
     this.calculateTotals();
   }
@@ -156,6 +300,7 @@ export class PharmacySaleComponent implements OnInit {
       patientName: this.patientName,
       patientPhone: this.patientPhone,
       doctorName: this.doctorName,
+      prescriptionId: this.activePrescriptionId ?? undefined,
       totalAmount: this.subtotal,
       discount: this.discount,
       vat: this.vat,
@@ -198,6 +343,8 @@ export class PharmacySaleComponent implements OnInit {
     this.changeAmount = 0;
     this.paymentMethod = 'Cash';
     this.lowStockWarning = '';
+    this.activePrescriptionId = null;
+    this.activePrescriptionNo = '';
   }
 
   viewSaleDetail(sale: PharmacySaleModel): void {
@@ -211,6 +358,7 @@ export class PharmacySaleComponent implements OnInit {
   }
 
   getStatusClass(status: string): string {
-    return status === 'Paid' ? 'badge-paid' : status === 'Pending' ? 'badge-pending' : 'badge-partial';
+    const s = (status || '').toUpperCase();
+    return s === 'PAID' ? 'badge-paid' : s === 'PENDING_BILLING' || s === 'PENDING' ? 'badge-pending' : 'badge-partial';
   }
 }

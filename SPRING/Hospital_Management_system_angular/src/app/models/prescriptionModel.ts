@@ -35,6 +35,7 @@ export interface PrescriptionModel {
   patientBloodGroup?: string;
   prescriptionNumber?: string;
   createdDate?: string;
+  dispensed?: boolean;
 
   diagnosis: string;
   chiefComplaints: string;

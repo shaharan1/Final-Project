@@ -22,6 +22,14 @@ export class PrescriptionService {
     return this.http.get<PrescriptionModel[]>(this.apiUrl);
   }
 
+  getPending(): Observable<PrescriptionModel[]> {
+    return this.http.get<PrescriptionModel[]>(`${this.apiUrl}/pending`);
+  }
+
+  markDispensed(id: number): Observable<PrescriptionModel> {
+    return this.http.put<PrescriptionModel>(`${this.apiUrl}/${id}/dispensed`, {});
+  }
+
   getByDoctorId(doctorId: number): Observable<PrescriptionModel[]> {
     return this.http.get<PrescriptionModel[]>(`${this.apiUrl}/doctor/${doctorId}`);
   }
