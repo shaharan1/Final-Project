@@ -11,6 +11,7 @@ export interface PurchaseModel {
   paidAmount?: number;
   dueAmount?: number;
   status?: string;
+  paymentStatus?: string;
   paymentMethod?: string;
   notes?: string;
   items?: PurchaseItemModel[];

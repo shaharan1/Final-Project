@@ -11,5 +11,8 @@ export class PurchasePharmacyService {
   create(data: PurchaseModel): Observable<PurchaseModel> { return this.http.post<PurchaseModel>(this.api, data); }
   getById(id: number): Observable<PurchaseModel> { return this.http.get<PurchaseModel>(`${this.api}/${id}`); }
   getAll(): Observable<PurchaseModel[]> { return this.http.get<PurchaseModel[]>(this.api); }
+  approve(id: number): Observable<PurchaseModel> { return this.http.put<PurchaseModel>(`${this.api}/${id}/approve`, {}); }
+  receive(id: number): Observable<PurchaseModel> { return this.http.put<PurchaseModel>(`${this.api}/${id}/receive`, {}); }
+  cancel(id: number): Observable<PurchaseModel> { return this.http.put<PurchaseModel>(`${this.api}/${id}/cancel`, {}); }
   delete(id: number): Observable<any> { return this.http.delete(`${this.api}/${id}`); }
 }

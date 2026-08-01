@@ -39,6 +39,7 @@ export class PurchaseOrderComponent implements OnInit {
   newItem: PurchaseItemModel = this.getEmptyItem();
   selectedPurchase: PurchaseModel | null = null;
   purchaseToDelete: PurchaseModel | null = null;
+  processingId: number | null = null;
 
   getEmptyForm(): PurchaseModel {
     return {
@@ -184,6 +185,8 @@ export class PurchaseOrderComponent implements OnInit {
   confirmPurchase(): void {
     if (!this.purchaseForm.items || this.purchaseForm.items.length === 0) return;
     this.creating = true;
+    const paid = this.purchaseForm.paidAmount ?? 0;
+    const net = this.purchaseForm.netAmount ?? 0;
     const purchase: PurchaseModel = {
       supplierId: this.purchaseForm.supplierId!,
       supplierName: this.purchaseForm.supplierName,
@@ -191,10 +194,10 @@ export class PurchaseOrderComponent implements OnInit {
       vat: this.purchaseForm.vat,
       discount: this.purchaseForm.discount,
       netAmount: this.purchaseForm.netAmount,
-      paidAmount: this.purchaseForm.paidAmount,
+      paidAmount: paid,
       dueAmount: this.purchaseForm.dueAmount,
-      status: (this.purchaseForm.paidAmount ?? 0) >= (this.purchaseForm.netAmount ?? 0) ? 'Paid'
-        : (this.purchaseForm.paidAmount ?? 0) > 0 ? 'Partial' : 'Pending',
+      status: 'PENDING',
+      paymentStatus: net > 0 && paid >= net ? 'PAID' : paid > 0 ? 'PARTIAL' : 'PENDING',
       paymentMethod: this.purchaseForm.paymentMethod,
       notes: this.purchaseForm.notes,
       items: this.purchaseForm.items
