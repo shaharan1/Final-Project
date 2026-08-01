@@ -16,6 +16,7 @@ public class PurchaseResponse {
     private Double paidAmount;
     private Double dueAmount;
     private String status;
+    private String paymentStatus;
     private String paymentMethod;
     private String notes;
     private List<PurchaseItemResponse> items;
