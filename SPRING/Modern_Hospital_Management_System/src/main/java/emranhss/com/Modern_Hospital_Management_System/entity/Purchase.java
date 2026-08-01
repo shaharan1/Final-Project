@@ -47,6 +47,8 @@ public class Purchase {
     @Column(nullable = false)
     private String status = "PENDING";
 
+    private String paymentStatus = "PENDING";
+
     private String paymentMethod = "CASH";
 
     private String notes;
