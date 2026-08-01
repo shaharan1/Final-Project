@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { catchError, of, timeout } from 'rxjs';
 import { SupplierService } from '../../../../services/supplier.service';
 import { StockService } from '../../../../services/stock.service';
 import { PurchasePharmacyService } from '../../../../services/purchase-pharmacy.service';
@@ -60,7 +61,8 @@ export class PurchaseOrderComponent implements OnInit {
   constructor(
     private supplierService: SupplierService,
     private stockService: StockService,
-    private purchaseService: PurchasePharmacyService
+    private purchaseService: PurchasePharmacyService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -71,26 +73,47 @@ export class PurchaseOrderComponent implements OnInit {
 
   loadPurchases(): void {
     this.loading = true;
-    this.purchaseService.getAll().subscribe({
+    this.error = '';
+    this.purchaseService.getAll().pipe(
+      timeout(15000),
+      catchError(err => {
+        console.error('Failed to load purchases', err);
+        this.error = 'Failed to load purchases. Please try again.';
+        this.loading = false;
+        this.cdr.detectChanges();
+        return of([]);
+      })
+    ).subscribe({
       next: (data: PurchaseModel[]) => {
-        this.purchases = data;
+        this.purchases = data ?? [];
         this.filterPurchases();
         this.loading = false;
+        this.cdr.detectChanges();
       },
-      error: () => { this.loading = false; }
+      error: () => {
+        this.error = 'Failed to load purchases. Please try again.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
   loadSuppliers(): void {
-    this.supplierService.getAll().subscribe({
-      next: (data: SupplierModel[]) => { this.suppliers = data; },
+    this.supplierService.getAll().pipe(
+      timeout(15000),
+      catchError(() => of([]))
+    ).subscribe({
+      next: (data: SupplierModel[]) => { this.suppliers = data ?? []; },
       error: () => {}
     });
   }
 
   loadStock(): void {
-    this.stockService.getAll().subscribe({
-      next: (data: MedicineStockModel[]) => { this.stockItems = data; },
+    this.stockService.getAll().pipe(
+      timeout(15000),
+      catchError(() => of([]))
+    ).subscribe({
+      next: (data: MedicineStockModel[]) => { this.stockItems = data ?? []; },
       error: () => {}
     });
   }
