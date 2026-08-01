@@ -94,4 +94,26 @@ public class PaymentController {
     public ResponseEntity<List<Map<String, Object>>> getPaymentMethodBreakdown() {
         return ResponseEntity.ok(paymentService.getPaymentMethodBreakdown());
     }
+
+    @GetMapping("/unpaid")
+    public ResponseEntity<List<Payment>> getUnpaidBills(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long patientId) {
+        if (patientId != null) {
+            return ResponseEntity.ok(paymentService.getUnpaidByPatientId(patientId));
+        }
+        if (search != null && !search.isBlank()) {
+            return ResponseEntity.ok(paymentService.searchUnpaid(search));
+        }
+        return ResponseEntity.ok(paymentService.getUnpaidByPatientId(null));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Payment> updatePaymentStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        Payment payment = paymentService.getById(id);
+        payment.setPaymentStatus(PaymentStatus.valueOf(body.get("status")));
+        return ResponseEntity.ok(paymentService.updatePayment(payment));
+    }
 }

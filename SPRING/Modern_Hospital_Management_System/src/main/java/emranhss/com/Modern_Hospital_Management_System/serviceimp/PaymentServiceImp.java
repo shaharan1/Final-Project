@@ -204,4 +204,22 @@ public class PaymentServiceImp implements PaymentService {
         long count = paymentRepository.count() + 1;
         return String.format("PAY-%d-%04d", year, count);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Payment> getUnpaidByPatientId(Long patientId) {
+        return paymentRepository.findByPaymentStatusAndPatientId(PaymentStatus.PENDING, patientId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Payment> getUnpaidByPatientName(String patientName) {
+        return paymentRepository.findByPaymentStatusAndPatientNameContainingIgnoreCase(PaymentStatus.PENDING, patientName);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Payment> searchUnpaid(String search) {
+        return paymentRepository.searchUnpaid(search, PaymentStatus.PENDING);
+    }
 }

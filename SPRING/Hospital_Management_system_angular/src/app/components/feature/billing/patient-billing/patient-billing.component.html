@@ -29,6 +29,35 @@
     </div>
   </div>
 
+  <!-- Unpaid Bills Banner -->
+  <div class="unpaid-bills-banner glass" *ngIf="showUnpaidBills && unpaidBills.length > 0">
+    <div class="banner-header">
+      <h3>Unpaid Bills ({{ unpaidBills.length }})</h3>
+      <button class="btn-close" (click)="dismissUnpaidBills()">&times;</button>
+    </div>
+    <div class="unpaid-list">
+      <div class="unpaid-item" *ngFor="let bill of unpaidBills" (click)="payUnpaidBill(bill)">
+        <div class="unpaid-main">
+          <span class="unpaid-invoice">{{ bill.invoiceNumber }}</span>
+          <span class="unpaid-patient">{{ bill.patientName }}</span>
+          <span class="unpaid-date">{{ bill.paymentDate | date:'short' }}</span>
+        </div>
+        <div class="unpaid-meta">
+          <span class="unpaid-amount">{{ formatCurrency(bill.amount) }}</span>
+          <span class="badge badge-warning">{{ bill.paymentStatus }}</span>
+          <button class="btn btn-primary btn-sm" (click)="payUnpaidBill(bill); $event.stopPropagation()">Pay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="unpaid-bills-banner glass" *ngIf="showUnpaidBills && unpaidBills.length === 0 && !loadingUnpaid">
+    <div class="banner-header">
+      <h3>No Unpaid Bills</h3>
+      <button class="btn-close" (click)="dismissUnpaidBills()">&times;</button>
+    </div>
+    <p class="no-results">No unpaid bills found</p>
+  </div>
+
   <!-- Patient Search Results -->
   <div class="patient-results glass" *ngIf="showPatientSearch && filteredPatients.length > 0">
     <div class="result-item" *ngFor="let patient of filteredPatients" (click)="selectPatient(patient)">

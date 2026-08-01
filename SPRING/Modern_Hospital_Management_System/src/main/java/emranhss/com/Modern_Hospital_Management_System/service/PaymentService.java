@@ -29,4 +29,10 @@ public interface PaymentService {
     Map<String, Object> getMonthlyRevenue(int year, int month);
 
     List<Map<String, Object>> getPaymentMethodBreakdown();
+
+    List<Payment> getUnpaidByPatientId(Long patientId);
+
+    List<Payment> getUnpaidByPatientName(String patientName);
+
+    List<Payment> searchUnpaid(String search);
 }

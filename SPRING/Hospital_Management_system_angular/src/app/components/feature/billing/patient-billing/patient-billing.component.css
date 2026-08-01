@@ -339,6 +339,22 @@
 .toast-close { background: none; border: none; color: inherit; font-size: 1.2rem; cursor: pointer; opacity: 0.7; padding: 0 0 0 12px; }
 .toast-close:hover { opacity: 1; }
 
+/* ===== UNPAID BILLS ===== */
+.unpaid-bills-banner { padding: 20px; margin-bottom: 20px; position: relative; z-index: 1; border: 1px solid rgba(253,126,20,0.2); }
+.unpaid-bills-banner .banner-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.unpaid-bills-banner .banner-header h3 { margin: 0; font-size: 1rem; font-weight: 600; color: #fdba74; }
+.unpaid-bills-banner .btn-close { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.4rem; cursor: pointer; padding: 0 4px; line-height: 1; }
+.unpaid-bills-banner .btn-close:hover { color: #fff; }
+.unpaid-list { display: flex; flex-direction: column; gap: 8px; }
+.unpaid-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(255,255,255,0.02); border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
+.unpaid-item:hover { background: rgba(255,255,255,0.06); transform: translateX(3px); }
+.unpaid-main { display: flex; flex-direction: column; gap: 2px; }
+.unpaid-invoice { font-size: 0.8rem; font-weight: 600; color: #f0f4f8; font-family: 'IBM Plex Mono', monospace; }
+.unpaid-patient { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+.unpaid-date { font-size: 0.65rem; color: rgba(255,255,255,0.35); font-family: monospace; }
+.unpaid-meta { display: flex; align-items: center; gap: 10px; }
+.unpaid-amount { font-size: 0.9rem; font-weight: 700; color: #fdba74; }
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .billing-grid { grid-template-columns: 1fr; }

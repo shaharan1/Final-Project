@@ -61,6 +61,10 @@ export class PatientBillingComponent implements OnInit {
 
   dashboardStats: any = null;
 
+  unpaidBills: any[] = [];
+  showUnpaidBills = false;
+  loadingUnpaid = false;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private invoiceGen: InvoiceGeneratorService,
@@ -177,6 +181,71 @@ export class PatientBillingComponent implements OnInit {
 
     this.showPatientSearch = false;
     this.searchTerm = '';
+    this.loadUnpaidBills(patient);
+    this.cdr.detectChanges();
+  }
+
+  loadUnpaidBills(patient: PatientModel): void {
+    this.loadingUnpaid = true;
+    this.showUnpaidBills = true;
+    this.paymentService.getUnpaidByPatientId(patient.id!).subscribe({
+      next: (bills) => {
+        this.unpaidBills = bills;
+        this.loadingUnpaid = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.unpaidBills = [];
+        this.loadingUnpaid = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  searchUnpaidBills(): void {
+    if (!this.searchTerm) return;
+    this.loadingUnpaid = true;
+    this.showUnpaidBills = true;
+    this.paymentService.getUnpaidBySearch(this.searchTerm).subscribe({
+      next: (bills) => {
+        this.unpaidBills = bills;
+        this.loadingUnpaid = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.unpaidBills = [];
+        this.loadingUnpaid = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  payUnpaidBill(bill: any): void {
+    this.billForm.billNumber = bill.invoiceNumber;
+    this.billForm.patientName = bill.patientName;
+    this.billForm.phone = bill.patientContact || '';
+    this.billForm.notes = bill.notes || '';
+    this.discountPercent = bill.discount || 0;
+
+    this.billItems = [{
+      id: this.nextItemId++,
+      category: 'Other',
+      description: bill.invoiceNumber,
+      qty: 1,
+      unitPrice: bill.amount || 0,
+      discount: bill.discount || 0,
+      amount: bill.amount || 0
+    }];
+
+    this.showUnpaidBills = false;
+    this.msg = 'Loaded unpaid bill: ' + bill.invoiceNumber;
+    this.msgType = 'success';
+    this.cdr.detectChanges();
+  }
+
+  dismissUnpaidBills(): void {
+    this.showUnpaidBills = false;
+    this.unpaidBills = [];
     this.cdr.detectChanges();
   }
 
@@ -257,24 +326,41 @@ export class PatientBillingComponent implements OnInit {
       return;
     }
     this.loading = true;
-    const invoiceData = {
+    const paymentData = {
+      invoiceNumber: this.billForm.billNumber,
+      patientId: this.selectedPatient?.id || 0,
       patientName: this.billForm.patientName,
-      patientContact: this.billForm.phone,
-      amount: this.calculateSubtotal(),
-      discount: this.calculateDiscount(),
-      totalAmount: this.calculateTotal(),
-      totalDiscount: this.calculateDiscount(),
-      payable: this.calculateTotal(),
-      received: 0,
-      due: this.calculateTotal(),
-      preparedBy: this.billForm.notes || '',
-      doctorId: null
+      amount: this.calculateTotal(),
+      paymentMethod: 'CASH',
+      transactionId: '',
+      notes: this.billForm.notes || ''
     };
-    this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate);
-    this.msg = 'Bill saved as draft!';
-    this.msgType = 'success';
-    this.loading = false;
-    this.cdr.detectChanges();
+
+    this.paymentService.processPayment(paymentData).subscribe({
+      next: (res) => {
+        if (res.id) {
+          this.paymentService.updateStatus(res.id, 'PENDING').subscribe();
+        }
+        this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate);
+        this.msg = 'Bill saved as draft! ' + this.billForm.billNumber;
+        this.msgType = 'success';
+        this.loading = false;
+        this.loadRecentBills();
+        this.loadDashboardStats();
+        if (this.selectedPatient) {
+          this.loadUnpaidBills(this.selectedPatient);
+        }
+        this.resetForm();
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate);
+        this.msg = 'Draft saved locally (API unavailable)';
+        this.msgType = 'success';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   generateInvoice(): void {

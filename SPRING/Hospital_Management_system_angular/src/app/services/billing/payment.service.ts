@@ -18,4 +18,8 @@ export class PaymentService {
   getDailyRevenue(date: string): Observable<any> { return this.http.get<any>(`${this.api}/daily-revenue`, { params: { date } }); }
   getMonthlyRevenue(year: number, month: number): Observable<any> { return this.http.get<any>(`${this.api}/monthly-revenue`, { params: { year, month } }); }
   getMethodBreakdown(): Observable<any[]> { return this.http.get<any[]>(`${this.api}/method-breakdown`); }
+  getUnpaidBySearch(search: string): Observable<any[]> { return this.http.get<any[]>(`${this.api}/unpaid`, { params: { search } }); }
+  getUnpaidByPatientId(patientId: number): Observable<any[]> { return this.http.get<any[]>(`${this.api}/unpaid`, { params: { patientId } }); }
+  getUnpaid(): Observable<any[]> { return this.http.get<any[]>(`${this.api}/unpaid`); }
+  updateStatus(id: number, status: string): Observable<any> { return this.http.put<any>(`${this.api}/${id}/status`, { status }); }
 }
