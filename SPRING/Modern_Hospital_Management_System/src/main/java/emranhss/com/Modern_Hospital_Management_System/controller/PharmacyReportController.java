@@ -1,5 +1,6 @@
 package emranhss.com.Modern_Hospital_Management_System.controller;
 
+import emranhss.com.Modern_Hospital_Management_System.entity.PharmacySale;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
 import emranhss.com.Modern_Hospital_Management_System.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,14 @@ public class PharmacyReportController {
     public ResponseEntity<Map<String, Object>> dailySales(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         LocalDateTime start = LocalDateTime.of(date, LocalTime.MIN);
         LocalDateTime end = LocalDateTime.of(date, LocalTime.MAX);
+        Double totalSales = saleRepository.sumSalesByDateRange(start, end);
+        long totalTransactions = saleRepository.countSalesByDateRange(start, end);
         Map<String, Object> r = new HashMap<>();
         r.put("date", date.toString());
-        r.put("totalSales", saleRepository.sumSalesByDateRange(start, end));
-        r.put("totalTransactions", saleRepository.countSalesByDateRange(start, end));
+        r.put("totalSales", totalSales);
+        r.put("totalTransactions", totalTransactions);
+        r.put("totalCount", totalTransactions);
+        r.put("totalRevenue", totalSales);
         return ResponseEntity.ok(r);
     }
 
@@ -42,11 +47,37 @@ public class PharmacyReportController {
         LocalDate end = start.plusMonths(1).minusDays(1);
         LocalDateTime s = LocalDateTime.of(start, LocalTime.MIN);
         LocalDateTime e = LocalDateTime.of(end, LocalTime.MAX);
+        List<PharmacySale> sales = saleRepository.findByDateRange(s, e).stream()
+                .filter(sale -> "PAID".equals(sale.getPaymentStatus()))
+                .collect(Collectors.toList());
+
+        double totalRevenue = 0.0;
+        Map<LocalDate, double[]> dayMap = new LinkedHashMap<>();
+        for (PharmacySale sale : sales) {
+            totalRevenue += sale.getNetPayable() != null ? sale.getNetPayable() : 0.0;
+            LocalDate day = sale.getSaleDate().toLocalDate();
+            double[] acc = dayMap.computeIfAbsent(day, k -> new double[2]);
+            acc[0] += 1;
+            acc[1] += sale.getNetPayable() != null ? sale.getNetPayable() : 0.0;
+        }
+
+        List<Map<String, Object>> breakdown = new ArrayList<>();
+        for (Map.Entry<LocalDate, double[]> entry : dayMap.entrySet()) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("date", entry.getKey().toString());
+            row.put("sales", (long) entry.getValue()[0]);
+            row.put("revenue", entry.getValue()[1]);
+            breakdown.add(row);
+        }
+
         Map<String, Object> r = new HashMap<>();
         r.put("year", year);
         r.put("month", month);
-        r.put("totalSales", saleRepository.sumSalesByDateRange(s, e));
-        r.put("totalTransactions", saleRepository.countSalesByDateRange(s, e));
+        r.put("totalSales", totalRevenue);
+        r.put("totalTransactions", (long) sales.size());
+        r.put("totalCount", (long) sales.size());
+        r.put("totalRevenue", totalRevenue);
+        r.put("breakdown", breakdown);
         return ResponseEntity.ok(r);
     }
 
@@ -56,11 +87,14 @@ public class PharmacyReportController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
         LocalDateTime s = LocalDateTime.of(start, LocalTime.MIN);
         LocalDateTime e = LocalDateTime.of(end, LocalTime.MAX);
+        long count = purchaseRepository.findByDateRange(s, e).size();
+        double totalAmount = purchaseRepository.sumPurchasesByDateRange(s, e);
         Map<String, Object> r = new HashMap<>();
         r.put("startDate", start.toString());
         r.put("endDate", end.toString());
-        r.put("totalPurchases", purchaseRepository.sumPurchasesByDateRange(s, e));
-        r.put("totalTransactions", (long) purchaseRepository.findByDateRange(s, e).size());
+        r.put("totalPurchases", count);
+        r.put("totalTransactions", count);
+        r.put("totalAmount", totalAmount);
         return ResponseEntity.ok(r);
     }
 

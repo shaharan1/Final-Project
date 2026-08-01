@@ -40,7 +40,7 @@ public class PharmacyDashboardController {
         d.setExpiredCount((long) stockService.getExpired().size());
         d.setExpiringSoonCount((long) stockService.getExpiringSoon(30).size());
         d.setMonthlyRevenue(saleRepository.sumSalesByDateRange(monthStart, todayEnd));
-        d.setMonthlyProfit(d.getMonthlyRevenue() != null ? d.getMonthlyRevenue() * 0.25 : 0.0);
+        d.setMonthlyProfit(saleRepository.sumProfitByDateRange(monthStart, todayEnd));
         List<emranhss.com.Modern_Hospital_Management_System.entity.PharmacySale> recentSales = saleRepository.findAllByOrderBySaleDateDesc();
         d.setRecentSales(recentSales.stream().limit(10).map(s -> {
             emranhss.com.Modern_Hospital_Management_System.dto.response.PharmacySaleResponse r = new emranhss.com.Modern_Hospital_Management_System.dto.response.PharmacySaleResponse();

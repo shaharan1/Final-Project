@@ -24,6 +24,11 @@ public interface PharmacySaleRepository extends JpaRepository<PharmacySale, Long
     @Query("SELECT COUNT(p) FROM PharmacySale p WHERE p.paymentStatus = 'PAID' AND p.saleDate BETWEEN :start AND :end")
     long countSalesByDateRange(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
+    @Query("SELECT COALESCE(SUM((i.unitPrice - i.medicineStock.purchasePrice) * i.quantity), 0) " +
+            "FROM PharmacySaleItem i JOIN i.pharmacySale p " +
+            "WHERE p.paymentStatus = 'PAID' AND p.saleDate BETWEEN :start AND :end")
+    Double sumProfitByDateRange(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
     List<PharmacySale> findByPaymentStatus(String status);
 
     List<PharmacySale> findAllByOrderBySaleDateDesc();
