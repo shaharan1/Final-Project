@@ -171,6 +171,28 @@ public class StockServiceImp implements StockService {
     }
 
     @Override
+    @Transactional
+    public void increaseStock(Long stockId, int quantity, String reason, String performedBy) {
+        MedicineStock stock = stockRepository.findById(stockId)
+                .orElseThrow(() -> new ResourceNotFoundException("Stock not found"));
+        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
+        int prevQty = stock.getStockQuantity();
+        int newQty = prevQty + quantity;
+        stock.setStockQuantity(newQty);
+        stockRepository.save(stock);
+
+        StockAdjustment adj = new StockAdjustment();
+        adj.setMedicineStock(stock);
+        adj.setAdjustmentType("PURCHASE_RECEIVE");
+        adj.setQuantityChange(quantity);
+        adj.setPreviousQuantity(prevQty);
+        adj.setNewQuantity(newQty);
+        adj.setReason(reason);
+        adj.setPerformedBy(performedBy);
+        adjustmentRepository.save(adj);
+    }
+
+    @Override
     public void delete(Long id) {
         MedicineStock stock = stockRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Stock not found"));
         stock.setActive(false);

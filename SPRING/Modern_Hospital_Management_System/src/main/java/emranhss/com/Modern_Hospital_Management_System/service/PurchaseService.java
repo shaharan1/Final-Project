@@ -8,8 +8,8 @@ public interface PurchaseService {
     PurchaseResponse createPurchase(PurchaseRequest request);
     PurchaseResponse getPurchaseById(Long id);
     List<PurchaseResponse> getAllPurchases();
-
-    // Method to dynamically update invoice total when items are added or removed
-    void updatePurchaseTotalAmount(Long id, double amount);
+    PurchaseResponse approvePurchase(Long id);
+    PurchaseResponse receivePurchase(Long id, String performedBy);
+    PurchaseResponse cancelPurchase(Long id);
     void deletePurchase(Long id);
 }
