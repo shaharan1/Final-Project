@@ -96,7 +96,8 @@
           <th>Total</th>
           <th>Paid</th>
           <th>Due</th>
-          <th>Status</th>
+          <th>Order</th>
+          <th>Payment</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -114,9 +115,19 @@
           <td class="text-green">{{ purchase.paidAmount | number:'1.2-2' }}</td>
           <td class="text-red" [class.due-zero]="!purchase.dueAmount">{{ purchase.dueAmount | number:'1.2-2' }}</td>
           <td><span class="badge" [ngClass]="getStatusClass(purchase.status || '')">{{ purchase.status }}</span></td>
+          <td><span class="badge" [ngClass]="getPaymentClass(purchase.paymentStatus || '')">{{ purchase.paymentStatus || 'PENDING' }}</span></td>
           <td class="actions-cell">
             <button class="btn-icon view" (click)="viewPurchase(purchase)" title="View Details">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button *ngIf="canApprove(purchase)" class="btn-icon approve" (click)="approvePurchase(purchase)" [disabled]="processingId !== null" title="Approve Order">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button *ngIf="canReceive(purchase)" class="btn-icon receive" (click)="receivePurchase(purchase)" [disabled]="processingId !== null" title="Receive Goods (GRN)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15V6H7v9"/><path d="M3 18h18"/><path d="M12 10l2 2-2 2"/></svg>
+            </button>
+            <button *ngIf="canCancel(purchase)" class="btn-icon cancel" (click)="cancelPurchase(purchase)" [disabled]="processingId !== null" title="Cancel Order">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
             <button class="btn-icon delete" (click)="confirmDelete(purchase)" title="Delete">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
@@ -365,6 +376,7 @@
       <div class="modal-body" *ngIf="selectedPurchase">
         <div class="detail-hero-bar">
           <span class="badge badge-lg" [ngClass]="getStatusClass(selectedPurchase.status || '')">{{ selectedPurchase.status }}</span>
+          <span class="badge badge-lg" [ngClass]="getPaymentClass(selectedPurchase.paymentStatus || '')">{{ selectedPurchase.paymentStatus || 'PENDING' }}</span>
           <span class="detail-payment">{{ selectedPurchase.paymentMethod }}</span>
           <span class="detail-date">{{ selectedPurchase.purchaseDate }}</span>
         </div>
@@ -380,8 +392,33 @@
             <span class="value text-red">&#2547;{{ selectedPurchase.dueAmount | number:'1.2-2' }}</span>
           </div>
         </div>
-        <div class="empty-state small" *ngIf="!selectedPurchase.items || selectedPurchase.items.length === 0">
-          <p>Item details not available for this order</p>
+        <div class="detail-items-section">
+          <h4 class="form-section-title">Order Items ({{ selectedPurchase.items?.length || 0 }})</h4>
+          <div class="table-scroll" *ngIf="selectedPurchase.items && selectedPurchase.items.length > 0">
+            <table>
+              <thead>
+                <tr>
+                  <th>Medicine</th>
+                  <th>Batch</th>
+                  <th>Qty</th>
+                  <th>Unit Price</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of selectedPurchase.items">
+                  <td class="fw-semibold">{{ item.medicineName }}</td>
+                  <td><code>{{ item.batchNumber }}</code></td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.unitPrice | number:'1.2-2' }}</td>
+                  <td class="fw-semibold text-orange">&#2547;{{ item.subtotal | number:'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="empty-state small" *ngIf="!selectedPurchase.items || selectedPurchase.items.length === 0">
+            <p>No items recorded for this order</p>
+          </div>
         </div>
       </div>
       <div class="modal-footer">

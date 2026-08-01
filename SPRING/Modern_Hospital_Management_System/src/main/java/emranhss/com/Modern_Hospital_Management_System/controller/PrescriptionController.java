@@ -68,6 +68,22 @@ public class PrescriptionController {
         return ResponseEntity.ok(prescriptionService.getPrescriptionsByPatientId(patientId));
     }
 
+    @GetMapping("/pending")
+    public ResponseEntity<List<PrescriptionResponse>> getPendingPrescriptions() {
+        List<PrescriptionResponse> responses = prescriptionRepository.findPending().stream()
+                .map(prescriptionMapper::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
+
+    @PutMapping("/{id}/dispensed")
+    public ResponseEntity<PrescriptionResponse> markDispensed(@PathVariable Long id) {
+        Prescription prescription = prescriptionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Prescription not found with id: " + id));
+        prescription.setDispensed(true);
+        return ResponseEntity.ok(prescriptionMapper.toResponse(prescriptionRepository.save(prescription)));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<PrescriptionResponse> updatePrescription(@PathVariable Long id, @RequestBody PrescriptionRequest request) {
         Prescription prescription = prescriptionRepository.findById(id)

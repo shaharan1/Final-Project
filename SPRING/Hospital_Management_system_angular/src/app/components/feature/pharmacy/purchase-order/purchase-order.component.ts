@@ -221,6 +221,55 @@ export class PurchaseOrderComponent implements OnInit {
     this.showDetailModal = true;
   }
 
+  approvePurchase(purchase: PurchaseModel): void {
+    if (!purchase.id || this.processingId !== null) return;
+    this.processingId = purchase.id;
+    this.purchaseService.approve(purchase.id).subscribe({
+      next: (updated: PurchaseModel) => {
+        this.replacePurchase(updated);
+        this.processingId = null;
+      },
+      error: () => { this.error = 'Failed to approve purchase.'; this.processingId = null; }
+    });
+  }
+
+  receivePurchase(purchase: PurchaseModel): void {
+    if (!purchase.id || this.processingId !== null) return;
+    this.processingId = purchase.id;
+    this.purchaseService.receive(purchase.id).subscribe({
+      next: (updated: PurchaseModel) => {
+        this.replacePurchase(updated);
+        this.processingId = null;
+      },
+      error: () => { this.error = 'Failed to receive purchase (GRN).'; this.processingId = null; }
+    });
+  }
+
+  cancelPurchase(purchase: PurchaseModel): void {
+    if (!purchase.id || this.processingId !== null) return;
+    this.processingId = purchase.id;
+    this.purchaseService.cancel(purchase.id).subscribe({
+      next: (updated: PurchaseModel) => {
+        this.replacePurchase(updated);
+        this.processingId = null;
+      },
+      error: () => { this.error = 'Failed to cancel purchase.'; this.processingId = null; }
+    });
+  }
+
+  private replacePurchase(updated: PurchaseModel): void {
+    const index = this.purchases.findIndex((p: PurchaseModel) => p.id === updated.id);
+    if (index !== -1) {
+      this.purchases[index] = updated;
+    } else {
+      this.purchases.unshift(updated);
+    }
+    if (this.selectedPurchase?.id === updated.id) {
+      this.selectedPurchase = updated;
+    }
+    this.filterPurchases();
+  }
+
   closeDetailModal(): void {
     this.showDetailModal = false;
     this.selectedPurchase = null;
@@ -259,10 +308,24 @@ export class PurchaseOrderComponent implements OnInit {
 
   getStatusClass(status: string): string {
     switch (status) {
-      case 'Paid': return 'badge-success';
-      case 'Partial': return 'badge-warning';
-      case 'Pending': return 'badge-danger';
+      case 'PENDING': return 'badge-warning';
+      case 'APPROVED': return 'badge-info';
+      case 'RECEIVED': return 'badge-success';
+      case 'CANCELLED': return 'badge-danger';
       default: return 'badge-secondary';
     }
   }
+
+  getPaymentClass(status: string): string {
+    switch (status) {
+      case 'PAID': return 'badge-success';
+      case 'PARTIAL': return 'badge-warning';
+      case 'PENDING': return 'badge-secondary';
+      default: return 'badge-secondary';
+    }
+  }
+
+  canApprove(purchase: PurchaseModel): boolean { return purchase.status === 'PENDING'; }
+  canReceive(purchase: PurchaseModel): boolean { return purchase.status === 'APPROVED'; }
+  canCancel(purchase: PurchaseModel): boolean { return purchase.status === 'PENDING' || purchase.status === 'APPROVED'; }
 }

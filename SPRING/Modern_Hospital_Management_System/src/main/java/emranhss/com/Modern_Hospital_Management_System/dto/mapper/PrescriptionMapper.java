@@ -40,6 +40,7 @@ public class PrescriptionMapper {
         response.setNotes(prescription.getNotes());
         response.setNextFollowUpDate(prescription.getNextFollowUpDate());
         response.setCreatedDate(prescription.getCreatedDate());
+        response.setDispensed(prescription.getDispensed() != null && prescription.getDispensed());
 
         if (prescription.getAppointment() != null) {
             response.setAppointmentId(prescription.getAppointment().getId());

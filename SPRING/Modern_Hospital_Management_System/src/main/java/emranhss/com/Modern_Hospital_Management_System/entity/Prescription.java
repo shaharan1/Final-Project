@@ -67,5 +67,8 @@ public class Prescription {
     @Column(unique = true)
     private String prescriptionNumber;
 
+    @Column(nullable = false)
+    private Boolean dispensed = false;
+
 
 }

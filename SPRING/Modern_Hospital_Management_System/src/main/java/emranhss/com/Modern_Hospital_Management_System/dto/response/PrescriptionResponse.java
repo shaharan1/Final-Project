@@ -45,4 +45,6 @@ public class PrescriptionResponse {
     private List<TestMasterResponse> tests;
 
     private String prescriptionNumber;
+
+    private Boolean dispensed;
 }

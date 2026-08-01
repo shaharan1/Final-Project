@@ -19,6 +19,7 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
     private final PharmacySaleRepository pharmacySaleRepository;
     private final MedicineStockRepository medicineStockRepository;
     private final BillingRepository billingRepository; // Injecting your existing billing repository
+    private final PrescriptionRepository prescriptionRepository;
 
     @Override
     @Transactional
@@ -26,6 +27,14 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
         PharmacySale sale = new PharmacySale();
         sale.setSaleInvoiceNo("PHM-INV-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
         sale.setPatientType(request.getPatientType());
+        sale.setPatientName(request.getPatientName());
+        sale.setPatientPhone(request.getPatientPhone());
+        sale.setPatientId(request.getPatientId());
+        sale.setDoctorId(request.getDoctorId());
+        sale.setDoctorName(request.getDoctorName());
+        sale.setPrescriptionId(request.getPrescriptionId());
+        sale.setPaymentMethod(request.getPaymentMethod() != null ? request.getPaymentMethod() : "CASH");
+        sale.setSaleType(request.getSaleType() != null ? request.getSaleType() : "PHARMACY");
 
         double runningTotal = 0.0;
         Billing targetBilling = null;
@@ -70,9 +79,14 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
 
         // 3. Complete main invoice financial deductions calculations
         double discountAmt = request.getDiscount() != null ? request.getDiscount() : 0.0;
+        double vatAmt = request.getVat() != null ? request.getVat() : 0.0;
         sale.setTotalAmount(runningTotal);
         sale.setDiscount(discountAmt);
-        sale.setNetPayable(runningTotal - discountAmt);
+        sale.setVat(vatAmt);
+        sale.setNetPayable(runningTotal - discountAmt + vatAmt);
+        double paidAmt = request.getPaidAmount() != null ? request.getPaidAmount() : 0.0;
+        sale.setPaidAmount(paidAmt);
+        sale.setChangeAmount(Math.max(0, paidAmt - sale.getNetPayable()));
 
         // 4. TRIGGER AUTOMATION: Update your existing Billing record's medicineCost dynamically
         if (targetBilling != null) {
