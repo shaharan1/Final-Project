@@ -183,21 +183,18 @@ export class PharmacySaleComponent implements OnInit {
 
   selectPrescription(rx: PrescriptionModel): void {
     this.selectedPrescription = rx;
-    this.dispenseLines = (rx.prescriptionItems || []).map((item: PrescriptionItemModel) => {
-      const options = (item.suggestions || []).length > 0 ? item.suggestions! : [];
-      return {
-        medicineName: item.medicineName || '',
-        dosage: item.dosage || '',
-        duration: item.duration || '',
-        instruction: item.instruction || '',
-        stockId: 0,
-        stockName: '',
-        batchNumber: '',
-        quantity: 1,
-        unitPrice: 0,
-        options
-      } as DispenseLine;
-    });
+    this.dispenseLines = (rx.prescriptionItems || []).map((item: PrescriptionItemModel) => ({
+      medicineName: item.medicineName || '',
+      dosage: item.dosage || '',
+      duration: item.duration || '',
+      instruction: item.instruction || '',
+      stockId: 0,
+      stockName: '',
+      batchNumber: '',
+      quantity: 1,
+      unitPrice: 0,
+      options: []
+    } as DispenseLine));
     this.autoMatchDispenseLines();
   }
 
