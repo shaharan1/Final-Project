@@ -25,13 +25,10 @@ export class InvoiceGeneratorService {
 
     // ===================== TOP GRADIENT HEADER =====================
     const headerH = 42;
-    // Dark gradient base
     doc.setFillColor(10, 14, 39);
     doc.rect(0, 0, pageW, headerH, 'F');
-    // Accent stripe
     doc.setFillColor(13, 110, 253);
     doc.rect(0, headerH - 3, pageW, 3, 'F');
-    // Green accent line
     doc.setFillColor(25, 193, 132);
     doc.rect(0, headerH, pageW, 1, 'F');
 
@@ -39,15 +36,14 @@ export class InvoiceGeneratorService {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(22);
     doc.setFont('helvetica', 'bold');
-    doc.text('MODERN HOSPITAL', margin, 16);
-    // Tagline
+    doc.text('ELITE CARE HOSPITAL', margin, 16);
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(180, 195, 220);
     doc.text('Healthcare & Medical Services', margin, 23);
-    doc.text('Dhaka, Bangladesh  |  +880-2-XXXX-XXXX  |  info@modernhospital.com', margin, 28);
+    doc.text('Dhaka, Bangladesh  |  +880-2-XXXX-XXXX  |  info@elitecarehospital.com', margin, 28);
 
-    // INVOICE badge on right
+    // INVOICE badge
     doc.setFillColor(25, 193, 132);
     doc.roundedRect(pageW - margin - 42, 8, 42, 14, 3, 3, 'F');
     doc.setTextColor(255, 255, 255);
@@ -55,18 +51,17 @@ export class InvoiceGeneratorService {
     doc.setFont('helvetica', 'bold');
     doc.text('INVOICE', pageW - margin - 21, 17, { align: 'center' });
 
-    // Invoice details below badge
+    // Invoice details
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(200, 215, 235);
     const invY = 28;
-    doc.text('Bill #: ' + (billForm.billNumber || 'N/A'), pageW - margin - 42, invY);
+    doc.text('Bill #: ' + (billForm.invoiceNumber || billForm.billNumber || 'N/A'), pageW - margin - 42, invY);
     doc.text('Date: ' + new Date().toLocaleDateString('en-BD', { year: 'numeric', month: 'long', day: 'numeric' }), pageW - margin - 42, invY + 5);
 
     y = headerH + 10;
 
     // ===================== PATIENT INFO SECTION =====================
-    // Section label
     doc.setFillColor(240, 248, 255);
     doc.roundedRect(margin, y, contentW, 8, 2, 2, 'F');
     doc.setFillColor(13, 110, 253);
@@ -77,7 +72,6 @@ export class InvoiceGeneratorService {
     doc.text('PATIENT INFORMATION', margin + 7, y + 5.5);
     y += 14;
 
-    // Patient details in two columns
     const col1X = margin + 2;
     const col2X = pageW / 2 + 5;
     const lineH = 5.5;
@@ -116,7 +110,6 @@ export class InvoiceGeneratorService {
     y += 20;
 
     // ===================== ITEMS TABLE =====================
-    // Section label
     doc.setFillColor(240, 248, 255);
     doc.roundedRect(margin, y, contentW, 8, 2, 2, 'F');
     doc.setFillColor(13, 110, 253);
@@ -129,11 +122,11 @@ export class InvoiceGeneratorService {
 
     const tableData = billItems.map((item, i) => [
       String(i + 1),
-      String(item.category || '-'),
+      String(item.categoryName || item.category || item.categoryCode || '-'),
       String(item.description || '-'),
-      String(item.qty || 0),
+      String(item.quantity ?? item.qty ?? 0),
       '৳' + Number(item.unitPrice || 0).toLocaleString('en-BD', { minimumFractionDigits: 2 }),
-      (item.discount || 0) + '%',
+      (item.discountPercent ?? item.discount ?? 0) + '%',
       '৳' + Number(item.amount || 0).toLocaleString('en-BD', { minimumFractionDigits: 2 }),
     ]);
 
@@ -169,7 +162,6 @@ export class InvoiceGeneratorService {
       },
       theme: 'plain',
       didDrawCell: (data: any) => {
-        // Draw subtle bottom border for each row
         if (data.section === 'body') {
           const { x, y: cellY, width, height } = data.cell;
           data.doc.setDrawColor(230, 235, 245);
@@ -184,13 +176,13 @@ export class InvoiceGeneratorService {
     // ===================== SUMMARY SECTION =====================
     const subtotal = billItems.reduce((s: number, i: any) => s + (i.amount || 0), 0);
     const discountAmt = subtotal * ((discountPercent || 0) / 100);
-    const taxAmt = (subtotal - discountAmt) * (taxRate || 0.18);
+    const effectiveTaxRate = (taxRate || 0) / 100;
+    const taxAmt = (subtotal - discountAmt) * effectiveTaxRate;
     const total = subtotal - discountAmt + taxAmt;
 
     const summaryW = 75;
     const summaryX = pageW - margin - summaryW;
 
-    // Summary box background
     doc.setFillColor(248, 250, 252);
     doc.roundedRect(summaryX - 5, y, summaryW + 5, 48, 3, 3, 'F');
     doc.setDrawColor(226, 232, 240);
@@ -220,13 +212,16 @@ export class InvoiceGeneratorService {
     }
 
     // Tax
-    doc.setTextColor(100, 116, 139);
-    doc.text('Tax (' + ((taxRate || 0.18) * 100).toFixed(0) + '%)', labelX, sy);
-    doc.setTextColor(51, 65, 85);
-    doc.text('৳' + taxAmt.toLocaleString('en-BD', { minimumFractionDigits: 2 }), valX, sy, { align: 'right' });
-    sy += 9;
+    if (taxRate > 0) {
+      doc.setTextColor(100, 116, 139);
+      doc.text('Tax (' + taxRate + '%)', labelX, sy);
+      doc.setTextColor(51, 65, 85);
+      doc.text('৳' + taxAmt.toLocaleString('en-BD', { minimumFractionDigits: 2 }), valX, sy, { align: 'right' });
+      sy += 7;
+    }
 
     // Divider
+    sy += 2;
     doc.setDrawColor(13, 110, 253);
     doc.setLineWidth(0.8);
     doc.line(labelX, sy, valX, sy);
@@ -260,12 +255,10 @@ export class InvoiceGeneratorService {
 
     // ===================== FOOTER =====================
     const footerY = pageH - 20;
-    // Footer line
     doc.setDrawColor(226, 232, 240);
     doc.setLineWidth(0.3);
     doc.line(margin, footerY, pageW - margin, footerY);
 
-    // Thank you message
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(13, 110, 253);
@@ -274,10 +267,10 @@ export class InvoiceGeneratorService {
     doc.setFontSize(7);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(148, 163, 184);
-    doc.text('This is a computer-generated invoice. For any queries, please contact billing@modernhospital.com', margin, footerY + 11);
+    doc.text('This is a computer-generated invoice. For queries, please contact billing@modernhospital.com', margin, footerY + 11);
     doc.text('© ' + new Date().getFullYear() + ' Modern Hospital Management System. All rights reserved.', margin, footerY + 15);
 
-    // Payment status badge on right
+    // Payment status badge
     doc.setFillColor(240, 253, 244);
     doc.roundedRect(pageW - margin - 30, footerY + 2, 30, 8, 2, 2, 'F');
     doc.setFontSize(7);
@@ -286,6 +279,7 @@ export class InvoiceGeneratorService {
     doc.text('GENERATED', pageW - margin - 15, footerY + 7, { align: 'center' });
 
     // ===================== SAVE =====================
-    doc.save(`Invoice-${billForm.billNumber || 'bill'}.pdf`);
+    const invNum = billForm.invoiceNumber || billForm.billNumber || 'bill';
+    doc.save(`Invoice-${invNum}.pdf`);
   }
 }
