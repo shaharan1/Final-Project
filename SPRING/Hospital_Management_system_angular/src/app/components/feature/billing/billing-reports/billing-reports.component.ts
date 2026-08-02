@@ -264,20 +264,6 @@ export class BillingReportsComponent implements OnInit {
     });
   }
 
-  private generateMockDailyCollection(): void {
-    const methods = ['Cash', 'Card', 'Mobile', 'Insurance'];
-    const statuses = ['PAID', 'PAID', 'PAID', 'PENDING', 'PARTIAL'];
-    const names = ['Alice Johnson', 'Bob Smith', 'Carol White', 'David Brown', 'Emma Davis', 'Frank Miller', 'Grace Wilson', 'Henry Moore'];
-    this.dailyCollection = Array.from({ length: 8 }, (_, i) => ({
-      invoiceNumber: `INV-${String(10001 + i).padStart(5, '0')}`,
-      patientName: names[i],
-      amount: Math.floor(Math.random() * 800) + 100,
-      method: methods[Math.floor(Math.random() * methods.length)],
-      status: statuses[Math.floor(Math.random() * statuses.length)],
-      time: `${8 + i}:${String(Math.floor(Math.random() * 60)).padStart(2, '0')} AM`
-    }));
-  }
-
   private computeDailyStats(): void {
     this.dailyTotalCollection = this.dailyCollection.reduce((s, r) => s + r.amount, 0);
     const byMethod = (m: string) => this.dailyCollection.filter(r => (r.method || '').toUpperCase() === m).reduce((s, r) => s + r.amount, 0);
