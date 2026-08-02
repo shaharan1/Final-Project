@@ -199,24 +199,24 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getDepartmentRevenue() {
         List<Map<String, Object>> departmentData = new ArrayList<>();
-
-        List<AdmitPatientInvoice> invoices = admitPatientInvoiceRepository.findAll();
         Map<String, Double> departmentRevenue = new LinkedHashMap<>();
 
-        for (AdmitPatientInvoice invoice : invoices) {
+        List<BillingInvoice> invoices = billingInvoiceRepository.findAll();
+        for (BillingInvoice invoice : invoices) {
+            if ("CANCELLED".equals(invoice.getInvoiceStatus())) continue;
+            Doctor doctor = resolveDoctor(invoice);
             String department = "General";
-            if (invoice.getAdmittedPatient() != null
-                    && invoice.getAdmittedPatient().getPrimaryDoctor() != null
-                    && invoice.getAdmittedPatient().getPrimaryDoctor().getDoctorDepartment() != null) {
-                department = invoice.getAdmittedPatient().getPrimaryDoctor().getDoctorDepartment().getDepartmentName();
+            if (doctor != null && doctor.getDoctorDepartment() != null) {
+                department = doctor.getDoctorDepartment().getDepartmentName();
             }
-            departmentRevenue.merge(department, invoice.getPaidAmount(), Double::sum);
+            double revenue = invoice.getNetAmount() != null ? invoice.getNetAmount() : 0.0;
+            departmentRevenue.merge(department, revenue, Double::sum);
         }
 
         departmentRevenue.forEach((dept, revenue) -> {
             Map<String, Object> entry = new LinkedHashMap<>();
             entry.put("department", dept);
-            entry.put("revenue", revenue);
+            entry.put("revenue", Math.round(revenue * 100.0) / 100.0);
             departmentData.add(entry);
         });
 
@@ -228,7 +228,20 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
                     : 0.0);
         }
 
+        departmentData.sort((a, b) -> Double.compare(((Number) b.get("revenue")).doubleValue(),
+                ((Number) a.get("revenue")).doubleValue()));
         return departmentData;
+    }
+
+    private Doctor resolveDoctor(BillingInvoice invoice) {
+        if (invoice.getReferringDoctor() != null) {
+            return invoice.getReferringDoctor();
+        }
+        if (invoice.getAdmittedPatient() != null
+                && invoice.getAdmittedPatient().getPrimaryDoctor() != null) {
+            return invoice.getAdmittedPatient().getPrimaryDoctor();
+        }
+        return null;
     }
 
     @Override
