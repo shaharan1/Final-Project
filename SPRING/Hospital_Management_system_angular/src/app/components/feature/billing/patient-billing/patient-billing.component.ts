@@ -594,24 +594,36 @@ export class PatientBillingComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.billingService.downloadPdf(this.activeInvoice.id).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = (this.activeInvoice?.invoiceNumber || 'Invoice') + '.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-        this.loading = false;
-        this.msg = 'PDF downloaded';
-        this.msgType = 'success';
-        this.cdr.detectChanges();
+    const payload = this.buildInvoicePayload();
+    this.billingService.updateInvoice(this.activeInvoice.id, payload).subscribe({
+      next: (updated) => {
+        this.activeInvoice = updated;
+        this.billingService.downloadPdf(this.activeInvoice!.id).subscribe({
+          next: (blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (this.activeInvoice?.invoiceNumber || 'Invoice') + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            this.loading = false;
+            this.msg = 'PDF downloaded';
+            this.msgType = 'success';
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.loading = false;
+            this.msg = 'Failed to generate PDF';
+            this.msgType = 'error';
+            this.cdr.detectChanges();
+          }
+        });
       },
       error: () => {
         this.loading = false;
-        this.msg = 'Failed to generate PDF';
+        this.msg = 'Failed to save invoice before PDF';
         this.msgType = 'error';
         this.cdr.detectChanges();
       }

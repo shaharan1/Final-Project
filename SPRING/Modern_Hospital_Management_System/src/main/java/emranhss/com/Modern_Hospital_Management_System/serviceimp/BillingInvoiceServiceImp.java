@@ -173,6 +173,33 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
         if (request.getNotes() != null) invoice.setNotes(request.getNotes());
         if (request.getInvoiceType() != null) invoice.setInvoiceType(request.getInvoiceType());
 
+        if (request.getItems() != null) {
+            for (BillingInvoiceItem existing : invoice.getItems()) {
+                existing.setItemStatus("CANCELLED");
+                itemRepository.save(existing);
+            }
+            invoice.getItems().clear();
+
+            for (BillingInvoiceRequest.BillingInvoiceItemRequest itemReq : request.getItems()) {
+                ChargeCategory cat = chargeCategoryRepository.findByCode(itemReq.getCategoryCode()).orElse(null);
+
+                BillingInvoiceItem item = new BillingInvoiceItem();
+                item.setInvoice(invoice);
+                item.setChargeCategory(cat);
+                item.setCategoryCode(itemReq.getCategoryCode());
+                item.setDescription(itemReq.getDescription());
+                item.setQuantity(itemReq.getQuantity() != null ? itemReq.getQuantity() : 1);
+                item.setUnitPrice(itemReq.getUnitPrice() != null ? itemReq.getUnitPrice() : 0.0);
+                item.setDiscountPercent(itemReq.getDiscountPercent() != null ? itemReq.getDiscountPercent() : 0.0);
+                item.setSourceModule(itemReq.getSourceModule() != null ? itemReq.getSourceModule() : "MANUAL");
+                item.setSourceId(itemReq.getSourceId());
+                item.setItemStatus("ACTIVE");
+                item.calculateAmount();
+                itemRepository.save(item);
+                invoice.getItems().add(item);
+            }
+        }
+
         invoice.recalculateTotals();
         invoice = invoiceRepository.save(invoice);
         return mapper.toResponse(invoice);
