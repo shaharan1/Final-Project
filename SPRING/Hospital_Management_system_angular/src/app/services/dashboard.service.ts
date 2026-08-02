@@ -56,6 +56,7 @@ export interface RecentAdmission {
 
 export interface RecentAppointment {
   id: number;
+  appointmentNumber?: string;
   patientName: string;
   doctorName: string;
   appointmentDate: string;
@@ -195,12 +196,24 @@ export class DashboardService {
     todayAppointments: number;
     pendingReports: number;
     appointments: RecentAppointment[];
+    allAppointments: RecentAppointment[];
   }> {
     return this.appointmentService.getDoctorAppointments(doctorId).pipe(
       map(appts => {
         const today = new Date().toISOString().split('T')[0];
         const todayAppts = appts.filter(a => a.appointmentDate === today);
         const uniquePatients = new Set(appts.map(a => a.patientName));
+        const toRecent = (a: any): RecentAppointment => ({
+          id: a.id,
+          appointmentNumber: a.appointmentNumber,
+          patientName: a.patientName,
+          doctorName: a.doctorName,
+          appointmentDate: a.appointmentDate,
+          appointmentTime: a.appointmentTime,
+          status: a.status,
+          problemDescription: a.problemDescription,
+          feeCharged: a.feeCharged ?? 0,
+        });
         return {
           totalPatients: uniquePatients.size,
           todayAppointments: todayAppts.length,
@@ -209,16 +222,8 @@ export class DashboardService {
           todayAppointmentFees: todayAppts.reduce((sum: number, a: any) => sum + (a.feeCharged || 0), 0),
           totalAppointments: appts.length,
           confirmedAppointments: appts.filter((a: any) => a.status === 'CONFIRMED').length,
-          appointments: todayAppts.slice(0, 10).map(a => ({
-            id: a.id,
-            patientName: a.patientName,
-            doctorName: a.doctorName,
-            appointmentDate: a.appointmentDate,
-            appointmentTime: a.appointmentTime,
-            status: a.status,
-            problemDescription: a.problemDescription,
-            feeCharged: a.feeCharged ?? 0,
-          })),
+          appointments: todayAppts.slice(0, 10).map(toRecent),
+          allAppointments: appts.map(toRecent),
         };
       })
     );

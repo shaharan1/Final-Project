@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { ProfileCardComponent } from '../../../shared/profile-card/profile-card.component';
 import { DashboardService, RecentAppointment } from '../../../../services/dashboard.service';
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-doctor-dashboard-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, ProfileCardComponent],
+  imports: [CommonModule, RouterModule, FormsModule, ProfileCardComponent],
   templateUrl: './doctor-dashboard-home.component.html',
   styleUrl: './doctor-dashboard-home.component.css',
 })
@@ -22,6 +23,9 @@ export class DoctorDashboardHomeComponent implements OnInit {
   todayAppointments = 0;
   pendingReports = 0;
   appointments: RecentAppointment[] = [];
+  allAppointments: RecentAppointment[] = [];
+  filterDate: string = '';
+  filterPatient: string = '';
   prescriptions: PrescriptionModel[] = [];
   loading = true;
   doctorName = 'Doctor';
@@ -44,6 +48,7 @@ export class DoctorDashboardHomeComponent implements OnInit {
         this.todayAppointments = data.todayAppointments;
         this.pendingReports = data.pendingReports;
         this.appointments = data.appointments;
+        this.allAppointments = data.allAppointments;
         this.loading = false;
         this.cdr.detectChanges();
       });
