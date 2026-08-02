@@ -79,6 +79,7 @@ public class DietPlanServiceImp implements DietPlanService {
         existing.setVitaminRecommendation(dietPlan.getVitaminRecommendation());
         existing.setDoctorRecommendation(dietPlan.getDoctorRecommendation());
         existing.setDieticianNotes(dietPlan.getDieticianNotes());
+        existing.setPricePerDay(dietPlan.getPricePerDay());
         existing.setActive(dietPlan.getActive());
         return dietPlanRepository.save(existing);
     }
