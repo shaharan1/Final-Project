@@ -220,6 +220,14 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
             departmentData.add(entry);
         });
 
+        double totalDeptRevenue = departmentRevenue.values().stream().mapToDouble(Double::doubleValue).sum();
+        for (Map<String, Object> entry : departmentData) {
+            double rev = ((Number) entry.get("revenue")).doubleValue();
+            entry.put("percentage", totalDeptRevenue > 0
+                    ? Math.round((rev / totalDeptRevenue) * 10000.0) / 100.0
+                    : 0.0);
+        }
+
         return departmentData;
     }
 
@@ -227,11 +235,18 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getPaymentMethodDistribution() {
         List<Object[]> breakdown = paymentRepository.paymentMethodBreakdown();
+        double totalAmount = breakdown.stream()
+                .mapToDouble(row -> row[1] != null ? ((Number) row[1]).doubleValue() : 0.0)
+                .sum();
+
         return breakdown.stream().map(row -> {
             Map<String, Object> map = new LinkedHashMap<>();
+            double amount = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
             map.put("method", row[0] != null ? row[0].toString() : "UNKNOWN");
-            map.put("totalAmount", row[1] != null ? row[1] : 0.0);
+            map.put("amount", amount);
+            map.put("totalAmount", amount);
             map.put("count", row[2] != null ? row[2] : 0L);
+            map.put("percentage", totalAmount > 0 ? Math.round((amount / totalAmount) * 10000.0) / 100.0 : 0.0);
             return map;
         }).collect(Collectors.toList());
     }
