@@ -105,6 +105,15 @@ export class DoctorDashboardHomeComponent implements OnInit {
   clearFilters(): void {
     this.filterDate = '';
     this.filterPatient = '';
+    this.cdr.detectChanges();
+  }
+
+  onFilterChange(): void {
+    this.cdr.detectChanges();
+  }
+
+  formatCurrency(amount: number): string {
+    return '৳' + (amount || 0).toLocaleString('en-BD');
   }
 
   getBadgeClass(status: string): string {
