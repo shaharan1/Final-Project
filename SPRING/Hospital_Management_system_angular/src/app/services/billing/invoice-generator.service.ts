@@ -262,13 +262,13 @@ export class InvoiceGeneratorService {
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(13, 110, 253);
-    doc.text('Thank you for choosing Modern Hospital!', margin, footerY + 6);
+    doc.text('Thank you for choosing Elite Care Hospital!', margin, footerY + 6);
 
     doc.setFontSize(7);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(148, 163, 184);
-    doc.text('This is a computer-generated invoice. For queries, please contact billing@modernhospital.com', margin, footerY + 11);
-    doc.text('© ' + new Date().getFullYear() + ' Modern Hospital Management System. All rights reserved.', margin, footerY + 15);
+    doc.text('This is a computer-generated invoice. For queries, please contact billing@elitecarehospital.com', margin, footerY + 11);
+    doc.text('© ' + new Date().getFullYear() + ' Elite Care Hospital Management System. All rights reserved.', margin, footerY + 15);
 
     // Payment status badge
     doc.setFillColor(240, 253, 244);

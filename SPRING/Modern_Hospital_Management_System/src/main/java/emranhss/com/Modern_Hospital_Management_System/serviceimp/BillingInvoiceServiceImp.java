@@ -54,6 +54,17 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
         Patient patient = patientRepository.findById(request.getPatientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
 
+        if (request.getAdmittedPatientId() != null) {
+            List<BillingInvoice> existing = invoiceRepository.findByAdmittedPatientIdOrderByCreatedDateDesc(request.getAdmittedPatientId());
+            BillingInvoice draft = existing.stream()
+                    .filter(inv -> "DRAFT".equals(inv.getInvoiceStatus()))
+                    .findFirst()
+                    .orElse(null);
+            if (draft != null) {
+                return mapper.toResponse(draft);
+            }
+        }
+
         BillingInvoice invoice = new BillingInvoice();
         invoice.setInvoiceNumber(generateInvoiceNumber());
         invoice.setPatient(patient);

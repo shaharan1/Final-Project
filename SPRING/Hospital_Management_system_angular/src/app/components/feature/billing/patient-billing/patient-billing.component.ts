@@ -247,6 +247,12 @@ export class PatientBillingComponent implements OnInit {
       next: (res) => {
         this.invoices = res;
         this.loadingInvoices = false;
+
+        const draft = res.find((inv: any) => inv.invoiceStatus === 'DRAFT' || inv.invoiceStatus === 'FINALIZED');
+        if (draft && !this.activeInvoice) {
+          this.loadInvoice(draft);
+        }
+
         this.cdr.detectChanges();
       },
       error: () => {
@@ -304,6 +310,7 @@ export class PatientBillingComponent implements OnInit {
         this.loadingSync = false;
         this.msg = `Synced ${this.billItems.length} items from modules`;
         this.msgType = 'success';
+        if (this.selectedPatient) this.loadPatientInvoices(this.selectedPatient.id!);
         this.cdr.detectChanges();
       },
       error: () => {
@@ -400,8 +407,53 @@ export class PatientBillingComponent implements OnInit {
       return;
     }
 
+    if (this.activeInvoice && this.activeInvoice.id) {
+      this.updateExistingInvoice();
+      return;
+    }
+
+    if (this.billForm.admittedPatientId) {
+      this.billingService.getByAdmittedPatientId(this.billForm.admittedPatientId).subscribe({
+        next: (existing) => {
+          const draft = existing.find((inv: any) => inv.invoiceStatus === 'DRAFT');
+          if (draft) {
+            this.loadInvoice(draft);
+            this.msg = 'Existing draft invoice loaded: ' + draft.invoiceNumber;
+            this.msgType = 'success';
+            this.updateExistingInvoice();
+          } else {
+            this.createNewInvoice();
+          }
+        },
+        error: () => this.createNewInvoice()
+      });
+    } else {
+      this.createNewInvoice();
+    }
+  }
+
+  private createNewInvoice(): void {
     this.loading = true;
-    const payload = {
+    const payload = this.buildInvoicePayload();
+
+    this.billingService.createInvoice(payload).subscribe({
+      next: (res) => { this.onInvoiceCreated(res); },
+      error: () => { this.loading = false; this.msg = 'Failed to create invoice'; this.msgType = 'error'; this.cdr.detectChanges(); }
+    });
+  }
+
+  private updateExistingInvoice(): void {
+    this.loading = true;
+    const payload = this.buildInvoicePayload();
+
+    this.billingService.updateInvoice(this.activeInvoice!.id, payload).subscribe({
+      next: (res) => { this.onInvoiceCreated(res); },
+      error: () => { this.loading = false; this.msg = 'Failed to update invoice'; this.msgType = 'error'; this.cdr.detectChanges(); }
+    });
+  }
+
+  private buildInvoicePayload(): any {
+    return {
       patientId: this.billForm.patientId || 0,
       admittedPatientId: this.billForm.admittedPatientId,
       referringDoctorId: this.billForm.referringDoctorId,
@@ -421,18 +473,6 @@ export class PatientBillingComponent implements OnInit {
         sourceId: i.sourceId
       }))
     };
-
-    if (this.activeInvoice && this.activeInvoice.id) {
-      this.billingService.updateInvoice(this.activeInvoice.id, payload).subscribe({
-        next: (res) => { this.onInvoiceCreated(res); },
-        error: () => { this.loading = false; this.msg = 'Failed to update invoice'; this.msgType = 'error'; this.cdr.detectChanges(); }
-      });
-    } else {
-      this.billingService.createInvoice(payload).subscribe({
-        next: (res) => { this.onInvoiceCreated(res); },
-        error: () => { this.loading = false; this.msg = 'Failed to create invoice'; this.msgType = 'error'; this.cdr.detectChanges(); }
-      });
-    }
   }
 
   private onInvoiceCreated(invoice: any): void {
