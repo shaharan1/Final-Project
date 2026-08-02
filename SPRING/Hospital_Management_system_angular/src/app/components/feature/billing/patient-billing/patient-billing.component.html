@@ -114,6 +114,69 @@
         </div>
       </div>
 
+      <!-- Auto Bill Summary -->
+      <div class="info-card glass" *ngIf="selectedPatient && loadingPatientBill">
+        <div class="card-header">
+          <h2>Building Patient Bill</h2>
+        </div>
+        <div class="bill-loading">
+          <span class="spinner-sm"></span>
+          <span>Loading admission, doctor visits & medicine bills...</span>
+        </div>
+      </div>
+
+      <div class="info-card glass" *ngIf="selectedPatient && !loadingPatientBill && (patientBill || activeAdmission || patientDoctorCharges.length > 0 || patientPharmacySales.length > 0 || patientTestOrders.length > 0)">
+        <div class="card-header">
+          <h2>Auto-loaded Bill Items</h2>
+          <span class="badge badge-success">AUTO</span>
+        </div>
+        <div class="bill-summary-grid">
+          <div class="bs-item">
+            <span class="bs-label">Admission</span>
+            <span class="bs-value">{{ activeAdmission ? ((activeAdmission.wardName || 'Ward') + ' • ' + (activeAdmission.assignedBedNumber || 'Bed')) : 'Outdoor patient' }}</span>
+          </div>
+          <div class="bs-item" *ngIf="activeAdmission">
+            <span class="bs-label">Days Admitted</span>
+            <span class="bs-value">{{ wardDays }} days</span>
+          </div>
+          <div class="bs-item" *ngIf="activeAdmission">
+            <span class="bs-label">Bed/Day Rate</span>
+            <span class="bs-value">{{ formatCurrency(activeWard?.basePricePerDay || 0) }}</span>
+          </div>
+          <div class="bs-item">
+            <span class="bs-label">Doctor Visits</span>
+            <span class="bs-value">{{ patientDoctorCharges.length }}</span>
+          </div>
+          <div class="bs-item">
+            <span class="bs-label">Medicine Bills</span>
+            <span class="bs-value">{{ patientPharmacySales.length }}</span>
+          </div>
+          <div class="bs-item">
+            <span class="bs-label">Lab Tests</span>
+            <span class="bs-value">{{ patientTestOrders.length }}</span>
+          </div>
+          <div class="bs-item" *ngIf="computedWardCost > 0">
+            <span class="bs-label">Ward Total</span>
+            <span class="bs-value bs-total">{{ formatCurrency(computedWardCost) }}</span>
+          </div>
+          <div class="bs-item">
+            <span class="bs-label">Bill Items</span>
+            <span class="bs-value">{{ billItems.length }}</span>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" style="margin-top:12px;" (click)="selectedPatient && loadPatientBill(selectedPatient)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Reload Data
+        </button>
+      </div>
+
+      <div class="info-card glass" *ngIf="selectedPatient && !loadingPatientBill && !patientBill && !activeAdmission && patientDoctorCharges.length === 0 && patientPharmacySales.length === 0 && patientTestOrders.length === 0">
+        <div class="card-header">
+          <h2>Patient Billing</h2>
+        </div>
+        <p class="no-results">No admission, doctor visit, pharmacy or lab record found. Items can be added manually below.</p>
+      </div>
+
       <!-- Bill Items Card -->
       <div class="items-card glass">
         <div class="card-header">

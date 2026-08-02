@@ -355,6 +355,44 @@
 .unpaid-meta { display: flex; align-items: center; gap: 10px; }
 .unpaid-amount { font-size: 0.9rem; font-weight: 700; color: #fdba74; }
 
+/* ===== AUTO BILL SUMMARY ===== */
+.bill-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+}
+.bill-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.bs-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bs-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.4);
+}
+.bs-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f0f4f8;
+}
+.bs-total {
+  color: #6ee7b7;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .billing-grid { grid-template-columns: 1fr; }
@@ -362,6 +400,7 @@
   .form-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
+  .bill-summary-grid { grid-template-columns: 1fr 1fr; }
   .billing-page { padding: 16px; }
   .billing-header { flex-direction: column; }
   .header-right { width: 100%; }

@@ -2,10 +2,17 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { PatientService } from '../../../../services/patient.service';
 import { PaymentService } from '../../../../services/billing/payment.service';
 import { BillingDashboardService } from '../../../../services/billing/billing-dashboard.service';
 import { InvoiceGeneratorService } from '../../../../services/billing/invoice-generator.service';
+import { InvoiceService } from '../../../../services/billing/invoice.service';
+import { DoctorChargeService } from '../../../../services/billing/doctor-charge.service';
+import { AdmissionService } from '../../../../services/admission.service';
+import { PharmacySaleService } from '../../../../services/pharmacy-sale.service';
+import { InfrastructureService } from '../../../../services/infrastructure.service';
+import { TestOrderService } from '../../../../services/test-order.service';
 import { PatientModel } from '../../../../models/patientModel';
 
 interface BillItem {
@@ -43,7 +50,7 @@ export class PatientBillingComponent implements OnInit {
 
   billItems: BillItem[] = [];
   nextItemId = 1;
-  categories = ['Consultation', 'Diagnostic', 'Therapy', 'Medicine', 'Procedure', 'Room Charge', 'Surgery', 'Lab Test', 'Imaging', 'Other'];
+  categories = ['Consultation', 'Doctor Visit', 'Room Charge', 'Meal', 'Medicine', 'Lab Test', 'Diagnostic', 'Therapy', 'Procedure', 'Surgery', 'Imaging', 'Other'];
 
   billForm: any = {
     billNumber: '', patientName: '', phone: '', address: '',
@@ -65,12 +72,29 @@ export class PatientBillingComponent implements OnInit {
   showUnpaidBills = false;
   loadingUnpaid = false;
 
+  patientBill: any = null;
+  activeAdmission: any = null;
+  activeWard: any = null;
+  patientAdmissions: any[] = [];
+  patientDoctorCharges: any[] = [];
+  patientPharmacySales: any[] = [];
+  patientTestOrders: any[] = [];
+  loadingPatientBill = false;
+  wardDays = 0;
+  computedWardCost = 0;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private invoiceGen: InvoiceGeneratorService,
     private patientService: PatientService,
     private paymentService: PaymentService,
-    private dashboardService: BillingDashboardService
+    private dashboardService: BillingDashboardService,
+    private invoiceService: InvoiceService,
+    private doctorChargeService: DoctorChargeService,
+    private admissionService: AdmissionService,
+    private pharmacySaleService: PharmacySaleService,
+    private infrastructureService: InfrastructureService,
+    private testOrderService: TestOrderService
   ) {}
 
   ngOnInit(): void {
@@ -181,8 +205,159 @@ export class PatientBillingComponent implements OnInit {
 
     this.showPatientSearch = false;
     this.searchTerm = '';
+    this.loadPatientBill(patient);
     this.loadUnpaidBills(patient);
     this.cdr.detectChanges();
+  }
+
+  loadPatientBill(patient: PatientModel): void {
+    this.loadingPatientBill = true;
+    this.patientBill = null;
+    this.activeAdmission = null;
+    this.activeWard = null;
+    this.patientAdmissions = [];
+    this.patientDoctorCharges = [];
+    this.patientPharmacySales = [];
+    this.patientTestOrders = [];
+    this.wardDays = 0;
+    this.computedWardCost = 0;
+
+    forkJoin({
+      admissions: this.admissionService.getAll(),
+      charges: this.doctorChargeService.getAll(),
+      sales: this.pharmacySaleService.getAll(),
+      wards: this.infrastructureService.getAllWards(),
+      testOrders: this.testOrderService.getAll()
+    }).subscribe({
+      next: ({ admissions, charges, sales, wards, testOrders }) => {
+        this.patientAdmissions = admissions.filter(a => a.patientId === patient.id);
+        const admission = this.patientAdmissions.find(a => a.status === 'ADMITTED') || this.patientAdmissions[0];
+        this.activeAdmission = admission || null;
+
+        this.patientDoctorCharges = admission
+          ? charges.filter(c => c.admittedPatientId === admission.admissionId)
+          : [];
+        this.patientPharmacySales = sales.filter(s => s.patientId === patient.id);
+        this.patientTestOrders = testOrders.filter(t => t.patientId === patient.id);
+
+        if (admission) {
+          this.wardDays = this.computeWardDays(admission.admissionDate);
+          this.activeWard = wards.find(w => w.name === admission.wardName) || null;
+          this.computedWardCost = this.wardDays * (this.activeWard?.basePricePerDay || 0);
+
+          this.invoiceService.getBillingSummary(admission.admissionId).subscribe({
+            next: (summary) => {
+              this.patientBill = summary;
+              this.buildBillFromData();
+              this.finishBillLoad();
+            },
+            error: () => {
+              this.buildBillFromData();
+              this.finishBillLoad();
+            }
+          });
+        } else {
+          this.buildBillFromData();
+          this.finishBillLoad();
+        }
+      },
+      error: () => {
+        this.finishBillLoad();
+      }
+    });
+  }
+
+  private finishBillLoad(): void {
+    this.loadingPatientBill = false;
+    this.calculateTotals();
+    this.cdr.detectChanges();
+  }
+
+  private computeWardDays(admissionDate: string): number {
+    if (!admissionDate) return 1;
+    const start = new Date(admissionDate);
+    const now = new Date();
+    const diff = now.getTime() - start.getTime();
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return Math.max(1, days);
+  }
+
+  private buildBillFromData(): void {
+    this.billItems = [];
+    this.nextItemId = 1;
+
+    const pushItem = (category: string, description: string, qty: number, unitPrice: number, discount = 0) => {
+      if (!unitPrice || unitPrice <= 0) return;
+      const amount = (qty * unitPrice) - ((qty * unitPrice * discount) / 100);
+      this.billItems.push({
+        id: this.nextItemId++,
+        category,
+        description,
+        qty,
+        unitPrice,
+        discount,
+        amount
+      });
+    };
+
+    // 1. Ward / Bed charge: compute from ward basePricePerDay × days
+    if (this.activeAdmission) {
+      const wardCost = this.computedWardCost || this.patientBill?.wardCost || 0;
+      const wardName = this.activeAdmission.wardName || 'Ward';
+      const bedNum = this.activeAdmission.assignedBedNumber || '';
+      if (wardCost > 0) {
+        const unitPrice = this.wardDays > 0 ? Math.round(wardCost / this.wardDays) : wardCost;
+        pushItem('Room Charge', `${wardName} - Bed ${bedNum} (${this.wardDays} days)`, this.wardDays, unitPrice);
+      }
+    }
+
+    // 2. Doctor Visit charges
+    for (const charge of this.patientDoctorCharges) {
+      const visitDate = (charge.visitDate || '').substring(0, 10);
+      pushItem(
+        'Doctor Visit',
+        `${charge.doctorName || 'Doctor'} - ${charge.description || 'Visit'} (${visitDate})`,
+        1,
+        charge.amount || 0
+      );
+    }
+
+    // 3. Medicine (pharmacy sales items)
+    for (const sale of this.patientPharmacySales) {
+      const saleDate = (sale.saleDate || '').substring(0, 10);
+      if (sale.items && sale.items.length > 0) {
+        for (const it of sale.items) {
+          pushItem(
+            'Medicine',
+            `${it.medicineName || 'Medicine'} (${sale.saleInvoiceNo || ''})`,
+            it.quantity || 1,
+            it.unitPrice || 0,
+            it.discount || 0
+          );
+        }
+      } else {
+        pushItem('Medicine', `Pharmacy Sale - ${sale.saleInvoiceNo || ''} (${saleDate})`, 1, sale.netPayable || 0);
+      }
+    }
+
+    // 4. Lab Tests
+    for (const test of this.patientTestOrders) {
+      pushItem(
+        'Lab Test',
+        `${test.testName || 'Test'} - ${test.testCode || ''}`,
+        1,
+        test.standardPrice || 0
+      );
+    }
+
+    // 5. Other charges from sync-summary (meal, other, test cost fallback)
+    if (this.patientBill) {
+      pushItem('Meal', 'Meal / Diet Charges', 1, this.patientBill.mealCost || 0);
+      if (this.patientBill.testCost > 0 && this.patientTestOrders.length === 0) {
+        pushItem('Lab Test', 'Diagnostic Tests (System)', 1, this.patientBill.testCost);
+      }
+      pushItem('Other', 'Miscellaneous Charges', 1, this.patientBill.otherCharge || 0);
+    }
   }
 
   loadUnpaidBills(patient: PatientModel): void {
@@ -305,6 +480,15 @@ export class PatientBillingComponent implements OnInit {
     };
     this.selectedPatient = null;
     this.discountPercent = 0;
+    this.patientBill = null;
+    this.activeAdmission = null;
+    this.activeWard = null;
+    this.patientAdmissions = [];
+    this.patientDoctorCharges = [];
+    this.patientPharmacySales = [];
+    this.patientTestOrders = [];
+    this.wardDays = 0;
+    this.computedWardCost = 0;
     this.generateBillNumber();
     this.msg = '';
     this.cdr.detectChanges();

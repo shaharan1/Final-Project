@@ -24,4 +24,8 @@ export class InvoiceService {
   finalizeInvoice(data: any): Observable<any> {
     return this.http.post<any>(`${this.api}/admitted-patients/finalize`, data);
   }
+
+  getBillingSummary(admittedPatientId: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}billings/sync-summary/${admittedPatientId}`);
+  }
 }
