@@ -45,7 +45,8 @@ public class BillingReportController {
                     .mapToDouble(i -> i.getNetAmount() != null ? i.getNetAmount() : 0.0)
                     .sum();
             long patients = docs.stream()
-                    .map(BillingInvoice::getPatientId)
+                    .filter(i -> i.getPatient() != null)
+                    .map(i -> i.getPatient().getId())
                     .distinct()
                     .count();
             Doctor doctor = docs.get(0).getReferringDoctor();
