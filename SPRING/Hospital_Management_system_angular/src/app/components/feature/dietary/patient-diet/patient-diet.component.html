@@ -77,6 +77,7 @@
         <div class="diet-status" *ngIf="getAssignmentForPatient(patient.id) as a">
           <span class="diet-badge" [ngClass]="getDietTypeBadgeClass(a.dietPlan?.dietType)">{{ a.dietPlan?.dietType || 'Unknown' }}</span>
           <span class="diet-price" *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0">৳{{ a.dietPlan.pricePerDay }}/day</span>
+          <span class="diet-amount" *ngIf="a.totalAmount && a.totalAmount > 0">Total: ৳{{ a.totalAmount | number:'1.0-0' }}</span>
           <span class="status-badge badge-success">ACTIVE</span>
         </div>
         <div class="diet-status" *ngIf="!getAssignmentForPatient(patient.id)">
@@ -222,7 +223,10 @@
                 <span>Since: {{ a.startDate }}</span>
                 <span *ngIf="a.endDate">Until: {{ a.endDate }}</span>
                 <span>Status: {{ a.status }}</span>
+                <span *ngIf="a.wardName">Ward: {{ a.wardName }}</span>
+                <span *ngIf="a.bedNumber">Bed: {{ a.bedNumber }}</span>
                 <span *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0" style="color:#19c184; font-weight:600;">Rate: ৳{{ a.dietPlan.pricePerDay }}/day</span>
+                <span *ngIf="a.totalAmount && a.totalAmount > 0" style="color:#19c184; font-weight:600;">Total: ৳{{ a.totalAmount | number:'1.0-0' }}</span>
               </div>
               <div class="assignment-meals" *ngIf="a.dietPlan">
                 <div class="meal-row" *ngFor="let meal of getMeals(a.dietPlan)">
