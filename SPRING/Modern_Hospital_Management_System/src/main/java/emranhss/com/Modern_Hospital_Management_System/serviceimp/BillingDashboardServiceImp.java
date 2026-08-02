@@ -270,6 +270,8 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
             activity.put("amount", payment.getAmount());
             activity.put("status", payment.getPaymentStatus().toString());
             activity.put("date", payment.getCreatedDate() != null ? payment.getCreatedDate().toString() : null);
+            activity.put("description", "Payment received from " + payment.getPatientName() + " (" + payment.getInvoiceNumber() + ")");
+            activity.put("time", formatActivityTime(payment.getCreatedDate()));
             activities.add(activity);
         }
 
@@ -287,6 +289,8 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
             activity.put("amount", refund.getRefundAmount());
             activity.put("status", refund.getRefundStatus().toString());
             activity.put("date", refund.getCreatedDate() != null ? refund.getCreatedDate().toString() : null);
+            activity.put("description", "Refund to " + refund.getPatientName() + " (" + refund.getInvoiceNumber() + ")");
+            activity.put("time", formatActivityTime(refund.getCreatedDate()));
             activities.add(activity);
         }
 
@@ -299,5 +303,10 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
         });
 
         return activities.stream().limit(20).collect(Collectors.toList());
+    }
+
+    private String formatActivityTime(LocalDateTime dateTime) {
+        if (dateTime == null) return "";
+        return dateTime.getDayOfMonth() + " " + dateTime.getMonth().name().substring(0, 3) + ", " + dateTime.toLocalTime().withNano(0) + " " + (dateTime.getHour() < 12 ? "AM" : "PM");
     }
 }
