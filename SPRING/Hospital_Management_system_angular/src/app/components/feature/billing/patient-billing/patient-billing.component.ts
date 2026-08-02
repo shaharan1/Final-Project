@@ -595,7 +595,7 @@ export class PatientBillingComponent implements OnInit {
       this.msgType = 'error';
       return;
     }
-    this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate);
+    this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate, this.activeInvoice);
     this.msg = 'PDF downloaded';
     this.msgType = 'success';
     this.cdr.detectChanges();
