@@ -37,19 +37,12 @@ public class InvoicePdfGenerator {
                     BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
                     BaseFont bfBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
 
-                    canvas.beginText();
-
                     canvas.setFontAndSize(bf, 10);
-                    canvas.setTextMatrix(left, bottomY + 36);
-                    canvas.showText("Thank you for choosing");
-
+                    canvas.showTextAligned(Element.ALIGN_LEFT, "Thank you for choosing", left, bottomY + 36, 0);
                     canvas.setFontAndSize(bfBold, 12);
-                    canvas.setTextMatrix(left, bottomY + 24);
-                    canvas.showText("ELITE CARE HOSPITAL");
-
+                    canvas.showTextAligned(Element.ALIGN_LEFT, "ELITE CARE HOSPITAL", left, bottomY + 24, 0);
                     canvas.setFontAndSize(bf, 10);
-                    canvas.setTextMatrix(left, bottomY + 12);
-                    canvas.showText("Get Well Soon");
+                    canvas.showTextAligned(Element.ALIGN_LEFT, "Get Well Soon", left, bottomY + 12, 0);
 
                     canvas.setRGBColorStroke(200, 200, 200);
                     canvas.setLineWidth(0.5f);
@@ -59,20 +52,14 @@ public class InvoicePdfGenerator {
                     canvas.stroke();
 
                     canvas.setFontAndSize(bfBold, 13);
-                    canvas.setTextMatrix(lineLeft, bottomY + 10);
-                    canvas.showText("Authorized Signature");
-
+                    canvas.showTextAligned(Element.ALIGN_LEFT, "Authorized Signature", lineLeft, bottomY + 10, 0);
                     canvas.setFontAndSize(bf, 10);
-                    canvas.setTextMatrix(lineLeft, bottomY - 2);
-                    canvas.showText("Billing / Accounts");
+                    canvas.showTextAligned(Element.ALIGN_LEFT, "Billing / Accounts", lineLeft, bottomY - 2, 0);
 
                     canvas.setFontAndSize(bf, 9);
                     String powered = "Powered By Elite IT Institute";
                     float pw = bf.getWidthPoint(powered, 9);
-                    canvas.setTextMatrix((pageWidth - pw) / 2, bottomY - 18);
-                    canvas.showText(powered);
-
-                    canvas.endText();
+                    canvas.showTextAligned(Element.ALIGN_CENTER, powered, pageWidth / 2, bottomY - 18, 0);
                 } catch (Exception ignored) {
                 }
             }
