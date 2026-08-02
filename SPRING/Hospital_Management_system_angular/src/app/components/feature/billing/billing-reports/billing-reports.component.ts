@@ -225,25 +225,38 @@ export class BillingReportsComponent implements OnInit {
     this.paymentService.getDailyRevenue(this.selectedDate).subscribe({
       next: (data: any) => {
         if (data && data.payments) {
-          this.dailyCollection = data.payments.map((p: any) => ({
-            invoiceNumber: p.invoiceNumber ?? `INV-${Math.floor(Math.random() * 90000) + 10000}`,
-            patientName: p.patientName ?? 'N/A',
-            amount: p.amount ?? 0,
-            method: p.paymentMethod ?? 'Cash',
-            status: p.paymentStatus ?? 'PAID',
-            time: p.paymentDate ?? new Date().toLocaleTimeString()
-          }));
+          this.dailyCollection = data.payments.map((p: any) => {
+            let time = p.paymentDate ?? '';
+            if (time.includes('T')) {
+              const t = new Date(time);
+              if (!isNaN(t.getTime())) {
+                time = t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+              }
+            }
+            return {
+              invoiceNumber: p.invoiceNumber ?? `INV-${Math.floor(Math.random() * 90000) + 10000}`,
+              patientName: p.patientName ?? 'N/A',
+              amount: p.amount ?? 0,
+              method: p.paymentMethod ?? 'CASH',
+              status: p.paymentStatus ?? 'PAID',
+              time
+            };
+          });
           this.dailyTotalCollection = data.totalRevenue ?? this.dailyCollection.reduce((s, r) => s + r.amount, 0);
           this.dailyBillCount = data.billCount ?? this.dailyCollection.length;
         } else {
-          this.generateMockDailyCollection();
+          this.dailyCollection = [];
+          this.dailyTotalCollection = 0;
+          this.dailyBillCount = 0;
         }
         this.computeDailyStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockDailyCollection();
+        this.dailyCollection = [];
+        this.dailyTotalCollection = 0;
+        this.dailyBillCount = 0;
         this.computeDailyStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
@@ -282,9 +295,10 @@ export class BillingReportsComponent implements OnInit {
       hourMap[label] = 0;
     }
     this.dailyCollection.forEach(r => {
-      const hourStr = r.time.split(':')[0];
-      const h = parseInt(hourStr, 10);
-      if (h >= 8 && h <= 17) {
+      const timeStr = r.time || '';
+      const match = timeStr.match(/T(\d{1,2})/);
+      const h = match ? parseInt(match[1], 10) : parseInt(timeStr.split(':')[0], 10);
+      if (!isNaN(h) && h >= 8 && h <= 17) {
         const label = h <= 12 ? `${h} ${h < 12 ? 'AM' : 'PM'}` : `${h - 12} PM`;
         hourMap[label] += r.amount;
       }
@@ -818,6 +832,18 @@ export class BillingReportsComponent implements OnInit {
   formatMonthLabel(dateStr: string): string {
     if (!dateStr) return '';
     const d = new Date(dateStr);
+    if (isNaN(d.getTime())) {
+      return dateStr;
+    }
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  formatProfitLossMonth(monthStr: string): string {
+    if (!monthStr) return '';
+    const d = new Date(monthStr + (monthStr.length === 7 ? '-01' : ''));
+    if (isNaN(d.getTime())) {
+      return monthStr;
+    }
+    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   }
 }

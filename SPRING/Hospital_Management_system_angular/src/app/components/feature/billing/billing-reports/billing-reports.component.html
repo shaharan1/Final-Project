@@ -847,7 +847,7 @@
               </div>
             </div>
           </div>
-          <span class="pl-chart__label">{{ month.month }}</span>
+          <span class="pl-chart__label">{{ formatProfitLossMonth(month.month) }}</span>
         </div>
       </div>
     </section>
@@ -869,7 +869,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let row of profitLoss">
-              <td class="td-bold">{{ row.month }}</td>
+              <td class="td-bold">{{ formatProfitLossMonth(row.month) }}</td>
               <td class="td-amount">{{ formatCurrency(row.revenue) }}</td>
               <td class="td-amount td-cost">{{ formatCurrency(row.expenses) }}</td>
               <td class="td-amount" [class.td-profit]="row.profit > 0" [class.td-due]="row.profit < 0">{{ formatCurrency(row.profit) }}</td>
