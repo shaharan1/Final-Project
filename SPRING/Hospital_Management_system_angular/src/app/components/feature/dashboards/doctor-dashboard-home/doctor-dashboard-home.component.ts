@@ -93,6 +93,20 @@ export class DoctorDashboardHomeComponent implements OnInit {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   }
 
+  get filteredAppointments(): RecentAppointment[] {
+    return this.allAppointments.filter(appt => {
+      const matchDate = !this.filterDate || appt.appointmentDate === this.filterDate;
+      const matchPatient = !this.filterPatient ||
+        (appt.patientName || '').toLowerCase().includes(this.filterPatient.toLowerCase());
+      return matchDate && matchPatient;
+    });
+  }
+
+  clearFilters(): void {
+    this.filterDate = '';
+    this.filterPatient = '';
+  }
+
   getBadgeClass(status: string): string {
     switch (status?.toUpperCase()) {
       case 'CONFIRMED': return 'stable';
