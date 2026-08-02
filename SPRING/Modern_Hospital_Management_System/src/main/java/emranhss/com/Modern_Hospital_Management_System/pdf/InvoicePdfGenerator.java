@@ -25,6 +25,59 @@ public class InvoicePdfGenerator {
 
         PdfWriter writer = PdfWriter.getInstance(document, out);
 
+        writer.setPageEvent(new PdfPageEventHelper() {
+            @Override
+            public void onEndPage(PdfWriter w, Document doc) {
+                try {
+                    PdfContentByte canvas = w.getDirectContent();
+                    float pageWidth = doc.getPageSize().getWidth();
+                    float left = doc.leftMargin();
+                    float bottomY = 25;
+
+                    BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+                    BaseFont bfBold = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+
+                    canvas.beginText();
+
+                    canvas.setFontAndSize(bf, 10);
+                    canvas.setTextMatrix(left, bottomY + 36);
+                    canvas.showText("Thank you for choosing");
+
+                    canvas.setFontAndSize(bfBold, 12);
+                    canvas.setTextMatrix(left, bottomY + 24);
+                    canvas.showText("ELITE CARE HOSPITAL");
+
+                    canvas.setFontAndSize(bf, 10);
+                    canvas.setTextMatrix(left, bottomY + 12);
+                    canvas.showText("Get Well Soon");
+
+                    canvas.setRGBColorStroke(200, 200, 200);
+                    canvas.setLineWidth(0.5f);
+                    float lineLeft = pageWidth - 18 - 150;
+                    canvas.moveTo(lineLeft, bottomY + 24);
+                    canvas.lineTo(pageWidth - 18, bottomY + 24);
+                    canvas.stroke();
+
+                    canvas.setFontAndSize(bfBold, 13);
+                    canvas.setTextMatrix(lineLeft, bottomY + 10);
+                    canvas.showText("Authorized Signature");
+
+                    canvas.setFontAndSize(bf, 10);
+                    canvas.setTextMatrix(lineLeft, bottomY - 2);
+                    canvas.showText("Billing / Accounts");
+
+                    canvas.setFontAndSize(bf, 9);
+                    String powered = "Powered By Elite IT Institute";
+                    float pw = bf.getWidthPoint(powered, 9);
+                    canvas.setTextMatrix((pageWidth - pw) / 2, bottomY - 18);
+                    canvas.showText(powered);
+
+                    canvas.endText();
+                } catch (Exception ignored) {
+                }
+            }
+        });
+
         document.open();
 
         // ==========================================================
@@ -69,11 +122,8 @@ public class InvoicePdfGenerator {
         }
 
         // ==========================================================
-        // 7. Footer
+        // Footer is drawn by PageEvent (onEndPage) at fixed bottom position
         // ==========================================================
-
-        document.add(new Paragraph(" "));
-        addFooter(document);
 
         document.close();
 
