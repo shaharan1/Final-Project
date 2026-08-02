@@ -280,10 +280,11 @@ export class BillingReportsComponent implements OnInit {
 
   private computeDailyStats(): void {
     this.dailyTotalCollection = this.dailyCollection.reduce((s, r) => s + r.amount, 0);
-    this.dailyCashTotal = this.dailyCollection.filter(r => r.method === 'Cash').reduce((s, r) => s + r.amount, 0);
-    this.dailyCardTotal = this.dailyCollection.filter(r => r.method === 'Card').reduce((s, r) => s + r.amount, 0);
-    this.dailyMobileTotal = this.dailyCollection.filter(r => r.method === 'Mobile').reduce((s, r) => s + r.amount, 0);
-    this.dailyInsuranceTotal = this.dailyCollection.filter(r => r.method === 'Insurance').reduce((s, r) => s + r.amount, 0);
+    const byMethod = (m: string) => this.dailyCollection.filter(r => (r.method || '').toUpperCase() === m).reduce((s, r) => s + r.amount, 0);
+    this.dailyCashTotal = byMethod('CASH');
+    this.dailyCardTotal = byMethod('CARD');
+    this.dailyMobileTotal = byMethod('MOBILE');
+    this.dailyInsuranceTotal = byMethod('INSURANCE');
     this.dailyBillCount = this.dailyCollection.length;
     this.computeHourlyBars();
   }
@@ -296,10 +297,20 @@ export class BillingReportsComponent implements OnInit {
     }
     this.dailyCollection.forEach(r => {
       const timeStr = r.time || '';
-      const match = timeStr.match(/T(\d{1,2})/);
-      const h = match ? parseInt(match[1], 10) : parseInt(timeStr.split(':')[0], 10);
+      let h = NaN;
+      const tMatch = timeStr.match(/T(\d{1,2}):/);
+      const aMatch = timeStr.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM)/i);
+      if (tMatch) {
+        h = parseInt(tMatch[1], 10);
+      } else if (aMatch) {
+        let hour = parseInt(aMatch[1], 10);
+        const period = aMatch[3].toUpperCase();
+        if (period === 'PM' && hour < 12) hour += 12;
+        if (period === 'AM' && hour === 12) hour = 0;
+        h = hour;
+      }
       if (!isNaN(h) && h >= 8 && h <= 17) {
-        const label = h <= 12 ? `${h} ${h < 12 ? 'AM' : 'PM'}` : `${h - 12} PM`;
+        const label = h === 12 ? '12 PM' : h < 12 ? `${h} AM` : `${h - 12} PM`;
         hourMap[label] += r.amount;
       }
     });
@@ -337,16 +348,6 @@ export class BillingReportsComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
-  }
-
-  private generateMockMonthly(): void {
-    this.monthlyCollection = Array.from({ length: 30 }, (_, i) => ({
-      date: `2026-07-${String(i + 1).padStart(2, '0')}`,
-      revenue: Math.floor(Math.random() * 5000) + 1000,
-      bills: Math.floor(Math.random() * 30) + 5
-    }));
-    this.monthlyTotalRevenue = this.monthlyCollection.reduce((s, d) => s + d.revenue, 0);
-    this.monthlyTotalBills = this.monthlyCollection.reduce((s, d) => s + d.bills, 0);
   }
 
   private computeMonthlyStats(): void {
@@ -397,20 +398,6 @@ export class BillingReportsComponent implements OnInit {
     });
   }
 
-  private generateMockDepartmentRevenue(): void {
-    const depts = ['Cardiology', 'Orthopedics', 'Neurology', 'Pediatrics', 'Oncology', 'Radiology', 'General Medicine', 'Emergency'];
-    this.departmentRevenue = depts.map(dept => {
-      const revenue = Math.floor(Math.random() * 80000) + 10000;
-      const patientCount = Math.floor(Math.random() * 150) + 20;
-      return { department: dept, revenue, patientCount, averageBill: Math.round(revenue / patientCount), percentage: 0 };
-    });
-    this.maxDepartmentRevenue = Math.max(...this.departmentRevenue.map(d => d.revenue), 1);
-    this.departmentTotalRevenue = this.departmentRevenue.reduce((s, d) => s + d.revenue, 0);
-    this.departmentRevenue.forEach(d => {
-      d.percentage = Math.round((d.revenue / this.departmentTotalRevenue) * 100);
-    });
-  }
-
   private loadDoctorRevenue(): void {
     this.dashboardService.getDoctorRevenue().subscribe({
       next: (data: any[]) => {
@@ -433,24 +420,6 @@ export class BillingReportsComponent implements OnInit {
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
-    });
-  }
-
-  private generateMockDoctorRevenue(): void {
-    const doctors = [
-      { name: 'Dr. Sarah Wilson', dept: 'Cardiology' },
-      { name: 'Dr. James Anderson', dept: 'Orthopedics' },
-      { name: 'Dr. Emily Chen', dept: 'Neurology' },
-      { name: 'Dr. Michael Brown', dept: 'Pediatrics' },
-      { name: 'Dr. Lisa Martinez', dept: 'Oncology' },
-      { name: 'Dr. Robert Taylor', dept: 'General Medicine' },
-      { name: 'Dr. Amanda Garcia', dept: 'Radiology' },
-      { name: 'Dr. Kevin Lee', dept: 'Emergency' }
-    ];
-    this.doctorRevenue = doctors.map(d => {
-      const revenue = Math.floor(Math.random() * 50000) + 5000;
-      const patientCount = Math.floor(Math.random() * 80) + 10;
-      return { doctorName: d.name, department: d.dept, revenue, patientCount, averageBill: Math.round(revenue / patientCount) };
     });
   }
 
@@ -485,18 +454,6 @@ export class BillingReportsComponent implements OnInit {
     });
   }
 
-  private generateMockPharmacyRevenue(): void {
-    const meds = ['Amoxicillin 500mg', 'Metformin 850mg', 'Atorvastatin 20mg', 'Omeprazole 20mg', 'Amlodipine 5mg', 'Metoprolol 50mg', 'Losartan 50mg', 'Levothyroxine 50mcg'];
-    this.pharmacyRevenue = meds.map(name => {
-      const quantitySold = Math.floor(Math.random() * 200) + 20;
-      const cost = Math.floor(Math.random() * 20) + 5;
-      const revenue = quantitySold * (cost + Math.floor(Math.random() * 10) + 5);
-      return { medicineName: name, quantitySold, revenue, cost: quantitySold * cost, profit: revenue - (quantitySold * cost) };
-    });
-    this.pharmacyTotalRevenue = this.pharmacyRevenue.reduce((s, r) => s + r.revenue, 0);
-    this.pharmacyTotalProfit = this.pharmacyRevenue.reduce((s, r) => s + r.profit, 0);
-  }
-
   private loadLabRevenue(): void {
     this.dashboardService.getLabRevenue().subscribe({
       next: (data: any[]) => {
@@ -525,17 +482,6 @@ export class BillingReportsComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
-  }
-
-  private generateMockLabRevenue(): void {
-    const tests = ['Complete Blood Count', 'Lipid Panel', 'Thyroid Function', 'Liver Function', 'Kidney Function', 'Blood Glucose', 'Urinalysis', 'X-Ray Chest'];
-    this.labRevenue = tests.map(name => {
-      const count = Math.floor(Math.random() * 100) + 10;
-      const avgPrice = Math.floor(Math.random() * 80) + 20;
-      return { testName: name, count, revenue: count * avgPrice, averagePrice: avgPrice };
-    });
-    this.labTotalRevenue = this.labRevenue.reduce((s, r) => s + r.revenue, 0);
-    this.labTotalTests = this.labRevenue.reduce((s, r) => s + r.count, 0);
   }
 
   private loadInsuranceReport(): void {
@@ -571,28 +517,6 @@ export class BillingReportsComponent implements OnInit {
     });
   }
 
-  private generateMockInsuranceReport(): void {
-    const providers = ['Blue Cross', 'Aetna', 'UnitedHealth', 'Cigna', 'Humana'];
-    const statuses = ['APPROVED', 'APPROVED', 'PENDING', 'PENDING', 'REJECTED'];
-    const names = ['Alice Johnson', 'Bob Smith', 'Carol White', 'David Brown', 'Emma Davis', 'Frank Miller', 'Grace Wilson', 'Henry Moore'];
-    this.insuranceClaims = names.map((name, i) => {
-      const claimed = Math.floor(Math.random() * 5000) + 500;
-      const status = statuses[Math.floor(Math.random() * statuses.length)];
-      return {
-        invoiceNumber: `INV-${String(20001 + i).padStart(5, '0')}`,
-        patientName: name,
-        provider: providers[Math.floor(Math.random() * providers.length)],
-        claimed,
-        approved: status === 'APPROVED' ? claimed : status === 'PENDING' ? 0 : Math.floor(claimed * 0.5),
-        status,
-        claimDate: `2026-07-${String(Math.floor(Math.random() * 25) + 1).padStart(2, '0')}`
-      };
-    });
-    this.insuranceTotalClaimed = this.insuranceClaims.reduce((s, c) => s + c.claimed, 0);
-    this.insuranceTotalApproved = this.insuranceClaims.reduce((s, c) => s + c.approved, 0);
-    this.insurancePendingCount = this.insuranceClaims.filter(c => c.status === 'PENDING').length;
-  }
-
   private loadPendingDueReport(): void {
     this.dashboardService.getPendingDue().subscribe({
       next: (data: any[]) => {
@@ -626,30 +550,6 @@ export class BillingReportsComponent implements OnInit {
     });
   }
 
-  private generateMockPendingDue(): void {
-    const names = ['Alice Johnson', 'Bob Smith', 'Carol White', 'David Brown', 'Emma Davis', 'Frank Miller', 'Grace Wilson', 'Henry Moore', 'Ivy Clark', 'Jack Turner'];
-    this.pendingDues = names.map((name, i) => {
-      const total = Math.floor(Math.random() * 3000) + 500;
-      const paid = Math.floor(Math.random() * total * 0.7);
-      const due = total - paid;
-      const daysOverdue = Math.floor(Math.random() * 90);
-      const dueDate = new Date();
-      dueDate.setDate(dueDate.getDate() - daysOverdue);
-      return {
-        patientName: name,
-        invoiceNumber: `INV-${String(30001 + i).padStart(5, '0')}`,
-        total,
-        paid,
-        due,
-        dueDate: dueDate.toISOString().split('T')[0],
-        daysOverdue
-      };
-    });
-    this.pendingTotalDue = this.pendingDues.reduce((s, d) => s + d.due, 0);
-    this.pendingOverdue60 = this.pendingDues.filter(d => d.daysOverdue >= 60).length;
-    this.pendingOverdue30 = this.pendingDues.filter(d => d.daysOverdue >= 30 && d.daysOverdue < 60).length;
-  }
-
   private loadRefundReport(): void {
     this.refundService.getAll().subscribe({
       next: (data: any[]) => {
@@ -677,21 +577,6 @@ export class BillingReportsComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
-  }
-
-  private generateMockRefunds(): void {
-    const statuses = ['APPROVED', 'APPROVED', 'PENDING', 'PROCESSED', 'REJECTED'];
-    const reasons = ['Duplicate payment', 'Service cancelled', 'Insurance overlap', 'Billing error', 'Patient request'];
-    const names = ['Alice Johnson', 'Bob Smith', 'Carol White', 'David Brown', 'Emma Davis'];
-    this.refunds = names.map((name, i) => ({
-      id: i + 1,
-      invoiceNumber: `INV-${String(40001 + i).padStart(5, '0')}`,
-      patientName: name,
-      amount: Math.floor(Math.random() * 1000) + 100,
-      reason: reasons[Math.floor(Math.random() * reasons.length)],
-      status: statuses[Math.floor(Math.random() * statuses.length)],
-      refundDate: `2026-07-${String(Math.floor(Math.random() * 25) + 1).padStart(2, '0')}`
-    }));
   }
 
   private computeRefundStats(): void {
@@ -723,15 +608,6 @@ export class BillingReportsComponent implements OnInit {
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
-    });
-  }
-
-  private generateMockProfitLoss(): void {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-    this.profitLoss = months.map(m => {
-      const revenue = Math.floor(Math.random() * 80000) + 40000;
-      const expenses = Math.round(revenue * (0.55 + Math.random() * 0.15));
-      return { month: m, revenue, expenses, profit: revenue - expenses };
     });
   }
 
