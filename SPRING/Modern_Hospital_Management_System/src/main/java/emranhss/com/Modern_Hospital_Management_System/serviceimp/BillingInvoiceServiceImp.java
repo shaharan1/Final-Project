@@ -24,7 +24,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,12 +40,19 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
     private final BillingInvoiceMapper mapper;
     private final BillingAggregationService aggregationService;
 
-    private static final AtomicLong invoiceSeq = new AtomicLong(1000);
-
     private String generateInvoiceNumber() {
         String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyy"));
-        long seq = invoiceSeq.incrementAndGet();
-        return "INV-" + datePart + "-" + String.format("%04d", seq % 10000);
+        String prefix = "INV-" + datePart + "-";
+        long max = 999;
+        for (String num : invoiceRepository.findInvoiceNumbersByPrefix(prefix)) {
+            try {
+                long seq = Long.parseLong(num.substring(prefix.length()));
+                max = Math.max(max, seq);
+            } catch (Exception ignored) {
+            }
+        }
+        long next = max + 1;
+        return prefix + String.format("%04d", next % 10000);
     }
 
     @Override

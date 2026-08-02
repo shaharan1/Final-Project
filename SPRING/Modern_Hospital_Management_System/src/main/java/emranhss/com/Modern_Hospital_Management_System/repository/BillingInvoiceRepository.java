@@ -15,6 +15,9 @@ public interface BillingInvoiceRepository extends JpaRepository<BillingInvoice, 
 
     Optional<BillingInvoice> findByInvoiceNumber(String invoiceNumber);
 
+    @Query("SELECT bi.invoiceNumber FROM BillingInvoice bi WHERE bi.invoiceNumber LIKE :prefix%")
+    List<String> findInvoiceNumbersByPrefix(@Param("prefix") String prefix);
+
     List<BillingInvoice> findByPatientIdOrderByCreatedDateDesc(Long patientId);
 
     List<BillingInvoice> findByAdmittedPatientIdOrderByCreatedDateDesc(Long admittedPatientId);
