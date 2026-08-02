@@ -32,11 +32,12 @@ public class BillingReportController {
     private final DoctorRepository doctorRepository;
 
     @GetMapping("/doctor-revenue")
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
     public ResponseEntity<List<Map<String, Object>>> doctorRevenue() {
         List<BillingInvoice> invoices = billingInvoiceRepository.findAll();
         Map<String, List<BillingInvoice>> byDoctor = invoices.stream()
-                .filter(i -> i.getReferringDoctor() != null && i.getReferringDoctor().getUser() != null)
-                .collect(Collectors.groupingBy(i -> i.getReferringDoctor().getUser().getName(),
+                .filter(i -> resolveDoctor(i) != null)
+                .collect(Collectors.groupingBy(i -> doctorName(resolveDoctor(i)),
                         LinkedHashMap::new, Collectors.toList()));
 
         List<Map<String, Object>> result = new ArrayList<>();
@@ -49,7 +50,7 @@ public class BillingReportController {
                     .map(i -> i.getPatient().getId())
                     .distinct()
                     .count();
-            Doctor doctor = docs.get(0).getReferringDoctor();
+            Doctor doctor = resolveDoctor(docs.get(0));
             String department = doctor.getDoctorDepartment() != null
                     ? doctor.getDoctorDepartment().getDepartmentName() : "General";
 
@@ -65,6 +66,25 @@ public class BillingReportController {
         result.sort((a, b) -> Double.compare(((Number) b.get("revenue")).doubleValue(),
                 ((Number) a.get("revenue")).doubleValue()));
         return ResponseEntity.ok(result);
+    }
+
+    private Doctor resolveDoctor(BillingInvoice invoice) {
+        if (invoice.getReferringDoctor() != null) {
+            return invoice.getReferringDoctor();
+        }
+        if (invoice.getAdmittedPatient() != null
+                && invoice.getAdmittedPatient().getPrimaryDoctor() != null) {
+            return invoice.getAdmittedPatient().getPrimaryDoctor();
+        }
+        return null;
+    }
+
+    private String doctorName(Doctor doctor) {
+        if (doctor.getUser() != null && doctor.getUser().getName() != null
+                && !doctor.getUser().getName().isBlank()) {
+            return doctor.getUser().getName();
+        }
+        return doctor.getSpecialization() != null ? doctor.getSpecialization() : "Doctor " + doctor.getId();
     }
 
     @GetMapping("/pharmacy-revenue")
