@@ -10,6 +10,7 @@ import emranhss.com.Modern_Hospital_Management_System.entity.*;
 import emranhss.com.Modern_Hospital_Management_System.enums.PaymentMethod;
 import emranhss.com.Modern_Hospital_Management_System.enums.PaymentStatus;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
+import emranhss.com.Modern_Hospital_Management_System.pdf.InvoicePdfGenerator;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
 import emranhss.com.Modern_Hospital_Management_System.service.BillingAggregationService;
 import emranhss.com.Modern_Hospital_Management_System.service.BillingInvoiceService;
@@ -414,5 +415,17 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
         summary.setPaymentMethodBreakdown(methodSummaries);
 
         return summary;
+    }
+
+    @Override
+    public byte[] generatePdf(Long id) {
+        BillingInvoice invoice = invoiceRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found"));
+        try {
+            return InvoicePdfGenerator.generate(invoice);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to generate invoice PDF", e);
+        }
     }
 }

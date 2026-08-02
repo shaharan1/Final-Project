@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class BillingAggregationServiceImp implements BillingAggregationService {
     private final PharmacySaleRepository pharmacySaleRepository;
     private final PharmacySaleItemRepository pharmacySaleItemRepository;
     private final TestAdmitedPatientRepository testAdmitedPatientRepository;
+    private final TestsRepository testsRepository;
     private final DietAssignmentRepository dietAssignmentRepository;
     private final OthersChargeRepository othersChargeRepository;
     private final ChargeCategoryRepository chargeCategoryRepository;
@@ -155,24 +158,54 @@ public class BillingAggregationServiceImp implements BillingAggregationService {
     @Override
     public List<BillingInvoiceItem> aggregateLabCharges(BillingInvoice invoice, Long patientId, Long admittedPatientId) {
         List<BillingInvoiceItem> items = new ArrayList<>();
-        if (admittedPatientId == null) return items;
+        if (patientId == null) return items;
 
         ChargeCategory category = getCategory("LAB_TEST");
-        List<TestAdmitedPatient> tests = testAdmitedPatientRepository.findByAdmittedPatientIdAndBillingStatus(admittedPatientId, "PENDING");
 
-        for (TestAdmitedPatient test : tests) {
+        Set<Long> billedTestIds = new java.util.HashSet<>();
+        if (admittedPatientId != null) {
+            List<TestAdmitedPatient> existingTests = testAdmitedPatientRepository.findByAdmittedPatientIdAndBillingStatus(admittedPatientId, "PENDING");
+            for (TestAdmitedPatient test : existingTests) {
+                BillingInvoiceItem item = new BillingInvoiceItem();
+                item.setInvoice(invoice);
+                item.setChargeCategory(category);
+                item.setCategoryCode("LAB_TEST");
+
+                String testName = "";
+                double price = test.getBilledAmount();
+                if (test.getTestOrder() != null) {
+                    if (test.getTestOrder().getTestMaster() != null) {
+                        testName = test.getTestOrder().getTestMaster().getTestName();
+                        if (price <= 0) price = test.getTestOrder().getTestMaster().getStandardPrice();
+                    }
+                    billedTestIds.add(test.getTestOrder().getId());
+                }
+                item.setDescription(testName + " (Test #" + test.getId() + ")");
+                item.setQuantity(1);
+                item.setUnitPrice(price);
+                item.setDiscountPercent(0.0);
+                item.setSourceModule("LAB");
+                item.setSourceId(test.getId());
+                item.calculateAmount();
+                if (item.getUnitPrice() > 0) items.add(item);
+            }
+        }
+
+        List<Tests> patientTests = testsRepository.findByPatientId(patientId);
+        for (Tests test : patientTests) {
+            if (billedTestIds.contains(test.getId())) continue;
+            if (test.getTestMaster() == null) continue;
+
+            double price = test.getTestMaster().getStandardPrice();
+            if (price <= 0) continue;
+
             BillingInvoiceItem item = new BillingInvoiceItem();
             item.setInvoice(invoice);
             item.setChargeCategory(category);
             item.setCategoryCode("LAB_TEST");
-
-            String testName = "";
-            if (test.getTestOrder() != null && test.getTestOrder().getTestMaster() != null) {
-                testName = test.getTestOrder().getTestMaster().getTestName();
-            }
-            item.setDescription(testName + " (Test #" + test.getId() + ")");
+            item.setDescription(test.getTestMaster().getTestName() + " (Order #" + test.getId() + ")");
             item.setQuantity(1);
-            item.setUnitPrice(test.getBilledAmount());
+            item.setUnitPrice(price);
             item.setDiscountPercent(0.0);
             item.setSourceModule("LAB");
             item.setSourceId(test.getId());
@@ -188,16 +221,18 @@ public class BillingAggregationServiceImp implements BillingAggregationService {
         if (patientId == null) return items;
 
         ChargeCategory category = getCategory("DIET_MEALS");
-        List<DietAssignment> diets;
+        List<DietAssignment> diets = new ArrayList<>();
 
         if (admittedPatientId != null) {
-            diets = dietAssignmentRepository.findByAdmittedPatientId(admittedPatientId).stream()
+            diets.addAll(dietAssignmentRepository.findByAdmittedPatientId(admittedPatientId).stream()
                     .filter(d -> !"CANCELLED".equals(d.getStatus()))
-                    .toList();
-        } else {
-            diets = dietAssignmentRepository.findByPatientId(patientId).stream()
+                    .toList());
+        }
+
+        if (diets.isEmpty()) {
+            diets.addAll(dietAssignmentRepository.findByPatientId(patientId).stream()
                     .filter(d -> !"CANCELLED".equals(d.getStatus()))
-                    .toList();
+                    .toList());
         }
 
         for (DietAssignment diet : diets) {
@@ -207,24 +242,26 @@ public class BillingAggregationServiceImp implements BillingAggregationService {
                 pricePerDay = diet.getDietPlan().getPricePerDay();
             }
 
-            if (pricePerDay > 0) {
-                String planName = diet.getDietPlan().getName();
-                String startDate = diet.getStartDate() != null ? diet.getStartDate().toString() : "";
-                String endDate = diet.getEndDate() != null ? diet.getEndDate().toString() : "Ongoing";
-
-                BillingInvoiceItem item = new BillingInvoiceItem();
-                item.setInvoice(invoice);
-                item.setChargeCategory(category);
-                item.setCategoryCode("DIET_MEALS");
-                item.setDescription(planName + " (" + startDate + " to " + endDate + ")");
-                item.setQuantity((int) days);
-                item.setUnitPrice(pricePerDay);
-                item.setDiscountPercent(0.0);
-                item.setSourceModule("DIET");
-                item.setSourceId(diet.getId());
-                item.calculateAmount();
-                items.add(item);
+            if (pricePerDay <= 0) {
+                pricePerDay = 500.0;
             }
+
+            String planName = diet.getDietPlan() != null ? diet.getDietPlan().getName() : "Diet Plan";
+            String startDate = diet.getStartDate() != null ? diet.getStartDate().toString() : "";
+            String endDate = diet.getEndDate() != null ? diet.getEndDate().toString() : "Ongoing";
+
+            BillingInvoiceItem item = new BillingInvoiceItem();
+            item.setInvoice(invoice);
+            item.setChargeCategory(category);
+            item.setCategoryCode("DIET_MEALS");
+            item.setDescription(planName + " (" + startDate + " to " + endDate + ")");
+            item.setQuantity((int) days);
+            item.setUnitPrice(pricePerDay);
+            item.setDiscountPercent(0.0);
+            item.setSourceModule("DIET");
+            item.setSourceId(diet.getId());
+            item.calculateAmount();
+            items.add(item);
         }
         return items;
     }

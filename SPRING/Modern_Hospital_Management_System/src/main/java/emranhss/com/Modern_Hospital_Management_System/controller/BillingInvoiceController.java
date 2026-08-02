@@ -9,7 +9,9 @@ import emranhss.com.Modern_Hospital_Management_System.entity.ChargeCategory;
 import emranhss.com.Modern_Hospital_Management_System.repository.ChargeCategoryRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.BillingInvoiceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -111,5 +113,14 @@ public class BillingInvoiceController {
     @GetMapping("/dashboard-summary")
     public ResponseEntity<BillingDashboardSummaryResponse> getDashboardSummary() {
         return ResponseEntity.ok(billingInvoiceService.getDashboardSummary());
+    }
+
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> generatePdf(@PathVariable Long id) throws Exception {
+        byte[] pdf = billingInvoiceService.generatePdf(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Invoice-" + id + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 }

@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { PatientService } from '../../../../services/patient.service';
 import { BillingInvoiceService } from '../../../../services/billing/billing-invoice.service';
-import { InvoiceGeneratorService } from '../../../../services/billing/invoice-generator.service';
 import { AdmissionService } from '../../../../services/admission.service';
 import { PatientModel } from '../../../../models/patientModel';
 
@@ -103,7 +102,6 @@ export class PatientBillingComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private invoiceGen: InvoiceGeneratorService,
     private patientService: PatientService,
     private billingService: BillingInvoiceService,
     private admissionService: AdmissionService
@@ -590,15 +588,34 @@ export class PatientBillingComponent implements OnInit {
   }
 
   generatePdf(): void {
-    if (this.billItems.length === 0) {
-      this.msg = 'No items to generate PDF';
+    if (!this.activeInvoice?.id) {
+      this.msg = 'Save the invoice first before generating PDF';
       this.msgType = 'error';
       return;
     }
-    this.invoiceGen.generatePdf(this.billForm, this.billItems, this.discountPercent, this.taxRate, this.activeInvoice);
-    this.msg = 'PDF downloaded';
-    this.msgType = 'success';
-    this.cdr.detectChanges();
+    this.loading = true;
+    this.billingService.downloadPdf(this.activeInvoice.id).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = (this.activeInvoice?.invoiceNumber || 'Invoice') + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        this.loading = false;
+        this.msg = 'PDF downloaded';
+        this.msgType = 'success';
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+        this.msg = 'Failed to generate PDF';
+        this.msgType = 'error';
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   printBill(): void {

@@ -41,4 +41,6 @@ public interface BillingInvoiceService {
     List<BillingPaymentResponse> getPaymentsByInvoiceId(Long invoiceId);
 
     BillingDashboardSummaryResponse getDashboardSummary();
+
+    byte[] generatePdf(Long id);
 }

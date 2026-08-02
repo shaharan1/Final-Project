@@ -78,4 +78,8 @@ export class BillingInvoiceService {
   getDashboardSummary(): Observable<any> {
     return this.http.get<any>(`${this.api}/dashboard-summary`);
   }
+
+  downloadPdf(id: number): Observable<Blob> {
+    return this.http.get(`${this.api}/${id}/pdf`, { responseType: 'blob' });
+  }
 }
