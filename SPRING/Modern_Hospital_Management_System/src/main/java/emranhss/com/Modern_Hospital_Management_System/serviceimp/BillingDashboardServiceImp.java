@@ -172,7 +172,7 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
         List<Map<String, Object>> chartData = new ArrayList<>();
         YearMonth current = YearMonth.now();
 
-        for (int i = 11; i >= 0; i--) {
+        for (int i = 5; i >= 0; i--) {
             YearMonth month = current.minusMonths(i);
             LocalDate startDate = month.atDay(1);
             LocalDate endDate = month.atEndOfMonth();
@@ -187,6 +187,7 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
 
             Map<String, Object> point = new LinkedHashMap<>();
             point.put("month", month.toString());
+            point.put("date", month.atDay(1).toString());
             point.put("revenue", revenue);
             point.put("transactions", monthPayments.size());
             chartData.add(point);
