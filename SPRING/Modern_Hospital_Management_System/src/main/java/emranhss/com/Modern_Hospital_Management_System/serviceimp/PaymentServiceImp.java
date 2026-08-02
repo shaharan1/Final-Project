@@ -170,17 +170,30 @@ public class PaymentServiceImp implements PaymentService {
                 .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0.0)
                 .sum();
 
-        Map<Double, Long> dailyBreakdown = completed.stream()
-                .collect(Collectors.groupingBy(
-                        p -> (double) p.getPaymentDate().getDayOfMonth(),
-                        LinkedHashMap::new,
-                        Collectors.counting()));
+        Map<LocalDate, List<Payment>> byDay = completed.stream()
+                .collect(Collectors.groupingBy(p -> p.getPaymentDate().toLocalDate(), LinkedHashMap::new, Collectors.toList()));
+
+        List<Map<String, Object>> dailyBreakdown = new ArrayList<>();
+        int daysInMonth = endDate.getDayOfMonth();
+        for (int day = 1; day <= daysInMonth; day++) {
+            LocalDate date = LocalDate.of(year, month, day);
+            List<Payment> dayPayments = byDay.getOrDefault(date, List.of());
+            double dayRevenue = dayPayments.stream()
+                    .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0.0)
+                    .sum();
+            Map<String, Object> row = new LinkedHashMap<>();
+            row.put("date", date.toString());
+            row.put("revenue", dayRevenue);
+            row.put("bills", dayPayments.size());
+            dailyBreakdown.add(row);
+        }
 
         result.put("year", year);
         result.put("month", month);
         result.put("totalRevenue", totalRevenue);
         result.put("totalTransactions", monthPayments.size());
         result.put("completedTransactions", completed.size());
+        result.put("totalBills", completed.size());
         result.put("dailyBreakdown", dailyBreakdown);
 
         return result;

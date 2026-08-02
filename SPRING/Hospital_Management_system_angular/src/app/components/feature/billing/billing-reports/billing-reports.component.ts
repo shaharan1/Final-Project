@@ -299,21 +299,25 @@ export class BillingReportsComponent implements OnInit {
 
   private loadMonthlyCollection(): void {
     const now = new Date();
-    this.paymentService.getMonthlyRevenue(now.getFullYear(), now.getMonth() + 1).subscribe({
+    this.dashboardService.getMonthlyCollection(now.getFullYear(), now.getMonth() + 1).subscribe({
       next: (data: any) => {
         if (data && data.dailyBreakdown) {
           this.monthlyCollection = data.dailyBreakdown;
           this.monthlyTotalRevenue = data.totalRevenue ?? 0;
           this.monthlyTotalBills = data.totalBills ?? 0;
         } else {
-          this.generateMockMonthly();
+          this.monthlyCollection = [];
+          this.monthlyTotalRevenue = 0;
+          this.monthlyTotalBills = 0;
         }
         this.computeMonthlyStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockMonthly();
+        this.monthlyCollection = [];
+        this.monthlyTotalRevenue = 0;
+        this.monthlyTotalBills = 0;
         this.computeMonthlyStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
@@ -347,7 +351,7 @@ export class BillingReportsComponent implements OnInit {
           this.departmentRevenue = data.map((d: any) => ({
             department: d.department ?? 'Unknown',
             revenue: d.revenue ?? 0,
-            patientCount: d.patientCount ?? Math.floor(Math.random() * 100) + 10,
+            patientCount: d.patientCount ?? 0,
             averageBill: 0,
             percentage: d.percentage ?? 0
           }));
@@ -362,13 +366,17 @@ export class BillingReportsComponent implements OnInit {
             });
           }
         } else {
-          this.generateMockDepartmentRevenue();
+          this.departmentRevenue = [];
+          this.departmentTotalRevenue = 0;
+          this.maxDepartmentRevenue = 1;
         }
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockDepartmentRevenue();
+        this.departmentRevenue = [];
+        this.departmentTotalRevenue = 0;
+        this.maxDepartmentRevenue = 1;
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
@@ -390,16 +398,24 @@ export class BillingReportsComponent implements OnInit {
   }
 
   private loadDoctorRevenue(): void {
-    this.dashboardService.getDepartmentRevenue().subscribe({
-      next: () => {
-        this.generateMockDoctorRevenue();
+    this.dashboardService.getDoctorRevenue().subscribe({
+      next: (data: any[]) => {
+        this.doctorRevenue = (data && data.length)
+          ? data.map((d: any) => ({
+              doctorName: d.doctorName ?? 'N/A',
+              department: d.department ?? 'General',
+              revenue: d.revenue ?? 0,
+              patientCount: d.patientCount ?? 0,
+              averageBill: d.averageBill ?? 0
+            }))
+          : [];
         this.maxDoctorRevenue = Math.max(...this.doctorRevenue.map(d => d.revenue), 1);
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockDoctorRevenue();
-        this.maxDoctorRevenue = Math.max(...this.doctorRevenue.map(d => d.revenue), 1);
+        this.doctorRevenue = [];
+        this.maxDoctorRevenue = 1;
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
@@ -425,14 +441,30 @@ export class BillingReportsComponent implements OnInit {
   }
 
   private loadPharmacyRevenue(): void {
-    this.paymentService.getMethodBreakdown().subscribe({
-      next: () => {
-        this.generateMockPharmacyRevenue();
+    this.dashboardService.getPharmacyRevenue().subscribe({
+      next: (data: any[]) => {
+        if (data && data.length) {
+          this.pharmacyRevenue = data.map((r: any) => ({
+            medicineName: r.medicineName ?? 'N/A',
+            quantitySold: r.quantitySold ?? 0,
+            revenue: r.revenue ?? 0,
+            cost: r.cost ?? 0,
+            profit: r.profit ?? 0
+          }));
+          this.pharmacyTotalRevenue = this.pharmacyRevenue.reduce((s, r) => s + r.revenue, 0);
+          this.pharmacyTotalProfit = this.pharmacyRevenue.reduce((s, r) => s + r.profit, 0);
+        } else {
+          this.pharmacyRevenue = [];
+          this.pharmacyTotalRevenue = 0;
+          this.pharmacyTotalProfit = 0;
+        }
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockPharmacyRevenue();
+        this.pharmacyRevenue = [];
+        this.pharmacyTotalRevenue = 0;
+        this.pharmacyTotalProfit = 0;
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
@@ -452,14 +484,29 @@ export class BillingReportsComponent implements OnInit {
   }
 
   private loadLabRevenue(): void {
-    this.paymentService.getMethodBreakdown().subscribe({
-      next: () => {
-        this.generateMockLabRevenue();
+    this.dashboardService.getLabRevenue().subscribe({
+      next: (data: any[]) => {
+        if (data && data.length) {
+          this.labRevenue = data.map((r: any) => ({
+            testName: r.testName ?? 'N/A',
+            count: r.count ?? 0,
+            revenue: r.revenue ?? 0,
+            averagePrice: r.averagePrice ?? 0
+          }));
+          this.labTotalRevenue = this.labRevenue.reduce((s, r) => s + r.revenue, 0);
+          this.labTotalTests = this.labRevenue.reduce((s, r) => s + r.count, 0);
+        } else {
+          this.labRevenue = [];
+          this.labTotalRevenue = 0;
+          this.labTotalTests = 0;
+        }
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockLabRevenue();
+        this.labRevenue = [];
+        this.labTotalRevenue = 0;
+        this.labTotalTests = 0;
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
@@ -478,14 +525,32 @@ export class BillingReportsComponent implements OnInit {
   }
 
   private loadInsuranceReport(): void {
-    this.paymentService.getAll().subscribe({
-      next: () => {
-        this.generateMockInsuranceReport();
+    this.dashboardService.getInsuranceReport().subscribe({
+      next: (data: any[]) => {
+        if (data && data.length) {
+          this.insuranceClaims = data.map((c: any) => ({
+            invoiceNumber: c.invoiceNumber ?? 'N/A',
+            patientName: c.patientName ?? 'N/A',
+            provider: c.provider ?? 'N/A',
+            claimed: c.claimed ?? 0,
+            approved: c.approved ?? 0,
+            status: c.status ?? 'N/A',
+            claimDate: c.claimDate ?? ''
+          }));
+        } else {
+          this.insuranceClaims = [];
+        }
+        this.insuranceTotalClaimed = this.insuranceClaims.reduce((s, c) => s + c.claimed, 0);
+        this.insuranceTotalApproved = this.insuranceClaims.reduce((s, c) => s + c.approved, 0);
+        this.insurancePendingCount = this.insuranceClaims.filter(c => c.status === 'PENDING' || c.status === 'SUBMITTED' || c.status === 'UNDER_REVIEW').length;
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockInsuranceReport();
+        this.insuranceClaims = [];
+        this.insuranceTotalClaimed = 0;
+        this.insuranceTotalApproved = 0;
+        this.insurancePendingCount = 0;
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
@@ -515,14 +580,32 @@ export class BillingReportsComponent implements OnInit {
   }
 
   private loadPendingDueReport(): void {
-    this.paymentService.getAll().subscribe({
-      next: () => {
-        this.generateMockPendingDue();
+    this.dashboardService.getPendingDue().subscribe({
+      next: (data: any[]) => {
+        if (data && data.length) {
+          this.pendingDues = data.map((d: any) => ({
+            patientName: d.patientName ?? 'N/A',
+            invoiceNumber: d.invoiceNumber ?? 'N/A',
+            total: d.total ?? 0,
+            paid: d.paid ?? 0,
+            due: d.due ?? 0,
+            dueDate: d.dueDate ?? '',
+            daysOverdue: d.daysOverdue ?? 0
+          }));
+        } else {
+          this.pendingDues = [];
+        }
+        this.pendingTotalDue = this.pendingDues.reduce((s, d) => s + d.due, 0);
+        this.pendingOverdue60 = this.pendingDues.filter(d => d.daysOverdue >= 60).length;
+        this.pendingOverdue30 = this.pendingDues.filter(d => d.daysOverdue >= 30 && d.daysOverdue < 60).length;
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockPendingDue();
+        this.pendingDues = [];
+        this.pendingTotalDue = 0;
+        this.pendingOverdue60 = 0;
+        this.pendingOverdue30 = 0;
         this.generatingReport = false;
         this.cdr.markForCheck();
       }
@@ -561,20 +644,20 @@ export class BillingReportsComponent implements OnInit {
             id: r.id ?? 0,
             invoiceNumber: r.invoiceNumber ?? 'N/A',
             patientName: r.patientName ?? 'N/A',
-            amount: r.amount ?? 0,
-            reason: r.reason ?? 'N/A',
-            status: r.status ?? 'PENDING',
-            refundDate: r.refundDate ?? r.createdDate ?? ''
+            amount: r.refundAmount ?? r.amount ?? 0,
+            reason: r.refundReason ?? r.reason ?? 'N/A',
+            status: r.refundStatus ?? r.status ?? 'PENDING',
+            refundDate: r.createdDate ? r.createdDate.substring(0, 10) : (r.refundDate ?? '')
           }));
         } else {
-          this.generateMockRefunds();
+          this.refunds = [];
         }
         this.computeRefundStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockRefunds();
+        this.refunds = [];
         this.computeRefundStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
@@ -604,28 +687,24 @@ export class BillingReportsComponent implements OnInit {
   }
 
   private loadProfitLoss(): void {
-    this.dashboardService.getMonthlyRevenueChart().subscribe({
+    this.dashboardService.getProfitLoss().subscribe({
       next: (data: any[]) => {
         if (data && data.length) {
-          this.profitLoss = data.map((d: any) => {
-            const revenue = d.revenue ?? 0;
-            const expenses = Math.round(revenue * (0.55 + Math.random() * 0.15));
-            return {
-              month: d.date,
-              revenue,
-              expenses,
-              profit: revenue - expenses
-            };
-          });
+          this.profitLoss = data.map((d: any) => ({
+            month: d.month,
+            revenue: d.revenue ?? 0,
+            expenses: d.expenses ?? 0,
+            profit: d.profit ?? 0
+          }));
         } else {
-          this.generateMockProfitLoss();
+          this.profitLoss = [];
         }
         this.computePLStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
       },
       error: () => {
-        this.generateMockProfitLoss();
+        this.profitLoss = [];
         this.computePLStats();
         this.generatingReport = false;
         this.cdr.markForCheck();
