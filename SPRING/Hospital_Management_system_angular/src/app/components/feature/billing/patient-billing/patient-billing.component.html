@@ -155,6 +155,10 @@
             <span class="bs-label">Lab Tests</span>
             <span class="bs-value">{{ patientTestOrders.length }}</span>
           </div>
+          <div class="bs-item">
+            <span class="bs-label">Meal / Diet</span>
+            <span class="bs-value">{{ patientDietAssignments.length }}</span>
+          </div>
           <div class="bs-item" *ngIf="computedWardCost > 0">
             <span class="bs-label">Ward Total</span>
             <span class="bs-value bs-total">{{ formatCurrency(computedWardCost) }}</span>

@@ -63,6 +63,10 @@
           <div class="nutri-mini"><span class="nutri-mini-val">{{ plan.fat || 0 }}g</span><span class="nutri-mini-lbl">Fat</span></div>
           <div class="nutri-mini"><span class="nutri-mini-val">{{ plan.fiber || 0 }}g</span><span class="nutri-mini-lbl">Fiber</span></div>
         </div>
+        <div class="nutri-price" *ngIf="plan.pricePerDay && plan.pricePerDay > 0">
+          <span class="nutri-price-val">৳{{ plan.pricePerDay }}</span>
+          <span class="nutri-price-lbl">Per Day</span>
+        </div>
       </div>
 
       <!-- Expanded Detail -->
@@ -214,6 +218,7 @@
             <div class="form-group"><label>Sodium (mg)</label><input type="number" [(ngModel)]="formModel.sodium" placeholder="e.g., 2300"></div>
             <div class="form-group"><label>Potassium (mg)</label><input type="number" [(ngModel)]="formModel.potassium" placeholder="e.g., 3500"></div>
             <div class="form-group"><label>Water Intake (ml)</label><input type="number" [(ngModel)]="formModel.waterIntakeMl" placeholder="e.g., 2500"></div>
+            <div class="form-group"><label>Price Per Day (৳)</label><input type="number" step="0.01" [(ngModel)]="formModel.pricePerDay" placeholder="e.g., 500"></div>
           </div>
         </div>
 

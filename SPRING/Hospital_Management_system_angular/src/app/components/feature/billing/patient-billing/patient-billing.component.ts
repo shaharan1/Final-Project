@@ -2,7 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { PatientService } from '../../../../services/patient.service';
 import { PaymentService } from '../../../../services/billing/payment.service';
 import { BillingDashboardService } from '../../../../services/billing/billing-dashboard.service';
@@ -13,6 +13,7 @@ import { AdmissionService } from '../../../../services/admission.service';
 import { PharmacySaleService } from '../../../../services/pharmacy-sale.service';
 import { InfrastructureService } from '../../../../services/infrastructure.service';
 import { TestOrderService } from '../../../../services/test-order.service';
+import { DietAssignmentService } from '../../../../services/dietary/diet-assignment.service';
 import { PatientModel } from '../../../../models/patientModel';
 
 interface BillItem {
@@ -79,9 +80,11 @@ export class PatientBillingComponent implements OnInit {
   patientDoctorCharges: any[] = [];
   patientPharmacySales: any[] = [];
   patientTestOrders: any[] = [];
+  patientDietAssignments: any[] = [];
   loadingPatientBill = false;
   wardDays = 0;
   computedWardCost = 0;
+  cachedWards: any[] = [];
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -94,7 +97,8 @@ export class PatientBillingComponent implements OnInit {
     private admissionService: AdmissionService,
     private pharmacySaleService: PharmacySaleService,
     private infrastructureService: InfrastructureService,
-    private testOrderService: TestOrderService
+    private testOrderService: TestOrderService,
+    private dietAssignmentService: DietAssignmentService
   ) {}
 
   ngOnInit(): void {
@@ -219,17 +223,25 @@ export class PatientBillingComponent implements OnInit {
     this.patientDoctorCharges = [];
     this.patientPharmacySales = [];
     this.patientTestOrders = [];
+    this.patientDietAssignments = [];
     this.wardDays = 0;
     this.computedWardCost = 0;
+
+    const wards$ = this.cachedWards.length > 0
+      ? of(this.cachedWards)
+      : this.infrastructureService.getAllWards();
 
     forkJoin({
       admissions: this.admissionService.getAll(),
       charges: this.doctorChargeService.getAll(),
       sales: this.pharmacySaleService.getAll(),
-      wards: this.infrastructureService.getAllWards(),
-      testOrders: this.testOrderService.getAll()
+      wards: wards$,
+      testOrders: this.testOrderService.getAll(),
+      diets: this.dietAssignmentService.getAll()
     }).subscribe({
-      next: ({ admissions, charges, sales, wards, testOrders }) => {
+      next: ({ admissions, charges, sales, wards, testOrders, diets }) => {
+        if (!this.cachedWards.length) this.cachedWards = wards;
+
         this.patientAdmissions = admissions.filter(a => a.patientId === patient.id);
         const admission = this.patientAdmissions.find(a => a.status === 'ADMITTED') || this.patientAdmissions[0];
         this.activeAdmission = admission || null;
@@ -239,6 +251,9 @@ export class PatientBillingComponent implements OnInit {
           : [];
         this.patientPharmacySales = sales.filter(s => s.patientId === patient.id);
         this.patientTestOrders = testOrders.filter(t => t.patientId === patient.id);
+        this.patientDietAssignments = diets.filter(d =>
+          d.patientId === patient.id && d.status !== 'CANCELLED'
+        );
 
         if (admission) {
           this.wardDays = this.computeWardDays(admission.admissionDate);
@@ -278,6 +293,15 @@ export class PatientBillingComponent implements OnInit {
     const start = new Date(admissionDate);
     const now = new Date();
     const diff = now.getTime() - start.getTime();
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return Math.max(1, days);
+  }
+
+  private computeDietDays(startDate: string, endDate: string): number {
+    if (!startDate) return 1;
+    const start = new Date(startDate);
+    const end = endDate ? new Date(endDate) : new Date();
+    const diff = end.getTime() - start.getTime();
     const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
     return Math.max(1, days);
   }
@@ -350,9 +374,27 @@ export class PatientBillingComponent implements OnInit {
       );
     }
 
-    // 5. Other charges from sync-summary (meal, other, test cost fallback)
+    // 5. Meal / Diet assignments
+    if (this.patientDietAssignments.length > 0) {
+      for (const diet of this.patientDietAssignments) {
+        const planName = diet.dietPlan?.name || diet.dietPlan?.dietType || 'Diet Plan';
+        const start = (diet.startDate || '').substring(0, 10);
+        const end = diet.endDate ? (diet.endDate || '').substring(0, 10) : 'Ongoing';
+        const pricePerDay = diet.dietPlan?.pricePerDay || 0;
+        const dietDays = this.computeDietDays(diet.startDate, diet.endDate);
+        pushItem(
+          'Meal',
+          `${planName} (${start} to ${end})`,
+          dietDays,
+          pricePerDay
+        );
+      }
+    } else if (this.patientBill && this.patientBill.mealCost > 0) {
+      pushItem('Meal', 'Meal / Diet Charges', 1, this.patientBill.mealCost);
+    }
+
+    // 6. Other charges from sync-summary
     if (this.patientBill) {
-      pushItem('Meal', 'Meal / Diet Charges', 1, this.patientBill.mealCost || 0);
       if (this.patientBill.testCost > 0 && this.patientTestOrders.length === 0) {
         pushItem('Lab Test', 'Diagnostic Tests (System)', 1, this.patientBill.testCost);
       }
@@ -487,6 +529,7 @@ export class PatientBillingComponent implements OnInit {
     this.patientDoctorCharges = [];
     this.patientPharmacySales = [];
     this.patientTestOrders = [];
+    this.patientDietAssignments = [];
     this.wardDays = 0;
     this.computedWardCost = 0;
     this.generateBillNumber();

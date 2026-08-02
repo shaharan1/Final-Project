@@ -61,6 +61,9 @@
 .nutri-mini { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
 .nutri-mini-val { font-size: 0.85rem; font-weight: 600; color: #f0f4f8; }
 .nutri-mini-lbl { font-size: 0.6rem; color: rgba(255,255,255,0.4); }
+.nutri-price { display: flex; flex-direction: column; align-items: center; margin-left: auto; padding: 8px 14px; background: rgba(25,193,132,0.12); border-radius: 10px; }
+.nutri-price-val { font-size: 1.1rem; font-weight: 700; color: #19c184; }
+.nutri-price-lbl { font-size: 0.6rem; color: rgba(255,255,255,0.45); text-transform: uppercase; }
 
 .plan-detail { padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04); }
 .detail-section { margin-bottom: 16px; }

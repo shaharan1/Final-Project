@@ -30,6 +30,7 @@ export interface DietPlan {
   vitaminRecommendation?: string;
   doctorRecommendation?: string;
   dieticianNotes?: string;
+  pricePerDay?: number;
   active?: boolean;
   createdAt?: string;
   updatedAt?: string;

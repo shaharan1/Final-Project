@@ -89,6 +89,8 @@ public class DietPlan {
     @Column(columnDefinition = "TEXT")
     private String dieticianNotes;
 
+    private Double pricePerDay = 0.0;
+
     private Boolean active = true;
 
     @CreationTimestamp

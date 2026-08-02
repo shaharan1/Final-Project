@@ -138,7 +138,8 @@ export class PatientDietComponent implements OnInit {
         reason: '',
         specialInstructions: '',
         targetCalories: null,
-        targetWeight: null
+        targetWeight: null,
+        pricePerDay: null
       };
       this.showModal = true;
       this.msg = '';
@@ -167,7 +168,8 @@ export class PatientDietComponent implements OnInit {
         reason: existing.reason || '',
         specialInstructions: existing.specialInstructions || '',
         targetCalories: existing.targetCalories || null,
-        targetWeight: existing.targetWeight || null
+        targetWeight: existing.targetWeight || null,
+        pricePerDay: existing.dietPlan?.pricePerDay || null
       };
       this.showModal = true;
       this.msg = '';

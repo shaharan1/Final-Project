@@ -68,6 +68,7 @@ export class DietPlanComponent implements OnInit {
       totalCalories: 2000, protein: 75, carbohydrate: 250, fat: 70, fiber: 25,
       sodium: 2000, potassium: 3500, waterIntakeMl: 2500,
       vitaminRecommendation: '', doctorRecommendation: '', dieticianNotes: '',
+      pricePerDay: 0,
       active: true
     };
   }
