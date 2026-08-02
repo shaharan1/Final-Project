@@ -26,6 +26,7 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
     private final PaymentRepository paymentRepository;
     private final RefundRepository refundRepository;
     private final InsuranceClaimRepository insuranceClaimRepository;
+    private final BillingInvoiceRepository billingInvoiceRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,6 +36,9 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
         List<Payment> allPayments = paymentRepository.findAll();
         List<Refund> allRefunds = refundRepository.findAll();
         List<InsuranceClaim> allClaims = insuranceClaimRepository.findAll();
+        List<BillingInvoice> allInvoices = billingInvoiceRepository.findAll();
+
+        LocalDate today = LocalDate.now();
 
         double totalRevenue = allPayments.stream()
                 .filter(p -> p.getPaymentStatus() == PaymentStatus.COMPLETED)
@@ -51,17 +55,45 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
         double todayRevenue = allPayments.stream()
                 .filter(p -> p.getPaymentStatus() == PaymentStatus.COMPLETED
                         && p.getPaymentDate() != null
-                        && p.getPaymentDate().toLocalDate().equals(LocalDate.now()))
+                        && p.getPaymentDate().toLocalDate().equals(today))
                 .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0.0)
                 .sum();
+
+        double yesterdayRevenue = allPayments.stream()
+                .filter(p -> p.getPaymentStatus() == PaymentStatus.COMPLETED
+                        && p.getPaymentDate() != null
+                        && p.getPaymentDate().toLocalDate().equals(today.minusDays(1)))
+                .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0.0)
+                .sum();
+
+        YearMonth currentMonth = YearMonth.from(today);
 
         double monthRevenue = allPayments.stream()
                 .filter(p -> p.getPaymentStatus() == PaymentStatus.COMPLETED
                         && p.getPaymentDate() != null
-                        && p.getPaymentDate().toLocalDate().getMonth() == LocalDate.now().getMonth()
-                        && p.getPaymentDate().toLocalDate().getYear() == LocalDate.now().getYear())
+                        && YearMonth.from(p.getPaymentDate().toLocalDate()).equals(currentMonth))
                 .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0.0)
                 .sum();
+
+        double prevMonthRevenue = allPayments.stream()
+                .filter(p -> p.getPaymentStatus() == PaymentStatus.COMPLETED
+                        && p.getPaymentDate() != null
+                        && YearMonth.from(p.getPaymentDate().toLocalDate()).equals(currentMonth.minusMonths(1)))
+                .mapToDouble(p -> p.getAmount() != null ? p.getAmount() : 0.0)
+                .sum();
+
+        long pendingPayments = allPayments.stream()
+                .filter(p -> p.getPaymentStatus() == PaymentStatus.PENDING)
+                .count();
+
+        long paidBills = allPayments.stream()
+                .filter(p -> p.getPaymentStatus() == PaymentStatus.COMPLETED)
+                .count();
+
+        long unpaidBills = allInvoices.stream()
+                .filter(i -> i.getDueAmount() != null && i.getDueAmount() > 0
+                        && !"CANCELLED".equals(i.getInvoiceStatus()))
+                .count();
 
         long pendingClaims = allClaims.stream()
                 .filter(c -> c.getClaimStatus() == ClaimStatus.SUBMITTED || c.getClaimStatus() == ClaimStatus.UNDER_REVIEW)
@@ -71,17 +103,39 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
                 .filter(r -> r.getRefundStatus() == RefundStatus.PENDING)
                 .count();
 
+        long totalPatientsBilled = allPayments.stream()
+                .map(Payment::getPatientId)
+                .distinct()
+                .count();
+
+        double todayRevenueChange = yesterdayRevenue > 0
+                ? Math.round(((todayRevenue - yesterdayRevenue) / yesterdayRevenue) * 10000.0) / 100.0
+                : (todayRevenue > 0 ? 100.0 : 0.0);
+
+        double monthlyRevenueChange = prevMonthRevenue > 0
+                ? Math.round(((monthRevenue - prevMonthRevenue) / prevMonthRevenue) * 10000.0) / 100.0
+                : (monthRevenue > 0 ? 100.0 : 0.0);
+
         summary.put("totalRevenue", totalRevenue);
         summary.put("totalRefunds", totalRefunds);
         summary.put("netRevenue", netRevenue);
         summary.put("todayRevenue", todayRevenue);
         summary.put("monthRevenue", monthRevenue);
+        summary.put("monthlyRevenue", monthRevenue);
         summary.put("totalPayments", allPayments.size());
         summary.put("totalRefundCount", allRefunds.size());
         summary.put("pendingClaims", pendingClaims);
         summary.put("pendingRefunds", pendingRefunds);
         summary.put("totalOutstandingInvoices", invoiceRepository.count());
         summary.put("totalAdmittedPatientInvoices", admitPatientInvoiceRepository.count());
+        summary.put("pendingPayments", pendingPayments);
+        summary.put("paidBills", paidBills);
+        summary.put("unpaidBills", unpaidBills);
+        summary.put("insuranceClaims", pendingClaims);
+        summary.put("refundAmount", totalRefunds);
+        summary.put("totalPatientsBilled", totalPatientsBilled);
+        summary.put("todayRevenueChange", todayRevenueChange);
+        summary.put("monthlyRevenueChange", monthlyRevenueChange);
 
         return summary;
     }
@@ -92,7 +146,7 @@ public class BillingDashboardServiceImp implements BillingDashboardService {
         List<Map<String, Object>> chartData = new ArrayList<>();
         LocalDate today = LocalDate.now();
 
-        for (int i = 29; i >= 0; i--) {
+        for (int i = 6; i >= 0; i--) {
             LocalDate date = today.minusDays(i);
             LocalDateTime start = date.atStartOfDay();
             LocalDateTime end = date.atTime(LocalTime.MAX);
