@@ -57,11 +57,11 @@
         <div class="card-meta">
           <div class="meta-item">
             <span class="meta-label">Ward</span>
-            <span class="meta-value">{{ patient.ward?.name || '-' }}</span>
+            <span class="meta-value">{{ (getAssignmentForPatient(patient.id)?.wardName) || patient.ward?.name || '-' }}</span>
           </div>
           <div class="meta-item">
             <span class="meta-label">Bed</span>
-            <span class="meta-value">{{ patient.bed?.bedNumber || '-' }}</span>
+            <span class="meta-value">{{ (getAssignmentForPatient(patient.id)?.bedNumber) || patient.bed?.bedNumber || '-' }}</span>
           </div>
           <div class="meta-item">
             <span class="meta-label">Age</span>

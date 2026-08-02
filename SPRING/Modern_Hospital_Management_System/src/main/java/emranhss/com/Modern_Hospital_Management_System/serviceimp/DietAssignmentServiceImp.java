@@ -1,13 +1,16 @@
 package emranhss.com.Modern_Hospital_Management_System.serviceimp;
 
-import emranhss.com.Modern_Hospital_Management_System.entity.DietAssignment;
+import emranhss.com.Modern_Hospital_Management_System.entity.*;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
+import emranhss.com.Modern_Hospital_Management_System.repository.BedBookingRepository;
 import emranhss.com.Modern_Hospital_Management_System.repository.DietAssignmentRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.DietAssignmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -15,6 +18,28 @@ import java.util.List;
 public class DietAssignmentServiceImp implements DietAssignmentService {
 
     private final DietAssignmentRepository dietAssignmentRepository;
+    private final BedBookingRepository bedBookingRepository;
+
+    private void enrichAssignment(DietAssignment a) {
+        if (a.getAdmittedPatient() != null) {
+            bedBookingRepository.findByAdmittedPatientIdAndActiveTrue(a.getAdmittedPatient().getId())
+                    .ifPresent(booking -> {
+                        if (booking.getBed() != null) {
+                            a.setBedNumber(booking.getBed().getBedNumber());
+                            if (booking.getBed().getWard() != null) {
+                                a.setWardName(booking.getBed().getWard().getName());
+                            }
+                        }
+                    });
+        }
+        if (a.getDietPlan() != null && a.getStartDate() != null) {
+            double pricePerDay = a.getDietPlan().getPricePerDay() != null ? a.getDietPlan().getPricePerDay() : 0.0;
+            LocalDate end = a.getEndDate() != null && a.getEndDate().isBefore(LocalDate.now()) ? a.getEndDate() : LocalDate.now();
+            long days = ChronoUnit.DAYS.between(a.getStartDate(), end) + 1;
+            if (days < 1) days = 1;
+            a.setTotalAmount(pricePerDay * days);
+        }
+    }
 
     @Override
     @Transactional
@@ -32,37 +57,49 @@ public class DietAssignmentServiceImp implements DietAssignmentService {
     @Override
     @Transactional(readOnly = true)
     public List<DietAssignment> getAll() {
-        return dietAssignmentRepository.findAll();
+        List<DietAssignment> list = dietAssignmentRepository.findAll();
+        list.forEach(this::enrichAssignment);
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DietAssignment> getByStatus(String status) {
-        return dietAssignmentRepository.findByStatus(status);
+        List<DietAssignment> list = dietAssignmentRepository.findByStatus(status);
+        list.forEach(this::enrichAssignment);
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DietAssignment> getByPatientId(Long patientId) {
-        return dietAssignmentRepository.findByPatientId(patientId);
+        List<DietAssignment> list = dietAssignmentRepository.findByPatientId(patientId);
+        list.forEach(this::enrichAssignment);
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DietAssignment> getByAdmittedPatientId(Long admittedPatientId) {
-        return dietAssignmentRepository.findByAdmittedPatientId(admittedPatientId);
+        List<DietAssignment> list = dietAssignmentRepository.findByAdmittedPatientId(admittedPatientId);
+        list.forEach(this::enrichAssignment);
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DietAssignment> getByDieticianId(Long dieticianId) {
-        return dietAssignmentRepository.findByDieticianId(dieticianId);
+        List<DietAssignment> list = dietAssignmentRepository.findByDieticianId(dieticianId);
+        list.forEach(this::enrichAssignment);
+        return list;
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DietAssignment> getActiveAssignments() {
-        return dietAssignmentRepository.findActiveAssignments(LocalDate.now());
+        List<DietAssignment> list = dietAssignmentRepository.findActiveAssignments(LocalDate.now());
+        list.forEach(this::enrichAssignment);
+        return list;
     }
 
     @Override

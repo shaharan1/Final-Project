@@ -70,4 +70,13 @@ public class DietAssignment {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Transient
+    private String wardName;
+
+    @Transient
+    private String bedNumber;
+
+    @Transient
+    private Double totalAmount;
 }
