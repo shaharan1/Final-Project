@@ -23,6 +23,26 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pl-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.pl-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: plDrawWave 4s ease forwards;
+}
+
+@keyframes plDrawWave {
+  to { stroke-dashoffset: 0; }
 }
 
 .pl-header-left {

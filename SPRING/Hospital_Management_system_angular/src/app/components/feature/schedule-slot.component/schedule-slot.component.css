@@ -27,6 +27,26 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ss-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ss-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: ssDrawWave 4s ease forwards;
+}
+
+@keyframes ssDrawWave {
+  to { stroke-dashoffset: 0; }
 }
 
 .ss-header-list {
