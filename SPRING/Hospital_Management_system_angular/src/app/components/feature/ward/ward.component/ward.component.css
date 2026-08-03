@@ -42,7 +42,7 @@
 }
 
 .bg-gradient-purple {
-    background: linear-gradient(135deg, #6610f2, #0d6efd);
+    background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
 }
 
 .stat-card {

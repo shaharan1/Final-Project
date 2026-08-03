@@ -6,7 +6,7 @@
     overflow: hidden;
 }
 .adm-card-header {
-    background: linear-gradient(135deg, #198754, #20c997);
+    background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
     padding: 28px 32px;
     color: #fff;
 }
