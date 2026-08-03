@@ -1,5 +1,5 @@
 .dietary-page { min-height: 100vh; background: #0a0e27; color: #f0f4f8; padding: 24px; font-family: 'Inter', sans-serif; }
-.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; position: relative; overflow: hidden; flex-wrap: wrap; gap: 16px; background: linear-gradient(135deg, #059669 0%, #0891b2 100%) !important; }
 .page-title { margin: 0; font-size: 1.75rem; font-weight: 800; }
 .page-subtitle { margin: 4px 0 0; color: rgba(255,255,255,0.55); font-size: 0.95rem; }
 .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; transition: all 0.2s ease; }
@@ -69,3 +69,41 @@
 .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; color: #f0f4f8; font-size: 0.85rem; font-family: inherit; transition: all 0.2s ease; }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #0d6efd; box-shadow: 0 0 0 3px rgba(13,110,253,0.15); }
 @media (max-width: 768px) { .cards-grid { grid-template-columns: 1fr; } .form-grid { grid-template-columns: 1fr; } .modal { margin: 12px; } }
+/* ===== HEARTBEAT SVG ANIMATION ===== */
+.diet-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.page-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: dietDrawWave 4s ease forwards;
+}
+
+@keyframes dietDrawWave {
+  to { stroke-dashoffset: 0; }
+}
+
+.page-header .page-title,
+.page-header h1,
+.page-header h2 {
+  color: #fff !important;
+  position: relative;
+  z-index: 1;
+}
+
+.page-header .page-subtitle,
+.page-header p {
+  color: rgba(255, 255, 255, 0.85) !important;
+  position: relative;
+  z-index: 1;
+}
+
+.page-header .btn {
+  position: relative;
+  z-index: 1;
+}

@@ -24,8 +24,9 @@
 /* ===== PAGE HEADER ===== */
 .page-header {
   display: flex; justify-content: space-between; align-items: flex-start;
-  margin-bottom: 32px; position: relative; z-index: 1;
+  margin-bottom: 32px; position: relative; overflow: hidden; z-index: 1;
   flex-wrap: wrap; gap: 16px;
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%) !important;
 }
 .page-title { margin: 0; font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
 .page-subtitle { margin: 4px 0 0; color: rgba(255,255,255,0.55); font-size: 0.95rem; }
@@ -211,4 +212,42 @@
   .meal-row { grid-template-columns: 70px 1fr; grid-template-rows: auto auto; }
   .meal-time { grid-row: 1 / 3; }
   .nutrition-grid { grid-template-columns: 1fr; }
+}
+/* ===== HEARTBEAT SVG ANIMATION ===== */
+.diet-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.page-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: dietDrawWave 4s ease forwards;
+}
+
+@keyframes dietDrawWave {
+  to { stroke-dashoffset: 0; }
+}
+
+.page-header .page-title,
+.page-header h1,
+.page-header h2 {
+  color: #fff !important;
+  position: relative;
+  z-index: 1;
+}
+
+.page-header .page-subtitle,
+.page-header p {
+  color: rgba(255, 255, 255, 0.85) !important;
+  position: relative;
+  z-index: 1;
+}
+
+.page-header .btn {
+  position: relative;
+  z-index: 1;
 }

@@ -82,18 +82,49 @@
 
 /* ---------- Page Header (List View) ---------- */
 .page-header {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 12px;
+  padding: 24px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
 }
 .page-header h2 {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: #0f172a;
+  color: #fff;
+}
+.page-header .header-actions {
+  position: relative;
+  z-index: 1;
+}
+.page-header .search-bar input {
+  background: rgba(255,255,255,0.9);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.inv-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.page-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: invDrawWave 4s ease forwards;
+}
+
+@keyframes invDrawWave {
+  to { stroke-dashoffset: 0; }
 }
 .header-actions {
   display: flex;
