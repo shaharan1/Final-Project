@@ -105,4 +105,16 @@ export class DoctorDepartment {
     this.isEdit = false;
 
   }
+
+  getAvatarColor(index: number): string {
+    const colors = [
+      'linear-gradient(135deg, #059669, #0891b2)',
+      'linear-gradient(135deg, #0d6efd, #6610f2)',
+      'linear-gradient(135deg, #dc3545, #fd7e14)',
+      'linear-gradient(135deg, #198754, #20c997)',
+      'linear-gradient(135deg, #6610f2, #e83e8c)',
+      'linear-gradient(135deg, #ffc107, #fd7e14)',
+    ];
+    return colors[index % colors.length];
+  }
 }
