@@ -7,6 +7,7 @@ import { DietAssignmentService } from '../../../../services/dietary/diet-assignm
 import { DietPlanService } from '../../../../services/dietary/diet-plan.service';
 import { DietHistoryService } from '../../../../services/dietary/diet-history.service';
 import { PatientDietAlertService } from '../../../../services/dietary/patient-diet-alert.service';
+import { AdmissionService } from '../../../../services/admission.service';
 import { forkJoin, catchError, of } from 'rxjs';
 
 @Component({
@@ -21,6 +22,8 @@ export class PatientDietComponent implements OnInit {
   filteredPatients: any[] = [];
   assignments: any[] = [];
   dietPlans: any[] = [];
+  admissions: any[] = [];
+  admissionMap: Map<number, any> = new Map();
   loading = true;
   searchTerm = '';
   filterWard = '';
@@ -50,6 +53,7 @@ export class PatientDietComponent implements OnInit {
     private dietPlanService: DietPlanService,
     private historyService: DietHistoryService,
     private alertService: PatientDietAlertService,
+    private admissionService: AdmissionService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -63,13 +67,23 @@ export class PatientDietComponent implements OnInit {
     forkJoin({
       patients: this.patientService.getAll().pipe(catchError(() => of([]))),
       plans: this.dietPlanService.getActive().pipe(catchError(() => of([]))),
-      assignments: this.assignmentService.getAll().pipe(catchError(() => of([])))
+      assignments: this.assignmentService.getAll().pipe(catchError(() => of([]))),
+      admissions: this.admissionService.getAll().pipe(catchError(() => of([])))
     }).subscribe({
       next: (result) => {
         this.patients = Array.isArray(result.patients) ? result.patients : [];
         this.filteredPatients = [...this.patients];
         this.dietPlans = Array.isArray(result.plans) ? result.plans : [];
         this.assignments = Array.isArray(result.assignments) ? result.assignments : [];
+        this.admissions = Array.isArray(result.admissions) ? result.admissions : [];
+
+        this.admissionMap.clear();
+        for (const adm of this.admissions) {
+          if (adm.patientId && adm.status === 'ADMITTED') {
+            this.admissionMap.set(adm.patientId, adm);
+          }
+        }
+
         this.loading = false;
         this.safeDetectChanges();
       },
@@ -94,7 +108,10 @@ export class PatientDietComponent implements OnInit {
         );
       }
       if (this.filterWard) {
-        result = result.filter(p => p.ward?.name === this.filterWard);
+        result = result.filter(p => {
+          const adm = this.admissionMap.get(p.id);
+          return adm?.wardName === this.filterWard;
+        });
       }
       if (this.filterStatus === 'ACTIVE') {
         result = result.filter(p => this.hasActiveAssignment(p.id));
@@ -330,8 +347,21 @@ export class PatientDietComponent implements OnInit {
   }
 
   getUniqueWards(): string[] {
-    const wards = this.patients.map(p => p.ward?.name).filter((w: any) => w);
+    const wards = this.patients.map(p => {
+      const adm = this.admissionMap.get(p.id);
+      return adm?.wardName;
+    }).filter((w: any) => w);
     return [...new Set(wards)] as string[];
+  }
+
+  getPatientWard(patientId: number): string {
+    const adm = this.admissionMap.get(patientId);
+    return adm?.wardName || '-';
+  }
+
+  getPatientBed(patientId: number): string {
+    const adm = this.admissionMap.get(patientId);
+    return adm?.assignedBedNumber || '-';
   }
 
   calculateAge(dateOfBirth: string): number {
