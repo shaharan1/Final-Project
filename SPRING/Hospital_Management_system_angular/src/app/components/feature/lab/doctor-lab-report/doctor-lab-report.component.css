@@ -3,9 +3,8 @@
   background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
   border-radius: 24px; padding: 32px 36px; color: #fff;
   position: relative; overflow: hidden; margin-bottom: 28px;
-  box-shadow: 0 12px 40px rgba(13,202,240,0.25);
+  box-shadow: 0 12px 40px rgba(5,150,105,0.25);
 }
-.lab-hero-teal { background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 60%, #6610f2 100%); }
 .lab-hero-content { display: flex; align-items: center; gap: 20px; position: relative; z-index: 2; }
 .lab-hero-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; }
 .lab-hero h1 { margin: 0; font-size: 28px; font-weight: 800; }
@@ -15,6 +14,13 @@
 .lab-hero-num { display: block; font-size: 28px; font-weight: 800; }
 .lab-hero-lbl { font-size: 12px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
 .lab-hero-wave { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; opacity: 0.5; }
+.lab-hero-wave svg { width: 100%; height: 100%; }
+.lab-hero-wave polyline {
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: labDrawWave 3s ease forwards;
+}
+@keyframes labDrawWave { to { stroke-dashoffset: 0; } }
 
 .lab-search-row { margin-bottom: 24px; }
 .lab-search-wrap { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 14px; padding: 4px 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 2px solid #e9ecef; transition: border-color .2s, box-shadow .2s; max-width: 500px; }

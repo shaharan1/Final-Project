@@ -1,0 +1,42 @@
+.test-header {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  padding: 24px 28px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.test-header h4 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.test-header .btn-light {
+  position: relative;
+  z-index: 1;
+}
+
+.test-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.test-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: testDrawWave 4s ease forwards;
+}
+
+@keyframes testDrawWave {
+  to { stroke-dashoffset: 0; }
+}
