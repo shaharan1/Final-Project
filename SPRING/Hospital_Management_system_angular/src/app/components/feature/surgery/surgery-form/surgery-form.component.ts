@@ -141,13 +141,13 @@ export class SurgeryFormComponent implements OnInit {
   }
 
   loadReferences(): void {
-    this.refService.getActiveCategories().subscribe(res => this.categories = res);
-    this.refService.getMasters().subscribe(res => this.masters = res);
-    this.refService.getActiveTheatres().subscribe(res => this.theatres = res);
-    this.refService.getActiveDiscounts().subscribe(res => this.discounts = res);
-    this.doctorService.getAll().subscribe(res => this.doctors = res.filter(d => d.status !== 'INACTIVE'));
-    this.deptService.getAllDepartments().subscribe(res => this.departments = res);
-    this.admissionService.getActive().subscribe(res => this.admissions = res);
+    this.refService.getActiveCategories().subscribe(res => { this.categories = res; this.cdr.detectChanges(); });
+    this.refService.getMasters().subscribe(res => { this.masters = res; this.cdr.detectChanges(); });
+    this.refService.getActiveTheatres().subscribe(res => { this.theatres = res; this.cdr.detectChanges(); });
+    this.refService.getActiveDiscounts().subscribe(res => { this.discounts = res; this.cdr.detectChanges(); });
+    this.doctorService.getAll().subscribe(res => { this.doctors = res.filter(d => d.status !== 'INACTIVE'); this.cdr.detectChanges(); });
+    this.deptService.getAllDepartments().subscribe(res => { this.departments = res; this.cdr.detectChanges(); });
+    this.admissionService.getActive().subscribe(res => { this.admissions = res; this.cdr.detectChanges(); });
   }
 
   loadSurgery(id: number): void {
