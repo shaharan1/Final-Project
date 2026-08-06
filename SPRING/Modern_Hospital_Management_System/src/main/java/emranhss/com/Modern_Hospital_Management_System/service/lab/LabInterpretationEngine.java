@@ -39,18 +39,24 @@ public class LabInterpretationEngine {
             }
 
             if (ageYears != null) {
-                boolean ageInRange = (r.getMinAgeYears() == null || ageYears >= r.getMinAgeYears())
-                        && (r.getMaxAgeYears() == null || ageYears <= r.getMaxAgeYears());
-                if (ageInRange) {
-                    score += 5;
-                } else if (r.getMinAgeYears() != null || r.getMaxAgeYears() != null) {
+                boolean hasAgeConstraints = r.getMinAgeYears() != null || r.getMaxAgeYears() != null;
+                if (hasAgeConstraints) {
+                    boolean ageInRange = (r.getMinAgeYears() == null || ageYears >= r.getMinAgeYears())
+                            && (r.getMaxAgeYears() == null || ageYears <= r.getMaxAgeYears());
+                    if (ageInRange) {
+                        score += 50;
+                    } else {
+                        continue;
+                    }
+                }
+            } else {
+                boolean hasAgeConstraints = r.getMinAgeYears() != null || r.getMaxAgeYears() != null;
+                if (hasAgeConstraints) {
                     continue;
                 }
-            } else if (r.getMinAgeYears() != null || r.getMaxAgeYears() != null) {
-                continue;
             }
 
-            score += (r.getPriority() != null ? r.getPriority() : 0) * 100;
+            score += (r.getPriority() != null ? r.getPriority() : 0);
 
             if (score > bestScore) {
                 bestScore = score;
