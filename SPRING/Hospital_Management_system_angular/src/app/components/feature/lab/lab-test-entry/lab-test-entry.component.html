@@ -142,7 +142,7 @@
               <span *ngIf="row.parameter.parameterCode" class="er-code">{{ row.parameter.parameterCode }}</span>
             </div>
             <div class="er-range">
-              <span *ngIf="row.preview?.referenceRangeDisplay">Reference: <b>{{ row.preview.referenceRangeDisplay }}</b></span>
+              <span *ngIf="row.preview?.referenceRangeDisplay">Reference: <b>{{ row.preview?.referenceRangeDisplay }}</b></span>
               <span *ngIf="!row.preview?.referenceRangeDisplay && row.parameter.normalText">Normal: <b>{{ row.parameter.normalText }}</b></span>
             </div>
           </div>

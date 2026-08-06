@@ -49,6 +49,9 @@ public class Doctor {
     private LocalDate joinDate;
     private String photo;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String signature;
+
 
     @OneToMany(mappedBy = "doctor")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "doctor"})

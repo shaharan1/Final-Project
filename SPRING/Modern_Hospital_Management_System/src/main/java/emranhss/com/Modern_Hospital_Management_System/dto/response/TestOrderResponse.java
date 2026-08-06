@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TestOrderResponse {
     private Long id;
+    private Long testMasterId;
     private String testCode;
     private String testName;
     private double standardPrice;
@@ -23,6 +24,7 @@ public class TestOrderResponse {
     private String patientCode;
     private String patientPhone;
     private String patientGender;
+    private java.time.LocalDate patientDateOfBirth;
 
     // Doctor
     private Long doctorId;
