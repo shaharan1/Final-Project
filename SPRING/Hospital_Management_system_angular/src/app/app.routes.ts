@@ -47,6 +47,11 @@ import { SampleCollectionComponent } from './components/feature/lab/sample-colle
 import { ResultEntryComponent } from './components/feature/lab/result-entry/result-entry.component';
 import { LabVerificationComponent } from './components/feature/lab/lab-verification/lab-verification.component';
 import { DoctorLabReportComponent } from './components/feature/lab/doctor-lab-report/doctor-lab-report.component';
+import { LabDashboardComponent } from './components/feature/lab/lab-dashboard/lab-dashboard.component';
+import { LabTestEntryComponent } from './components/feature/lab/lab-test-entry/lab-test-entry.component';
+import { LabReportPreviewComponent } from './components/feature/lab/lab-report-preview/lab-report-preview.component';
+import { LabReportsListComponent } from './components/feature/lab/lab-reports-list/lab-reports-list.component';
+import { ReferenceRangeManagementComponent } from './components/feature/lab/reference-range-management/reference-range-management.component';
 
 import { SupplierComponent } from './components/feature/pharmacy/supplier/supplier.component';
 import { MedicineStockComponent } from './components/feature/pharmacy/medicine-stock/medicine-stock.component';
@@ -200,6 +205,11 @@ export const routes: Routes = [
       { path: 'result-entry', component: ResultEntryComponent, canActivate: [roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Result Entry' } },
       { path: 'lab-verification', component: LabVerificationComponent, canActivate: [roleGuard(['Admin', 'LabTechnician', 'Doctor'])], data: { title: 'Lab Verification' } },
       { path: 'doctor-lab-reports', component: DoctorLabReportComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'LabTechnician'])], data: { title: 'Lab Reports' } },
+      { path: 'lab/dashboard', component: LabDashboardComponent, canActivate: [roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Lab Report Dashboard' } },
+      { path: 'lab/test-entry', component: LabTestEntryComponent, canActivate: [roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Test Result Entry' } },
+      { path: 'lab/reports', component: LabReportsListComponent, canActivate: [roleGuard(['Admin', 'LabTechnician', 'Doctor'])], data: { title: 'Lab Reports' } },
+      { path: 'lab/report/:id', component: LabReportPreviewComponent, canActivate: [roleGuard(['Admin', 'LabTechnician', 'Doctor'])], data: { title: 'Lab Report Preview' } },
+      { path: 'lab/reference-ranges', component: ReferenceRangeManagementComponent, canActivate: [roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Reference Range Management' } },
 
       // ============ Pharmacy Module ============
       { path: 'pharmacy-dashboard', component: PharmacyDashboardComponent, canActivate: [roleGuard(['Admin', 'Pharmacist', 'InventoryManager'])], data: { title: 'Pharmacy Dashboard' } },
