@@ -61,8 +61,8 @@
         <div class="form-field">
           <label class="form-label">Surgeon *</label>
           <select class="dept-input" [(ngModel)]="surgery.surgeonId" (change)="onSurgeonChange()">
-            <option [ngValue]="null" [value]="0">— Select Surgeon —</option>
-            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+            <option [ngValue]="0">— Select Surgeon —</option>
+            <option *ngFor="let d of doctors" [ngValue]="d.id">{{ d.name }}</option>
           </select>
           <div class="field-hint" *ngIf="effectiveDiscountPercent !== null">
             💳 Effective doctor discount: {{ effectiveDiscountPercent }}%
@@ -73,7 +73,7 @@
           <label class="form-label">Assistant Surgeon</label>
           <select class="dept-input" [(ngModel)]="surgery.assistantSurgeonId">
             <option [ngValue]="null">— None —</option>
-            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+            <option *ngFor="let d of doctors" [ngValue]="d.id">{{ d.name }}</option>
           </select>
         </div>
 
@@ -81,7 +81,7 @@
           <label class="form-label">Anesthesiologist</label>
           <select class="dept-input" [(ngModel)]="surgery.anesthesiologistId">
             <option [ngValue]="null">— None —</option>
-            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+            <option *ngFor="let d of doctors" [ngValue]="d.id">{{ d.name }}</option>
           </select>
         </div>
 
@@ -89,7 +89,7 @@
           <label class="form-label">Department</label>
           <select class="dept-input" [(ngModel)]="surgery.departmentId">
             <option [ngValue]="null">— Select Department —</option>
-            <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.departmentName }}</option>
+            <option *ngFor="let dep of departments" [ngValue]="dep.id">{{ dep.departmentName }}</option>
           </select>
         </div>
       </div>
@@ -111,7 +111,7 @@
           <label class="form-label">Surgery Procedure</label>
           <select class="dept-input" [(ngModel)]="surgery.surgeryMasterId" (change)="onMasterChange()">
             <option [ngValue]="null">— Select from Rate Card —</option>
-            <option *ngFor="let m of (surgery.categoryId ? categoryMasters : masters)" [value]="m.id">
+            <option *ngFor="let m of (surgery.categoryId ? categoryMasters : masters)" [ngValue]="m.id">
               {{ m.surgeryName }} ({{ m.surgeryCode }})
             </option>
           </select>
