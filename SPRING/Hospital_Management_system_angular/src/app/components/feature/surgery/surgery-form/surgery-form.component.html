@@ -125,7 +125,7 @@
           <label class="form-label">Operation Theatre *</label>
           <select class="dept-input" [(ngModel)]="surgery.operationTheatreId">
             <option [ngValue]="null">— Select OT —</option>
-            <option *ngFor="let ot of theatres" [value]="ot.id">{{ ot.otName }} ({{ ot.otCode }})</option>
+            <option *ngFor="let ot of theatres" [ngValue]="ot.id">{{ ot.otName }} ({{ ot.otCode }})</option>
           </select>
         </div>
 
