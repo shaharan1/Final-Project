@@ -77,15 +77,12 @@ public class SurgeryMapper {
         surgery.setAdvancePaid(request.getAdvancePaid());
     }
 
-    private Double pick(Double requested, SurgeryMaster master) {
+    private Double pick(Double requested, Double fromMaster) {
         if (requested != null) {
             return requested;
         }
-        if (master != null) {
-            Double masterValue = master.getStandardRate();
-            if (this == masterValue) {
-                return masterValue;
-            }
+        if (fromMaster != null) {
+            return fromMaster;
         }
         return 0.0;
     }
