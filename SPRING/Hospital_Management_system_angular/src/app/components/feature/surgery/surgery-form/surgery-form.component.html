@@ -223,11 +223,11 @@
           <span>{{ formatCurrency(subtotal) }}</span>
         </div>
         <div class="summary-row">
-          <span>Discount ({{ Number(surgery.discountPercent) || 0 }}%)</span>
+          <span>Discount ({{ toNumber(surgery.discountPercent) }}%)</span>
           <span class="summary-neg">− {{ formatCurrency(discountAmount) }}</span>
         </div>
         <div class="summary-row">
-          <span>VAT ({{ Number(surgery.vatRate) || 0 }}%)</span>
+          <span>VAT ({{ toNumber(surgery.vatRate) }}%)</span>
           <span>+ {{ formatCurrency(vatAmount) }}</span>
         </div>
         <div class="summary-row">
@@ -236,11 +236,11 @@
         </div>
         <div class="summary-row">
           <span>Insurance Coverage</span>
-          <span class="summary-neg">− {{ formatCurrency(Number(surgery.insuranceCoverage) || 0) }}</span>
+          <span class="summary-neg">− {{ formatCurrency(toNumber(surgery.insuranceCoverage)) }}</span>
         </div>
         <div class="summary-row">
           <span>Advance Paid</span>
-          <span class="summary-neg">− {{ formatCurrency(Number(surgery.advancePaid) || 0) }}</span>
+          <span class="summary-neg">− {{ formatCurrency(toNumber(surgery.advancePaid)) }}</span>
         </div>
         <div class="summary-row summary-total">
           <span>Final Payable</span>

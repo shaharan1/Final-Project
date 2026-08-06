@@ -171,9 +171,9 @@
             <tbody>
               <tr *ngFor="let d of filteredDiscounts">
                 <td class="td-name">{{ doctorName(d.doctorId) }}</td>
-                <td>{{ d.discountPercent || 0 }}%</td>
+                <td>{{ d.percentageDiscount || 0 }}%</td>
                 <td>{{ d.departmentDiscount || 0 }}%</td>
-                <td>{{ d.promoDiscount || 0 }}%</td>
+                <td>{{ d.specialPromoDiscount || 0 }}%</td>
                 <td class="td-amount">{{ totalDiscount(d) }}%</td>
                 <td><span class="badge" [ngClass]="d.active ? 'badge-success' : 'badge-secondary'">{{ d.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
                 <td class="td-actions">
@@ -327,7 +327,7 @@
           <div class="modal-two-col">
             <div>
               <label class="form-label">Personal Discount %</label>
-              <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.discountPercent" />
+              <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.percentageDiscount" />
             </div>
             <div>
               <label class="form-label">Department Discount %</label>
@@ -335,9 +335,9 @@
             </div>
           </div>
           <label class="form-label">Promo Discount %</label>
-          <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.promoDiscount" />
+          <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.specialPromoDiscount" />
           <div class="field-hint">
-            Effective discount: {{ (discountForm.discountPercent || 0) + (discountForm.departmentDiscount || 0) + (discountForm.promoDiscount || 0) }}%
+            Effective discount: {{ (discountForm.percentageDiscount || 0) + (discountForm.departmentDiscount || 0) + (discountForm.specialPromoDiscount || 0) }}%
           </div>
           <label class="check-label"><input type="checkbox" [(ngModel)]="discountForm.active" /> Active</label>
         </ng-container>

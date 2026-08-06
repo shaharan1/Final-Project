@@ -48,7 +48,7 @@ export class SurgeryRateManagementComponent implements OnInit {
     consumableCharge: 0, icuCharge: 0, packageRate: 0, active: true, estimatedDurationMin: 60, notes: ''
   };
   theatreForm: OperationTheatreRequest = { otCode: '', otName: '', location: '', equipmentAvailable: '', capacity: 1, status: 'AVAILABLE', active: true };
-  discountForm: DoctorDiscountRequest = { doctorId: 0, discountPercent: 0, departmentDiscount: 0, promoDiscount: 0, active: true };
+  discountForm: DoctorDiscountRequest = { doctorId: 0, percentageDiscount: 0, departmentDiscount: 0, specialPromoDiscount: 0, active: true };
 
   loading = false;
   msg = '';
@@ -245,10 +245,10 @@ export class SurgeryRateManagementComponent implements OnInit {
     this.modalTitle = d ? 'Edit Doctor Discount' : 'New Doctor Discount';
     this.editingId = d?.id ?? null;
     this.discountForm = d ? {
-      doctorId: d.doctorId, discountPercent: d.discountPercent || 0,
-      departmentDiscount: d.departmentDiscount || 0, promoDiscount: d.promoDiscount || 0,
+      doctorId: d.doctorId, percentageDiscount: d.percentageDiscount || 0,
+      departmentDiscount: d.departmentDiscount || 0, specialPromoDiscount: d.specialPromoDiscount || 0,
       active: d.active ?? true
-    } : { doctorId: this.doctors[0]?.id || 0, discountPercent: 0, departmentDiscount: 0, promoDiscount: 0, active: true };
+    } : { doctorId: this.doctors[0]?.id || 0, percentageDiscount: 0, departmentDiscount: 0, specialPromoDiscount: 0, active: true };
     this.showModal = true;
   }
 
@@ -272,7 +272,7 @@ export class SurgeryRateManagementComponent implements OnInit {
   }
 
   totalDiscount(d: DoctorDiscount): number {
-    return (d.discountPercent || 0) + (d.departmentDiscount || 0) + (d.promoDiscount || 0);
+    return (d.percentageDiscount || 0) + (d.departmentDiscount || 0) + (d.specialPromoDiscount || 0);
   }
 
   formatCurrency(amount: number | undefined): string {
