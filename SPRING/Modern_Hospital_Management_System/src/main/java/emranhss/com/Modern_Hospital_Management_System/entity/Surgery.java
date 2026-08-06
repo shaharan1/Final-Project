@@ -138,4 +138,30 @@ public class Surgery {
 
     @UpdateTimestamp
     private LocalDateTime lastUpdated;
+
+    // ======================= COMPUTED FIELDS =======================
+
+    @Transient
+    public Double getSubtotal() {
+        return (surgeryCharge != null ? surgeryCharge : 0.0)
+                + (otCharge != null ? otCharge : 0.0)
+                + (surgeonFee != null ? surgeonFee : 0.0)
+                + (assistantSurgeonFee != null ? assistantSurgeonFee : 0.0)
+                + (anesthesiaFee != null ? anesthesiaFee : 0.0)
+                + (nursingCharge != null ? nursingCharge : 0.0)
+                + (equipmentCharge != null ? equipmentCharge : 0.0)
+                + (consumableCharge != null ? consumableCharge : 0.0)
+                + (icuCharge != null ? icuCharge : 0.0)
+                + (wardCabinCharge != null ? wardCabinCharge : 0.0)
+                + (medicineCharge != null ? medicineCharge : 0.0)
+                + (laboratoryCharge != null ? laboratoryCharge : 0.0)
+                + (radiologyCharge != null ? radiologyCharge : 0.0);
+    }
+
+    @Transient
+    public Double getTotalAmount() {
+        double discount = discountAmount != null ? discountAmount : 0.0;
+        double vat = vatAmount != null ? vatAmount : 0.0;
+        return getSubtotal() - discount + vat;
+    }
 }
