@@ -1,8 +1,10 @@
 package emranhss.com.Modern_Hospital_Management_System.controller;
 
 import emranhss.com.Modern_Hospital_Management_System.dto.response.TestOrderResponse;
+import emranhss.com.Modern_Hospital_Management_System.entity.LabReport;
 import emranhss.com.Modern_Hospital_Management_System.entity.Tests;
 import emranhss.com.Modern_Hospital_Management_System.pdf.LabReportPdfGenerator;
+import emranhss.com.Modern_Hospital_Management_System.repository.LabReportRepository;
 import emranhss.com.Modern_Hospital_Management_System.repository.TestsRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.TestsService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class TestsController {
 
     private final TestsService testsService;
     private final TestsRepository testsRepository;
+    private final LabReportRepository labReportRepository;
 
     @GetMapping
     public ResponseEntity<List<TestOrderResponse>> getAllTestOrders() {
@@ -96,7 +99,18 @@ public class TestsController {
         Tests test = testsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Test not found"));
         try {
-            ByteArrayOutputStream pdfBytes = LabReportPdfGenerator.generate(test);
+            String specialistName = null;
+            String specialistDesignation = null;
+            String specialistSignature = null;
+            if (test.getLabReportId() != null) {
+                LabReport labReport = labReportRepository.findById(test.getLabReportId()).orElse(null);
+                if (labReport != null) {
+                    specialistName = labReport.getSpecialistName();
+                    specialistDesignation = labReport.getSpecialistDesignation();
+                    specialistSignature = labReport.getSpecialistSignature();
+                }
+            }
+            ByteArrayOutputStream pdfBytes = LabReportPdfGenerator.generate(test, specialistName, specialistDesignation, specialistSignature);
             test.setReportFilePath("lab_report_" + id + ".pdf");
             testsRepository.save(test);
 
