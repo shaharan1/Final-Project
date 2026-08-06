@@ -103,7 +103,7 @@
           <label class="form-label">Category</label>
           <select class="dept-input" [(ngModel)]="surgery.categoryId" (change)="onCategoryChange()">
             <option [ngValue]="null">— Select Category —</option>
-            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+            <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
           </select>
         </div>
 
