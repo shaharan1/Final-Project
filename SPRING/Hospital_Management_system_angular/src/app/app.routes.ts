@@ -98,6 +98,14 @@ import { DietHistoryComponent } from './components/feature/dietary/diet-history/
 
 import { LayoutComponent } from './components/shared/layout/layout/layout.component';
 
+import { SurgeryDashboardComponent } from './components/feature/surgery/surgery-dashboard/surgery-dashboard.component';
+import { SurgeryListComponent } from './components/feature/surgery/surgery-list/surgery-list.component';
+import { SurgeryFormComponent } from './components/feature/surgery/surgery-form/surgery-form.component';
+import { SurgeryDetailsComponent } from './components/feature/surgery/surgery-details/surgery-details.component';
+import { SurgeryRateManagementComponent } from './components/feature/surgery/surgery-rate-management/surgery-rate-management.component';
+import { OtScheduleComponent } from './components/feature/surgery/ot-schedule/ot-schedule.component';
+import { SurgeryInvoicePreviewComponent } from './components/feature/surgery/surgery-invoice-preview/surgery-invoice-preview.component';
+
 export const routes: Routes = [
 
   // ============ Public ============
@@ -247,6 +255,17 @@ export const routes: Routes = [
       { path: 'dietary/diet-reports', component: DietReportsComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet Reports' } },
       { path: 'dietary/diet-alerts', component: DietAlertsComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'Dietician', 'Nurse'])], data: { title: 'Diet Alerts' } },
       { path: 'dietary/diet-history', component: DietHistoryComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'Dietician'])], data: { title: 'Diet History' } },
+
+      // ============ Surgery Module ============
+      { path: 'surgery/dashboard', component: SurgeryDashboardComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'BillingClerk', 'Nurse'])], data: { title: 'Surgery Dashboard' } },
+      { path: 'surgery/list', component: SurgeryListComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'BillingClerk', 'Nurse'])], data: { title: 'All Surgeries' } },
+      { path: 'surgery/register', component: SurgeryFormComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'BillingClerk'])], data: { title: 'Register Surgery' } },
+      { path: 'surgery/edit/:id', component: SurgeryFormComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'BillingClerk'])], data: { title: 'Edit Surgery' } },
+      { path: 'surgery/details/:id', component: SurgeryDetailsComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'BillingClerk', 'Nurse'])], data: { title: 'Surgery Details' } },
+      { path: 'surgery/invoice/:id', component: SurgeryInvoicePreviewComponent, canActivate: [roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Surgery Invoice' } },
+      { path: 'surgery/schedule', component: OtScheduleComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'BillingClerk', 'Nurse'])], data: { title: 'OT Schedule' } },
+      { path: 'surgery/rate-management', component: SurgeryRateManagementComponent, canActivate: [roleGuard(['Admin', 'BillingClerk'])], data: { title: 'Surgery Rate Management' } },
+      { path: 'surgery', redirectTo: 'surgery/dashboard', pathMatch: 'full' },
     ]
   },
 

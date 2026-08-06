@@ -1,0 +1,384 @@
+/* ===== SURGERY LIST ===== */
+
+.surgery-page {
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== HERO ===== */
+.surgery-hero {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  border-radius: 20px;
+  padding: 28px 36px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 40px rgba(5, 150, 105, 0.25);
+}
+
+.surgery-hero-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.surgery-hero .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: surgeryDrawWave 4s ease forwards;
+}
+
+@keyframes surgeryDrawWave { to { stroke-dashoffset: 0; } }
+
+.surgery-hero-content {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+
+.surgery-hero-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.surgery-hero h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.surgery-hero-sub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.surgery-hero-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ===== BUTTONS ===== */
+.surgery-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.surgery-btn:hover { transform: translateY(-2px); }
+
+.surgery-btn-light {
+  background: #fff;
+  color: #059669;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.surgery-btn-outline {
+  background: #fff;
+  border: 2px solid #e9ecef;
+  color: #495057;
+}
+
+.surgery-btn-outline:hover { border-color: #059669; color: #059669; }
+
+.surgery-btn-primary {
+  background: linear-gradient(135deg, #059669, #0891b2);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.filter-bar .dept-input { flex: 1 1 220px; }
+.filter-bar select.dept-input { flex: 0 1 180px; }
+.filter-bar input[type="date"].dept-input { flex: 0 1 160px; }
+
+.dept-input {
+  padding: 10px 14px;
+  border: 1.5px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-family: inherit;
+  background: #fff;
+  color: #1a1a2e;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dept-input:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+
+/* ===== PANEL / TABLE ===== */
+.panel {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+.table-wrap { overflow-x: auto; }
+
+.surgery-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.surgery-table thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #6c757d;
+  background: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+  white-space: nowrap;
+}
+
+.surgery-table tbody td {
+  padding: 13px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 13.5px;
+  color: #1a1a2e;
+  vertical-align: middle;
+}
+
+.surgery-table tbody tr { transition: background 0.15s ease; }
+.surgery-table tbody tr:hover { background: #f0fdf4; }
+
+.td-num { font-weight: 700; color: #059669; font-size: 12.5px; white-space: nowrap; }
+.td-name { font-weight: 600; }
+.td-amount { font-weight: 700; white-space: nowrap; }
+.td-patient { font-weight: 600; }
+.td-muted { font-size: 12px; color: #adb5bd; }
+.td-actions { text-align: right; }
+.empty-row { text-align: center; color: #adb5bd; padding: 40px !important; }
+
+/* ===== ROW ACTIONS ===== */
+.row-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  background: #f1f3f5;
+}
+
+.action-btn:hover { transform: translateY(-1px); }
+.action-view:hover { background: rgba(13, 110, 253, 0.15); }
+.action-edit:hover { background: rgba(5, 150, 105, 0.15); }
+.action-status:hover { background: rgba(253, 126, 20, 0.15); }
+
+/* ===== BADGES ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.badge-success { background: rgba(25, 135, 84, 0.12); color: #198754; }
+.badge-warning { background: rgba(253, 126, 20, 0.12); color: #fd7e14; }
+.badge-danger { background: rgba(220, 53, 69, 0.12); color: #dc3545; }
+.badge-info { background: rgba(13, 202, 240, 0.12); color: #0a94ab; }
+.badge-secondary { background: rgba(108, 117, 125, 0.12); color: #6c757d; }
+
+.prio-badge {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.prio-emergency { background: rgba(220, 53, 69, 0.12); color: #dc3545; }
+.prio-urgent { background: rgba(253, 126, 20, 0.12); color: #fd7e14; }
+.prio-elective { background: rgba(13, 202, 240, 0.12); color: #0a94ab; }
+
+/* ===== PAGINATION ===== */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-top: 1px solid #f0f0f0;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pagination-info { font-size: 13px; color: #6c757d; }
+
+.pagination-btns { display: flex; align-items: center; gap: 10px; }
+
+.page-btn {
+  padding: 7px 14px;
+  border: 1.5px solid #e9ecef;
+  background: #fff;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #1a1a2e;
+  transition: all 0.15s ease;
+}
+
+.page-btn:hover:not([disabled]) { border-color: #059669; color: #059669; }
+.page-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+.page-indicator { font-size: 13px; font-weight: 600; color: #6c757d; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-card {
+  background: #fff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header h3 { margin: 0; font-size: 16px; font-weight: 700; color: #1a1a2e; }
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #6c757d;
+  line-height: 1;
+}
+
+.modal-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+
+.form-label { font-size: 13px; font-weight: 600; color: #495057; }
+
+.textarea { resize: vertical; font-family: inherit; }
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 22px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  z-index: 1100;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toast-success { background: #198754; }
+.toast-error { background: #dc3545; }
+
+.toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .surgery-hero-content { flex-direction: column; align-items: flex-start; }
+  .surgery-hero-actions { margin-left: 0; }
+  .pagination-bar { flex-direction: column; align-items: flex-start; }
+}
