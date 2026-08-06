@@ -69,6 +69,8 @@ public class Tests {
     // Report
     private String reportFilePath;
 
+    private Long labReportId;
+
     @UpdateTimestamp
 
     @Column(nullable = true)

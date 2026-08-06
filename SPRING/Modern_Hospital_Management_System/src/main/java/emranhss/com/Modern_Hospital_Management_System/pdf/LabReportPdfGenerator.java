@@ -22,6 +22,13 @@ public class LabReportPdfGenerator {
     private static final Font SMALL_FONT = new Font(Font.FontFamily.HELVETICA, 8, Font.ITALIC, BaseColor.GRAY);
 
     public static ByteArrayOutputStream generate(Tests test) throws Exception {
+        return generate(test, null, null, null);
+    }
+
+    public static ByteArrayOutputStream generate(Tests test,
+                                                 String specialistName,
+                                                 String specialistDesignation,
+                                                 String specialistSignature) throws Exception {
         Document document = new Document(PageSize.A4, 36, 36, 36, 36);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, out);
@@ -33,7 +40,7 @@ public class LabReportPdfGenerator {
         addDoctorInfo(document, test.getPrescribedBy());
         addTestResult(document, test);
         addWorkflowTimeline(document, test);
-        addFooter(document, test);
+        addFooter(document, test, specialistName, specialistDesignation, specialistSignature);
 
         document.close();
         return out;
@@ -236,7 +243,9 @@ public class LabReportPdfGenerator {
         document.add(table);
     }
 
-    private static void addFooter(Document document, Tests test) throws Exception {
+    private static void addFooter(Document document, Tests test,
+                                  String specialistName, String specialistDesignation,
+                                  String specialistSignature) throws Exception {
         document.add(new Paragraph(" "));
 
         PdfPTable footer = new PdfPTable(1);
@@ -259,9 +268,27 @@ public class LabReportPdfGenerator {
                 SMALL_FONT);
         textCell.addElement(disclaimer);
 
-        if (test.getVerifiedBy() != null) {
-            Paragraph sig = new Paragraph("\n\nVerified by: " + test.getVerifiedBy(), LABEL_FONT);
-            textCell.addElement(sig);
+        String sigName = specialistName != null ? specialistName : test.getVerifiedBy();
+        if (sigName != null) {
+            Paragraph nameLine = new Paragraph("\n\nDr. " + sigName, LABEL_FONT);
+            textCell.addElement(nameLine);
+            if (specialistDesignation != null && !specialistDesignation.isBlank()) {
+                textCell.addElement(new Paragraph(specialistDesignation, VALUE_FONT));
+            }
+            textCell.addElement(new Paragraph("Specialist In-Charge", SMALL_FONT));
+            if (specialistSignature != null && !specialistSignature.isBlank()) {
+                try {
+                    String raw = specialistSignature.contains(",") ? specialistSignature.substring(specialistSignature.indexOf(',') + 1) : specialistSignature;
+                    byte[] sigBytes = java.util.Base64.getDecoder().decode(raw);
+                    Image sigImage = Image.getInstance(sigBytes);
+                    sigImage.scaleAbsolute(110, 55);
+                    textCell.addElement(sigImage);
+                } catch (Exception ignored) {
+                    textCell.addElement(new Paragraph("(signature)", SMALL_FONT));
+                }
+            } else {
+                textCell.addElement(new Paragraph("(signature)", SMALL_FONT));
+            }
         }
 
         footer.addCell(textCell);
