@@ -70,8 +70,8 @@
 
     <section class="inv-summary">
       <div class="inv-summary-line"><span>Subtotal</span><span>{{ formatCurrency(surgery.subtotal) }}</span></div>
-      <div class="inv-summary-line"><span>Discount ({{ Number(surgery.discountPercent) || 0 }}%)</span><span class="neg">{{ formatCurrency(surgery.discountAmount) }}</span></div>
-      <div class="inv-summary-line"><span>VAT ({{ Number(surgery.vatRate) || 0 }}%)</span><span>{{ formatCurrency(surgery.vatAmount) }}</span></div>
+      <div class="inv-summary-line"><span>Discount ({{ toNumber(surgery.discountPercent) }}%)</span><span class="neg">{{ formatCurrency(surgery.discountAmount) }}</span></div>
+      <div class="inv-summary-line"><span>VAT ({{ toNumber(surgery.vatRate) }}%)</span><span>{{ formatCurrency(surgery.vatAmount) }}</span></div>
       <div class="inv-summary-line"><span>Insurance Coverage</span><span class="neg">{{ formatCurrency(surgery.insuranceCoverage) }}</span></div>
       <div class="inv-summary-line"><span>Advance Paid</span><span class="neg">{{ formatCurrency(surgery.advancePaid) }}</span></div>
       <div class="inv-summary-line inv-grand"><span>Total Payable</span><span>{{ formatCurrency(surgery.finalPayable) }}</span></div>

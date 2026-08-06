@@ -157,7 +157,7 @@ export class SurgeryFormComponent implements OnInit {
         this.surgery = {
           patientId: s.patientId,
           admittedPatientId: s.admittedPatientId ?? null,
-          surgeonId: s.surgeonId,
+          surgeonId: s.surgeonId ?? 0,
           assistantSurgeonId: s.assistantSurgeonId ?? null,
           anesthesiologistId: s.anesthesiologistId ?? null,
           departmentId: s.departmentId ?? null,
@@ -275,7 +275,8 @@ export class SurgeryFormComponent implements OnInit {
   }
 
   totalDiscountFor(d: DoctorDiscount): number {
-    return (d.discountPercent || 0) + (d.departmentDiscount || 0) + (d.promoDiscount || 0);
+    return d.effectiveDiscountPercent ??
+      ((d.percentageDiscount || 0) + (d.departmentDiscount || 0) + (d.specialPromoDiscount || 0));
   }
 
   getActiveAdmissionsForSelectedPatient(): AdmissionResponse[] {
@@ -306,6 +307,10 @@ export class SurgeryFormComponent implements OnInit {
 
   formatCurrency(amount: number): string {
     return '৳' + amount.toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  toNumber(v: any): number {
+    return Number(v) || 0;
   }
 
   submit(): void {

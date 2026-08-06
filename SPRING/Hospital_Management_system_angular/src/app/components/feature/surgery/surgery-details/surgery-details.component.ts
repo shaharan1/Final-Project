@@ -91,6 +91,10 @@ export class SurgeryDetailsComponent implements OnInit {
     return '৳' + (amount || 0).toLocaleString('en-BD', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  toNumber(v: any): number {
+    return Number(v) || 0;
+  }
+
   editSurgery(): void {
     if (this.surgery) this.router.navigate(['/surgery/edit', this.surgery.id]);
   }

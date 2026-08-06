@@ -122,6 +122,16 @@ export class NavigationService {
            { label: 'Insurance', icon: '🛡️', route: '/insurance', section: 'insurance' },
            { label: 'Billing Reports', icon: '📊', route: '/billing-reports', section: 'billingreports' },
          ],
+        },
+       {
+         label: 'Surgery Management',
+         items: [
+           { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+           { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
+           { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
+           { label: 'OT Schedule', icon: '🗓️', route: '/surgery/schedule', section: 'surgery' },
+           { label: 'Rate & Config', icon: '⚙️', route: '/surgery/rate-management', section: 'surgery' },
+         ],
        },
        {
          label: 'Emergency & Ambulance',
@@ -186,6 +196,15 @@ export class NavigationService {
           { label: 'Lab Reports', icon: 'Ⓛ', route: '/doctor-lab-reports', section: 'labreports' },
         ],
       },
+      {
+        label: 'Surgery Management',
+        items: [
+          { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+          { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
+          { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
+          { label: 'OT Schedule', icon: '🗓️', route: '/surgery/schedule', section: 'surgery' },
+        ],
+      },
     ];
   }
 
@@ -215,6 +234,14 @@ export class NavigationService {
         label: 'Pharmacy',
         items: [
           { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+        ],
+      },
+      {
+        label: 'Surgery Management',
+        items: [
+          { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+          { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
+          { label: 'OT Schedule', icon: '🗓️', route: '/surgery/schedule', section: 'surgery' },
         ],
       },
     ];
@@ -397,6 +424,16 @@ export class NavigationService {
         label: 'Patients',
         items: [
           { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
+        ],
+      },
+      {
+        label: 'Surgery Management',
+        items: [
+          { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+          { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
+          { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
+          { label: 'Surgery Invoice', icon: '🧾', route: '/surgery/list', section: 'surgery' },
+          { label: 'Rate & Config', icon: '⚙️', route: '/surgery/rate-management', section: 'surgery' },
         ],
       },
       {

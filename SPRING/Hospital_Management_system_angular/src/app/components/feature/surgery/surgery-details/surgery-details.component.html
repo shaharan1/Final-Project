@@ -98,8 +98,8 @@
         <div class="panel-header"><h3>Billing Summary</h3></div>
         <div class="charges-list">
           <div class="charge-row"><span>Subtotal</span><span>{{ formatCurrency(surgery.subtotal) }}</span></div>
-          <div class="charge-row"><span>Discount ({{ Number(surgery.discountPercent) || 0 }}%)</span><span class="amt-neg">− {{ formatCurrency(surgery.discountAmount) }}</span></div>
-          <div class="charge-row"><span>VAT ({{ Number(surgery.vatRate) || 0 }}%)</span><span>+ {{ formatCurrency(surgery.vatAmount) }}</span></div>
+          <div class="charge-row"><span>Discount ({{ toNumber(surgery.discountPercent) }}%)</span><span class="amt-neg">− {{ formatCurrency(surgery.discountAmount) }}</span></div>
+          <div class="charge-row"><span>VAT ({{ toNumber(surgery.vatRate) }}%)</span><span>+ {{ formatCurrency(surgery.vatAmount) }}</span></div>
           <div class="charge-row"><span>Total</span><span>{{ formatCurrency(surgery.totalAmount) }}</span></div>
           <div class="charge-row"><span>Insurance Coverage</span><span class="amt-neg">− {{ formatCurrency(surgery.insuranceCoverage) }}</span></div>
           <div class="charge-row"><span>Advance Paid</span><span class="amt-neg">− {{ formatCurrency(surgery.advancePaid) }}</span></div>
