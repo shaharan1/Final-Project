@@ -6,6 +6,7 @@ import { forkJoin, of } from 'rxjs';
 import { PatientService } from '../../../../services/patient.service';
 import { BillingInvoiceService } from '../../../../services/billing/billing-invoice.service';
 import { AdmissionService } from '../../../../services/admission.service';
+import { SurgeryService } from '../../../../services/surgery/surgery.service';
 import { PatientModel } from '../../../../models/patientModel';
 
 interface BillItem {
@@ -100,11 +101,15 @@ export class PatientBillingComponent implements OnInit {
 
   categoriesByGroup: { group: string; items: any[] }[] = [];
 
+  patientSurgeries: any[] = [];
+  loadingSurgeries = false;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private patientService: PatientService,
     private billingService: BillingInvoiceService,
-    private admissionService: AdmissionService
+    private admissionService: AdmissionService,
+    private surgeryService: SurgeryService
   ) {}
 
   ngOnInit(): void {
@@ -236,6 +241,50 @@ export class PatientBillingComponent implements OnInit {
     this.searchTerm = '';
     this.loadPatientInvoices(patient.id!);
     this.loadActiveAdmission(patient.id!);
+    this.loadPatientSurgeries(patient.id!);
+    this.cdr.detectChanges();
+  }
+
+  loadPatientSurgeries(patientId: number): void {
+    this.loadingSurgeries = true;
+    this.surgeryService.getByPatientId(patientId).subscribe({
+      next: (res) => {
+        this.patientSurgeries = (res || []).filter(s => s.status !== 'CANCELLED' && s.status !== 'POSTPONED');
+        this.loadingSurgeries = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.patientSurgeries = [];
+        this.loadingSurgeries = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  isSurgeryAdded(surgeryId: number): boolean {
+    return this.billItems.some(i => i.sourceModule === 'SURGERY' && i.sourceId === surgeryId);
+  }
+
+  addSurgeryToBill(surgery: any): void {
+    if (this.isSurgeryAdded(surgery.id)) return;
+    const surgeryCat = this.chargeCategories.find(c => c.code === 'SURGERY');
+    const amount = surgery.finalPayable || 0;
+    this.billItems.push({
+      id: this.nextItemId++,
+      chargeCategoryId: surgeryCat?.id || 0,
+      categoryCode: 'SURGERY',
+      categoryName: surgeryCat?.name || 'Surgery',
+      description: `Surgery - ${surgery.surgeryName || 'Procedure'} (${surgery.surgeryNumber})`,
+      quantity: 1,
+      unitPrice: amount,
+      discountPercent: 0,
+      discountAmount: 0,
+      amount: amount,
+      sourceModule: 'SURGERY',
+      sourceId: surgery.id,
+      itemStatus: 'ACTIVE',
+      isNew: true
+    });
     this.cdr.detectChanges();
   }
 
@@ -648,6 +697,7 @@ export class PatientBillingComponent implements OnInit {
     this.taxRate = 0;
     this.discountPercent = 0;
     this.invoices = [];
+    this.patientSurgeries = [];
     this.generateInvoiceNumber();
     this.msg = '';
     this.cdr.detectChanges();
