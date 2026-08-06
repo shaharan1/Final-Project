@@ -85,7 +85,7 @@ export class SurgeryInvoicePreviewComponent implements OnInit {
 
   viewInvoice(): void {
     if (this.surgery?.billingInvoiceId) {
-      this.router.navigate(['/billing/invoice', this.surgery.billingInvoiceId]);
+      this.router.navigate(['/invoices']);
     }
   }
 

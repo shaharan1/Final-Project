@@ -101,7 +101,7 @@ export class SurgeryDetailsComponent implements OnInit {
 
   viewInvoice(): void {
     if (this.surgery?.billingInvoiceId) {
-      this.router.navigate(['/billing/invoice', this.surgery.billingInvoiceId]);
+      this.router.navigate(['/surgery/invoice', this.surgery.billingInvoiceId]);
     }
   }
 
