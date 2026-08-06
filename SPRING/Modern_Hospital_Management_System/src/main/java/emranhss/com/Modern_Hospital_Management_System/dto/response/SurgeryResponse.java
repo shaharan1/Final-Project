@@ -22,6 +22,9 @@ public class SurgeryResponse {
     private String patientPhone;
 
     private Long admittedPatientId;
+    private String admissionStatus;
+    private Long bedId;
+    private Long wardId;
     private String wardName;
     private String bedNumber;
 
@@ -41,6 +44,7 @@ public class SurgeryResponse {
     private String surgeryCode;
     private Long operationTheatreId;
     private String operationTheatreName;
+    private String otCode;
 
     private LocalDate surgeryDate;
     private LocalTime startTime;
@@ -83,4 +87,5 @@ public class SurgeryResponse {
     private String billingStatus;
 
     private LocalDateTime createdDate;
+    private LocalDateTime lastUpdated;
 }
