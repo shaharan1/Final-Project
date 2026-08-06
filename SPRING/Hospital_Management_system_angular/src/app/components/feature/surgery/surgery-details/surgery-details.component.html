@@ -1,0 +1,133 @@
+<div class="surgery-page">
+
+  <!-- ===== HERO ===== -->
+  <header class="surgery-hero" *ngIf="surgery">
+    <svg class="surgery-hero-heartbeat" viewBox="0 0 1440 200" preserveAspectRatio="none">
+      <path class="wave-path" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"
+        d="M0,100 C120,80 180,140 300,100 C420,60 480,150 600,100 C720,50 780,150 900,100 C1020,60 1080,140 1200,100 C1320,70 1380,120 1440,100" />
+    </svg>
+    <div class="surgery-hero-content">
+      <div class="surgery-hero-icon">🔬</div>
+      <div>
+        <h1>{{ surgery.surgeryNumber }}</h1>
+        <p class="surgery-hero-sub">{{ surgery.surgeryName }} · {{ surgery.surgeryDate }} {{ surgery.startTime || '' }}</p>
+      </div>
+      <div class="surgery-hero-actions">
+        <span class="badge hero-badge" [ngClass]="getStatusClass(surgery.status)">{{ surgery.status.replace('_', ' ') }}</span>
+        <span class="prio-badge hero-badge" [ngClass]="getPriorityClass(surgery.priority)">{{ surgery.priority }}</span>
+        <a routerLink="/surgery/list" class="surgery-btn surgery-btn-outline">← Back</a>
+        <button class="surgery-btn surgery-btn-light" (click)="editSurgery()">✏️ Edit</button>
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="surgery">
+
+    <!-- ===== INFO CARDS ===== -->
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title">🧑‍⚕️ Patient</div>
+        <div class="info-line"><span class="info-key">Name</span><span class="info-val">{{ surgery.patientName }}</span></div>
+        <div class="info-line"><span class="info-key">Patient Code</span><span class="info-val">{{ surgery.patientCode }}</span></div>
+        <div class="info-line"><span class="info-key">Phone</span><span class="info-val">{{ surgery.patientPhone || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">IPD</span>
+          <span class="info-val">{{ surgery.admissionStatus ? surgery.admissionStatus + ' · ' : '' }}{{ surgery.wardName || '—' }}{{ surgery.bedNumber ? ' · Bed ' + surgery.bedNumber : '' }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">👨‍⚕️ Medical Team</div>
+        <div class="info-line"><span class="info-key">Surgeon</span><span class="info-val">{{ surgery.surgeonName || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Assistant</span><span class="info-val">{{ surgery.assistantSurgeonName || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Anesthesiologist</span><span class="info-val">{{ surgery.anesthesiologistName || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Department</span><span class="info-val">{{ surgery.departmentName || '—' }}</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">🏥 Procedure</div>
+        <div class="info-line"><span class="info-key">Category</span><span class="info-val">{{ surgery.categoryName || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Procedure</span><span class="info-val">{{ surgery.surgeryName || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Code</span><span class="info-val">{{ surgery.surgeryCode || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Anesthesia</span><span class="info-val">{{ surgery.anesthesiaType || '—' }}</span></div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">📅 Schedule</div>
+        <div class="info-line"><span class="info-key">Date</span><span class="info-val">{{ surgery.surgeryDate }}</span></div>
+        <div class="info-line"><span class="info-key">Start – End</span><span class="info-val">{{ surgery.startTime || '—' }} – {{ surgery.endTime || '—' }}</span></div>
+        <div class="info-line"><span class="info-key">Duration</span><span class="info-val">{{ surgery.estimatedDurationMin || '—' }} min</span></div>
+        <div class="info-line"><span class="info-key">Theatre</span><span class="info-val">{{ surgery.operationTheatreName || '—' }} ({{ surgery.otCode || '—' }})</span></div>
+      </div>
+    </div>
+
+    <!-- ===== DIAGNOSIS / NOTES ===== -->
+    <div class="info-grid" *ngIf="surgery.preOperativeDiagnosis || surgery.postOperativeDiagnosis || surgery.clinicalNotes">
+      <div class="info-card" *ngIf="surgery.preOperativeDiagnosis">
+        <div class="info-card-title">📝 Pre-Operative Diagnosis</div>
+        <p class="notes-text">{{ surgery.preOperativeDiagnosis }}</p>
+      </div>
+      <div class="info-card" *ngIf="surgery.postOperativeDiagnosis">
+        <div class="info-card-title">📝 Post-Operative Diagnosis</div>
+        <p class="notes-text">{{ surgery.postOperativeDiagnosis }}</p>
+      </div>
+      <div class="info-card" *ngIf="surgery.clinicalNotes">
+        <div class="info-card-title">📝 Clinical Notes</div>
+        <p class="notes-text">{{ surgery.clinicalNotes }}</p>
+      </div>
+    </div>
+
+    <div class="info-card notes-card" *ngIf="surgery.cancellationReason">
+      <div class="info-card-title">🚫 {{ surgery.status === 'POSTPONED' ? 'Postponement' : 'Cancellation' }} Reason</div>
+      <p class="notes-text">{{ surgery.cancellationReason }}</p>
+    </div>
+
+    <!-- ===== CHARGES & TOTALS ===== -->
+    <div class="totals-grid">
+      <section class="panel">
+        <div class="panel-header"><h3>Charge Breakdown</h3></div>
+        <div class="charges-list">
+          <div class="charge-row" *ngFor="let r of chargeRows()">
+            <span>{{ r.label }}</span>
+            <span>{{ formatCurrency(r.value) }}</span>
+          </div>
+          <div class="rank-empty" *ngIf="chargeRows().length === 0">No individual charges recorded</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header"><h3>Billing Summary</h3></div>
+        <div class="charges-list">
+          <div class="charge-row"><span>Subtotal</span><span>{{ formatCurrency(surgery.subtotal) }}</span></div>
+          <div class="charge-row"><span>Discount ({{ Number(surgery.discountPercent) || 0 }}%)</span><span class="amt-neg">− {{ formatCurrency(surgery.discountAmount) }}</span></div>
+          <div class="charge-row"><span>VAT ({{ Number(surgery.vatRate) || 0 }}%)</span><span>+ {{ formatCurrency(surgery.vatAmount) }}</span></div>
+          <div class="charge-row"><span>Total</span><span>{{ formatCurrency(surgery.totalAmount) }}</span></div>
+          <div class="charge-row"><span>Insurance Coverage</span><span class="amt-neg">− {{ formatCurrency(surgery.insuranceCoverage) }}</span></div>
+          <div class="charge-row"><span>Advance Paid</span><span class="amt-neg">− {{ formatCurrency(surgery.advancePaid) }}</span></div>
+          <div class="charge-row total-row"><span>Final Payable</span><span>{{ formatCurrency(surgery.finalPayable) }}</span></div>
+        </div>
+        <div class="panel-footer">
+          <div class="invoice-chip" *ngIf="surgery.billingInvoiceId">
+            <span>🧾 {{ surgery.billingInvoiceNumber || ('Invoice #' + surgery.billingInvoiceId) }}</span>
+            <span class="badge" [ngClass]="surgery.billingStatus === 'PAID' ? 'badge-success' : 'badge-warning'">{{ surgery.billingStatus || 'PENDING' }}</span>
+            <button class="surgery-btn surgery-btn-primary surgery-btn-sm" (click)="viewInvoice()">View Invoice</button>
+          </div>
+          <div class="invoice-chip" *ngIf="!surgery.billingInvoiceId">
+            <span class="invoice-muted">No invoice generated yet</span>
+            <a routerLink="/surgery/register" class="surgery-btn surgery-btn-outline surgery-btn-sm">Billing Integration Pending</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="loading-box" *ngIf="!surgery && !loading">
+    <p>No surgery found.</p>
+    <a routerLink="/surgery/list" class="surgery-btn surgery-btn-outline">← Back to List</a>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" *ngIf="msg" [ngClass]="msgType === 'error' ? 'toast-error' : 'toast-success'">
+    <span>{{ msg }}</span>
+    <button class="toast-close" (click)="msg = ''">×</button>
+  </div>
+</div>
