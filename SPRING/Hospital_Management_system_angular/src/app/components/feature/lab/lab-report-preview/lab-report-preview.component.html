@@ -1,0 +1,192 @@
+<div class="rp-page">
+  <div class="rp-topbar">
+    <button class="rp-back" (click)="goToList()"><i class="bi bi-arrow-left"></i> Reports</button>
+    <div class="rp-top-actions" *ngIf="report">
+      <button class="rp-btn-ghost" (click)="downloadPdf()"><i class="bi bi-download"></i> Download PDF</button>
+      <button class="rp-btn-ghost" (click)="openPdf()"><i class="bi bi-eye"></i> View PDF</button>
+      <button *ngIf="!isReady()" class="rp-btn-primary" (click)="openVerifyModal()"><i class="bi bi-check2-circle"></i> Verify & Release</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="rp-loading"><div class="rp-spinner"></div><p>Loading report...</p></div>
+  <div *ngIf="error" class="rp-error"><i class="bi bi-exclamation-triangle"></i>{{ error }}</div>
+
+  <ng-container *ngIf="report">
+    <div class="rp-sheet">
+      <div class="rp-header">
+        <div class="rp-logo">
+          <i class="bi bi-heart-pulse"></i>
+          <div>
+            <h1>Elite Care Hospital</h1>
+            <span>Diagnostic Laboratory &amp; Pathology Department</span>
+            <small>House 12, Road 5, Dhanmondi, Dhaka &bull; +880 1711-000000</small>
+          </div>
+        </div>
+        <div class="rp-status-block">
+          <span class="rp-report-no">Report #{{ report.reportNumber }}</span>
+          <span class="rp-status-badge" [class]="statusChipClass(report.reportStatus)">{{ formatStatus(report.reportStatus) }}</span>
+        </div>
+      </div>
+
+      <div class="rp-banner" [class]="statusBanner().cls">
+        <i class="bi {{ statusBanner().icon }}"></i>
+        <div>
+          <strong>{{ statusBanner().title }}</strong>
+          <span>{{ statusBanner().text }}</span>
+        </div>
+      </div>
+
+      <div class="rp-grid">
+        <div class="rp-card">
+          <h3><i class="bi bi-person-badge"></i> Patient</h3>
+          <div class="rp-info-row"><span>Name</span><b>{{ report.patientName }}</b></div>
+          <div class="rp-info-row"><span>Patient Code</span><b>{{ report.patientCode || '—' }}</b></div>
+          <div class="rp-info-row"><span>Gender / Age</span><b>{{ report.patientGender || '—' }}{{ report.patientAge ? ' / ' + report.patientAge + ' yrs' : '' }}</b></div>
+          <div class="rp-info-row"><span>Phone</span><b>{{ report.patientPhone || '—' }}</b></div>
+        </div>
+        <div class="rp-card">
+          <h3><i class="bi bi-clipboard2-pulse"></i> Test &amp; Referral</h3>
+          <div class="rp-info-row"><span>Test</span><b>{{ report.testName }}</b></div>
+          <div class="rp-info-row"><span>Test Code</span><b>{{ report.testCode || '—' }}</b></div>
+          <div class="rp-info-row"><span>Referring Doctor</span><b>{{ report.doctorName || '—' }}</b></div>
+          <div class="rp-info-row"><span>Specialization</span><b>{{ report.doctorSpecialization || '—' }}</b></div>
+        </div>
+        <div class="rp-card">
+          <h3><i class="bi bi-clock-history"></i> Sample &amp; Report</h3>
+          <div class="rp-info-row"><span>Sample Type</span><b>{{ report.sampleType || '—' }}</b></div>
+          <div class="rp-info-row"><span>Collected</span><b>{{ formatDate(report.sampleCollectedDate) }}</b></div>
+          <div class="rp-info-row"><span>Received</span><b>{{ formatDate(report.sampleReceivedDate) }}</b></div>
+          <div class="rp-info-row"><span>Reported</span><b>{{ formatDate(report.reportedDate) }}</b></div>
+        </div>
+      </div>
+
+      <div class="rp-results">
+        <h3><i class="bi bi-table"></i> Results</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Parameter</th>
+              <th>Result</th>
+              <th>Unit</th>
+              <th>Reference Range</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of report.results; let i = index" [class]="resultRowClass(r)">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <div class="param-name">{{ r.parameterName }}</div>
+                <div class="param-interp">{{ r.interpretation }}</div>
+              </td>
+              <td class="result-value">
+                <span *ngIf="r.critical" class="flag-flag"><i class="bi bi-exclamation-octagon"></i></span>
+                <span *ngIf="!r.critical && r.abnormal" class="flag-flag"><i class="bi bi-arrow-up-short"></i></span>
+                <b>{{ r.resultValue }}</b>
+              </td>
+              <td>{{ r.unit || '—' }}</td>
+              <td>{{ r.referenceRangeDisplay || '—' }}</td>
+              <td><span class="rp-status-badge" [class]="statusChipClass(r.status)">{{ formatStatus(r.status) }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="rp-legend">
+          <span><i class="bi bi-exclamation-octagon" style="color:#dc2626"></i> Critical</span>
+          <span><i class="bi bi-arrow-up-short" style="color:#ea580c"></i> Abnormal</span>
+        </div>
+      </div>
+
+      <div class="rp-summary">
+        <div class="rp-impression">
+          <h3><i class="bi bi-journal-medical"></i> Final Impression</h3>
+          <p>{{ report.finalImpression || 'No final impression recorded.' }}</p>
+        </div>
+        <div class="rp-recommendation">
+          <h3><i class="bi bi-lightbulb"></i> Recommendation</h3>
+          <p>{{ report.recommendation || 'No recommendation recorded.' }}</p>
+        </div>
+      </div>
+
+      <div class="rp-footer-note">
+        <p *ngIf="report.results && abnormalResults().length > 0" class="rp-abnormal-note">
+          <i class="bi bi-exclamation-triangle"></i>
+          <b>{{ abnormalResults().length }}</b> abnormal parameter(s) found — marked with orange, critical with red.
+        </p>
+        <p class="rp-disclaimer">This report was generated automatically based on configured reference ranges. Clinical correlation with the patient's history and examination is recommended.</p>
+      </div>
+
+      <div class="rp-signature">
+        <div class="rp-sig-box">
+          <img *ngIf="report.specialistSignature" [src]="report.specialistSignature" alt="signature">
+          <i *ngIf="!report.specialistSignature" class="bi bi-pen"></i>
+          <span class="rp-sig-line"></span>
+          <strong>{{ report.specialistName || '—' }}</strong>
+          <small>{{ report.specialistDesignation || 'Laboratory Specialist' }}</small>
+          <span class="rp-sig-date" *ngIf="report.reportedDate">Released: {{ formatDate(report.reportedDate) }}</span>
+        </div>
+        <div class="rp-created-by">
+          <span>Entered by: <b>{{ report.createdBy || '—' }}</b></span>
+          <span *ngIf="report.reportedDate">at {{ formatDate(report.reportedDate) }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- VERIFY MODAL -->
+<div class="modal-overlay" *ngIf="showVerifyModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3><i class="bi bi-check2-circle"></i> Verify &amp; Release Report</h3>
+      <button class="modal-close" (click)="closeVerifyModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-note">Releasing the report will mark it <b>READY</b>, set the test order as verified and notify the referring doctor.</p>
+      <label class="field">
+        <span>Specialist Name *</span>
+        <input type="text" [(ngModel)]="specialistName" placeholder="Dr. ...">
+      </label>
+      <label class="field">
+        <span>Designation *</span>
+        <input type="text" [(ngModel)]="specialistDesignation" placeholder="Consultant Pathologist">
+      </label>
+      <label class="field">
+        <span>Signature (optional)</span>
+        <div class="sig-upload">
+          <label class="sig-upload-btn">
+            <i class="bi bi-cloud-arrow-up"></i> Upload Signature Image
+            <input type="file" accept="image/*" (change)="onSignatureFile($event)" hidden>
+          </label>
+          <img *ngIf="specialistSignature" class="sig-preview" [src]="specialistSignature" alt="Signature preview">
+        </div>
+      </label>
+      <label class="field">
+        <span>Verification Notes</span>
+        <textarea rows="3" [(ngModel)]="verificationNotes" placeholder="Optional notes..."></textarea>
+      </label>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" (click)="closeVerifyModal()">Cancel</button>
+      <button class="btn-primary" [disabled]="!canVerify() || verifying" (click)="verifyReport()">
+        <i class="bi bi-check2-circle"></i> {{ verifying ? 'Releasing...' : 'Release Report' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PDF MODAL -->
+<div class="modal-overlay modal-wide" *ngIf="showPdfModal">
+  <div class="modal-box pdf-modal-box">
+    <div class="modal-head">
+      <h3><i class="bi bi-file-earmark-pdf"></i> {{ report?.reportNumber }}.pdf</h3>
+      <div class="modal-head-actions">
+        <button class="btn-ghost" (click)="downloadPdf()"><i class="bi bi-download"></i> Download</button>
+        <button class="modal-close" (click)="closePdf()">&times;</button>
+      </div>
+    </div>
+    <div class="pdf-frame">
+      <iframe [src]="pdfUrl" frameborder="0"></iframe>
+    </div>
+  </div>
+</div>

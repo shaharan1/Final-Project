@@ -1,0 +1,51 @@
+<div class="lr-page">
+  <section class="lr-hero">
+    <div>
+      <span class="lr-kicker">Reports</span>
+      <h1>Lab Report Registry</h1>
+      <p>All auto-generated pathology reports with status filtering.</p>
+    </div>
+    <div class="lr-hero-search">
+      <i class="bi bi-search"></i>
+      <input [(ngModel)]="searchKeyword" placeholder="Search patient, test, report #...">
+    </div>
+  </section>
+
+  <div class="lr-panel">
+    <div class="lr-tabs">
+      <button class="lr-tab" [class.active]="filter === 'all'" (click)="setFilter('all')">All <span>{{ counts()['all'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'pending'" (click)="setFilter('pending')">Pending Verify <span>{{ counts()['pending'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'ready'" (click)="setFilter('ready')">Ready <span>{{ counts()['ready'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'abnormal'" (click)="setFilter('abnormal')">Abnormal <span>{{ counts()['abnormal'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'critical'" (click)="setFilter('critical')">Critical <span>{{ counts()['critical'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'dengue'" (click)="setFilter('dengue')">Dengue <span>{{ counts()['dengue'] }}</span></button>
+    </div>
+
+    <div *ngIf="loading" class="lr-loading"><div class="lr-spinner"></div><p>Loading reports...</p></div>
+
+    <div *ngIf="!loading && filtered.length === 0" class="lr-empty">
+      <i class="bi bi-inbox"></i>
+      <p>No reports found.</p>
+    </div>
+
+    <div class="lr-list" *ngIf="!loading && filtered.length > 0">
+      <div class="lr-head">
+        <span>Patient</span><span>Test</span><span>Report #</span><span>Status</span><span>Date</span><span></span>
+      </div>
+      <div class="lr-row" *ngFor="let r of filtered" (click)="openReport(r.id)">
+        <div class="lr-patient">
+          <div class="lr-avatar">{{ getInitials(r.patientName) }}</div>
+          <div>
+            <strong>{{ r.patientName }}</strong>
+            <small>{{ r.patientCode }}</small>
+          </div>
+        </div>
+        <span class="lr-test">{{ r.testName }}</span>
+        <span class="lr-num">{{ r.reportNumber }}</span>
+        <span><span class="lr-chip" [class]="statusChipClass(r.reportStatus)">{{ formatStatus(r.reportStatus) }}</span></span>
+        <span class="lr-date">{{ formatDate(r.reportedDate || r.createdDate) }}</span>
+        <span class="lr-open"><i class="bi bi-chevron-right"></i></span>
+      </div>
+    </div>
+  </div>
+</div>
