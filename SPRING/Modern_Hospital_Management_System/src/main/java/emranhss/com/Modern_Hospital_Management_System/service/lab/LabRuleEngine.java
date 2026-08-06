@@ -22,8 +22,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LabRuleEngine {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     private final LabRuleRepository labRuleRepository;
-    private final ObjectMapper objectMapper;
 
     /**
      * Computes overall report status, final impression and recommendation.
@@ -100,7 +101,7 @@ public class LabRuleEngine {
         List<LabRule> rules = labRuleRepository.findByActiveTrueOrderByPriorityAsc();
         for (LabRule rule : rules) {
             try {
-                List<RuleCondition> conditions = objectMapper.readValue(
+                List<RuleCondition> conditions = OBJECT_MAPPER.readValue(
                         rule.getConditions(), new TypeReference<List<RuleCondition>>() {});
                 if (conditions.isEmpty()) continue;
                 boolean allMatch = conditions.stream()
