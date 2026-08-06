@@ -187,7 +187,8 @@
       <div class="charges-grid">
         <div class="charge-input" *ngFor="let f of chargeFields">
           <label class="form-label">{{ f.label }}</label>
-          <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="surgery[f.key as keyof SurgeryRequest]" />
+          <input type="number" class="dept-input" min="0" step="0.01"
+            [ngModel]="chargeValue(f.key)" (ngModelChange)="setChargeValue(f.key, $event)" />
         </div>
       </div>
     </section>

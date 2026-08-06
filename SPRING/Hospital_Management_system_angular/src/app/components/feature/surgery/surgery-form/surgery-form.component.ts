@@ -313,6 +313,14 @@ export class SurgeryFormComponent implements OnInit {
     return Number(v) || 0;
   }
 
+  chargeValue(key: string): number {
+    return Number((this.surgery as any)[key]) || 0;
+  }
+
+  setChargeValue(key: string, value: any): void {
+    (this.surgery as any)[key] = Number(value) || 0;
+  }
+
   submit(): void {
     if (!this.surgery.patientId) { this.showMsg('Please select a patient', 'error'); return; }
     if (!this.surgery.surgeonId) { this.showMsg('Please select a surgeon', 'error'); return; }
