@@ -57,24 +57,37 @@ public class SurgeryMapper {
             surgery.setStatus(request.getStatus());
         }
 
-        surgery.setSurgeryCharge(request.getSurgeryCharge());
-        surgery.setOtCharge(request.getOtCharge());
-        surgery.setSurgeonFee(request.getSurgeonFee());
-        surgery.setAssistantSurgeonFee(request.getAssistantSurgeonFee());
-        surgery.setAnesthesiaFee(request.getAnesthesiaFee());
-        surgery.setNursingCharge(request.getNursingCharge());
-        surgery.setEquipmentCharge(request.getEquipmentCharge());
-        surgery.setConsumableCharge(request.getConsumableCharge());
-        surgery.setIcuCharge(request.getIcuCharge());
-        surgery.setWardCabinCharge(request.getWardCabinCharge());
-        surgery.setMedicineCharge(request.getMedicineCharge());
-        surgery.setLaboratoryCharge(request.getLaboratoryCharge());
-        surgery.setRadiologyCharge(request.getRadiologyCharge());
+        surgery.setSurgeryCharge(pick(request.getSurgeryCharge(), surgeryMaster != null ? surgeryMaster.getStandardRate() : null));
+        surgery.setOtCharge(pick(request.getOtCharge(), surgeryMaster != null ? surgeryMaster.getOtCharge() : null));
+        surgery.setSurgeonFee(pick(request.getSurgeonFee(), surgeryMaster != null ? surgeryMaster.getSurgeonFee() : null));
+        surgery.setAssistantSurgeonFee(pick(request.getAssistantSurgeonFee(), surgeryMaster != null ? surgeryMaster.getAssistantSurgeonFee() : null));
+        surgery.setAnesthesiaFee(pick(request.getAnesthesiaFee(), surgeryMaster != null ? surgeryMaster.getAnesthesiaCharge() : null));
+        surgery.setNursingCharge(pick(request.getNursingCharge(), surgeryMaster != null ? surgeryMaster.getNursingCharge() : null));
+        surgery.setEquipmentCharge(pick(request.getEquipmentCharge(), surgeryMaster != null ? surgeryMaster.getEquipmentCharge() : null));
+        surgery.setConsumableCharge(pick(request.getConsumableCharge(), surgeryMaster != null ? surgeryMaster.getConsumableCharge() : null));
+        surgery.setIcuCharge(pick(request.getIcuCharge(), surgeryMaster != null ? surgeryMaster.getIcuCharge() : null));
+        surgery.setWardCabinCharge(pick(request.getWardCabinCharge(), surgeryMaster != null ? surgeryMaster.getWardCabinCharge() : null));
+        surgery.setMedicineCharge(pick(request.getMedicineCharge(), surgeryMaster != null ? surgeryMaster.getMedicineCharge() : null));
+        surgery.setLaboratoryCharge(pick(request.getLaboratoryCharge(), surgeryMaster != null ? surgeryMaster.getLaboratoryCharge() : null));
+        surgery.setRadiologyCharge(pick(request.getRadiologyCharge(), surgeryMaster != null ? surgeryMaster.getRadiologyCharge() : null));
 
         surgery.setDiscountPercent(request.getDiscountPercent());
         surgery.setVatRate(request.getVatRate());
         surgery.setInsuranceCoverage(request.getInsuranceCoverage());
         surgery.setAdvancePaid(request.getAdvancePaid());
+    }
+
+    private Double pick(Double requested, SurgeryMaster master) {
+        if (requested != null) {
+            return requested;
+        }
+        if (master != null) {
+            Double masterValue = master.getStandardRate();
+            if (this == masterValue) {
+                return masterValue;
+            }
+        }
+        return 0.0;
     }
 
     public SurgeryResponse toResponse(Surgery surgery) {
