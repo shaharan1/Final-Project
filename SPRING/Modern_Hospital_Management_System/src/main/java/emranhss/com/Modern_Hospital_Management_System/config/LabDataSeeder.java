@@ -26,6 +26,7 @@ public class LabDataSeeder implements CommandLineRunner {
     public void run(String... args) {
         seedCbc();
         seedDengueProfile();
+        seedDenguePanel();
         seedHemoglobin();
         seedFastingGlucose();
         seedCreatinine();
@@ -191,6 +192,72 @@ public class LabDataSeeder implements CommandLineRunner {
                 rule(igg, "POSITIVE", "Positive", "Dengue IgG antibody detected. Suggests past dengue infection.", 1),
                 rule(igg, "NEGATIVE", "Negative", "Dengue IgG antibody not detected.", 2)
         ));
+    }
+
+    private void seedDenguePanel() {
+        TestMaster panel = master("DENGUE-PANEL", "Dengue Screening Panel (NS1, IgM, IgG + CBC)", 1800, "Dengue markers + CBC");
+
+        TestParameter ns1 = parameter(panel, "Dengue NS1 Antigen", "NS1", null, ResultType.POSITIVE_NEGATIVE, "Positive,Negative", 1, 0);
+        saveParameter(ns1, null, List.of(
+                rule(ns1, "POSITIVE", "Positive", "Dengue NS1 antigen detected. Suggestive of acute dengue infection.", 1),
+                rule(ns1, "NEGATIVE", "Negative", "Dengue NS1 antigen not detected.", 2)
+        ));
+
+        TestParameter igm = parameter(panel, "Dengue IgM Antibody", "IGM", null, ResultType.POSITIVE_NEGATIVE, "Positive,Negative", 2, 0);
+        saveParameter(igm, null, List.of(
+                rule(igm, "POSITIVE", "Positive", "Dengue IgM antibody detected. Suggests recent or ongoing dengue infection.", 1),
+                rule(igm, "NEGATIVE", "Negative", "Dengue IgM antibody not detected.", 2)
+        ));
+
+        TestParameter igg = parameter(panel, "Dengue IgG Antibody", "IGG", null, ResultType.POSITIVE_NEGATIVE, "Positive,Negative", 3, 0);
+        saveParameter(igg, null, List.of(
+                rule(igg, "POSITIVE", "Positive", "Dengue IgG antibody detected. Suggests past dengue infection.", 1),
+                rule(igg, "NEGATIVE", "Negative", "Dengue IgG antibody not detected.", 2)
+        ));
+
+        TestParameter plt = parameter(panel, "Platelet Count", "PLATELET", "/µL", ResultType.NUMERIC, null, 4, 0);
+        saveParameter(plt,
+                List.of(range(plt, "ANY", null, null, 150000.0, 450000.0, 50000.0, 1000000.0, "150000 - 450000", 1)),
+                List.of(
+                        rule(plt, "CRITICAL_LOW", null, "Platelet count is critically low. High risk of bleeding. Immediate medical attention required.", 1),
+                        rule(plt, "LOW", null, "Platelet count is below the normal range. Possible thrombocytopenia. Consider dengue or other hematological conditions.", 2),
+                        rule(plt, "HIGH", null, "Platelet count is above the normal range. Possible thrombocytosis.", 3)
+                ));
+
+        TestParameter wbc = parameter(panel, "WBC Count", "WBC", "/µL", ResultType.NUMERIC, null, 5, 0);
+        saveParameter(wbc,
+                List.of(range(wbc, "ANY", null, null, 4000.0, 11000.0, 2000.0, 50000.0, "4000 - 11000", 1)),
+                List.of(
+                        rule(wbc, "CRITICAL_LOW", null, "WBC count is critically low. Risk of infection is high. Immediate medical attention required.", 1),
+                        rule(wbc, "LOW", null, "WBC count is below the normal range. Possible leukopenia.", 2),
+                        rule(wbc, "HIGH", null, "WBC count is above the normal range. Possible leukocytosis or infection.", 3),
+                        rule(wbc, "CRITICAL_HIGH", null, "WBC count is critically high. Possible severe infection or hematological condition.", 4)
+                ));
+
+        TestParameter hgb = parameter(panel, "Hemoglobin", "HGB", "g/dL", ResultType.NUMERIC, null, 6, 1);
+        saveParameter(hgb,
+                List.of(
+                        range(hgb, "MALE", null, null, 13.5, 17.5, 8.0, 20.0, "13.5 - 17.5", 2),
+                        range(hgb, "FEMALE", null, null, 12.0, 15.5, 8.0, 20.0, "12.0 - 15.5", 2),
+                        range(hgb, "ANY", 0, 12, 11.0, 16.0, 8.0, 20.0, "11.0 - 16.0 (Child)", 1)
+                ),
+                List.of(
+                        rule(hgb, "CRITICAL_LOW", null, "Hemoglobin is critically low. Possible severe anemia. Blood transfusion may be required.", 1),
+                        rule(hgb, "LOW", null, "Hemoglobin is below the normal range. Possible anemia.", 2),
+                        rule(hgb, "HIGH", null, "Hemoglobin is above the normal range. Possible polycythemia.", 3),
+                        rule(hgb, "CRITICAL_HIGH", null, "Hemoglobin is critically high. Possible severe polycythemia.", 4)
+                ));
+
+        TestParameter hct = parameter(panel, "Hematocrit (PCV)", "HCT", "%", ResultType.NUMERIC, null, 7, 1);
+        saveParameter(hct,
+                List.of(
+                        range(hct, "MALE", null, null, 40.0, 50.0, 25.0, 60.0, "40 - 50", 2),
+                        range(hct, "FEMALE", null, null, 36.0, 46.0, 25.0, 60.0, "36 - 46", 2)
+                ),
+                List.of(
+                        rule(hct, "LOW", null, "Hematocrit is below the normal range. Possible anemia.", 1),
+                        rule(hct, "HIGH", null, "Hematocrit is above the normal range.", 2)
+                ));
     }
 
     private void seedHemoglobin() {
