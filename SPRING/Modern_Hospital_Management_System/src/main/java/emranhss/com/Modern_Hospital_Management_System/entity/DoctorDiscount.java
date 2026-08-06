@@ -50,4 +50,11 @@ public class DoctorDiscount {
 
     @UpdateTimestamp
     private LocalDateTime lastUpdated;
+
+    @Transient
+    public Double getEffectiveDiscountPercent() {
+        return (percentageDiscount != null ? percentageDiscount : 0.0)
+                + (departmentDiscount != null ? departmentDiscount : 0.0)
+                + (specialPromoDiscount != null ? specialPromoDiscount : 0.0);
+    }
 }

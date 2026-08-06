@@ -69,4 +69,7 @@ public interface SurgeryRepository extends JpaRepository<Surgery, Long> {
     @Query("SELECT s.operationTheatre.otName, COUNT(s), COALESCE(SUM(s.finalPayable),0) FROM Surgery s " +
             "WHERE s.status <> 'CANCELLED' GROUP BY s.operationTheatre.otName ORDER BY COUNT(s) DESC")
     List<Object[]> otUtilization();
+
+    @Query("SELECT s.surgeryNumber FROM Surgery s WHERE s.surgeryNumber LIKE CONCAT(:prefix, '%')")
+    List<String> findSurgeryNumbersByPrefix(@Param("prefix") String prefix);
 }
