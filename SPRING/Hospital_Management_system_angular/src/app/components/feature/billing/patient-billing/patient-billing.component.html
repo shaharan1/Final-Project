@@ -97,6 +97,53 @@
         </div>
       </div>
 
+      <!-- Surgery Charges Card -->
+      <div class="items-card glass" *ngIf="patientSurgeries.length > 0 || loadingSurgeries">
+        <div class="card-header">
+          <h2>Surgery Charges ({{ patientSurgeries.length }})</h2>
+          <span class="badge badge-info">{{ loadingSurgeries ? 'Loading...' : 'From Surgery Module' }}</span>
+        </div>
+        <div class="table-responsive">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Surgery No</th>
+                <th>Procedure</th>
+                <th>Date</th>
+                <th>Surgeon</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of patientSurgeries">
+                <td class="cell-num">{{ s.surgeryNumber }}</td>
+                <td>{{ s.surgeryName || '—' }}</td>
+                <td>{{ s.surgeryDate }}</td>
+                <td>{{ s.surgeonName || '—' }}</td>
+                <td class="cell-amount">{{ formatCurrency(s.finalPayable) }}</td>
+                <td><span class="badge" [ngClass]="getStatusClass(s.status)">{{ s.status.replace('_', ' ') }}</span></td>
+                <td>
+                  <button class="btn btn-primary btn-sm" *ngIf="!isSurgeryAdded(s.id)" (click)="addSurgeryToBill(s)"
+                    [disabled]="!s.finalPayable || s.finalPayable <= 0">
+                    + Add to Bill
+                  </button>
+                  <span class="badge badge-success" *ngIf="isSurgeryAdded(s.id)">Added ✓</span>
+                </td>
+              </tr>
+              <tr *ngIf="!loadingSurgeries && patientSurgeries.length === 0">
+                <td colspan="7" class="empty-row">No surgeries found for this patient</td>
+              </tr>
+              <tr *ngIf="loadingSurgeries">
+                <td colspan="7" class="empty-row"><span class="spinner-sm"></span> Loading surgeries...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-hint">Click "Add to Bill" to include the surgery charge with other bill items. Amount is the final payable from the surgery record.</div>
+      </div>
+
       <!-- Bill Items Card -->
       <div class="items-card glass">
         <div class="card-header">

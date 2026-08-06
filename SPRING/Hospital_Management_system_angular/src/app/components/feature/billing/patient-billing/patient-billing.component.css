@@ -139,6 +139,8 @@
 .action-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04); }
 .sync-hint { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
 
+.card-hint { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.04); }
+
 /* ===== SEARCH ===== */
 .search-section { padding: 16px 20px; margin-bottom: 20px; position: relative; z-index: 1; }
 .search-bar { display: flex; align-items: center; gap: 12px; position: relative; }

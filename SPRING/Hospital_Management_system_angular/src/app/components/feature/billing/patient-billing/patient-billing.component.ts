@@ -713,7 +713,9 @@ export class PatientBillingComponent implements OnInit {
       'PARTIAL': 'badge-warning', 'PARTIALLY_PAID': 'badge-warning',
       'UNPAID': 'badge-danger', 'DRAFT': 'badge-secondary',
       'FINALIZED': 'badge-info', 'CANCELLED': 'badge-danger',
-      'REFUNDED': 'badge-info'
+      'REFUNDED': 'badge-info',
+      'SCHEDULED': 'badge-info', 'IN_PROGRESS': 'badge-warning',
+      'POSTPONED': 'badge-secondary'
     };
     return map[status] || 'badge-secondary';
   }
