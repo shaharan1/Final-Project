@@ -1,0 +1,269 @@
+<div class="surgery-page">
+
+  <!-- ===== HERO ===== -->
+  <header class="surgery-hero">
+    <svg class="surgery-hero-heartbeat" viewBox="0 0 1440 200" preserveAspectRatio="none">
+      <path class="wave-path" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"
+        d="M0,100 C120,80 180,140 300,100 C420,60 480,150 600,100 C720,50 780,150 900,100 C1020,60 1080,140 1200,100 C1320,70 1380,120 1440,100" />
+    </svg>
+    <div class="surgery-hero-content">
+      <div class="surgery-hero-icon">📋</div>
+      <div>
+        <h1>{{ isEdit ? 'Edit Surgery' : 'Register New Surgery' }}</h1>
+        <p class="surgery-hero-sub">{{ isEdit ? 'Update the surgical record and charges' : 'Schedule a surgery and auto-generate billing charges' }}</p>
+      </div>
+      <div class="surgery-hero-actions">
+        <a routerLink="/surgery/list" class="surgery-btn surgery-btn-outline">← Back to List</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="form-card" *ngIf="!loading">
+
+    <!-- ===== STEP 1: PATIENT & DOCTORS ===== -->
+    <section class="form-section">
+      <div class="section-title"><span class="step-badge">1</span> Patient & Medical Team</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Patient *</label>
+          <div class="patient-search-wrap">
+            <input type="text" class="dept-input" placeholder="Search by patient code or name..."
+              [(ngModel)]="patientSearchTerm" (input)="searchPatients()" (focus)="searchPatients()"
+              [class.valid-field]="selectedPatient" />
+            <button *ngIf="selectedPatient" type="button" class="field-clear" (click)="clearPatient()">×</button>
+            <div class="patient-dropdown" *ngIf="showPatientResults && patientResults.length > 0">
+              <div class="patient-option" *ngFor="let p of patientResults" (click)="selectPatient(p)">
+                <span class="patient-option-code">{{ p.patientCode }}</span>
+                <span class="patient-option-name">{{ p.name }}</span>
+                <span class="patient-option-meta">{{ p.gender }} · {{ p.phone }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="patient-chip" *ngIf="selectedPatient">
+            <span>✅ {{ selectedPatient.name }}</span>
+            <span class="chip-sub">{{ selectedPatient.patientCode }} · {{ selectedPatient.phone }}</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Admitted Patient (IPD)</label>
+          <select class="dept-input" [(ngModel)]="surgery.admittedPatientId">
+            <option [ngValue]="null">— Outpatient (No admission) —</option>
+            <option *ngFor="let a of getActiveAdmissionsForSelectedPatient()" [ngValue]="a.admissionId">
+              {{ a.patientName }} · Bed {{ a.assignedBedNumber }} · {{ a.wardName }}
+            </option>
+          </select>
+          <div class="field-hint" *ngIf="getActiveAdmissionsForSelectedPatient().length === 0">
+            No active admission found for this patient
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Surgeon *</label>
+          <select class="dept-input" [(ngModel)]="surgery.surgeonId" (change)="onSurgeonChange()">
+            <option [ngValue]="null" [value]="0">— Select Surgeon —</option>
+            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+          </select>
+          <div class="field-hint" *ngIf="effectiveDiscountPercent !== null">
+            💳 Effective doctor discount: {{ effectiveDiscountPercent }}%
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Assistant Surgeon</label>
+          <select class="dept-input" [(ngModel)]="surgery.assistantSurgeonId">
+            <option [ngValue]="null">— None —</option>
+            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Anesthesiologist</label>
+          <select class="dept-input" [(ngModel)]="surgery.anesthesiologistId">
+            <option [ngValue]="null">— None —</option>
+            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Department</label>
+          <select class="dept-input" [(ngModel)]="surgery.departmentId">
+            <option [ngValue]="null">— Select Department —</option>
+            <option *ngFor="let dep of departments" [value]="dep.id">{{ dep.departmentName }}</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 2: PROCEDURE & SCHEDULE ===== -->
+    <section class="form-section">
+      <div class="section-title"><span class="step-badge">2</span> Procedure & Schedule</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Category</label>
+          <select class="dept-input" [(ngModel)]="surgery.categoryId" (change)="onCategoryChange()">
+            <option [ngValue]="null">— Select Category —</option>
+            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Surgery Procedure</label>
+          <select class="dept-input" [(ngModel)]="surgery.surgeryMasterId" (change)="onMasterChange()">
+            <option [ngValue]="null">— Select from Rate Card —</option>
+            <option *ngFor="let m of (surgery.categoryId ? categoryMasters : masters)" [value]="m.id">
+              {{ m.surgeryName }} ({{ m.surgeryCode }})
+            </option>
+          </select>
+          <div class="field-hint" *ngIf="selectedMaster">
+            <span *ngIf="selectedMaster.estimatedDurationMin">⏱ Est. {{ selectedMaster.estimatedDurationMin }} min · </span>
+            <span>Standard rate {{ formatCurrency(selectedMaster.standardRate) }}</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Operation Theatre *</label>
+          <select class="dept-input" [(ngModel)]="surgery.operationTheatreId">
+            <option [ngValue]="null">— Select OT —</option>
+            <option *ngFor="let ot of theatres" [value]="ot.id">{{ ot.otName }} ({{ ot.otCode }})</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Surgery Date *</label>
+          <input type="date" class="dept-input" [(ngModel)]="surgery.surgeryDate" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Start Time</label>
+          <input type="time" class="dept-input" [(ngModel)]="surgery.startTime" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">End Time</label>
+          <input type="time" class="dept-input" [(ngModel)]="surgery.endTime" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Estimated Duration (min)</label>
+          <input type="number" class="dept-input" min="15" step="15" [(ngModel)]="surgery.estimatedDurationMin" />
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Priority</label>
+          <select class="dept-input" [(ngModel)]="surgery.priority">
+            <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Anesthesia Type</label>
+          <select class="dept-input" [(ngModel)]="surgery.anesthesiaType">
+            <option [ngValue]="null">— Select —</option>
+            <option *ngFor="let a of anesthesiaTypes" [value]="a">{{ a }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Pre-Operative Diagnosis</label>
+          <textarea class="dept-input textarea" rows="2" [(ngModel)]="surgery.preOperativeDiagnosis"></textarea>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Post-Operative Diagnosis</label>
+          <textarea class="dept-input textarea" rows="2" [(ngModel)]="surgery.postOperativeDiagnosis"></textarea>
+        </div>
+        <div class="form-field form-field-full">
+          <label class="form-label">Clinical Notes</label>
+          <textarea class="dept-input textarea" rows="2" [(ngModel)]="surgery.clinicalNotes"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 3: CHARGES ===== -->
+    <section class="form-section">
+      <div class="section-title"><span class="step-badge">3</span> Charges & Billing</div>
+      <div class="charges-grid">
+        <div class="charge-input" *ngFor="let f of chargeFields">
+          <label class="form-label">{{ f.label }}</label>
+          <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="surgery[f.key as keyof SurgeryRequest]" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 4: ADJUSTMENTS & SUMMARY ===== -->
+    <section class="form-section">
+      <div class="section-title"><span class="step-badge">4</span> Discounts & Summary</div>
+      <div class="adjust-grid">
+        <div class="form-field">
+          <label class="form-label">Discount %</label>
+          <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="surgery.discountPercent" />
+          <div class="field-hint" *ngIf="effectiveDiscountPercent !== null && (surgery.discountPercent === null || surgery.discountPercent === 0)">
+            Suggested from doctor: {{ effectiveDiscountPercent }}%
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">VAT / Tax %</label>
+          <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="surgery.vatRate" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Insurance Coverage</label>
+          <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="surgery.insuranceCoverage" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Advance Paid</label>
+          <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="surgery.advancePaid" />
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-row">
+          <span>Subtotal ({{ chargeFields.length }} charges)</span>
+          <span>{{ formatCurrency(subtotal) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Discount ({{ Number(surgery.discountPercent) || 0 }}%)</span>
+          <span class="summary-neg">− {{ formatCurrency(discountAmount) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>VAT ({{ Number(surgery.vatRate) || 0 }}%)</span>
+          <span>+ {{ formatCurrency(vatAmount) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Total</span>
+          <span>{{ formatCurrency(totalAmount) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Insurance Coverage</span>
+          <span class="summary-neg">− {{ formatCurrency(Number(surgery.insuranceCoverage) || 0) }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Advance Paid</span>
+          <span class="summary-neg">− {{ formatCurrency(Number(surgery.advancePaid) || 0) }}</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Final Payable</span>
+          <span>{{ formatCurrency(finalPayable) }}</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="form-actions">
+      <a routerLink="/surgery/list" class="surgery-btn surgery-btn-outline">Cancel</a>
+      <button class="surgery-btn surgery-btn-primary" [disabled]="submitting" (click)="submit()">
+        {{ submitting ? 'Saving...' : (isEdit ? 'Update Surgery' : 'Register Surgery') }}
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-box" *ngIf="loading">
+    <span class="spinner"></span> Loading surgery record...
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" *ngIf="msg" [ngClass]="msgType === 'error' ? 'toast-error' : 'toast-success'">
+    <span>{{ msg }}</span>
+    <button class="toast-close" (click)="msg = ''">×</button>
+  </div>
+</div>
