@@ -154,6 +154,7 @@ public class TestsServiceImpl implements TestsService {
         resp.setLastUpdated(test.getLastUpdated());
 
         if (test.getTestMaster() != null) {
+            resp.setTestMasterId(test.getTestMaster().getId());
             resp.setTestCode(test.getTestMaster().getTestCode());
             resp.setTestName(test.getTestMaster().getTestName());
             resp.setStandardPrice(test.getTestMaster().getStandardPrice());
@@ -166,6 +167,7 @@ public class TestsServiceImpl implements TestsService {
             resp.setPatientCode(test.getPatient().getPatientCode());
             resp.setPatientPhone(test.getPatient().getPhone());
             resp.setPatientGender(test.getPatient().getGender());
+            resp.setPatientDateOfBirth(test.getPatient().getDateOfBirth());
         }
 
         if (test.getPrescribedBy() != null) {
