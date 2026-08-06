@@ -4,7 +4,7 @@
     <div class="rp-top-actions" *ngIf="report">
       <button class="rp-btn-ghost" (click)="downloadPdf()"><i class="bi bi-download"></i> Download PDF</button>
       <button class="rp-btn-ghost" (click)="openPdf()"><i class="bi bi-eye"></i> View PDF</button>
-      <button *ngIf="!isReady()" class="rp-btn-primary" (click)="openVerifyModal()"><i class="bi bi-check2-circle"></i> Verify & Release</button>
+      <button *ngIf="!isVerified()" class="rp-btn-primary" (click)="openVerifyModal()"><i class="bi bi-check2-circle"></i> Verify & Release</button>
     </div>
   </div>
 
