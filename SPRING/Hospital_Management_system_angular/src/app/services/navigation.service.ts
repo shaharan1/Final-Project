@@ -385,6 +385,15 @@ export class NavigationService {
         ],
       },
       {
+        label: 'Report Center',
+        items: [
+          { label: 'Report Dashboard', icon: '📊', route: '/lab/dashboard', section: 'labdashboard' },
+          { label: 'Dynamic Result Entry', icon: '⌨', route: '/lab/test-entry', section: 'labtestentry' },
+          { label: 'All Reports', icon: '📄', route: '/lab/reports', section: 'labreports' },
+          { label: 'Reference Ranges', icon: '⚙', route: '/lab/reference-ranges', section: 'labranges' },
+        ],
+      },
+      {
         label: 'Patients',
         items: [
           { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },

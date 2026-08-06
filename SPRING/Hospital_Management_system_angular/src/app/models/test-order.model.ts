@@ -1,5 +1,6 @@
 export interface TestOrderModel {
   id?: number;
+  testMasterId?: number;
   testCode: string;
   testName: string;
   standardPrice: number;
@@ -13,6 +14,7 @@ export interface TestOrderModel {
   patientCode: string;
   patientPhone?: string;
   patientGender?: string;
+  patientDateOfBirth?: string;
 
   doctorId: number;
   doctorName: string;
