@@ -57,43 +57,43 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/admin-dashboard', section: 'dashboard' },
-          { label: 'Reports', icon: 'Ⓡ', route: '/reports', section: 'reports' },
+          { label: 'Dashboard', icon: '📊', route: '/admin-dashboard', section: 'dashboard' },
+          { label: 'Reports', icon: '🔬', route: '/reports', section: 'reports' },
         ],
       },
       {
         label: 'Patients & Admissions',
         items: [
-          { label: 'Patient', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
-          { label: 'Admitted Patient', icon: 'Ⓐ', route: '/admission-list', section: 'admission' },
-          { label: 'Appointment', icon: 'Ⓒ', route: '/appointment-list', section: 'appointment' },
-          { label: 'Schedule Slot', icon: 'Ⓢ', route: '/schedule-slot', section: 'schedule' },
+          { label: 'Patient', icon: '👤', route: '/patient-list', section: 'patient' },
+          { label: 'Admitted Patient', icon: '🏥', route: '/admission-list', section: 'admission' },
+          { label: 'Appointment', icon: '📅', route: '/appointment-list', section: 'appointment' },
+          { label: 'Schedule Slot', icon: '🗓️', route: '/schedule-slot', section: 'schedule' },
         ],
       },
       {
         label: 'Beds & Wards',
         items: [
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
-          { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
-          { label: 'Department', icon: 'Ⓓ', route: '/doctor-departments', section: 'department' },
+          { label: 'Bed Management', icon: '🛏️', route: '/ward-management', section: 'bed' },
+          { label: 'Ward', icon: '🏥', route: '/ward-list', section: 'ward' },
+          { label: 'Department', icon: '🏢', route: '/doctor-departments', section: 'department' },
         ],
       },
       {
         label: 'Staff',
         items: [
-          { label: 'Doctor', icon: 'Ⓓ', route: '/doctor', section: 'doctor' },
-          { label: 'Nurse', icon: 'Ⓝ', route: '/nurses', section: 'nurse' },
-          { label: 'Office Staff', icon: 'Ⓞ', route: '/office-staff', section: 'officestaff' },
+          { label: 'Doctor', icon: '👨‍⚕️', route: '/doctor', section: 'doctor' },
+          { label: 'Nurse', icon: '👩‍⚕️', route: '/nurses', section: 'nurse' },
+          { label: 'Office Staff', icon: '📝', route: '/office-staff', section: 'officestaff' },
         ],
       },
       {
         label: 'Pharmacy & Medicine',
         items: [
-          { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
-          { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
-          { label: 'Prescription', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+          { label: 'Medicine', icon: '💊', route: '/medicine-list', section: 'medicine' },
+          { label: 'Generic', icon: '📁', route: '/generic-list', section: 'generic' },
+          { label: 'Prescription', icon: '📋', route: '/prescriptions', section: 'prescription' },
           { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
-          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Suppliers', icon: '🏪', route: '/suppliers', section: 'suppliers' },
           { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
           { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
           { label: 'Pharmacy Sale', icon: '💊', route: '/pharmacy-sale', section: 'pharmacysale' },
@@ -103,17 +103,17 @@ export class NavigationService {
       {
         label: 'Laboratory & Tests',
         items: [
-          { label: 'Test Catalog', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
-          { label: 'Lab Reception', icon: 'Ⓡ', route: '/lab-reception', section: 'labreception' },
-          { label: 'Sample Collection', icon: 'Ⓢ', route: '/sample-collection', section: 'samplecollection' },
-          { label: 'Result Entry', icon: 'Ⓔ', route: '/result-entry', section: 'resultentry' },
-          { label: 'Verification', icon: '✓', route: '/lab-verification', section: 'labverification' },
+          { label: 'Test Catalog', icon: '🧪', route: '/test-list', section: 'tests' },
+          { label: 'Lab Reception', icon: '🔬', route: '/lab-reception', section: 'labreception' },
+          { label: 'Sample Collection', icon: '🧪', route: '/sample-collection', section: 'samplecollection' },
+          { label: 'Result Entry', icon: '📊', route: '/result-entry', section: 'resultentry' },
+          { label: 'Verification', icon: '✅', route: '/lab-verification', section: 'labverification' },
         ],
       },
       {
         label: 'Accounts & Billing',
         items: [
-          { label: 'Admission', icon: 'Ⓐ', route: '/admission', section: 'admissionform' },
+          { label: 'Admission', icon: '🏥', route: '/admission', section: 'admissionform' },
           { label: 'Billing Dashboard', icon: '💰', route: '/billing-dashboard', section: 'billingdashboard' },
           { label: 'Patient Billing', icon: '📋', route: '/patient-billing', section: 'patientbilling' },
           { label: 'Payments', icon: '💳', route: '/payments', section: 'payments' },
@@ -126,7 +126,7 @@ export class NavigationService {
        {
          label: 'Surgery Management',
          items: [
-           { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+           { label: 'Surgery Dashboard', icon: '⚕️', route: '/surgery/dashboard', section: 'surgery' },
            { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
            { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
            { label: 'OT Schedule', icon: '🗓️', route: '/surgery/schedule', section: 'surgery' },
@@ -136,15 +136,15 @@ export class NavigationService {
        {
          label: 'Emergency & Ambulance',
          items: [
-           { label: 'ED Dashboard', icon: '♥', route: '/emergency/dashboard', section: 'Emergency' },
-           { label: 'Registration', icon: '+', route: '/emergency/registration', section: 'Emergency' },
-           { label: 'Triage', icon: 'Ⓣ', route: '/emergency/triage', section: 'Emergency' },
-           { label: 'Doctor Assignment', icon: 'Ⓓ', route: '/emergency/assignments', section: 'Emergency' },
-           { label: 'Ward & Beds', icon: 'Ⓑ', route: '/emergency/beds', section: 'Emergency' },
+           { label: 'ED Dashboard', icon: '🚑', route: '/emergency/dashboard', section: 'Emergency' },
+           { label: 'Registration', icon: '➕', route: '/emergency/registration', section: 'Emergency' },
+           { label: 'Triage', icon: '📋', route: '/emergency/triage', section: 'Emergency' },
+           { label: 'Doctor Assignment', icon: '👨‍⚕️', route: '/emergency/assignments', section: 'Emergency' },
+           { label: 'Ward & Beds', icon: '🛏️', route: '/emergency/beds', section: 'Emergency' },
            { label: 'Ambulance', icon: '🚑', route: '/emergency/ambulances', section: 'Emergency' },
-           { label: 'Medicine', icon: 'Ⓜ', route: '/emergency/medicine', section: 'Emergency' },
-           { label: 'Lab Orders', icon: 'Ⓛ', route: '/emergency/lab-orders', section: 'Emergency' },
-           { label: 'Billing', icon: 'Ⓑ', route: '/emergency/billing', section: 'Emergency' },
+           { label: 'Medicine', icon: '💊', route: '/emergency/medicine', section: 'Emergency' },
+           { label: 'Lab Orders', icon: '🔬', route: '/emergency/lab-orders', section: 'Emergency' },
+           { label: 'Billing', icon: '💰', route: '/emergency/billing', section: 'Emergency' },
            { label: 'Timeline', icon: '⏰', route: '/emergency/timeline', section: 'Emergency' },
            { label: 'Status Board', icon: '📊', route: '/emergency/status-board', section: 'Emergency' }
          ],
@@ -173,33 +173,33 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/doctor-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/doctor-dashboard', section: 'dashboard' },
         ],
       },
       {
         label: 'Appointments',
         items: [
-          { label: 'My Appointments', icon: 'Ⓒ', route: '/appointment-list', section: 'appointment' },
-          { label: 'Schedule Slot', icon: 'Ⓢ', route: '/schedule-slot', section: 'schedule' },
+          { label: 'My Appointments', icon: '📅', route: '/appointment-list', section: 'appointment' },
+          { label: 'Schedule Slot', icon: '🗓️', route: '/schedule-slot', section: 'schedule' },
         ],
       },
       {
         label: 'Pharmacy',
         items: [
-          { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
-          { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
+          { label: 'Prescriptions', icon: '📋', route: '/prescriptions', section: 'prescription' },
+          { label: 'Medicine', icon: '💊', route: '/medicine-list', section: 'medicine' },
         ],
       },
       {
         label: 'Laboratory',
         items: [
-          { label: 'Lab Reports', icon: 'Ⓛ', route: '/doctor-lab-reports', section: 'labreports' },
+          { label: 'Lab Reports', icon: '📋', route: '/doctor-lab-reports', section: 'labreports' },
         ],
       },
       {
         label: 'Surgery Management',
         items: [
-          { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+          { label: 'Surgery Dashboard', icon: '⚕️', route: '/surgery/dashboard', section: 'surgery' },
           { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
           { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
           { label: 'OT Schedule', icon: '🗓️', route: '/surgery/schedule', section: 'surgery' },
@@ -213,33 +213,33 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/nurse-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/nurse-dashboard', section: 'dashboard' },
         ],
       },
       {
         label: 'Patients',
         items: [
-          { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
-          { label: 'Admitted Patient', icon: 'Ⓐ', route: '/admission-list', section: 'admission' },
+          { label: 'Patient List', icon: '👤', route: '/patient-list', section: 'patient' },
+          { label: 'Admitted Patient', icon: '🏥', route: '/admission-list', section: 'admission' },
         ],
       },
       {
         label: 'Wards & Beds',
         items: [
-          { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
+          { label: 'Ward', icon: '🏥', route: '/ward-list', section: 'ward' },
+          { label: 'Bed Management', icon: '🛏️', route: '/ward-management', section: 'bed' },
         ],
       },
       {
         label: 'Pharmacy',
         items: [
-          { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+          { label: 'Prescriptions', icon: '📋', route: '/prescriptions', section: 'prescription' },
         ],
       },
       {
         label: 'Surgery Management',
         items: [
-          { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+          { label: 'Surgery Dashboard', icon: '⚕️', route: '/surgery/dashboard', section: 'surgery' },
           { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
           { label: 'OT Schedule', icon: '🗓️', route: '/surgery/schedule', section: 'surgery' },
         ],
@@ -252,29 +252,29 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/office-staff-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/office-staff-dashboard', section: 'dashboard' },
         ],
       },
       {
         label: 'Patients',
         items: [
-          { label: 'Patient', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
-          { label: 'Admitted Patient', icon: 'Ⓐ', route: '/admission-list', section: 'admission' },
-          { label: 'Admission Form', icon: 'Ⓐ', route: '/admission', section: 'admissionform' },
+          { label: 'Patient', icon: '👤', route: '/patient-list', section: 'patient' },
+          { label: 'Admitted Patient', icon: '🏥', route: '/admission-list', section: 'admission' },
+          { label: 'Admission Form', icon: '🏥', route: '/admission', section: 'admissionform' },
         ],
       },
       {
         label: 'Appointments',
         items: [
-          { label: 'Appointment', icon: 'Ⓒ', route: '/appointment-list', section: 'appointment' },
-          { label: 'Schedule Slot', icon: 'Ⓢ', route: '/schedule-slot', section: 'schedule' },
+          { label: 'Appointment', icon: '📅', route: '/appointment-list', section: 'appointment' },
+          { label: 'Schedule Slot', icon: '🗓️', route: '/schedule-slot', section: 'schedule' },
         ],
       },
       {
         label: 'Staff',
         items: [
-          { label: 'Doctor', icon: 'Ⓓ', route: '/doctor', section: 'doctor' },
-          { label: 'Nurse', icon: 'Ⓝ', route: '/nurses', section: 'nurse' },
+          { label: 'Doctor', icon: '👨‍⚕️', route: '/doctor', section: 'doctor' },
+          { label: 'Nurse', icon: '👩‍⚕️', route: '/nurses', section: 'nurse' },
         ],
       },
     ];
@@ -285,31 +285,31 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/receptionist-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/receptionist-dashboard', section: 'dashboard' },
         ],
       },
       {
         label: 'Emergency',
         items: [
-          { label: 'ED Dashboard', icon: '♥', route: '/emergency/dashboard', section: 'Emergency' },
-          { label: 'Registration', icon: '+', route: '/emergency/registration', section: 'Emergency' },
+          { label: 'ED Dashboard', icon: '🚑', route: '/emergency/dashboard', section: 'Emergency' },
+          { label: 'Registration', icon: '➕', route: '/emergency/registration', section: 'Emergency' },
           { label: 'Status Board', icon: '📊', route: '/emergency/status-board', section: 'Emergency' }
         ],
       },
       {
         label: 'Patients',
         items: [
-          { label: 'Patient', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
-          { label: 'New Patient', icon: '+', route: '/patient', section: 'newpatient' },
+          { label: 'Patient', icon: '👤', route: '/patient-list', section: 'patient' },
+          { label: 'New Patient', icon: '➕', route: '/patient', section: 'newpatient' },
         ],
       },
       {
         label: 'Appointments',
         items: [
-          { label: 'Appointment', icon: 'Ⓒ', route: '/appointment-list', section: 'appointment' },
-          { label: 'New Appointment', icon: '+', route: '/appointments/create', section: 'newappointment' },
-          { label: 'Appointment Slip', icon: 'Ⓢ', route: '/appointment-slip', section: 'slip' },
-          { label: 'Schedule Slot', icon: 'Ⓢ', route: '/schedule-slot', section: 'schedule' },
+          { label: 'Appointment', icon: '📅', route: '/appointment-list', section: 'appointment' },
+          { label: 'New Appointment', icon: '➕', route: '/appointments/create', section: 'newappointment' },
+          { label: 'Appointment Slip', icon: '🗓️', route: '/appointment-slip', section: 'slip' },
+          { label: 'Schedule Slot', icon: '🗓️', route: '/schedule-slot', section: 'schedule' },
         ],
       },
     ];
@@ -320,7 +320,7 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/pharmacist-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/pharmacist-dashboard', section: 'dashboard' },
           { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
 
         { label: 'Reports & Analytics', icon: '📊', route: '/reports', section: 'reports' },
@@ -332,23 +332,23 @@ export class NavigationService {
         items: [
           { label: 'Pharmacy Sale', icon: '💊', route: '/pharmacy-sale', section: 'pharmacysale' },
           { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
-          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Suppliers', icon: '🏪', route: '/suppliers', section: 'suppliers' },
           { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
         ],
       },
       {
         label: 'Catalog',
         items: [
-          { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
-          { label: 'Add Medicine', icon: '+', route: '/medicines/create', section: 'addmedicine' },
-          { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
-          { label: 'Add Generic', icon: '+', route: '/generics', section: 'addgeneric' },
+          { label: 'Medicine', icon: '💊', route: '/medicine-list', section: 'medicine' },
+          { label: 'Add Medicine', icon: '➕', route: '/medicines/create', section: 'addmedicine' },
+          { label: 'Generic', icon: '📁', route: '/generic-list', section: 'generic' },
+          { label: 'Add Generic', icon: '➕', route: '/generics', section: 'addgeneric' },
         ],
       },
       {
         label: 'Prescriptions',
         items: [
-          { label: 'Prescriptions', icon: 'Ⓟ', route: '/prescriptions', section: 'prescription' },
+          { label: 'Prescriptions', icon: '📋', route: '/prescriptions', section: 'prescription' },
         ],
       },
       {
@@ -365,38 +365,38 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/lab-technician-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/lab-technician-dashboard', section: 'dashboard' },
         ],
       },
       {
         label: 'Laboratory',
         items: [
-          { label: 'Test Catalog', icon: 'Ⓣ', route: '/test-list', section: 'tests' },
-          { label: 'Add Test', icon: '+', route: '/tests/create', section: 'addtest' },
+          { label: 'Test Catalog', icon: '🧪', route: '/test-list', section: 'tests' },
+          { label: 'Add Test', icon: '➕', route: '/tests/create', section: 'addtest' },
         ],
       },
       {
         label: 'Lab Workflow',
         items: [
-          { label: 'Lab Reception', icon: 'Ⓡ', route: '/lab-reception', section: 'labreception' },
-          { label: 'Sample Collection', icon: 'Ⓢ', route: '/sample-collection', section: 'samplecollection' },
-          { label: 'Result Entry', icon: 'Ⓔ', route: '/result-entry', section: 'resultentry' },
-          { label: 'Verification', icon: '✓', route: '/lab-verification', section: 'labverification' },
+          { label: 'Lab Reception', icon: '🔬', route: '/lab-reception', section: 'labreception' },
+          { label: 'Sample Collection', icon: '🧪', route: '/sample-collection', section: 'samplecollection' },
+          { label: 'Result Entry', icon: '📊', route: '/result-entry', section: 'resultentry' },
+          { label: 'Verification', icon: '✅', route: '/lab-verification', section: 'labverification' },
         ],
       },
       {
         label: 'Report Center',
         items: [
           { label: 'Report Dashboard', icon: '📊', route: '/lab/dashboard', section: 'labdashboard' },
-          { label: 'Dynamic Result Entry', icon: '⌨', route: '/lab/test-entry', section: 'labtestentry' },
+          { label: 'Dynamic Result Entry', icon: '⌨️', route: '/lab/test-entry', section: 'labtestentry' },
           { label: 'All Reports', icon: '📄', route: '/lab/reports', section: 'labreports' },
-          { label: 'Reference Ranges', icon: '⚙', route: '/lab/reference-ranges', section: 'labranges' },
+          { label: 'Reference Ranges', icon: '⚙️', route: '/lab/reference-ranges', section: 'labranges' },
         ],
       },
       {
         label: 'Patients',
         items: [
-          { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
+          { label: 'Patient List', icon: '👤', route: '/patient-list', section: 'patient' },
         ],
       },
     ];
@@ -407,7 +407,7 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/billing-clerk-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/billing-clerk-dashboard', section: 'dashboard' },
           { label: 'Billing Dashboard', icon: '💰', route: '/billing-dashboard', section: 'billingdashboard' },
           { label: 'Reports & Analytics', icon: '📊', route: '/reports', section: 'reports' },
         ],
@@ -425,20 +425,20 @@ export class NavigationService {
       {
         label: 'Admissions',
         items: [
-          { label: 'Admission', icon: 'Ⓐ', route: '/admission', section: 'admissionform' },
-          { label: 'Admission List', icon: 'Ⓛ', route: '/admission-list', section: 'admission' },
+          { label: 'Admission', icon: '🏥', route: '/admission', section: 'admissionform' },
+          { label: 'Admission List', icon: '📋', route: '/admission-list', section: 'admission' },
         ],
       },
       {
         label: 'Patients',
         items: [
-          { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
+          { label: 'Patient List', icon: '👤', route: '/patient-list', section: 'patient' },
         ],
       },
       {
         label: 'Surgery Management',
         items: [
-          { label: 'Surgery Dashboard', icon: '⚕', route: '/surgery/dashboard', section: 'surgery' },
+          { label: 'Surgery Dashboard', icon: '⚕️', route: '/surgery/dashboard', section: 'surgery' },
           { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
           { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
           { label: 'Surgery Invoice', icon: '🧾', route: '/surgery/list', section: 'surgery' },
@@ -459,32 +459,32 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/inventory-manager-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/inventory-manager-dashboard', section: 'dashboard' },
           { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
         ],
       },
       {
         label: 'Inventory',
         items: [
-          { label: 'Medicine', icon: 'Ⓜ', route: '/medicine-list', section: 'medicine' },
-          { label: 'Add Medicine', icon: '+', route: '/medicines/create', section: 'addmedicine' },
+          { label: 'Medicine', icon: '💊', route: '/medicine-list', section: 'medicine' },
+          { label: 'Add Medicine', icon: '➕', route: '/medicines/create', section: 'addmedicine' },
           { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
-          { label: 'Generic', icon: 'Ⓖ', route: '/generic-list', section: 'generic' },
-          { label: 'Add Generic', icon: '+', route: '/generics', section: 'addgeneric' },
+          { label: 'Generic', icon: '📁', route: '/generic-list', section: 'generic' },
+          { label: 'Add Generic', icon: '➕', route: '/generics', section: 'addgeneric' },
         ],
       },
       {
         label: 'Suppliers & Purchase',
         items: [
-          { label: 'Suppliers', icon: 'S', route: '/suppliers', section: 'suppliers' },
+          { label: 'Suppliers', icon: '🏪', route: '/suppliers', section: 'suppliers' },
           { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
         ],
       },
       {
         label: 'Wards & Beds',
         items: [
-          { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
+          { label: 'Ward', icon: '🏥', route: '/ward-list', section: 'ward' },
+          { label: 'Bed Management', icon: '🛏️', route: '/ward-management', section: 'bed' },
         ],
       },
       {
@@ -501,28 +501,28 @@ export class NavigationService {
       {
         label: 'Overview',
         items: [
-          { label: 'Dashboard', icon: '◆', route: '/ward-manager-dashboard', section: 'dashboard' },
+          { label: 'Dashboard', icon: '📊', route: '/ward-manager-dashboard', section: 'dashboard' },
         ],
       },
       {
         label: 'Wards & Beds',
         items: [
-          { label: 'Ward', icon: 'Ⓦ', route: '/ward-list', section: 'ward' },
-          { label: 'Ward Management', icon: 'Ⓦ', route: '/ward-management', section: 'wardmanagement' },
-          { label: 'Bed Management', icon: 'Ⓑ', route: '/ward-management', section: 'bed' },
+          { label: 'Ward', icon: '🏥', route: '/ward-list', section: 'ward' },
+          { label: 'Ward Management', icon: '🏥', route: '/ward-management', section: 'wardmanagement' },
+          { label: 'Bed Management', icon: '🛏️', route: '/ward-management', section: 'bed' },
         ],
       },
       {
         label: 'Patients',
         items: [
-          { label: 'Admitted Patient', icon: 'Ⓐ', route: '/admission-list', section: 'admission' },
-          { label: 'Patient List', icon: 'Ⓟ', route: '/patient-list', section: 'patient' },
+          { label: 'Admitted Patient', icon: '🏥', route: '/admission-list', section: 'admission' },
+          { label: 'Patient List', icon: '👤', route: '/patient-list', section: 'patient' },
         ],
       },
       {
         label: 'Staff',
         items: [
-          { label: 'Nurse', icon: 'Ⓝ', route: '/nurses', section: 'nurse' },
+          { label: 'Nurse', icon: '👩‍⚕️', route: '/nurses', section: 'nurse' },
         ],
       },
     ];
