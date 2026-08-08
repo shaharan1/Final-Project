@@ -73,6 +73,12 @@
   justify-content: center;
   font-size: 28px;
   flex-shrink: 0;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .surgery-hero h1 {
