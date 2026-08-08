@@ -31,6 +31,7 @@ export class SurgeryFormComponent implements OnInit {
   editId: number | null = null;
   loading = false;
   submitting = false;
+  masterLoading = false;
   msg = '';
   msgType = 'success';
 
@@ -200,7 +201,9 @@ export class SurgeryFormComponent implements OnInit {
             this.cdr.detectChanges();
           });
         }
-        if (s.categoryId) this.onCategoryChange();
+        if (s.categoryId) {
+          this.categoryMasters = this.masters.filter(m => m.categoryId === s.categoryId && m.active !== false);
+        }
         if (s.surgeonId) this.onSurgeonChange();
         this.loading = false;
         this.cdr.detectChanges();
@@ -243,25 +246,48 @@ export class SurgeryFormComponent implements OnInit {
     this.patientResults = [];
   }
 
-  onCategoryChange(): void {
+  onCategoryChange(resetCharges = true): void {
     this.categoryMasters = this.masters.filter(m => m.categoryId === this.surgery.categoryId && m.active !== false);
     this.surgery.surgeryMasterId = null;
     this.selectedMaster = null;
+    if (resetCharges) {
+      this.chargeFields.forEach(f => { (this.surgery as any)[f.key] = 0; });
+    }
   }
 
   onMasterChange(): void {
-    const m = this.masters.find(x => x.id === this.surgery.surgeryMasterId);
-    this.selectedMaster = m || null;
-    if (m) {
-      this.surgery.surgeryCharge = m.standardRate;
-      this.surgery.otCharge = m.otCharge ?? this.surgery.otCharge;
-      this.surgery.anesthesiaFee = m.anesthesiaCharge ?? this.surgery.anesthesiaFee;
-      this.surgery.nursingCharge = m.nursingCharge ?? this.surgery.nursingCharge;
-      this.surgery.equipmentCharge = m.equipmentCharge ?? this.surgery.equipmentCharge;
-      this.surgery.consumableCharge = m.consumableCharge ?? this.surgery.consumableCharge;
-      this.surgery.icuCharge = m.icuCharge ?? this.surgery.icuCharge;
-      if (m.estimatedDurationMin) this.surgery.estimatedDurationMin = m.estimatedDurationMin;
+    const id = Number(this.surgery.surgeryMasterId);
+    if (!id) {
+      this.selectedMaster = null;
+      return;
     }
+    this.masterLoading = true;
+    this.refService.getMasterById(id).subscribe({
+      next: (m) => {
+        this.selectedMaster = m;
+        this.surgery.surgeryCharge = m.standardRate ?? 0;
+        this.surgery.otCharge = m.otCharge ?? 0;
+        this.surgery.surgeonFee = m.surgeonFee ?? 0;
+        this.surgery.assistantSurgeonFee = m.assistantSurgeonFee ?? 0;
+        this.surgery.anesthesiaFee = m.anesthesiaCharge ?? 0;
+        this.surgery.nursingCharge = m.nursingCharge ?? 0;
+        this.surgery.equipmentCharge = m.equipmentCharge ?? 0;
+        this.surgery.consumableCharge = m.consumableCharge ?? 0;
+        this.surgery.icuCharge = m.icuCharge ?? 0;
+        this.surgery.wardCabinCharge = m.wardCabinCharge ?? 0;
+        this.surgery.medicineCharge = m.medicineCharge ?? 0;
+        this.surgery.laboratoryCharge = m.laboratoryCharge ?? 0;
+        this.surgery.radiologyCharge = m.radiologyCharge ?? 0;
+        if (m.estimatedDurationMin) this.surgery.estimatedDurationMin = m.estimatedDurationMin;
+        this.masterLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.masterLoading = false;
+        this.selectedMaster = null;
+        this.showMsg(err?.error?.message || 'Failed to load surgery charges', 'error');
+      }
+    });
   }
 
   onSurgeonChange(): void {
@@ -294,7 +320,7 @@ export class SurgeryFormComponent implements OnInit {
   }
 
   get vatAmount(): number {
-    return this.subtotal * (Number(this.surgery.vatRate) || 0) / 100;
+    return (this.subtotal - this.discountAmount) * (Number(this.surgery.vatRate) || 0) / 100;
   }
 
   get totalAmount(): number {
