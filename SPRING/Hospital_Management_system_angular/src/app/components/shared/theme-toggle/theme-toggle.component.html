@@ -2,8 +2,8 @@
   class="theme-toggle"
   type="button"
   (click)="toggle()"
-  [attr.aria-label]="themeService.theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-  [title]="themeService.theme() === 'dark' ? 'Light mode' : 'Dark mode'">
+  [attr.aria-label]="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
+  [title]="isDark ? 'Light mode' : 'Dark mode'">
 
   <span class="theme-toggle-track" aria-hidden="true">
     <svg class="theme-toggle-icon theme-toggle-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
