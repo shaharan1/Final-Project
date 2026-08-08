@@ -1,5 +1,12 @@
 :host { display: block; }
 
+.login-theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 50;
+}
+
 .login-page {
   display: flex;
   min-height: 100vh;
