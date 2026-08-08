@@ -6,24 +6,10 @@
       </svg>
     </div>
     <div class="hero-content">
+      <div class="lab-hero-icon">📝</div>
       <div>
-        <span class="hero-kicker">Laboratory Workflow</span>
         <h1>Dynamic Test Result Entry</h1>
-        <p>Enter results, auto-compare against reference ranges and generate pathology reports.</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-pill">
-          <i class="bi bi-check2-circle"></i>
-          <div><strong>{{ readyCount }}</strong><span>Ready</span></div>
-        </div>
-        <div class="stat-pill">
-          <i class="bi bi-eyedropper"></i>
-          <div><strong>{{ testingCount }}</strong><span>Testing</span></div>
-        </div>
-        <div class="stat-pill">
-          <i class="bi bi-clipboard-check"></i>
-          <div><strong>{{ doneCount }}</strong><span>Result Entered</span></div>
-        </div>
+        <p class="lab-hero-sub">{{ readyCount }} ready · {{ testingCount }} testing · {{ doneCount }} result entered · Enter results and auto-compare against reference ranges</p>
       </div>
     </div>
   </section>

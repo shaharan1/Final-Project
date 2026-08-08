@@ -5,16 +5,19 @@
         <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
       </svg>
     </div>
-    <div style="position:relative;z-index:2">
-      <span class="lr-kicker">Reports</span>
-      <h1>Lab Report Registry</h1>
-      <p>All auto-generated pathology reports with status filtering.</p>
-    </div>
-    <div class="lr-hero-search" style="position:relative;z-index:2">
-      <i class="bi bi-search"></i>
-      <input [(ngModel)]="searchKeyword" placeholder="Search patient, test, report #...">
+    <div class="lr-hero-content">
+      <div class="lr-hero-icon">📋</div>
+      <div>
+        <h1>Lab Report Registry</h1>
+        <p class="lr-hero-sub">All auto-generated pathology reports with status filtering.</p>
+      </div>
     </div>
   </section>
+
+  <div class="lr-search-bar">
+    <i class="bi bi-search"></i>
+    <input [(ngModel)]="searchKeyword" placeholder="Search patient, test, report #...">
+  </div>
 
   <div class="lr-panel">
     <div class="lr-tabs">

@@ -104,6 +104,25 @@
 .lab-active-badge  { background: #d4edda; color: #155724; padding: .15rem .5rem; border-radius: 20px; font-size: .72rem; font-weight: 600; }
 .lab-inactive-badge { background: #f8d7da; color: #721c24; padding: .15rem .5rem; border-radius: 20px; font-size: .72rem; font-weight: 600; }
 
+.hero-float-icon {
+  font-size: 42px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: iconFloat 3s ease-in-out infinite;
+  flex-shrink: 0;
+  margin-bottom: 12px;
+}
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
 .empty-state { text-align: center; padding: 2rem 1rem; color: #999; }
 .empty-state p { font-size: .9rem; }
 

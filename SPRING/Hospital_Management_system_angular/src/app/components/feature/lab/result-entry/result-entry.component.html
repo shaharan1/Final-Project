@@ -1,21 +1,16 @@
 <div class="lab-page">
   <div class="lab-hero">
-    <div class="lab-hero-content">
-      <div class="lab-hero-icon">Ⓔ</div>
-      <div>
-        <h1>Result Entry</h1>
-        <p>Enter test results and manage the testing workflow</p>
-      </div>
-    </div>
-    <div class="lab-hero-stats">
-      <div class="lab-hero-stat lab-stat-ready"><span class="lab-hero-num">{{ readyCount }}</span><span class="lab-hero-lbl">Ready</span></div>
-      <div class="lab-hero-stat lab-stat-testing"><span class="lab-hero-num">{{ testingCount }}</span><span class="lab-hero-lbl">Testing</span></div>
-      <div class="lab-hero-stat lab-stat-done"><span class="lab-hero-num">{{ doneCount }}</span><span class="lab-hero-lbl">Done</span></div>
-    </div>
     <div class="hero-bg">
       <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
         <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
       </svg>
+    </div>
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">📊</div>
+      <div>
+        <h1>Result Entry</h1>
+        <p class="lab-hero-sub">{{ readyCount }} ready · {{ testingCount }} testing · {{ doneCount }} done · Enter test results and manage the workflow</p>
+      </div>
     </div>
   </div>
 
