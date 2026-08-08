@@ -6,11 +6,12 @@ import { StorageService } from '../../../../services/storage.service';
 import { AuthService } from '../../../../services/auth.service';
 import { NavigationService } from '../../../../services/navigation.service';
 import { NavGroup } from '../../../../models/nav-item.model';
+import { ThemeToggleComponent } from '../../theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ThemeToggleComponent],
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })
