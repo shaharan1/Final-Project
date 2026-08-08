@@ -34,11 +34,17 @@ public class SurgeryMaster {
     private Double standardRate = 0.0;
 
     private Double otCharge = 0.0;
+    private Double surgeonFee = 0.0;
+    private Double assistantSurgeonFee = 0.0;
     private Double anesthesiaCharge = 0.0;
     private Double nursingCharge = 0.0;
     private Double equipmentCharge = 0.0;
     private Double consumableCharge = 0.0;
     private Double icuCharge = 0.0;
+    private Double wardCabinCharge = 0.0;
+    private Double medicineCharge = 0.0;
+    private Double laboratoryCharge = 0.0;
+    private Double radiologyCharge = 0.0;
     private Double packageRate = 0.0;
 
     @Column(nullable = false)

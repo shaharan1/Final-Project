@@ -16,11 +16,17 @@ public class SurgeryMasterResponse {
     private String categoryName;
     private Double standardRate;
     private Double otCharge;
+    private Double surgeonFee;
+    private Double assistantSurgeonFee;
     private Double anesthesiaCharge;
     private Double nursingCharge;
     private Double equipmentCharge;
     private Double consumableCharge;
     private Double icuCharge;
+    private Double wardCabinCharge;
+    private Double medicineCharge;
+    private Double laboratoryCharge;
+    private Double radiologyCharge;
     private Double packageRate;
     private Boolean active;
     private Integer estimatedDurationMin;
