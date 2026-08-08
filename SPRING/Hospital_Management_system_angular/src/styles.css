@@ -379,7 +379,7 @@ button { font-family: inherit; cursor: pointer; }
    DARK THEME
    ============================================================ */
 
-[data-theme="dark"] {
+html[data-theme="dark"] {
   --ink: #E7E4D8;
   --ink-soft: #9CAAA4;
   --paper: #101816;
@@ -431,50 +431,50 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* ---------- BOOTSTRAP DARK OVERRIDES ---------- */
-[data-theme="dark"] .modal-content,
-[data-theme="dark"] .card,
-[data-theme="dark"] .dropdown-menu {
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .dropdown-menu {
   background-color: var(--paper-raised);
   border-color: var(--line);
   color: var(--ink);
 }
 
-[data-theme="dark"] .modal-header,
-[data-theme="dark"] .modal-footer {
+html[data-theme="dark"] .modal-header,
+html[data-theme="dark"] .modal-footer {
   border-color: var(--line);
 }
 
-[data-theme="dark"] .form-control,
-[data-theme="dark"] .form-select,
-[data-theme="dark"] .input-group-text {
+html[data-theme="dark"] .form-control,
+html[data-theme="dark"] .form-select,
+html[data-theme="dark"] .input-group-text {
   background-color: var(--input-bg);
   border-color: var(--line);
   color: var(--ink);
 }
 
-[data-theme="dark"] .form-control::placeholder {
+html[data-theme="dark"] .form-control::placeholder {
   color: var(--ink-soft);
 }
 
-[data-theme="dark"] .form-control:focus,
-[data-theme="dark"] .form-select:focus {
+html[data-theme="dark"] .form-control:focus,
+html[data-theme="dark"] .form-select:focus {
   background-color: var(--input-bg);
   color: var(--ink);
   border-color: var(--teal);
   box-shadow: 0 0 0 .25rem var(--teal-tint);
 }
 
-[data-theme="dark"] .form-check-input {
+html[data-theme="dark"] .form-check-input {
   background-color: var(--input-bg);
   border-color: var(--line);
 }
 
-[data-theme="dark"] .form-check-input:checked {
+html[data-theme="dark"] .form-check-input:checked {
   background-color: var(--teal);
   border-color: var(--teal);
 }
 
-[data-theme="dark"] .table {
+html[data-theme="dark"] .table {
   --bs-table-bg: transparent;
   --bs-table-color: var(--ink);
   --bs-table-border-color: var(--line);
@@ -482,223 +482,324 @@ button { font-family: inherit; cursor: pointer; }
   --bs-table-hover-bg: var(--hover);
 }
 
-[data-theme="dark"] .table thead th {
+html[data-theme="dark"] .table thead th {
   color: var(--ink-soft);
   border-color: var(--line);
   background-color: var(--table-head);
 }
 
-[data-theme="dark"] .pagination .page-link {
+html[data-theme="dark"] .pagination .page-link {
   background-color: var(--paper-raised);
   border-color: var(--line);
   color: var(--ink);
 }
 
-[data-theme="dark"] .pagination .page-link:hover {
+html[data-theme="dark"] .pagination .page-link:hover {
   background-color: var(--paper-soft);
   border-color: var(--teal);
   color: var(--teal);
 }
 
-[data-theme="dark"] .pagination .page-item.active .page-link {
+html[data-theme="dark"] .pagination .page-item.active .page-link {
   background-color: var(--teal);
   border-color: var(--teal);
   color: #fff;
 }
 
-[data-theme="dark"] .btn-close {
+html[data-theme="dark"] .btn-close {
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-[data-theme="dark"] .btn-outline-primary {
+html[data-theme="dark"] .btn-outline-primary {
   --bs-btn-color: var(--teal);
   --bs-btn-border-color: var(--teal);
   --bs-btn-hover-bg: var(--teal);
 }
 
-[data-theme="dark"] .text-muted {
+html[data-theme="dark"] .text-muted {
   color: var(--ink-soft) !important;
 }
 
-[data-theme="dark"] .dropdown-menu {
+html[data-theme="dark"] .dropdown-menu {
   box-shadow: var(--shadow);
 }
 
-[data-theme="dark"] .nav-tabs {
+html[data-theme="dark"] .nav-tabs {
   border-bottom-color: var(--line);
 }
 
-[data-theme="dark"] .nav-tabs .nav-link {
+html[data-theme="dark"] .nav-tabs .nav-link {
   color: var(--ink-soft);
 }
 
-[data-theme="dark"] .nav-tabs .nav-link.active {
+html[data-theme="dark"] .nav-tabs .nav-link.active {
   background-color: var(--paper-raised);
   border-color: var(--line);
   color: var(--teal);
 }
 
-[data-theme="dark"] .list-group-item {
+html[data-theme="dark"] .list-group-item {
   background-color: var(--paper-raised);
   border-color: var(--line);
   color: var(--ink);
 }
 
-[data-theme="dark"] .breadcrumb-item a {
+html[data-theme="dark"] .breadcrumb-item a {
   color: var(--teal);
 }
 
-[data-theme="dark"] .badge.info {
+html[data-theme="dark"] .badge.info {
   background: #1E303E;
   color: #7FB3E8;
 }
 
 /* ---------- LAYOUT SURFACES ---------- */
-[data-theme="dark"] .sidebar {
+html[data-theme="dark"] .sidebar {
   background: #0C3530;
   box-shadow: 0 0 40px rgba(0, 0, 0, .25);
 }
 
-[data-theme="dark"] .brand-mark {
+html[data-theme="dark"] .brand-mark {
   background: rgba(255, 255, 255, .08);
 }
 
-[data-theme="dark"] .stat-card,
-[data-theme="dark"] .panel,
-[data-theme="dark"] .module-card {
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .module-card {
   background: var(--paper-raised);
   border-color: var(--line);
   box-shadow: var(--shadow);
 }
 
-[data-theme="dark"] .stat-value,
-[data-theme="dark"] .panel-head h2 {
+html[data-theme="dark"] .stat-value,
+html[data-theme="dark"] .panel-head h2 {
   color: var(--ink);
 }
 
-[data-theme="dark"] .module-card {
+html[data-theme="dark"] .module-card {
   background: var(--paper-raised);
 }
 
-[data-theme="dark"] .ward-bar {
+html[data-theme="dark"] .ward-bar {
   background: var(--input-bg);
 }
 
-[data-theme="dark"] .mini-table td {
+html[data-theme="dark"] .mini-table td {
   border-color: var(--line);
+}
+
+/* ---------- DASHBOARDS (shared component classes with hardcoded colors) ---------- */
+html[data-theme="dark"] .kpi-card,
+html[data-theme="dark"] .glass-panel,
+html[data-theme="dark"] .lab-step,
+html[data-theme="dark"] .module-card,
+html[data-theme="dark"] .dc-card {
+  background: var(--paper-raised);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+
+html[data-theme="dark"] .module-card:hover {
+  background: var(--paper-raised);
+  border-color: var(--teal);
+}
+
+html[data-theme="dark"] .kpi-card:hover {
+  border-color: var(--line);
+}
+
+html[data-theme="dark"] .kpi-value,
+html[data-theme="dark"] .dc-value,
+html[data-theme="dark"] .module-name,
+html[data-theme="dark"] .lab-step-num {
+  color: var(--ink) !important;
+}
+
+html[data-theme="dark"] .kpi-label,
+html[data-theme="dark"] .dc-label,
+html[data-theme="dark"] .module-desc,
+html[data-theme="dark"] .module-count,
+html[data-theme="dark"] .lab-step-label,
+html[data-theme="dark"] .ward-name,
+html[data-theme="dark"] .ward-pct,
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .dc-sub {
+  color: var(--ink-soft) !important;
+}
+
+html[data-theme="dark"] .panel-title-group h2 {
+  color: var(--ink) !important;
+}
+
+html[data-theme="dark"] .ward-bar,
+html[data-theme="dark"] .lab-step-bar {
+  background: var(--input-bg);
+}
+
+html[data-theme="dark"] .module-count {
+  background: var(--input-bg);
+}
+
+html[data-theme="dark"] .data-table th {
+  color: var(--ink-soft) !important;
+  border-bottom-color: var(--line) !important;
+}
+
+html[data-theme="dark"] .data-table td {
+  color: var(--ink) !important;
+  border-bottom-color: var(--line) !important;
+}
+
+html[data-theme="dark"] .badge--default {
+  background: var(--input-bg);
+  color: var(--ink-soft);
+}
+
+/* ---------- GENERIC FORM INPUTS (catch-all for component-scoped hardcoded colors) ---------- */
+html[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not(.search-box input),
+html[data-theme="dark"] select:not(.search-box select),
+html[data-theme="dark"] textarea {
+  background-color: var(--input-bg) !important;
+  border-color: var(--line) !important;
+  color: var(--ink) !important;
+  caret-color: var(--ink);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: var(--ink-soft) !important;
+}
+
+html[data-theme="dark"] input:not(.search-box input):focus,
+html[data-theme="dark"] select:focus,
+html[data-theme="dark"] textarea:focus {
+  border-color: var(--teal) !important;
+  box-shadow: 0 0 0 3px var(--teal-tint) !important;
+  outline: none;
 }
 
 /* ---------- LOGIN PAGE ---------- */
-[data-theme="dark"] .login-right {
+html[data-theme="dark"] .login-right {
   background: var(--paper);
 }
 
-[data-theme="dark"] .login-card {
+html[data-theme="dark"] .login-card {
   background: var(--paper-raised);
   box-shadow: var(--shadow);
 }
 
-[data-theme="dark"] .login-card-header h2,
-[data-theme="dark"] .form-group label {
-  color: var(--ink);
+html[data-theme="dark"] .login-card-header h2,
+html[data-theme="dark"] .form-group label {
+  color: var(--ink) !important;
 }
 
-[data-theme="dark"] .login-card-header p {
-  color: var(--ink-soft);
+html[data-theme="dark"] .login-card-header p {
+  color: var(--ink-soft) !important;
 }
 
-[data-theme="dark"] .input-wrapper {
+html[data-theme="dark"] .input-wrapper {
   background: var(--input-bg);
   border-color: var(--line);
 }
 
-[data-theme="dark"] .input-wrapper input {
-  color: var(--ink);
+html[data-theme="dark"] .input-wrapper input {
+  color: var(--ink) !important;
 }
 
-[data-theme="dark"] .input-wrapper input::placeholder {
-  color: var(--ink-soft);
+html[data-theme="dark"] .input-wrapper input::placeholder {
+  color: var(--ink-soft) !important;
 }
 
-[data-theme="dark"] .error-msg {
+html[data-theme="dark"] .error-msg {
   background: #3A2421;
   border-color: #6E3A35;
   color: #F0A8A1;
 }
 
 /* ---------- PROFILE CARD ---------- */
-[data-theme="dark"] .profile-card {
+html[data-theme="dark"] .profile-card {
   background: var(--paper-raised);
   box-shadow: var(--shadow);
 }
 
-[data-theme="dark"] .profile-name {
+html[data-theme="dark"] .profile-name {
   color: var(--ink);
 }
 
-[data-theme="dark"] .profile-email {
+html[data-theme="dark"] .profile-email {
   color: var(--ink-soft);
 }
 
-[data-theme="dark"] .profile-modal {
+html[data-theme="dark"] .profile-modal {
   background: var(--paper-raised);
   box-shadow: var(--shadow);
 }
 
-[data-theme="dark"] .profile-modal-header h2 {
-  color: var(--ink);
+html[data-theme="dark"] .profile-modal-header h2 {
+  color: var(--ink) !important;
 }
 
-[data-theme="dark"] .profile-modal-body .form-group label {
-  color: var(--ink-soft);
+html[data-theme="dark"] .profile-modal-body .form-group label {
+  color: var(--ink-soft) !important;
 }
 
-[data-theme="dark"] .form-input {
+html[data-theme="dark"] .form-input {
   background: var(--input-bg);
   border-color: var(--line);
-  color: var(--ink);
+  color: var(--ink) !important;
 }
 
-[data-theme="dark"] .form-input:focus {
+html[data-theme="dark"] .form-input:focus {
   border-color: var(--teal);
 }
 
-[data-theme="dark"] .form-input.disabled {
+html[data-theme="dark"] .form-input.disabled {
+  background: var(--paper-soft);
+  color: var(--ink-soft) !important;
+}
+
+html[data-theme="dark"] .btn-cancel {
   background: var(--paper-soft);
   color: var(--ink-soft);
 }
 
-[data-theme="dark"] .btn-cancel {
-  background: var(--paper-soft);
-  color: var(--ink-soft);
-}
-
-[data-theme="dark"] .btn-cancel:hover {
+html[data-theme="dark"] .btn-cancel:hover {
   background: var(--line);
   color: var(--ink);
 }
 
-[data-theme="dark"] .modal-close {
+html[data-theme="dark"] .modal-close {
   color: var(--ink-soft);
 }
 
-[data-theme="dark"] .modal-close:hover {
+html[data-theme="dark"] .modal-close:hover {
   color: var(--ink);
 }
 
-[data-theme="dark"] .msg-success {
+html[data-theme="dark"] .msg-success {
   color: #5BC49A;
 }
 
-[data-theme="dark"] .msg-error {
+html[data-theme="dark"] .msg-error {
   color: #E06C66;
 }
 
 /* ---------- CHART.JS ---------- */
-[data-theme="dark"] .chartjs-render-monitor {
+html[data-theme="dark"] .chartjs-render-monitor {
   filter: none;
 }
 
-[data-theme="dark"] canvas.chartjs-render-monitor {
+html[data-theme="dark"] canvas.chartjs-render-monitor {
   color-scheme: dark;
+}
+
+/* ---------- THEME TOGGLE ICON (global — component-scoped attr stamping breaks [data-theme] on <html>) ---------- */
+html[data-theme="dark"] .theme-toggle-sun {
+  transform: rotate(-90deg) scale(.4);
+  opacity: 0;
+}
+
+html[data-theme="dark"] .theme-toggle-moon {
+  transform: rotate(0deg) scale(1);
+  opacity: 1;
 }
