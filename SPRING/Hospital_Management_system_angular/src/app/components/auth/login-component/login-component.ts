@@ -5,10 +5,11 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { StorageService } from '../../../services/storage.service';
+import { ThemeToggleComponent } from '../../shared/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-login-component',
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, ThemeToggleComponent],
   templateUrl: './login-component.html',
   styleUrl: './login-component.css',
 })
