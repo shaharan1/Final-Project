@@ -38,6 +38,10 @@ export class SurgeryReferenceService {
   }
 
   // ===== Surgery Masters (Rate Card) =====
+  getMasterById(id: number): Observable<SurgeryMaster> {
+    return this.http.get<SurgeryMaster>(`${this.mastersApi}/${id}`);
+  }
+
   getMasters(): Observable<SurgeryMaster[]> {
     return this.http.get<SurgeryMaster[]>(this.mastersApi);
   }
