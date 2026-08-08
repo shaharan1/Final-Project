@@ -119,11 +119,13 @@
 }
 
 .nav-ic {
-  font-size: 14px;
-  width: 18px;
+  font-size: 15px;
+  width: 22px;
+  min-width: 22px;
   text-align: center;
   opacity: .85;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .nav-item.active .nav-ic {
