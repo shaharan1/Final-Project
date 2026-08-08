@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ThemeService } from '../../../services/theme.service';
 
 @Component({
@@ -9,11 +9,13 @@ import { ThemeService } from '../../../services/theme.service';
   styleUrl: './theme-toggle.component.css',
 })
 export class ThemeToggleComponent {
-  protected readonly themeService = this.theme;
-
-  constructor(private theme: ThemeService) {}
+  private readonly theme = inject(ThemeService);
 
   toggle(): void {
-    this.themeService.toggle();
+    this.theme.toggle();
+  }
+
+  protected get isDark(): boolean {
+    return this.theme.theme() === 'dark';
   }
 }
