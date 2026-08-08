@@ -273,6 +273,36 @@
           </div>
           <div class="modal-two-col">
             <div>
+              <label class="form-label">Surgeon Fee</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.surgeonFee" />
+            </div>
+            <div>
+              <label class="form-label">Assistant Surgeon Fee</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.assistantSurgeonFee" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Ward / Cabin Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.wardCabinCharge" />
+            </div>
+            <div>
+              <label class="form-label">Medicine Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.medicineCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Laboratory Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.laboratoryCharge" />
+            </div>
+            <div>
+              <label class="form-label">Radiology Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.radiologyCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
               <label class="form-label">Est. Duration (min)</label>
               <input type="number" class="dept-input" min="15" step="15" [(ngModel)]="masterForm.estimatedDurationMin" />
             </div>

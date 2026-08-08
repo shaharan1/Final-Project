@@ -44,8 +44,9 @@ export class SurgeryRateManagementComponent implements OnInit {
   categoryForm: SurgeryCategoryRequest = { code: '', name: '', description: '', active: true, sortOrder: 0 };
   masterForm: SurgeryMasterRequest = {
     surgeryCode: '', surgeryName: '', categoryId: 0, standardRate: 0,
-    otCharge: 0, anesthesiaCharge: 0, nursingCharge: 0, equipmentCharge: 0,
-    consumableCharge: 0, icuCharge: 0, packageRate: 0, active: true, estimatedDurationMin: 60, notes: ''
+    otCharge: 0, surgeonFee: 0, assistantSurgeonFee: 0, anesthesiaCharge: 0, nursingCharge: 0,
+    equipmentCharge: 0, consumableCharge: 0, icuCharge: 0, wardCabinCharge: 0, medicineCharge: 0,
+    laboratoryCharge: 0, radiologyCharge: 0, packageRate: 0, active: true, estimatedDurationMin: 60, notes: ''
   };
   theatreForm: OperationTheatreRequest = { otCode: '', otName: '', location: '', equipmentAvailable: '', capacity: 1, status: 'AVAILABLE', active: true };
   discountForm: DoctorDiscountRequest = { doctorId: 0, percentageDiscount: 0, departmentDiscount: 0, specialPromoDiscount: 0, active: true };
@@ -66,13 +67,12 @@ export class SurgeryRateManagementComponent implements OnInit {
 
   loadAll(): void {
     this.loading = true;
-    this.refService.getMasters().subscribe(res => this.masters = res);
-    this.refService.getCategories().subscribe(res => this.categories = res);
-    this.refService.getTheatres().subscribe(res => this.theatres = res);
-    this.refService.getDiscounts().subscribe(res => this.discounts = res);
-    this.doctorService.getAll().subscribe(res => this.doctors = res);
+    this.refService.getMasters().subscribe(res => { this.masters = res; this.cdr.detectChanges(); });
+    this.refService.getCategories().subscribe(res => { this.categories = res; this.cdr.detectChanges(); });
+    this.refService.getTheatres().subscribe(res => { this.theatres = res; this.cdr.detectChanges(); });
+    this.refService.getDiscounts().subscribe(res => { this.discounts = res; this.cdr.detectChanges(); });
+    this.doctorService.getAll().subscribe(res => { this.doctors = res; this.cdr.detectChanges(); });
     this.loading = false;
-    this.cdr.detectChanges();
   }
 
   setTab(tab: string): void {
@@ -177,14 +177,19 @@ export class SurgeryRateManagementComponent implements OnInit {
     this.editingId = m?.id ?? null;
     this.masterForm = m ? {
       surgeryCode: m.surgeryCode, surgeryName: m.surgeryName, categoryId: m.categoryId || 0,
-      standardRate: m.standardRate, otCharge: m.otCharge || 0, anesthesiaCharge: m.anesthesiaCharge || 0,
-      nursingCharge: m.nursingCharge || 0, equipmentCharge: m.equipmentCharge || 0,
-      consumableCharge: m.consumableCharge || 0, icuCharge: m.icuCharge || 0, packageRate: m.packageRate || 0,
+      standardRate: m.standardRate, otCharge: m.otCharge || 0,
+      surgeonFee: m.surgeonFee || 0, assistantSurgeonFee: m.assistantSurgeonFee || 0,
+      anesthesiaCharge: m.anesthesiaCharge || 0, nursingCharge: m.nursingCharge || 0,
+      equipmentCharge: m.equipmentCharge || 0, consumableCharge: m.consumableCharge || 0,
+      icuCharge: m.icuCharge || 0, wardCabinCharge: m.wardCabinCharge || 0,
+      medicineCharge: m.medicineCharge || 0, laboratoryCharge: m.laboratoryCharge || 0,
+      radiologyCharge: m.radiologyCharge || 0, packageRate: m.packageRate || 0,
       active: m.active ?? true, estimatedDurationMin: m.estimatedDurationMin || 60, notes: m.notes || ''
     } : {
       surgeryCode: '', surgeryName: '', categoryId: this.categories[0]?.id || 0, standardRate: 0,
-      otCharge: 0, anesthesiaCharge: 0, nursingCharge: 0, equipmentCharge: 0,
-      consumableCharge: 0, icuCharge: 0, packageRate: 0, active: true, estimatedDurationMin: 60, notes: ''
+      otCharge: 0, surgeonFee: 0, assistantSurgeonFee: 0, anesthesiaCharge: 0, nursingCharge: 0,
+      equipmentCharge: 0, consumableCharge: 0, icuCharge: 0, wardCabinCharge: 0, medicineCharge: 0,
+      laboratoryCharge: 0, radiologyCharge: 0, packageRate: 0, active: true, estimatedDurationMin: 60, notes: ''
     };
     this.showModal = true;
   }
