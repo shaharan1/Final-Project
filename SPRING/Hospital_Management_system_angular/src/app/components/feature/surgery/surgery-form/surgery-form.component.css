@@ -30,10 +30,15 @@
 .surgery-hero .wave-path {
   stroke-dasharray: 2000;
   stroke-dashoffset: 2000;
-  animation: surgeryDrawWave 4s ease forwards;
+  animation: surgeryDrawWave 3s ease forwards, pulseStroke 2s ease-in-out 3s infinite;
 }
 
 @keyframes surgeryDrawWave { to { stroke-dashoffset: 0; } }
+
+@keyframes pulseStroke {
+  0%, 100% { stroke: rgba(255, 255, 255, 0.25); }
+  50% { stroke: rgba(255, 255, 255, 0.65); }
+}
 
 .surgery-hero-content {
   display: flex;
@@ -265,13 +270,65 @@
 .chip-sub { font-size: 12px; font-weight: 500; color: #1a7a5a; }
 
 /* ===== CHARGES GRID ===== */
+.charges-grid-wrap { position: relative; }
+
 .charges-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
+  transition: opacity 0.2s ease;
 }
 
+.charges-grid--loading { opacity: 0.45; pointer-events: none; }
+
 .charge-input { display: flex; flex-direction: column; gap: 6px; }
+
+.charges-hint {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6c757d;
+  margin-left: 6px;
+  letter-spacing: 0;
+}
+
+.charge-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fdfb;
+  border-color: rgba(5, 150, 105, 0.25);
+  font-weight: 600;
+  color: #0b6e4f;
+  cursor: default;
+}
+
+.charge-value--empty { color: #adb5bd; font-weight: 500; }
+
+.charge-auto {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  border: 1px solid rgba(5, 150, 105, 0.25);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.charges-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #059669;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+  z-index: 5;
+}
 
 /* ===== ADJUSTMENTS & SUMMARY ===== */
 .adjust-grid {
