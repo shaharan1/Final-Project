@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>THE ROYAL HOTEL </title>
+    <link rel="shortcut icon" href="images/letter_logo-removebg-preview.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navBar" data-bs-offset="100">
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar glass-nav navbar-expand-lg navbar-light fixed-top" style="height: 15vh;">
+            <div class="container">
+                <a class="navbar-brand" href="#home">
+                    <img src="images/logo-removebg-preview.png" alt="Logo" class="logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#rooms">Rooms</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#gallery">Gallery</a>
+                        </li>
+                    </ul>
+                    <a class="main-btn rounded-pill" href="#" onclick="window.alert('Working process going on')">Book Now</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Navbar End -->
+
+    <!-- Slide Start -->
+
+    <!-- Home -->
+    <section id="home">
+        <div class="container">
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="2000">
+                        <img src="images/home 1.jpeg" class="d-block w-100" alt="home pic">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="images/home 5.webp" class="d-block w-100" alt="home pic2">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="images/home 3.jpeg" class="d-block w-100" alt="home pic3">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="images/home 4.jpg" class="d-block w-100" alt="home pic4">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="images/home 6.webp" class="d-block w-100" alt="home pic5">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="images/home 7.webp" class="d-block w-100" alt="home pic6">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="images/home 9.webp" class="d-block w-100" alt="home pic7">
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Home End -->
+
+    <!-- Rooms -->
+    <section id="rooms">
+        <div class="container">
+            <div class="text-center mb-3">
+                <hr>
+                <h1><strong>ROOM</strong></h1>
+
+            </div>
+            <div class="row p-3 d-flex justify-content-center">
+                <div class="col-md-4 d-block">
+
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#classicRoomModal">
+                        <h3 class="text-center"> <strong>Classic Room</strong></h3>
+                    </a>
+
+                    <div id="carouselClassic" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 1.webp" class="d-block w-100" alt="room pic-1">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms2.webp" class="d-block w-100" alt="room pic-2">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 3.webp" class="d-block w-100" alt="room pic-3">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselClassic"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselClassic"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-block">
+
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#deluxeRoomSeaViewModal">
+                        <h3 class="text-center"><strong>Deluxe Room,Sea View</strong> </h3>
+                    </a>
+
+
+                    <div id="carouselDeluxe" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 4.webp" class="d-block w-100" alt="room pic-4">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 5.webp" class="d-block w-100" alt="room pic-5">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 6.webp" class="d-block w-100" alt="room pic-6">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselDeluxe"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselDeluxe"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-block">
+
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#premiumRoomModal">
+                        <h3 class="text-center"> <strong>Premium Room</strong></h3>
+                    </a>
+
+
+
+                    <div id="carouselPremium" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 7.webp" class="d-block w-100" alt="room pic-7">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 8.webp" class="d-block w-100" alt="room pic-8">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms 9.webp" class="d-block w-100" alt="room pic-9">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselPremium"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselPremium"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section id="rooms">
+        <div class="container">
+            <div class="row p-3 d-flex justify-content-center">
+                <div class="col-md-4 d-block">
+
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#deluxeSuiteModal">
+                        <h3 class="text-center"> <strong>Deluxe Suite</strong></h3>
+                    </a>
+
+
+                    <div id="carouselClassic" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-10.webp" class="d-block w-100" alt="room pic-1">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-11.webp" class="d-block w-100" alt="room pic-2">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-12.webp" class="d-block w-100" alt="room pic-3">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselClassic"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselClassic"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-block">
+
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#royalDoubleRoomModal">
+                        <h3 class="text-center"> <strong>Royal Double Room</strong></h3>
+                    </a>
+
+
+
+                    <div id="carouselDeluxe" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-14.webp" class="d-block w-100" alt="room pic-4">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-15.webp" class="d-block w-100" alt="room pic-5">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-16.webp" class="d-block w-100" alt="room pic-6">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselDeluxe"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselDeluxe"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4 d-block">
+
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#crownSuiteModal">
+                        <h3 class="text-center"> <strong>Crown Suite</strong></h3>
+                    </a>
+
+
+                    <div id="carouselPremium" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-17.webp" class="d-block w-100" alt="room pic-7">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-18 (2).webp" class="d-block w-100" alt="room pic-8">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="images/Rooms/rooms-19.webp" class="d-block w-100" alt="room pic-9">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselPremium"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselPremium"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Rooms End -->
+
+    <!-- Services -->
+    <section id="services">
+        <div class="container">
+            <hr>
+            <h1 class="text-center"><strong>SERVICE</strong></h1>
+            <h2>Most popular Services</h2>
+            <div class="row my-2 d-flex justify-content-around ">
+
+
+                <div class="col-md-3 d-block card  ">
+
+                    <ul>
+
+                        <li><i class="fa-solid fa-person-swimming"></i> Outdoor swimming pool</li>
+                        <li><i class="fa-solid fa-spa"></i> Spa</li>
+                        <li><i class="fa-solid fa-dumbbell"></i> Gym</li>
+                        <li><i class="fa-solid fa-hands-holding-child"></i> Childcare service</li>
+
+
+                    </ul>
+                </div>
+
+                <div class="col-md-3 d-block card ">
+
+                    <ul>
+                        <li><i class="fa-solid fa-mosque"></i> Prayer room</li>
+                        <li><i class="fa-solid fa-utensils"></i> Restaurant</li>
+                        <li><i class="fa-brands fa-nfc-directional"></i> Playground</li>
+                        <li><i class="fa-solid fa-users-rays"></i> Conference room</li>
+
+                    </ul>
+                </div>
+
+                <div class="col-md-3 d-block card">
+
+                    <ul>
+                        <li><i class="fa-solid fa-cart-flatbed-suitcase"></i> Luggage storage</li>
+                        <li><i class="fa-solid fa-briefcase"></i> Business center</li>
+                        <li><i class="fa-solid fa-house-signal"></i> Wi-Fi in public areas</li>
+                        <li><i class="fa-solid fa-car-side"></i> Parking</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/services 1.webp" alt="" class="w-100">
+
+                </div>
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/service 9.webp" alt="" class="w-100">
+                </div>
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/services 3.webp" alt="" class="w-100">
+                </div>
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/food 3.webp" alt="" class="w-100">
+                </div>
+            </div>
+
+            <div class="row  d-flex justify-content-center">
+                <div class="col-md-3 p-1 d-block col-12 service">
+                    <img src="images/service/food 2.avif" alt="" class="w-100">
+
+                </div>
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/services 6.webp" alt="" class="w-100">
+                </div>
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/service 5.webp" alt="" class="w-100">
+                </div>
+                <div class="col-md-3 p-1 col-12 service">
+                    <img src="images/service/service 4.webp" alt="" class="w-100">
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Services End -->
+
+    <!-- Gallery -->
+    <section id="gallery">
+        <hr class="container">
+        <h1 class="text-center"><strong>GALLERY</strong></h1>
+
+        <div class="row-img container ">
+
+            <div class="flip-card col-lg-4 col-md-6 p-1 mb-lg-0">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="images/Gallery/Gallery-1.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-1" />
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="images/Gallery/Gallery-2.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-2" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card col-lg-4 col-md-6 p-1 mb-lg-0">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="images/Gallery/Gallery-3.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-3" />
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="images/Gallery/Gallery-4.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-4" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card col-lg-4 col-md-6 p-1 mb-lg-0">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="images/Gallery/Gallery-5.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-5" />
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="images/Gallery/Gallery-6.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-6" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card col-lg-4 col-md-6 p-1 mb-lg-0">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="images/Gallery/Gallery-7.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-7" />
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="images/Gallery/Gallery-8.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-8" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card col-lg-4 col-md-6 p-1 mb-lg-0">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="images/Gallery/Gallery-9.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-9" />
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="images/Gallery/Gallery-10.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-10" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card col-lg-4 col-md-6 p-1 mb-lg-0">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="images/Gallery/Gallery-11.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-11" />
+                    </div>
+                    <div class="flip-card-back">
+                        <img src="images/Gallery/Gallery-12.webp" class="w-100 shadow-1-strong rounded mb-2"
+                            alt="Gallery-12" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+    <!-- Gallery End -->
+
+    <div id="room-modals">
+    <!-- Classic Room Modal -->
+    <div class="modal fade" id="classicRoomModal" tabindex="-1" aria-labelledby="classicRoomModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="classicRoomModalLabel">Classic Room</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h5 class="text-center"> <strong>Room Size:</strong> 35 sq. m.-40 sq.m.</h5>
+            <h6 class="text-center"><i class="fa-solid fa-bed"></i> 2 Single Beds, or 1 King Bed </h6>
+            <ul>
+                <li class="text-center"><i class="fa-solid fa-tv"></i> TV</li>
+                <li class="text-center"><i class="fa-solid fa-box"></i> Wardrobe</li>
+                <li class="text-center"><i class="fa-solid fa-ban-smoking"></i> Non-smoking</li>
+                <li class="text-center"><i class="fa-solid fa-fan"></i> Air conditioning</li>
+                <li class="text-center"><i class="fa-solid fa-broom"></i> Daily housekeeping</li>
+            </ul>
+            <div class="row p-3 d-flex justify-content-center ">
+                <div class="col-md-4">
+                    <img src="images/Rooms/rooms 1.webp" class="w-100">
+                </div>
+                <div class="col-md-4">
+                    <img src="images/Rooms/rooms2.webp" class="w-100">
+                </div>
+                <div class="col-md-4">
+                    <img src="images/Rooms/rooms 3.webp" class="w-100">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Deluxe Room Sea View Modal -->
+    <div class="modal fade" id="deluxeRoomSeaViewModal" tabindex="-1" aria-labelledby="deluxeRoomSeaViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deluxeRoomSeaViewModalLabel">Deluxe Room, Sea View</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><strong>Room Size:</strong> 145 sq. m. – 145 sq. m.</h5>
+                    <h6 class="text-center"><i class="fa-solid fa-bed"></i> 1 Queen bed and 1 Sofa bed</h6>
+                    <ul>
+                        <li class="text-center"><i class="fa-solid fa-tv"></i> TV</li>
+                        <li class="text-center"><i class="fa-solid fa-box"></i> Wardrobe</li>
+                        <li class="text-center"><i class="fa-solid fa-ban-smoking"></i> Non-smoking</li>
+                        <li class="text-center"><i class="fa-solid fa-fan"></i> Air conditioning</li>
+                        <li class="text-center"><i class="fa-solid fa-broom"></i> Daily housekeeping</li>
+                    </ul>
+                    <div class="row p-3 d-flex justify-content-center">
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms 4.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms 5.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms 6.webp" class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Room Modal -->
+    <div class="modal fade" id="premiumRoomModal" tabindex="-1" aria-labelledby="premiumRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="premiumRoomModalLabel">Premium Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><strong>Room Size:</strong> 55 sq. m. – 55 sq. m.</h5>
+                    <h6 class="text-center"><i class="fa-solid fa-bed"></i> 1 King Bed and 1 Sofa bed</h6>
+                    <ul>
+                        <li class="text-center"><i class="fa-solid fa-tv"></i> TV</li>
+                        <li class="text-center"><i class="fa-solid fa-box"></i> Wardrobe</li>
+                        <li class="text-center"><i class="fa-solid fa-ban-smoking"></i> Non-smoking</li>
+                        <li class="text-center"><i class="fa-solid fa-fan"></i> Air conditioning</li>
+                        <li class="text-center"><i class="fa-solid fa-broom"></i> Daily housekeeping</li>
+                    </ul>
+                    <div class="row p-3 d-flex justify-content-center">
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms 7.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms 8.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms 9.webp" class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deluxe Suite Modal -->
+    <div class="modal fade" id="deluxeSuiteModal" tabindex="-1" aria-labelledby="deluxeSuiteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deluxeSuiteModalLabel">Deluxe Suite</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><strong>Room Size:</strong> 35 sq. m.-40 sq.m.</h5>
+                    <h6 class="text-center"><i class="fa-solid fa-bed"></i> 1 King Bed</h6>
+                    <ul>
+                        <li class="text-center"><i class="fa-solid fa-tv"></i> TV</li>
+                        <li class="text-center"><i class="fa-solid fa-box"></i> Wardrobe</li>
+                        <li class="text-center"><i class="fa-solid fa-ban-smoking"></i> Non-smoking</li>
+                        <li class="text-center"><i class="fa-solid fa-fan"></i> Air conditioning</li>
+                        <li class="text-center"><i class="fa-solid fa-broom"></i> Daily housekeeping</li>
+                    </ul>
+                    <div class="row p-3 d-flex justify-content-center">
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-10.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-11.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-12.webp" class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Royal Double Room Modal -->
+    <div class="modal fade" id="royalDoubleRoomModal" tabindex="-1" aria-labelledby="royalDoubleRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="royalDoubleRoomModalLabel">Royal Double Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><strong>Room Size:</strong> 145 sq. m. – 145 sq. m.</h5>
+                    <h6 class="text-center"><i class="fa-solid fa-bed"></i> 2 Single bed or 1 Queen bed</h6>
+                    <ul>
+                        <li class="text-center"><i class="fa-solid fa-tv"></i> TV</li>
+                        <li class="text-center"><i class="fa-solid fa-box"></i> Wardrobe</li>
+                        <li class="text-center"><i class="fa-solid fa-ban-smoking"></i> Non-smoking</li>
+                        <li class="text-center"><i class="fa-solid fa-fan"></i> Air conditioning</li>
+                        <li class="text-center"><i class="fa-solid fa-broom"></i> Daily housekeeping</li>
+                    </ul>
+                    <div class="row p-3 d-flex justify-content-center">
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-14.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-15.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-16.webp" class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crown Suite Modal -->
+    <div class="modal fade" id="crownSuiteModal" tabindex="-1" aria-labelledby="crownSuiteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crownSuiteModalLabel">Crown Suite</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center"><strong>Room Size:</strong> 55 sq. m. – 55 sq. m.</h5>
+                    <h6 class="text-center"><i class="fa-solid fa-bed"></i> 1 King Bed</h6>
+                    <ul>
+                        <li class="text-center"><i class="fa-solid fa-tv"></i> TV</li>
+                        <li class="text-center"><i class="fa-solid fa-box"></i> Wardrobe</li>
+                        <li class="text-center"><i class="fa-solid fa-ban-smoking"></i> Non-smoking</li>
+                        <li class="text-center"><i class="fa-solid fa-fan"></i> Air conditioning</li>
+                        <li class="text-center"><i class="fa-solid fa-broom"></i> Daily housekeeping</li>
+                    </ul>
+                    <div class="row p-3 d-flex justify-content-center">
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-17.webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-18 (2).webp" class="w-100">
+                        </div>
+                        <div class="col-md-4">
+                            <img src="images/Rooms/rooms-19.webp" class="w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-4 px-5">
+        <div class="row d-flex justify-content-between align-items-start g-4">
+            <!-- Column 1 -->
+            <div class="col-md-4">
+                <h5>About Us</h5>
+                <p>
+                    The Royel Hotel in New Orleans' French Quarter boasts a rich past, with its origins tracing
+                    back to 1784, evolving from a Creole townhouse into a hotel by the 1960s, offering a unique blend of
+                    history, location, and charm for visitors exploring the city's vibrant culture.
+                </p>
+            </div>
+            <!-- Column 2 -->
+            <div class="col-md-4 mx-auto">
+                <h5>Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#home" class="text-white text-decoration-none ">Home</a></li>
+                    <li><a href="#rooms" class="text-white text-decoration-none">Rooms</a></li>
+                    <li><a href="#services" class="text-white text-decoration-none">Services</a></li>
+                    <li><a href="#gallery" class="text-white text-decoration-none">Gallery</a></li>
+                </ul>
+            </div>
+            <!-- Column 3 -->
+            <div class="col-md-4">
+                <h5>Follow Us</h5>
+                <a href="#" class="text-white me-2"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="text-white me-2"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="text-white me-2"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-white"><i class="fa-brands fa-youtube"></i></a>
+                <br><br>
+                <h5>Contact Us</h5>
+                <p class="mb-1"><i class="fa-solid fa-phone"></i> 01521522195</p>
+                <p><i class="fa-solid fa-tty"></i> 02859431</p>
+                   <p><i class="fa-solid fa-envelope"></i></i> theroyelhotel@gmail.com</p>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="text-center pb-3">
+            <p class="mb-0 text-muted">&copy; 2026 The Royel Hotel</p>
+        </div>
+    </footer>
+
+
+    <!-- Footer End -->
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
