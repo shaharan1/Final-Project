@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "677342957038",
+    "project_id": "elite-care-hospital-2e28d",
+    "storage_bucket": "elite-care-hospital-2e28d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677342957038:android:a3daebc1bf55ac93bcd2ff",
+        "android_client_info": {
+          "package_name": "com.example.elitecarehospital"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaQ6-3jUkSBGIb1NvsWPQgJv7mwairPBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

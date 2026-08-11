@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Elite Care Hospital</string>
+    <string name="nav_open">Open navigation</string>
+    <string name="nav_close">Close navigation</string>
+    <string name="login_email">Email address</string>
+    <string name="login_password">Password</string>
+    <string name="login_button">Sign In</string>
+    <string name="login_title">Elite Care Hospital</string>
+    <string name="login_subtitle">Hospital Management System</string>
+    <string name="search_hint">Search…</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">My Profile</string>
+    <string name="menu_logout">Logout</string>
+</resources>
