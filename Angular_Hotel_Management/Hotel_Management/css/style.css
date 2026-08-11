@@ -1,8 +1,11 @@
 :root {
-    --primary-color: #0a0a0a;
-    --background-color: #f8f9fa;
+    --primary-color: #1a1a1a;
+    --accent-color: #c9a752;
+    --background-color: #ffffff;
+    --light-bg: #faf9f5;
     --card-background: #ffffff;
-    --text-color: #333;
+    --text-color: #444;
+    --heading-color: #111;
     --primary-font: 'Poppins', sans-serif;
 }
 
@@ -10,58 +13,104 @@ body {
     font-family: var(--primary-font);
     background-color: var(--background-color);
     color: var(--text-color);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--heading-color);
+    font-weight: 700;
 }
 
 .logo {
     width: 150px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
 }
 
 .glass-nav {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(201, 167, 82, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
 }
 
 .navbar-nav .nav-link {
     font-weight: 600;
     text-transform: uppercase;
-    margin: 0 15px;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    margin: 0 10px;
     color: var(--primary-color);
+    position: relative;
     transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+    width: 100%;
 }
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-    color: #007bff;
+    color: var(--accent-color);
 }
 
 .main-btn {
-    font-size: medium;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #fff;
+    color: #fff !important;
     text-transform: uppercase;
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    padding: 10px 20px;
+    letter-spacing: 1px;
+    background-color: var(--accent-color);
+    border: 2px solid var(--accent-color);
+    padding: 10px 25px;
     border-radius: 50px;
     text-decoration: none;
     line-height: 1.5;
     display: inline-block;
-    transition: all 0.3s ease-out 0s;
+    transition: all 0.4s ease;
 }
 
 .main-btn:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-    color: #fff;
-    
+    background-color: transparent;
+    color: var(--accent-color) !important;
 }
 
+.check-btn {
+    transition: all 0.3s ease;
+}
 
-ul,
-li {
+.check-btn:hover {
+    background-color: var(--accent-color) !important;
+    color: #fff !important;
+}
 
+ul, li {
     list-style: none;
+}
+
+/* Rooms & Nav Modals */
+.nav-link[data-bs-toggle="modal"] h3 {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.nav-link[data-bs-toggle="modal"]:hover h3 {
+    color: var(--accent-color);
 }
 
 .row-img {
@@ -69,11 +118,12 @@ li {
     flex-wrap: wrap;
     padding: 0;
 }
+
 .flip-card {
     background-color: transparent;
     width: 100%;
     height: 300px;
-    perspective: 1000px; /* enables 3D effect */
+    perspective: 1000px;
     margin-bottom: 20px;
 }
 
@@ -81,10 +131,10 @@ li {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.8s;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     border-radius: 15px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .flip-card:hover .flip-card-inner {
@@ -105,10 +155,8 @@ li {
     overflow: hidden;
 }
 
-
-
 .flip-card-back {
-    transform: rotateY(180deg); /* critical for showing back image */
+    transform: rotateY(180deg);
 }
 
 .flip-card-front img,
@@ -126,21 +174,38 @@ li {
 
 .service:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 30px rgba(201, 167, 82, 0.2);
 }
 
 #services .card {
     background-color: var(--card-background);
     border: none;
     border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#services .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, rgba(201,167,82,0.1) 0%, rgba(255,255,255,0) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#services .card:hover::before {
+    opacity: 1;
 }
 
 #services .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 15px 35px rgba(201, 167, 82, 0.15);
 }
 
 #services .card ul {
@@ -148,5 +213,60 @@ li {
 }
 
 #services .card ul li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+#services .card ul li i {
+    color: var(--accent-color);
+    margin-right: 10px;
+    width: 25px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Contact Social Icons */
+.social-icons a {
+    transition: all 0.3s ease;
+    color: var(--primary-color);
+    border-color: rgba(26, 26, 26, 0.1) !important;
+}
+
+.social-icons a:hover {
+    background-color: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color) !important;
+    transform: translateY(-3px);
+}
+
+/* Modal Enhancements */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--light-bg);
+}
+
+.modal-title {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* Form Controls */
+.form-control:focus, .form-select:focus {
+    box-shadow: none;
+    border-color: var(--accent-color) !important;
+    background-color: #fff !important;
+}
+
+/* Carousel Control Icons Update */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 20px;
 }
