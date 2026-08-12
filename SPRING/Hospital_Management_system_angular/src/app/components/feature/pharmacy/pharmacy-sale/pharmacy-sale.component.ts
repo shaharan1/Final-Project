@@ -44,6 +44,7 @@ export class PharmacySaleComponent implements OnInit {
 
   showPrescriptionModal: boolean = false;
   pendingPrescriptions: PrescriptionModel[] = [];
+  prescriptionSearch: string = '';
   loadingPrescriptions: boolean = false;
   selectedPrescription: PrescriptionModel | null = null;
   dispenseLines: DispenseLine[] = [];
@@ -163,6 +164,7 @@ export class PharmacySaleComponent implements OnInit {
     this.showPrescriptionModal = true;
     this.loadingPrescriptions = true;
     this.pendingPrescriptions = [];
+    this.prescriptionSearch = '';
     this.prescriptionService.getPending().subscribe({
       next: (data: PrescriptionModel[]) => {
         this.pendingPrescriptions = data;
@@ -179,6 +181,15 @@ export class PharmacySaleComponent implements OnInit {
     this.showPrescriptionModal = false;
     this.selectedPrescription = null;
     this.dispenseLines = [];
+    this.prescriptionSearch = '';
+  }
+
+  get filteredPendingPrescriptions(): PrescriptionModel[] {
+    const term = this.prescriptionSearch.trim().toLowerCase();
+    if (!term) return this.pendingPrescriptions;
+    return this.pendingPrescriptions.filter(rx =>
+      (rx.patientName || '').toLowerCase().includes(term)
+    );
   }
 
   selectPrescription(rx: PrescriptionModel): void {
