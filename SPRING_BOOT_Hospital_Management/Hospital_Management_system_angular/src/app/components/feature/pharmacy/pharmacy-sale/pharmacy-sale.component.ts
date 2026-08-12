@@ -153,7 +153,7 @@ export class PharmacySaleComponent implements OnInit {
 
   calculateTotals(): void {
     this.subtotal = this.cartItems.reduce((sum: number, i: PharmacySaleItemModel) => sum + (i.quantity * (i.unitPrice || 0)), 0);
-    this.vat = Math.round(this.subtotal * 0.18 * 100) / 100;
+    this.vat = Math.round(this.subtotal * 0.5 * 100) / 100;
     this.netPayable = this.subtotal + this.vat - this.discount;
     this.changeAmount = this.paidAmount - this.netPayable;
     if (this.changeAmount < 0) this.changeAmount = 0;

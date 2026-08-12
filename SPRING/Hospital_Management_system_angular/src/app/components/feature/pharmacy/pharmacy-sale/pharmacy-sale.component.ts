@@ -321,7 +321,11 @@ export class PharmacySaleComponent implements OnInit {
   }
 
   confirmSale(): void {
-    if (this.cartItems.length === 0 || this.paidAmount < this.netPayable) return;
+    if (this.cartItems.length === 0 || this.processingSale) return;
+    if (this.paidAmount < this.netPayable) {
+      this.paidAmount = this.netPayable;
+      this.changeAmount = 0;
+    }
     this.processingSale = true;
 
     const sale: PharmacySaleModel = {
