@@ -132,7 +132,7 @@
           </div>
           <div class="stat-card accent">
             <span class="stat-label">Revenue</span>
-            <span class="stat-value">{{ (monthlySalesResult.totalRevenue ?? 0) | currency }}</span>
+            <span class="stat-value">&#2547;{{ (monthlySalesResult.totalRevenue ?? 0) | number:'1.2-2' }}</span>
           </div>
         </div>
       </div>
@@ -163,7 +163,7 @@
           </div>
           <div class="stat-card accent">
             <span class="stat-label">Total Amount</span>
-            <span class="stat-value">{{ (purchaseReportResult.totalAmount ?? 0) | currency }}</span>
+            <span class="stat-value">&#2547;{{ (purchaseReportResult.totalAmount ?? 0) | number:'1.2-2' }}</span>
           </div>
         </div>
       </div>
@@ -217,7 +217,7 @@
                 <td>{{ s.name }}</td>
                 <td>{{ s.contact }}</td>
                 <td>{{ s.totalOrders }}</td>
-                <td>{{ s.dues | currency }}</td>
+                <td>&#2547;{{ s.dues | number:'1.2-2' }}</td>
               </tr>
             </tbody>
           </table>
