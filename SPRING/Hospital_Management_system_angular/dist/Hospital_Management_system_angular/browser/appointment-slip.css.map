@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/components/feature/appointment/appointment-slip/appointment-slip.css"],
+  "sourcesContent": [".slip {\r\n\r\n    background: #fff;\r\n\r\n    padding: 30px;\r\n\r\n    border: 2px solid #0d6efd;\r\n\r\n    border-radius: 8px;\r\n\r\n    max-width: 800px;\r\n\r\n    margin: auto;\r\n\r\n}\r\n\r\n.header {\r\n\r\n    text-align: center;\r\n\r\n}\r\n\r\ntable {\r\n\r\n    width: 100%;\r\n\r\n    margin-top: 20px;\r\n\r\n}\r\n\r\ntable th {\r\n\r\n    background: #0d6efd;\r\n\r\n    color: #fff;\r\n\r\n    width: 35%;\r\n\r\n    padding: 10px;\r\n\r\n}\r\n\r\ntable td {\r\n\r\n    padding: 10px;\r\n\r\n}\r\n\r\n.text-center {\r\n\r\n    text-align: center;\r\n\r\n}\r\n\r\n.buttons {\r\n\r\n    margin-top: 20px;\r\n\r\n    text-align: center;\r\n\r\n}\r\n\r\n@media print {\r\n\r\n    .buttons {\r\n\r\n        display: none;\r\n\r\n    }\r\n\r\n    body {\r\n\r\n        background: #fff;\r\n\r\n    }\r\n\r\n}"],
+  "mappings": ";AAAA,CAAC;AAEG,cAAY;AAEZ,WAAS;AAET,UAAQ,IAAI,MAAM;AAElB,iBAAe;AAEf,aAAW;AAEX,UAAQ;AAEZ;AAEA,CAAC;AAEG,cAAY;AAEhB;AAEA;AAEI,SAAO;AAEP,cAAY;AAEhB;AAEA,MAAM;AAEF,cAAY;AAEZ,SAAO;AAEP,SAAO;AAEP,WAAS;AAEb;AAEA,MAAM;AAEF,WAAS;AAEb;AAEA,CAAC;AAEG,cAAY;AAEhB;AAEA,CAAC;AAEG,cAAY;AAEZ,cAAY;AAEhB;AAEA,OAAO;AAEH,GAVH;AAYO,aAAS;AAEb;AAEA;AAEI,gBAAY;AAEhB;AAEJ;",
+  "names": []
+}
