@@ -2448,3 +2448,115 @@ Application bundle generation complete. [1.422 seconds] - 2026-08-12T10:46:57.93
 
 [39m[22m
 Component update sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m[2m | [22m[1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m [2m | [22m [36m6.63 MB[39m[2m | [22m
+
+Application bundle generation complete. [1.700 seconds] - 2026-08-12T10:47:27.670Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.html:143:67:
+[37m      143 │ ... class="al-avatar">{{ appointment.patientName?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component AppointmentList.
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.ts:17:15:
+[37m      17 │   templateUrl: [32m'./appointment-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.html:39:50:
+[37m      39 │       <div class="result-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientBillingComponent.
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.ts:49:15:
+[37m      49 │   templateUrl: [32m'./patient-billing.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.html:40:55:
+[37m      40 │ ...         <div class="dl-avatar">{{ doctor.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                    [32m~~~~~~[0m
+
+  Warning occurs in the template of component DoctorList.
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.ts:11:15:
+[37m      11 │   templateUrl: [32m'./doctor-list.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/patient-list.component/patient-list.component.html:107:56:
+[37m      107 │ ...       <div class="pl-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientListComponent.
+
+    src/app/components/feature/patient-list.component/patient-list.component.ts:11:15:
+[37m      11 │   templateUrl: [32m'./patient-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:219:65:
+[37m      219 │ ...ble-wrapper" *ngIf="dashboard.recentSales?.[32mlength[37m; else noSales">
+          ╵                                               [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:254:76:
+[37m      254 │ ...*ngIf="dashboard.topSellingMedicines?.[32mlength[37m; else noTopSelling">
+          ╵                                          [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:279:64:
+[37m      279 │ ...piry-list" *ngIf="dashboard.expiryAlerts?.[32mlength[37m; else noExpiry">
+          ╵                                              [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.html:315:96:
+[37m      315 │ ...t; {{ rx.prescriptionItems?.[32mlength[37m || 0 }} medicines &middot; ...
+          ╵                                [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacySaleComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:29:15:
+[37m      29 │   templateUrl: [32m'./pharmacy-sale.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+Component update sent to client(s).
