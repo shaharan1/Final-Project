@@ -65,6 +65,7 @@ export class PharmacySaleComponent implements OnInit {
   subtotal: number = 0;
   discount: number = 0;
   vat: number = 0;
+  vatManual: boolean = false;
   netPayable: number = 0;
   paidAmount: number = 0;
   changeAmount: number = 0;
@@ -163,10 +164,19 @@ export class PharmacySaleComponent implements OnInit {
 
   calculateTotals(): void {
     this.subtotal = this.cartItems.reduce((sum: number, i: PharmacySaleItemModel) => sum + (i.quantity * (i.unitPrice || 0)), 0);
-    this.vat = Math.round(this.subtotal * 0.18 * 100) / 100;
+    if (!this.vatManual) {
+      this.vat = Math.round(this.subtotal * 0.18 * 100) / 100;
+    }
     this.netPayable = this.subtotal + this.vat - this.discount;
-    this.changeAmount = this.paidAmount - this.netPayable;
-    if (this.changeAmount < 0) this.changeAmount = 0;
+    this.changeAmount = Math.max(0, this.paidAmount - this.netPayable);
+  }
+
+  onVatChange(): void {
+    this.vatManual = true;
+    this.vat = this.vat || 0;
+    this.netPayable = this.subtotal + this.vat - this.discount;
+    this.changeAmount = Math.max(0, this.paidAmount - this.netPayable);
+    this.cdr.markForCheck();
   }
 
   openPrescriptionModal(): void {
