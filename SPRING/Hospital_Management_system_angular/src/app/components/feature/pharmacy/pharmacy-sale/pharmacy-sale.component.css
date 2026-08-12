@@ -95,12 +95,12 @@
 
 /* ── Glass Card ──────────────────────────────── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   transition: box-shadow 0.25s, transform 0.25s;
 }
 
@@ -1182,11 +1182,11 @@ tbody tr:hover {
 }
 .rx-patient {
   font-size: 0.95rem;
-  color: #212529;
+  color: #f0f4f8;
 }
 .rx-meta {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.55);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1210,7 +1210,7 @@ tbody tr:hover {
 .dose-hint {
   display: block;
   font-size: 0.75rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 0.15rem;
 }
 .dose-badge {
@@ -1280,12 +1280,12 @@ tbody tr:hover {
 }
 .rx-hint {
   font-size: 0.78rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.55);
 }
 .modal-title-group .modal-subtitle {
   display: block;
   font-size: 0.8rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.55);
   margin-top: 0.2rem;
 }
 .rx-footer .btn-primary {
