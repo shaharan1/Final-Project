@@ -1,0 +1,153 @@
+<div class="emergency-medicine-container">
+  <div class="page-header">
+    <svg class="em-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div class="ph-icon">💊</div>
+    <h1>Emergency Medicine Orders</h1>
+    <div class="header-actions">
+      <span class="order-count" *ngIf="selectedPatient">{{ getPatientMedicines().length }} Active Orders</span>
+    </div>
+  </div>
+
+  <div class="alert" *ngIf="msg" [ngClass]="msgType === 'success' ? 'alert-success' : 'alert-error'">
+    {{ msg }}
+  </div>
+
+  <div class="content-grid">
+    <div class="left-panel">
+      <div class="glass-card patient-selector">
+        <h3>Select Patient</h3>
+        <input type="text" class="glass-input" placeholder="Search patient..." [(ngModel)]="searchTerm">
+        <div class="patient-list">
+          <div class="patient-item" *ngFor="let p of patients"
+               [class.selected]="selectedPatient?.id === p.id"
+               (click)="selectPatient(p)">
+            <span class="patient-name">{{ p.patientName }}</span>
+            <span class="patient-id">#{{ p.id }}</span>
+            <span class="triage-badge" [ngClass]="'triage-' + p.triageLevel">T{{ p.triageLevel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card drug-kit">
+        <h3>Drug Kit - Quick Access</h3>
+        <div class="drug-grid">
+          <div class="drug-card" *ngFor="let drug of emergencyDrugs" (click)="prefillDrug(drug)">
+            <span class="drug-icon">{{ drug.icon }}</span>
+            <span class="drug-name">{{ drug.name }}</span>
+            <span class="drug-dose">{{ drug.dose }}</span>
+            <span class="route-badge">{{ drug.route }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="glass-card order-form" *ngIf="selectedPatient">
+        <h3>Order Medicine for {{ selectedPatient.patientName }}</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Medicine Name</label>
+            <input type="text" class="glass-input" [(ngModel)]="medForm.medicineName" placeholder="Enter medicine name">
+          </div>
+          <div class="form-group">
+            <label>Dose</label>
+            <input type="text" class="glass-input" [(ngModel)]="medForm.dose" placeholder="e.g. 10mg">
+          </div>
+          <div class="form-group">
+            <label>Route</label>
+            <select class="glass-select" [(ngModel)]="medForm.route">
+              <option value="">Select Route</option>
+              <option *ngFor="let r of routes" [value]="r">{{ r }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Frequency</label>
+            <select class="glass-select" [(ngModel)]="medForm.frequency">
+              <option value="">Select Frequency</option>
+              <option *ngFor="let f of frequencies" [value]="f">{{ f }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" class="glass-input" [(ngModel)]="medForm.quantity" min="1">
+          </div>
+          <div class="form-group">
+            <label>Administered By</label>
+            <input type="text" class="glass-input" [(ngModel)]="medForm.administeredBy" placeholder="Doctor / Nurse name">
+          </div>
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="medForm.stockAvailable">
+              <span class="checkmark"></span>
+              Stock Available
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="medForm.pharmacyRequestSent">
+              <span class="checkmark"></span>
+              Pharmacy Request
+            </label>
+          </div>
+          <div class="form-group full-width">
+            <label>Notes</label>
+            <textarea class="glass-textarea" [(ngModel)]="medForm.notes" rows="2" placeholder="Additional notes..."></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" (click)="orderMedicine()" [disabled]="loading">
+          {{ loading ? 'Placing Order...' : 'Submit Order' }}
+        </button>
+      </div>
+
+      <div class="glass-card orders-table" *ngIf="selectedPatient">
+        <h3>Active Orders</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Dose</th>
+              <th>Route</th>
+              <th>Frequency</th>
+              <th>Qty</th>
+              <th>Status</th>
+              <th>Pharmacy</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let med of getPatientMedicines()">
+              <td>{{ med.medicineName }}</td>
+              <td>{{ med.dose }}</td>
+              <td><span class="route-badge" [ngClass]="'route-' + (med.route || '').toLowerCase()">{{ med.route }}</span></td>
+              <td><span class="freq-badge">{{ med.frequency }}</span></td>
+              <td>{{ med.quantity }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="'status-' + (med.status || '').toLowerCase()">{{ med.status }}</span>
+              </td>
+              <td>
+                <span class="pharmacy-status" *ngIf="med.pharmacyRequestSent" [ngClass]="med.status === 'FULFILLED' ? 'fulfilled' : 'pending'">
+                  {{ med.status || 'Pending' }}
+                </span>
+                <span *ngIf="!med.pharmacyRequestSent" class="no-request">—</span>
+              </td>
+              <td class="actions">
+                <button class="btn-sm btn-success" *ngIf="med.status === 'PREPARED'" (click)="updateStatus(med.id!, 'ADMINISTERED')">Administer</button>
+                <button class="btn-sm btn-warning" *ngIf="med.status !== 'CANCELLED'" (click)="requestPharmacy(med.id!)">Request Pharmacy</button>
+                <button class="btn-sm btn-danger" *ngIf="med.status !== 'CANCELLED' && med.status !== 'ADMINISTERED'" (click)="updateStatus(med.id!, 'CANCELLED')">Cancel</button>
+              </td>
+            </tr>
+            <tr *ngIf="getPatientMedicines().length === 0">
+              <td colspan="8" class="empty-state">No medicine orders for this patient</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="glass-card empty-patient" *ngIf="!selectedPatient">
+        <div class="empty-icon">💊</div>
+        <h3>Select a Patient</h3>
+        <p>Choose an emergency patient to manage medicine orders</p>
+      </div>
+    </div>
+  </div>
+</div>

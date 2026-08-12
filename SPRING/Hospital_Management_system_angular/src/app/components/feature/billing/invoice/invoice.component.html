@@ -1,0 +1,336 @@
+<div class="invoice-container">
+
+  <!-- ========== LIST VIEW ========== -->
+  <div *ngIf="!selectedInvoice" class="invoice-list-view">
+    <div class="page-header">
+      <svg class="inv-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+      </svg>
+      <div class="hero-icon">&#x1F9FE;</div>
+      <h2>Invoices</h2>
+      <div class="header-actions">
+        <div class="search-bar">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" placeholder="Search by invoice # or patient name..."
+                 [(ngModel)]="searchQuery" (input)="filterInvoices()" />
+        </div>
+        <select [(ngModel)]="statusFilter" (change)="filterInvoices()" class="status-select">
+          <option value="">All Status</option>
+          <option value="PAID">Paid</option>
+          <option value="PENDING">Pending</option>
+          <option value="PARTIAL">Partial</option>
+          <option value="OVERDUE">Overdue</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Quick Invoice Lookup -->
+    <div class="quick-lookup">
+      <label>Quick Invoice Lookup:</label>
+      <div class="lookup-row">
+        <input type="text" placeholder="Enter invoice number (e.g. INV-00001)"
+               [(ngModel)]="searchInvoiceNumber" (keyup.enter)="lookupInvoice()" />
+        <button class="btn btn-primary" (click)="lookupInvoice()">Find Invoice</button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading invoices...</p>
+    </div>
+
+    <div *ngIf="error" class="error-state">
+      <p>{{ error }}</p>
+      <button class="btn btn-secondary" (click)="loadInvoices()">Retry</button>
+    </div>
+
+    <div *ngIf="!loading && !error" class="table-wrapper">
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Invoice #</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Net Payable</th>
+            <th>Paid</th>
+            <th>Due</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inv of filteredInvoices; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td class="inv-number">{{ inv.invoiceNumber }}</td>
+            <td>{{ inv.patientName }}</td>
+            <td>{{ inv.doctorName }}</td>
+            <td>{{ inv.invoiceDate }}</td>
+            <td class="amount">{{ inv.netPayable | number:'1.2-2' }}</td>
+            <td class="amount paid">{{ inv.paidAmount | number:'1.2-2' }}</td>
+            <td class="amount due" [class.has-due]="inv.dueAmount > 0">{{ inv.dueAmount | number:'1.2-2' }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(inv.status)">{{ inv.status }}</span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="viewInvoice(inv)">View</button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredInvoices.length === 0">
+            <td colspan="10" class="no-data">No invoices found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========== INVOICE DETAIL / PRINT VIEW ========== -->
+  <div *ngIf="selectedInvoice" class="invoice-detail-view">
+
+    <!-- Action Buttons (hidden on print) -->
+    <div class="action-bar no-print">
+      <button class="btn btn-secondary" (click)="backToList()">&larr; Back to List</button>
+      <div class="action-group">
+        <button class="btn btn-primary" (click)="printInvoice()">&#128424; Print Invoice</button>
+        <button class="btn btn-success" (click)="downloadPdf()">&#128196; Download PDF</button>
+        <button class="btn btn-info" (click)="emailInvoice()">&#9993; Email Invoice</button>
+      </div>
+    </div>
+
+    <div class="invoice-paper">
+
+      <!-- Hospital Header -->
+      <div class="hospital-header">
+        <div class="hospital-logo-area">
+          <div class="logo-placeholder">
+            <span class="logo-icon">&#9764;</span>
+          </div>
+        </div>
+        <div class="hospital-info">
+          <h1 class="hospital-name">Elite Care Hospital</h1>
+          <p class="hospital-address">123 Healthcare Avenue, Medical City, MC 10001</p>
+          <p class="hospital-contact">Phone: +1 (555) 123-4567 &nbsp;|&nbsp; Email: info&#64;elitecare.com</p>
+          <p class="hospital-website">www.elitecarehospital.com</p>
+        </div>
+      </div>
+
+      <div class="header-divider"></div>
+
+      <!-- Invoice Title Row -->
+      <div class="invoice-title-row">
+        <div class="title-left">
+          <h2 class="invoice-title">INVOICE</h2>
+        </div>
+        <div class="title-right">
+          <div class="invoice-meta">
+            <div class="meta-row">
+              <span class="meta-label">Invoice #:</span>
+              <span class="meta-value inv-num">{{ selectedInvoice.invoiceNumber }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Invoice Date:</span>
+              <span class="meta-value">{{ selectedInvoice.invoiceDate }}</span>
+            </div>
+            <div class="meta-row" *ngIf="selectedInvoice.dueDate">
+              <span class="meta-label">Due Date:</span>
+              <span class="meta-value">{{ selectedInvoice.dueDate }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">Status:</span>
+              <span class="status-badge" [ngClass]="getStatusClass(selectedInvoice.status)">
+                {{ selectedInvoice.status }}
+              </span>
+            </div>
+          </div>
+          <div class="qr-placeholder">
+            <div class="qr-box">
+              <div class="qr-inner">
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+                <div class="qr-dot"></div>
+              </div>
+              <span class="qr-text">Scan to Verify</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patient & Doctor Info Cards -->
+      <div class="info-cards">
+        <div class="info-card patient-card">
+          <h3 class="card-title">
+            <span class="card-icon">&#128100;</span> Patient Information
+          </h3>
+          <div class="card-body">
+            <div class="card-row">
+              <span class="card-label">Name:</span>
+              <span class="card-value">{{ selectedInvoice.patientName }}</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Patient ID:</span>
+              <span class="card-value">PID-{{ selectedInvoice.patientId }}</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Phone:</span>
+              <span class="card-value">{{ selectedInvoice.patientPhone }}</span>
+            </div>
+            <div class="card-row" *ngIf="selectedInvoice.patientEmail">
+              <span class="card-label">Email:</span>
+              <span class="card-value">{{ selectedInvoice.patientEmail }}</span>
+            </div>
+            <div class="card-row" *ngIf="selectedInvoice.patientAddress">
+              <span class="card-label">Address:</span>
+              <span class="card-value">{{ selectedInvoice.patientAddress }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card doctor-card">
+          <h3 class="card-title">
+            <span class="card-icon">&#129657;</span> Doctor Information
+          </h3>
+          <div class="card-body">
+            <div class="card-row">
+              <span class="card-label">Doctor:</span>
+              <span class="card-value">{{ selectedInvoice.doctorName }}</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Department:</span>
+              <span class="card-value">{{ selectedInvoice.department }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charges Table -->
+      <div class="charges-section">
+        <h3 class="section-title">Itemized Charges</h3>
+        <table class="charges-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Discount</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of selectedInvoice.items; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ item.unitPrice | number:'1.2-2' }}</td>
+              <td>{{ item.discount | number:'1.2-2' }}</td>
+              <td class="row-amount">{{ item.amount | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="selectedInvoice.items.length === 0">
+              <td colspan="7" class="no-data">No items</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Financial Summary -->
+      <div class="financial-summary">
+        <div class="summary-left">
+          <div class="payment-summary-box">
+            <h4>Payment Summary</h4>
+            <div class="summary-row" *ngIf="selectedInvoice.paymentMethod">
+              <span>Method:</span>
+              <span>{{ selectedInvoice.paymentMethod }}</span>
+            </div>
+            <div class="summary-row" *ngIf="selectedInvoice.paymentDate">
+              <span>Payment Date:</span>
+              <span>{{ selectedInvoice.paymentDate }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="summary-right">
+          <div class="summary-line">
+            <span class="summary-label">Subtotal</span>
+            <span class="summary-value">{{ selectedInvoice.subtotal | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line" *ngIf="selectedInvoice.totalDiscount > 0">
+            <span class="summary-label">Discount</span>
+            <span class="summary-value discount-val">-{{ selectedInvoice.totalDiscount | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line">
+            <span class="summary-label">VAT (18%)</span>
+            <span class="summary-value">{{ selectedInvoice.vat | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line" *ngIf="selectedInvoice.serviceCharge > 0">
+            <span class="summary-label">Service Charge</span>
+            <span class="summary-value">{{ selectedInvoice.serviceCharge | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line" *ngIf="selectedInvoice.insuranceCoverage > 0">
+            <span class="summary-label">Insurance Coverage</span>
+            <span class="summary-value discount-val">-{{ selectedInvoice.insuranceCoverage | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line total-line">
+            <span class="summary-label">Net Payable</span>
+            <span class="summary-value">{{ selectedInvoice.netPayable | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line paid-line">
+            <span class="summary-label">Paid Amount</span>
+            <span class="summary-value paid-val">{{ selectedInvoice.paidAmount | number:'1.2-2' }}</span>
+          </div>
+          <div class="summary-line due-line" *ngIf="selectedInvoice.dueAmount > 0">
+            <span class="summary-label">Due Amount</span>
+            <span class="summary-value due-val">{{ selectedInvoice.dueAmount | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms & Conditions -->
+      <div class="terms-section">
+        <h4>Terms &amp; Conditions</h4>
+        <ol>
+          <li>Payment is due within 30 days of the invoice date.</li>
+          <li>Late payments are subject to a 1.5% monthly interest charge.</li>
+          <li>Insurance coverage is subject to policy terms and verification.</li>
+          <li>Refunds will be processed within 7-10 business days.</li>
+          <li>This invoice is computer-generated and valid without a physical signature.</li>
+        </ol>
+      </div>
+
+      <!-- Seal & Signature -->
+      <div class="seal-signature-row">
+        <div class="seal-area">
+          <div class="hospital-seal">
+            <div class="seal-outer">
+              <div class="seal-inner">
+                <span class="seal-text">ELITE CARE</span>
+                <span class="seal-sub">HOSPITAL</span>
+              </div>
+            </div>
+          </div>
+          <span class="seal-label">Hospital Seal</span>
+        </div>
+        <div class="signature-area">
+          <div class="signature-line"></div>
+          <span class="signature-label">Authorized Signature</span>
+          <span class="signature-title">Billing Department</span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="invoice-footer">
+        <p>Thank you for choosing Elite Care Hospital. We are committed to providing the best healthcare services.</p>
+        <p class="footer-small">This is a system-generated invoice. For queries, contact billing&#64;elitecare.com</p>
+      </div>
+
+    </div>
+  </div>
+</div>

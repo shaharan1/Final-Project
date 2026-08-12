@@ -1,0 +1,60 @@
+body{
+    background:#f5f7fb;
+}
+
+.doctor-header{
+
+    background:linear-gradient(135deg, #059669 0%, #0891b2 100%);
+    color:white;
+
+}
+
+.doctor-photo{
+
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:50%;
+    border:5px solid white;
+
+}
+
+.stat-card{
+
+    border:none;
+    border-radius:15px;
+    transition:.3s;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-5px);
+    box-shadow:0 10px 20px rgba(0,0,0,.15);
+
+}
+
+.card{
+
+    border-radius:15px;
+
+}
+
+.card-header{
+
+    font-weight:bold;
+
+}
+
+table th{
+
+    width:180px;
+
+}
+
+@media (max-width: 768px) {
+    .doctor-photo { width: 80px; height: 80px; }
+    .stat-card h2 { font-size: 1.5rem; }
+    .card-body { padding: 1rem; }
+    .table-responsive { overflow-x: auto; }
+}

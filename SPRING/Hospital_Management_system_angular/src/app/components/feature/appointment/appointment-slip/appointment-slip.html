@@ -1,0 +1,149 @@
+<div #slip class="slip">
+
+    <div class="header">
+
+        <img src="assets/logo.png" width="90">
+
+        <h2>Modern Hospital Management System</h2>
+
+        <p>Dhaka, Bangladesh</p>
+
+        <hr>
+
+        <h3>Appointment Slip</h3>
+
+    </div>
+
+    <table>
+
+        <tr>
+
+            <th>Appointment No</th>
+
+            <td>{{appointment.appointmentNumber}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Patient Name</th>
+
+            <td>{{appointment.patientName}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Mobile</th>
+
+            <td>{{appointment.mobileNumber}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Doctor</th>
+
+            <td>{{appointment.doctorName}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Specialization</th>
+
+            <td>{{appointment.doctorSpecialization}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Date</th>
+
+            <td>{{appointment.appointmentDate}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Time</th>
+
+            <td>{{appointment.appointmentTime}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Fee</th>
+
+            <td>{{appointment.feeCharged}} Tk</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Status</th>
+
+            <td>{{appointment.status}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Payment</th>
+
+            <td>{{appointment.paymentMethod}}</td>
+
+        </tr>
+
+        <tr>
+
+            <th>Transaction ID</th>
+
+            <td>{{appointment.transactionId}}</td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+    <div class="text-center">
+
+        <img src="assets/qr.png" width="120">
+
+        <p>Scan for Verification</p>
+
+    </div>
+
+    <br>
+
+    <p>
+
+        Please arrive at least 15 minutes before your scheduled appointment.
+
+    </p>
+
+    <p>
+
+        Thank you for choosing Modern Hospital.
+
+    </p>
+
+</div>
+
+<div class="buttons">
+
+    <button class="btn btn-primary me-2" (click)="printSlip()">
+
+        Print Slip
+
+    </button>
+
+    <button class="btn btn-success" (click)="downloadPDF()">
+
+        Download PDF
+
+    </button>
+
+</div>

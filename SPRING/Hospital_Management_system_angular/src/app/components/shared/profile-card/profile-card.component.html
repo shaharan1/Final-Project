@@ -1,0 +1,73 @@
+<div class="profile-card" *ngIf="user">
+  <div class="profile-left">
+    <div class="profile-avatar-wrap" (click)="fileInput.click()">
+      <img *ngIf="getImageUrl()" [src]="getImageUrl()" class="profile-avatar-img" alt="Profile" />
+      <div *ngIf="!getImageUrl()" class="profile-avatar-initials" [style.background]="getRoleColor()">
+        {{ getInitials() }}
+      </div>
+      <div class="profile-avatar-overlay">
+        <span *ngIf="!imageUploading">Change Photo</span>
+        <span *ngIf="imageUploading" class="upload-spinner"></span>
+      </div>
+      <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+    </div>
+  </div>
+  <div class="profile-info">
+    <h3 class="profile-name">{{ user.name }}</h3>
+    <p class="profile-email">{{ user.email }}</p>
+    <span class="profile-role-badge" [style.background]="getRoleColor()">{{ user.role }}</span>
+  </div>
+  <div class="profile-right">
+    <button class="profile-edit-btn" (click)="openEditModal()">Edit Profile</button>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="profile-modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="profile-modal" (click)="$event.stopPropagation()">
+    <div class="profile-modal-header">
+      <h2>Edit Profile</h2>
+      <button class="modal-close" (click)="closeEditModal()">&times;</button>
+    </div>
+
+    <div class="profile-modal-avatar">
+      <div class="modal-avatar-wrap" (click)="modalFileInput.click()">
+        <img *ngIf="getImageUrl()" [src]="getImageUrl()" class="modal-avatar-img" alt="Profile" />
+        <div *ngIf="!getImageUrl()" class="modal-avatar-initials" [style.background]="getRoleColor()">
+          {{ getInitials() }}
+        </div>
+        <div class="modal-avatar-overlay">
+          <span>Change Photo</span>
+        </div>
+        <input #modalFileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+      </div>
+    </div>
+
+    <div class="profile-modal-body">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" [(ngModel)]="editName" class="form-input" placeholder="Enter name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" [value]="user?.email" class="form-input disabled" disabled />
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" [(ngModel)]="editPhone" class="form-input" placeholder="Enter phone" />
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <input type="text" [value]="user?.role" class="form-input disabled" disabled />
+      </div>
+    </div>
+
+    <div class="profile-modal-footer">
+      <span class="msg" *ngIf="msg" [class.msg-success]="msgType==='success'" [class.msg-error]="msgType==='error'">{{ msg }}</span>
+      <button class="btn-cancel" (click)="closeEditModal()">Cancel</button>
+      <button class="btn-save" (click)="saveProfile()" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+</div>

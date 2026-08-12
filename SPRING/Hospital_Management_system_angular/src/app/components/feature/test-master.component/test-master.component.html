@@ -1,0 +1,75 @@
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="test-header">
+
+<svg class="test-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+  <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+</svg>
+
+<div class="test-icon">🧪</div>
+<h4>
+
+{{isEdit ? 'Update Test' : 'Add Test'}}
+
+</h4>
+
+</div>
+
+<div class="card-body">
+
+<div class="mb-3">
+
+<label>Test Code</label>
+
+<input
+class="form-control"
+[(ngModel)]="test.testCode">
+
+</div>
+
+<div class="mb-3">
+
+<label>Test Name</label>
+
+<input
+class="form-control"
+[(ngModel)]="test.testName">
+
+</div>
+
+<div class="mb-3">
+
+<label>Price</label>
+
+<input
+type="number"
+class="form-control"
+[(ngModel)]="test.standardPrice">
+
+</div>
+
+<div class="mb-3">
+
+<label>Normal Range</label>
+
+<input
+class="form-control"
+[(ngModel)]="test.normalRange">
+
+</div>
+
+<button
+class="btn btn-success"
+(click)="save()">
+
+{{isEdit ? 'Update' : 'Save'}}
+
+</button>
+
+</div>
+
+</div>
+
+</div>

@@ -1,0 +1,70 @@
+<div class="dietary-page">
+  <div class="page-header">
+    <svg class="diet-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div>
+      <div class="ph-icon">📜</div>
+      <h1 class="page-title">Patient Diet History</h1>
+      <p class="page-subtitle">Track diet changes, recommendations, and nutrition progress</p>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div><p>Loading history...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <div class="filter-bar glass">
+      <div class="search-group">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="number" class="search-input" placeholder="Enter Patient ID..." [(ngModel)]="patientIdInput" (keyup.enter)="searchPatient()">
+      </div>
+      <button class="btn btn-primary" (click)="searchPatient()">Search</button>
+      <button class="btn btn-outline" (click)="patientIdInput='';loadHistory()">Show All</button>
+      <select class="filter-select" [(ngModel)]="filterAction" (ngModelChange)="filterAlerts()">
+        <option value="">All Actions</option>
+        <option value="ASSIGNED">Assigned</option>
+        <option value="UPDATED">Updated</option>
+        <option value="DOCTOR_RECOMMENDATION">Doctor Rec.</option>
+        <option value="DIETICIAN_RECOMMENDATION">Dietician Rec.</option>
+        <option value="MEAL_CHANGED">Meal Changed</option>
+        <option value="CANCELLED">Cancelled</option>
+      </select>
+    </div>
+
+    <div class="history-container" *ngIf="history.length > 0">
+      <div *ngFor="let item of history" class="history-item-card glass">
+        <div class="history-icon">
+          <span>{{ getActionIcon(item.actionType) }}</span>
+        </div>
+        <div class="history-content-main">
+          <div class="history-header-row">
+            <span class="history-action-badge" [ngClass]="getActionClass(item.actionType)">{{ item.actionType }}</span>
+            <span class="history-date">{{ item.createdAt | date:'MMM d, yyyy HH:mm' }}</span>
+          </div>
+          <p class="history-description">{{ item.description || 'No description' }}</p>
+          <div class="history-details" *ngIf="item.performedBy">
+            <span>By: {{ item.performedBy }}</span>
+            <span class="history-role-badge">{{ item.userRole || '-' }}</span>
+          </div>
+          <div class="history-vitals" *ngIf="item.weightKg || item.bmi">
+            <span *ngIf="item.weightKg" class="vital">Weight: {{ item.weightKg }} kg</span>
+            <span *ngIf="item.bmi" class="vital">BMI: {{ item.bmi }}</span>
+          </div>
+          <div class="history-change" *ngIf="item.previousValue">
+            <span class="change-old">{{ item.previousValue }}</span>
+            <span class="change-arrow">→</span>
+            <span class="change-new">{{ item.newValue }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="history.length === 0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="80" height="80"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <h3>No History Found</h3>
+      <p>{{ patientIdInput ? 'No history for this patient' : 'Enter a Patient ID to view history' }}</p>
+    </div>
+  </div>
+</div>

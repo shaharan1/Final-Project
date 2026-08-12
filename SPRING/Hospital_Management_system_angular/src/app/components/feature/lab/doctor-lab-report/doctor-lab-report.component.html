@@ -1,0 +1,99 @@
+<div class="lab-page">
+  <div class="lab-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">📋</div>
+      <div>
+        <h1>Lab Reports</h1>
+        <p class="lab-hero-sub">{{ filteredOrders.length }} total reports · Review test results for your patients</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lab-search-row">
+    <div class="lab-search-wrap">
+      <span class="lab-search-icon">🔍</span>
+      <input class="lab-search" placeholder="Search patient, test..." [(ngModel)]="searchKeyword">
+    </div>
+  </div>
+
+  <div class="lab-table-card">
+    <div class="lab-table-header">
+      <h3>Patient Lab Reports</h3>
+      <span class="lab-table-count lab-count-teal">{{ filteredOrders.length }} reports</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th>Patient</th>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Normal Range</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th class="th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index" class="lab-row">
+            <td class="td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lab-patient-cell">
+                <div class="lab-avatar" [style.background]="getAvatarColor(order.patientName)">{{ getInitials(order.patientName) }}</div>
+                <div>
+                  <div class="lab-patient-name">{{ order.patientName }}</div>
+                  <div class="lab-patient-sub">{{ order.patientCode }}</div>
+                </div>
+              </div>
+            </td>
+            <td><div class="lab-test-name">{{ order.testName }}</div></td>
+            <td><span class="lab-result-value">{{ order.resultValue || 'Pending' }}</span></td>
+            <td><span class="lab-range">{{ order.normalRange }}</span></td>
+            <td>
+              <span class="lab-status-chip" [class]="'lab-status-' + order.orderStatus.toLowerCase()">
+                {{ formatStatus(order.orderStatus) }}
+              </span>
+            </td>
+            <td><span class="lab-date">{{ order.lastUpdated | date:'dd MMM, yyyy' }}</span></td>
+            <td>
+              <button class="lab-action-btn lab-view-btn" *ngIf="order.resultValue" (click)="viewPdf(order)">
+                <span class="lab-btn-icon">Ⓟ</span> View Report
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="8">
+              <div class="lab-empty-state">
+                <div class="lab-empty-icon lab-empty-teal">Ⓛ</div>
+                <h4>No reports yet</h4>
+                <p>Lab reports for your patients will appear here</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PDF Modal -->
+  <div class="lab-modal-overlay" *ngIf="showPdfModal" (click)="closePdfModal()">
+    <div class="lab-modal lab-modal-pdf" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-teal">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">Ⓟ</div>
+          <div><h3>Lab Report</h3><p>{{ selectedOrder?.testName }} — {{ selectedOrder?.patientName }}</p></div>
+        </div>
+        <button class="lab-modal-close" (click)="closePdfModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body lab-pdf-body">
+        <iframe *ngIf="pdfUrl" [src]="pdfUrl" class="lab-pdf-frame"></iframe>
+      </div>
+    </div>
+  </div>
+</div>

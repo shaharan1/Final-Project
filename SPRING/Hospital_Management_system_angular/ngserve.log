@@ -1,0 +1,2114 @@
+[1m[33m
+Warning: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues.
+    [39m[22m
+[33m>[39m Building...
+[32m√[39m Building...
+Application bundle generation failed. [19.351 seconds] - 2026-08-12T10:29:32.403Z
+
+[1m[31m[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG2008: Could not find stylesheet file './app.css'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/app.ts:9:12:
+[37m      9 │   styleUrl: [32m'./app.css'[37m
+        ╵             [32m~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG2008: Could not find stylesheet file './role-redirect.css'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/auth/role-redirect/role-redirect.ts:11:12:
+[37m      11 │   styleUrl: [32m'./role-redirect.css'[37m,
+         ╵             [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/admission/admission-component/admission-component.ts:4:29:
+[37m      4 │ import { PatientModel } from [32m'../../../../models/patientModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/admission/admission-component/admission-component.ts:5:28:
+[37m      5 │ import { DoctorModel } from [32m'../../../../models/doctorModel'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/ward.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/admission/admission-component/admission-component.ts:6:26:
+[37m      6 │ import { WardModel } from [32m'../../../../models/ward.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/admission/admission-component/admission-component.ts:7:25:
+[37m      7 │ import { BedModel } from [32m'../../../../models/bed.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/admission.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/admission/admission-component/admission-component.ts:8:33:
+[37m      8 │ import { AdmissionRequest } from [32m'../../../../models/admission.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/admission-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/admission/admission-list.component/admission-list.component.ts:6:34:
+[37m      6 │ ...ssionResponse } from [32m'../../../../models/admission-response.model'[37m;
+        ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/appointmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.ts:9:33:
+[37m      9 │ ...rt { AppointmentModel } from [32m'../../../../models/appointmentModel'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/ScheduleSlotModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment.component/appointment.component.ts:6:34:
+[37m      6 │ ... { ScheduleSlotModel } from [32m'../../../../models/ScheduleSlotModel'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorDepartmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment.component/appointment.component.ts:7:38:
+[37m      7 │ ...rDepartmentModel } from [32m'../../../../models/doctorDepartmentModel'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/billing/payment.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/billing-dashboard/billing-dashboard.component.ts:12:7:
+[37m      12 │ } from [32m'../../../../models/billing/payment.model'[37m;
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/billing/insurance.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/insurance/insurance.component.ts:8:49:
+[37m      8 │ ...InsuranceClaim } from [32m'../../../../models/billing/insurance.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.ts:10:29:
+[37m      10 │ import { PatientModel } from [32m'../../../../models/patientModel'[37m;
+         ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/billing/refund.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/refund-management/refund-management.component.ts:7:23:
+[37m      7 │ import { Refund } from [32m'../../../../models/billing/refund.model'[37m;
+        ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/dashboards/admin-dashboard/admin-dashboard.component.ts:8:25:
+[37m      8 │ import { LabStats } from [32m'../../../../models/test-order.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/prescriptionModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/dashboards/doctor-dashboard-home/doctor-dashboard-home.component.ts:9:34:
+[37m      9 │ ... { PrescriptionModel } from [32m'../../../../models/prescriptionModel'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/dashboards/lab-technician-dashboard/lab-technician-dashboard.component.ts:6:41:
+[37m      6 │ ...tOrderModel, LabStats } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/testMasterModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/dashboards/lab-technician-dashboard/lab-technician-dashboard.component.ts:9:32:
+[37m      9 │ import { TestMasterModel } from [32m'../../../../models/testMasterModel'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/dietary/diet-plan.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/dietary/diet-plan/diet-plan.component.ts:6:25:
+[37m      6 │ import { DietPlan } from [32m'../../../../models/dietary/diet-plan.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorDepartmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/doctors/doctor-department/doctor-department.ts:5:38:
+[37m      5 │ ...rDepartmentModel } from [32m'../../../../models/doctorDepartmentModel'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.ts:3:28:
+[37m      3 │ import { DoctorModel } from [32m'../../../../models/doctorModel'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/ambulance.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-ambulance/emergency-ambulance.component.ts:7:41:
+[37m      7 │ ...mbulanceTrip } from [32m'../../../../models/emergency/ambulance.model'[37m;
+        ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-patient.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-ambulance/emergency-ambulance.component.ts:8:33:
+[37m      8 │ ...ient } from [32m'../../../../models/emergency/emergency-patient.model'[37m;
+        ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-bed/emergency-bed.component.ts:6:29:
+[37m      6 │ ...gencyBed } from [32m'../../../../models/emergency/emergency-bed.model'[37m;
+        ╵                    [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-patient.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-bed/emergency-bed.component.ts:7:33:
+[37m      7 │ ...ient } from [32m'../../../../models/emergency/emergency-patient.model'[37m;
+        ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-billing.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-billing/emergency-billing.component.ts:6:33:
+[37m      6 │ ...ling } from [32m'../../../../models/emergency/emergency-billing.model'[37m;
+        ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-patient.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-billing/emergency-billing.component.ts:7:33:
+[37m      7 │ ...ient } from [32m'../../../../models/emergency/emergency-patient.model'[37m;
+        ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-dashboard/emergency-dashboard.component.ts:8:35:
+[37m      8 │ import { EmergencyDashboard } from [32m'../../../../models/emergency'[37m;
+        ╵                                    [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-doctor-assignment/emergency-doctor-assignment.component.ts:8:60:
+[37m      8 │ ...t, EmergencyDoctorAssignment } from [32m'../../../../models/emergency'[37m;
+        ╵                                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-doctor-assignment/emergency-doctor-assignment.component.ts:9:28:
+[37m      9 │ import { DoctorModel } from [32m'../../../../models/doctorModel'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/nurseModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-doctor-assignment/emergency-doctor-assignment.component.ts:10:27:
+[37m      10 │ import { NurseModel } from [32m'../../../../models/nurseModel'[37m;
+         ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-patient.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-lab/emergency-lab.component.ts:6:33:
+[37m      6 │ ...ient } from [32m'../../../../models/emergency/emergency-patient.model'[37m;
+        ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-lab-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-lab/emergency-lab.component.ts:7:34:
+[37m      7 │ ...der } from [32m'../../../../models/emergency/emergency-lab-order.mod[37m...
+        ╵               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-patient.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-medicine/emergency-medicine.component.ts:6:33:
+[37m      6 │ ...ient } from [32m'../../../../models/emergency/emergency-patient.model'[37m;
+        ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency/emergency-medicine.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-medicine/emergency-medicine.component.ts:7:34:
+[37m      7 │ ...ine } from [32m'../../../../models/emergency/emergency-medicine.model'[37m;
+        ╵               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-registration/emergency-registration.component.ts:6:33:
+[37m      6 │ import { EmergencyPatient } from [32m'../../../../models/emergency'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-status-board/emergency-status-board.component.ts:9:85:
+[37m      9 │ ...e, EmergencyDoctorAssignment } from [32m'../../../../models/emergency'[37m;
+        ╵                                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/emergency/emergency-triage/emergency-triage.component.ts:7:41:
+[37m      7 │ ...t { EmergencyPatient, Triage } from [32m'../../../../models/emergency'[37m;
+        ╵                                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/genericModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/generic-list/generic-list.ts:4:29:
+[37m      4 │ import { GenericModel } from [32m'../../../models/genericModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG2008: Could not find stylesheet file './generic-list.css'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/generic-list/generic-list.ts:12:12:
+[37m      12 │   styleUrl: [32m'./generic-list.css'[37m,
+         ╵             [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/genericModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/generic/generic.ts:4:29:
+[37m      4 │ import { GenericModel } from [32m'../../../models/genericModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mNG2008: Could not find stylesheet file './generic.css'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/generic/generic.ts:12:12:
+[37m      12 │   styleUrl: [32m'./generic.css'[37m,
+         ╵             [32m~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/doctor-lab-report/doctor-lab-report.component.ts:5:31:
+[37m      5 │ import { TestOrderModel } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/lab-report.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-dashboard/lab-dashboard.component.ts:5:40:
+[37m      5 │ ...bDashboard, LabReport } from [32m'../../../../models/lab-report.model'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-reception/lab-reception.component.ts:4:31:
+[37m      4 │ import { TestOrderModel } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/lab-report.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-report-preview/lab-report-preview.component.ts:6:43:
+[37m      6 │ ...port, LabReportResult } from [32m'../../../../models/lab-report.model'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'r' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-report-preview/lab-report-preview.component.ts:74:40:
+[37m      74 │     return this.report?.results?.filter([32mr[37m => r.abnormal) || [];
+         ╵                                         [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/lab-report.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-reports-list/lab-reports-list.component.ts:5:26:
+[37m      5 │ import { LabReport } from [32m'../../../../models/lab-report.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-test-entry/lab-test-entry.component.ts:5:31:
+[37m      5 │ import { TestOrderModel } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/lab-config.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-test-entry/lab-test-entry.component.ts:10:66:
+[37m      10 │ ...etail, TestParameter } from [32m'../../../../models/lab-config.model'[37m;
+         ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'p' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-test-entry/lab-test-entry.component.ts:143:18:
+[37m      143 │           .filter([32mp[37m => p.active !== false)
+          ╵                   [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'p' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-test-entry/lab-test-entry.component.ts:144:15:
+[37m      144 │           .map([32mp[37m => ({ parameter: p, value: '', preview: null, lo...
+          ╵                [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'v' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-test-entry/lab-test-entry.component.ts:165:42:
+[37m      165 │     return p.allowedValues.split(',').map([32mv[37m => v.trim());
+          ╵                                           [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/lab-verification/lab-verification.component.ts:5:31:
+[37m      5 │ import { TestOrderModel } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/testMasterModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/reference-range-management/reference-range-management.component.ts:4:32:
+[37m      4 │ import { TestMasterModel } from [32m'../../../../models/testMasterModel'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/lab-config.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/reference-range-management/reference-range-management.component.ts:7:84:
+[37m      7 │ ...Detail, TestParameter } from [32m'../../../../models/lab-config.model'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'p' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/reference-range-management/reference-range-management.component.ts:165:51:
+[37m      165 │ ... = this.detail?.parameters.find([32mp[37m => p.id === r.testParameterId);
+          ╵                                    [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'x' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/reference-range-management/reference-range-management.component.ts:167:63:
+[37m      167 │ ...ferenceRanges = param.referenceRanges.filter([32mx[37m => x.id !== r.id);
+          ╵                                                 [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'x' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/reference-range-management/reference-range-management.component.ts:235:71:
+[37m      235 │ ...nRules = param.interpretationRules.filter([32mx[37m => x.id !== rule.id);
+          ╵                                              [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/result-entry/result-entry.component.ts:4:31:
+[37m      4 │ import { TestOrderModel } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/lab/sample-collection/sample-collection.component.ts:4:31:
+[37m      4 │ import { TestOrderModel } from [32m'../../../../models/test-order.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/medicineModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/medicine-list.component/medicine-list.component.ts:5:30:
+[37m      5 │ import { MedicineModel } from [32m'../../../models/medicineModel'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/genericModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/medicine.component/medicine.component.ts:5:29:
+[37m      5 │ import { GenericModel } from [32m'../../../models/genericModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/medicineModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/medicine.component/medicine.component.ts:6:30:
+[37m      6 │ import { MedicineModel } from [32m'../../../models/medicineModel'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/nurseModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/nurse-list/nurse-list.ts:4:27:
+[37m      4 │ import { NurseModel } from [32m'../../../models/nurseModel'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/nurseModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/nurse/nurse.ts:4:27:
+[37m      4 │ import { NurseModel } from [32m'../../../models/nurseModel'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/office-staff.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/office-staff-list.component/office-staff-list.component.ts:2:33:
+[37m      2 │ import { OfficeStaffModel } from [32m'../../../models/office-staff.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/patient-list.component/patient-list.component.ts:4:29:
+[37m      4 │ import { PatientModel } from [32m'../../../models/patientModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/patient.component/patient.component.ts:4:29:
+[37m      4 │ import { PatientModel } from [32m'../../../models/patientModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/medicine-stock.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/medicine-stock/medicine-stock.component.ts:7:35:
+[37m      7 │ ...edicineStockModel } from [32m'../../../../models/medicine-stock.model'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/stock-adjustment.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/medicine-stock/medicine-stock.component.ts:8:56:
+[37m      8 │ ...ockHistoryModel } from [32m'../../../../models/stock-adjustment.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/supplier.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/medicine-stock/medicine-stock.component.ts:9:30:
+[37m      9 │ import { SupplierModel } from [32m'../../../../models/supplier.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/pharmacy-dashboard.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:6:39:
+[37m      6 │ ...ashboardModel } from [32m'../../../../models/pharmacy-dashboard.model'[37m;
+        ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/pharmacy-sale.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:8:57:
+[37m      8 │ ...rmacySaleItemModel } from [32m'../../../../models/pharmacy-sale.model'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/medicine-stock.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:9:35:
+[37m      9 │ ...edicineStockModel } from [32m'../../../../models/medicine-stock.model'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/prescriptionModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:10:57:
+[37m      10 │ ...escriptionItemModel } from [32m'../../../../models/prescriptionModel'[37m;
+         ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/supplier.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/purchase-order/purchase-order.component.ts:9:30:
+[37m      9 │ import { SupplierModel } from [32m'../../../../models/supplier.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/medicine-stock.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/purchase-order/purchase-order.component.ts:10:35:
+[37m      10 │ ...dicineStockModel } from [32m'../../../../models/medicine-stock.model'[37m;
+         ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/purchase.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/purchase-order/purchase-order.component.ts:11:49:
+[37m      11 │ ...del, PurchaseItemModel } from [32m'../../../../models/purchase.model'[37m;
+         ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/supplier.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/supplier/supplier.component.ts:7:30:
+[37m      7 │ import { SupplierModel } from [32m'../../../../models/supplier.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/prescriptionModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription-list.component.ts:4:34:
+[37m      4 │ import { PrescriptionModel } from [32m'../../../models/prescriptionModel'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/login.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription-list.component.ts:8:30:
+[37m      8 │ import { LoginResponse } from [32m'../../../models/login.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/prescriptionModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:4:34:
+[37m      4 │ import { PrescriptionModel } from [32m'../../../models/prescriptionModel'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/medicineModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:9:30:
+[37m      9 │ import { MedicineModel } from [32m'../../../models/medicineModel'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/testMasterModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:12:32:
+[37m      12 │ import { TestMasterModel } from [32m'../../../models/testMasterModel'[37m;
+         ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 't' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:222:52:
+[37m      222 │           this.prescription.testIds = res.tests.map([32mt[37m => t.id!);
+          ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 't' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:223:45:
+[37m      223 │           this.selectedTests = res.tests.map([32mt[37m => ({
+          ╵                                              [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'item' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:233:74:
+[37m      233 │ ...cription.prescriptionItems = res.prescriptionItems.map([32mitem[37m => ({
+          ╵                                                           [32m~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'id' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/prescription/prescription.ts:376:39:
+[37m      376 │       this.prescription.testIds.filter([32mid[37m => id !== test.id);
+          ╵                                        [32m~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:7:37:
+[37m      7 │ ...tmentAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:79:44:
+[37m      79 │     const labels = this.data.dailyTrend.map([32md[37m => d.date);
+         ╵                                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:80:44:
+[37m      80 │     const values = this.data.dailyTrend.map([32md[37m => d.count);
+         ╵                                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:112:60:
+[37m      112 │ ...ls = this.data.departmentWiseDistribution.map([32md[37m => d.department);
+          ╵                                                  [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:113:60:
+[37m      113 │ ... values = this.data.departmentWiseDistribution.map([32md[37m => d.count);
+          ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:142:52:
+[37m      142 │     const labels = this.data.statusDistribution.map([32ms[37m => s.status);
+          ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:143:52:
+[37m      143 │     const values = this.data.statusDistribution.map([32ms[37m => s.count);
+          ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'h' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:166:43:
+[37m      166 │     const labels = this.data.peakHours.map([32mh[37m => `${h.hour}:00`);
+          ╵                                            [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'h' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/appointment-reports/appointment-reports.component.ts:167:43:
+[37m      167 │     const values = this.data.peakHours.map([32mh[37m => h.count);
+          ╵                                            [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/bed-reports/bed-reports.component.ts:7:29:
+[37m      7 │ ...{ BedOccupancy } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'w' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/bed-reports/bed-reports.component.ts:81:51:
+[37m      81 │     const labels = this.data.wardWiseOccupancy.map([32mw[37m => w.ward);
+         ╵                                                    [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'w' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/bed-reports/bed-reports.component.ts:82:53:
+[37m      82 │ ...const occupied = this.data.wardWiseOccupancy.map([32mw[37m => w.occupied);
+         ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'w' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/bed-reports/bed-reports.component.ts:83:54:
+[37m      83 │ ...nst available = this.data.wardWiseOccupancy.map([32mw[37m => w.available);
+         ╵                                                    [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/doctor-reports/doctor-reports.component.ts:7:32:
+[37m      7 │ ...octorAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/doctor-reports/doctor-reports.component.ts:76:31:
+[37m      76 │     const labels = doctors.map([32md[37m => d.name);
+         ╵                                [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/doctor-reports/doctor-reports.component.ts:77:31:
+[37m      77 │     const values = doctors.map([32md[37m => d.patientCount);
+         ╵                                [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/doctor-reports/doctor-reports.component.ts:108:29:
+[37m      108 │     const labels = depts.map([32md[37m => d.department);
+          ╵                              [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/doctor-reports/doctor-reports.component.ts:109:36:
+[37m      109 │     const patientCounts = depts.map([32md[37m => d.patientCount);
+          ╵                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/doctor-reports/doctor-reports.component.ts:110:36:
+[37m      110 │     const revenueCounts = depts.map([32md[37m => d.revenue);
+          ╵                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/emergency-reports/emergency-reports.component.ts:7:35:
+[37m      7 │ ...gencyAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/emergency-reports/emergency-reports.component.ts:75:54:
+[37m      75 │     const labels = this.data.severityDistribution.map([32ms[37m => s.level);
+         ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/emergency-reports/emergency-reports.component.ts:76:54:
+[37m      76 │     const values = this.data.severityDistribution.map([32ms[37m => s.count);
+         ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/emergency-reports/emergency-reports.component.ts:103:52:
+[37m      103 │     const labels = this.data.statusDistribution.map([32ms[37m => s.status);
+          ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/emergency-reports/emergency-reports.component.ts:104:52:
+[37m      104 │     const values = this.data.statusDistribution.map([32ms[37m => s.count);
+          ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/lab-reports/lab-reports.component.ts:7:29:
+[37m      7 │ ...{ LabAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/lab-reports/lab-reports.component.ts:75:48:
+[37m      75 │     const labels = this.data.dailyTestTrend.map([32md[37m => d.date);
+         ╵                                                 [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/lab-reports/lab-reports.component.ts:76:48:
+[37m      76 │     const values = this.data.dailyTestTrend.map([32md[37m => d.count);
+         ╵                                                 [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'c' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/lab-reports/lab-reports.component.ts:108:58:
+[37m      108 │ ...labels = this.data.testCategoryDistribution.map([32mc[37m => c.category);
+          ╵                                                    [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'c' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/lab-reports/lab-reports.component.ts:109:58:
+[37m      109 │ ...st values = this.data.testCategoryDistribution.map([32mc[37m => c.count);
+          ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/patient-reports/patient-reports.component.ts:7:33:
+[37m      7 │ ...tientAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2345: Argument of type 'Chart<"bar", unknown[], string>' is not assignable to parameter of type 'Chart<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown>'.
+  Types of property 'config' are incompatible.
+    Type 'ChartConfiguration<"bar", unknown[], string> | ChartConfigurationCustomTypesPerDataset<"bar", unknown[], string>' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown> | ChartConfigurationCustomTypesPerDataset<...>'.
+      Type 'ChartConfiguration<"bar", unknown[], string>' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown> | ChartConfigurationCustomTypesPerDataset<...>'.
+        Type 'ChartConfiguration<"bar", unknown[], string>' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown>'.
+          Types of property 'data' are incompatible.
+            Type 'ChartData<"bar", unknown[], string>' is not assignable to type 'ChartData<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown>'.
+              Type 'unknown[]' is not assignable to type '(number | [number, number] | Point | BubbleDataPoint | null)[]'.
+                Type 'unknown' is not assignable to type 'number | [number, number] | Point | BubbleDataPoint | null'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/patient-reports/patient-reports.component.ts:113:21:
+[37m      113 │     this.charts.push([32mchart[37m);
+          ╵                      [32m~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2345: Argument of type 'Chart<"pie", unknown[], string>' is not assignable to parameter of type 'Chart<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown>'.
+  Types of property 'config' are incompatible.
+    Type 'ChartConfiguration<"pie", unknown[], string> | ChartConfigurationCustomTypesPerDataset<"pie", unknown[], string>' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown> | ChartConfigurationCustomTypesPerDataset<...>'.
+      Type 'ChartConfiguration<"pie", unknown[], string>' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown> | ChartConfigurationCustomTypesPerDataset<...>'.
+        Type 'ChartConfiguration<"pie", unknown[], string>' is not assignable to type 'ChartConfiguration<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown>'.
+          Types of property 'data' are incompatible.
+            Type 'ChartData<"pie", unknown[], string>' is not assignable to type 'ChartData<keyof ChartTypeRegistry, (number | [number, number] | Point | BubbleDataPoint | null)[], unknown>'.
+              Type 'unknown[]' is not assignable to type '(number | [number, number] | Point | BubbleDataPoint | null)[]'.
+                Type 'unknown' is not assignable to type 'number | [number, number] | Point | BubbleDataPoint | null'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/patient-reports/patient-reports.component.ts:143:21:
+[37m      143 │     this.charts.push([32mchart[37m);
+          ╵                      [32m~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/patient-reports/patient-reports.component.ts:148:58:
+[37m      148 │ ...st labels = this.data.monthlyRegistrationTrend.map([32mm[37m => m.month);
+          ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/patient-reports/patient-reports.component.ts:149:58:
+[37m      149 │ ...st values = this.data.monthlyRegistrationTrend.map([32mm[37m => m.count);
+          ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/pharmacy-reports/pharmacy-reports.component.ts:7:34:
+[37m      7 │ ...rmacyAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/pharmacy-reports/pharmacy-reports.component.ts:75:44:
+[37m      75 │     const labels = this.data.salesTrend.map([32ms[37m => s.date);
+         ╵                                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 's' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/pharmacy-reports/pharmacy-reports.component.ts:76:44:
+[37m      76 │     const values = this.data.salesTrend.map([32ms[37m => s.amount);
+         ╵                                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/pharmacy-reports/pharmacy-reports.component.ts:109:28:
+[37m      109 │     const labels = meds.map([32mm[37m => m.name);
+          ╵                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/pharmacy-reports/pharmacy-reports.component.ts:110:28:
+[37m      110 │     const values = meds.map([32mm[37m => m.quantity);
+          ╵                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:9:7:
+[37m      9 │ } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:159:58:
+[37m      159 │       const labels = this.revenueAnalytics.dailyTrend.map([32md[37m => {
+          ╵                                                           [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:163:56:
+[37m      163 │ ...const data = this.revenueAnalytics.dailyTrend.map([32md[37m => d.amount);
+          ╵                                                      [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:195:75:
+[37m      195 │ ...tmentAnalytics.departmentWiseDistribution.map([32md[37m => d.department),
+          ╵                                                  [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:198:75:
+[37m      198 │ ...ppointmentAnalytics.departmentWiseDistribution.map([32md[37m => d.count),
+          ╵                                                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'p' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:221:70:
+[37m      221 │ ...is.revenueAnalytics.paymentMethodDistribution.map([32mp[37m => p.method),
+          ╵                                                      [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'p' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:223:70:
+[37m      223 │ ...is.revenueAnalytics.paymentMethodDistribution.map([32mp[37m => p.amount),
+          ╵                                                      [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/reports-dashboard/reports-dashboard.component.ts:242:22:
+[37m      242 │           values.push([32mv[37m);
+          ╵                       [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:7:33:
+[37m      7 │ ...venueAnalytics } from [32m'../../../../models/reports/analytics.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:79:44:
+[37m      79 │     const labels = this.data.dailyTrend.map([32md[37m => d.date);
+         ╵                                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:80:44:
+[37m      80 │     const values = this.data.dailyTrend.map([32md[37m => d.amount);
+         ╵                                             [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:112:46:
+[37m      112 │     const labels = this.data.monthlyTrend.map([32mm[37m => m.month);
+          ╵                                               [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:113:46:
+[37m      113 │     const values = this.data.monthlyTrend.map([32mm[37m => m.amount);
+          ╵                                               [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:142:59:
+[37m      142 │ ... labels = this.data.paymentMethodDistribution.map([32mm[37m => m.method);
+          ╵                                                      [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:143:59:
+[37m      143 │ ... values = this.data.paymentMethodDistribution.map([32mm[37m => m.amount);
+          ╵                                                      [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:170:53:
+[37m      170 │ ...st labels = this.data.revenueByDepartment.map([32md[37m => d.department);
+          ╵                                                  [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'd' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/reports/revenue-reports/revenue-reports.component.ts:171:53:
+[37m      171 │ ...const values = this.data.revenueByDepartment.map([32md[37m => d.revenue);
+          ╵                                                     [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-schedule.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/ot-schedule/ot-schedule.component.ts:6:32:
+[37m      6 │ ...chedule } from [32m'../../../../models/surgery/surgery-schedule.model'[37m;
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-dashboard.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-dashboard/surgery-dashboard.component.ts:6:33:
+[37m      6 │ ...hboard } from [32m'../../../../models/surgery/surgery-dashboard.model'[37m;
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'm' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-dashboard/surgery-dashboard.component.ts:37:60:
+[37m      37 │ ...  this.maxMonth = Math.max(1, ...res.monthlyStats.map([32mm[37m => m[2]));
+         ╵                                                          [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-details/surgery-details.component.ts:6:32:
+[37m      6 │ ...esponse } from [32m'../../../../models/surgery/surgery-response.model'[37m;
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:11:31:
+[37m      11 │ ... SurgeryRequest } from [32m'../../../../models/surgery/surgery.model'[37m;
+         ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:12:32:
+[37m      12 │ ...sponse } from [32m'../../../../models/surgery/surgery-response.model'[37m;
+         ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-category.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:13:32:
+[37m      13 │ ...tegory } from [32m'../../../../models/surgery/surgery-category.model'[37m;
+         ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-master.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:14:30:
+[37m      14 │ ...ryMaster } from [32m'../../../../models/surgery/surgery-master.model'[37m;
+         ╵                    [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/operation-theatre.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:15:33:
+[37m      15 │ ...eatre } from [32m'../../../../models/surgery/operation-theatre.model'[37m;
+         ╵                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/doctor-discount.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:16:31:
+[37m      16 │ ...iscount } from [32m'../../../../models/surgery/doctor-discount.model'[37m;
+         ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:17:29:
+[37m      17 │ import { PatientModel } from [32m'../../../../models/patientModel'[37m;
+         ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:18:28:
+[37m      18 │ import { DoctorModel } from [32m'../../../../models/doctorModel'[37m;
+         ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorDepartmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:19:38:
+[37m      19 │ ...DepartmentModel } from [32m'../../../../models/doctorDepartmentModel'[37m;
+         ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/admission-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-form/surgery-form.component.ts:20:34:
+[37m      20 │ ...sionResponse } from [32m'../../../../models/admission-response.model'[37m;
+         ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-invoice-preview/surgery-invoice-preview.component.ts:6:32:
+[37m      6 │ ...esponse } from [32m'../../../../models/surgery/surgery-response.model'[37m;
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-list/surgery-list.component.ts:6:32:
+[37m      6 │ ...esponse } from [32m'../../../../models/surgery/surgery-response.model'[37m;
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-category.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-rate-management/surgery-rate-management.component.ts:7:56:
+[37m      7 │ ...Request } from [32m'../../../../models/surgery/surgery-category.model'[37m;
+        ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/surgery-master.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-rate-management/surgery-rate-management.component.ts:8:52:
+[37m      8 │ ...erRequest } from [32m'../../../../models/surgery/surgery-master.model'[37m;
+        ╵                     [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/operation-theatre.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-rate-management/surgery-rate-management.component.ts:9:58:
+[37m      9 │ ...equest } from [32m'../../../../models/surgery/operation-theatre.model'[37m;
+        ╵                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/surgery/doctor-discount.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-rate-management/surgery-rate-management.component.ts:10:54:
+[37m      10 │ ...Request } from [32m'../../../../models/surgery/doctor-discount.model'[37m;
+         ╵                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/surgery/surgery-rate-management/surgery-rate-management.component.ts:11:28:
+[37m      11 │ import { DoctorModel } from [32m'../../../../models/doctorModel'[37m;
+         ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/testMasterModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/test-list.component/test-list.component.ts:5:32:
+[37m      5 │ import { TestMasterModel } from [32m'../../../models/testMasterModel'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/testMasterModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/test-master.component/test-master.component.ts:5:32:
+[37m      5 │ import { TestMasterModel } from [32m'../../../models/testMasterModel'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/ward.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-list.component/ward-list.component.ts:2:26:
+[37m      2 │ import { WardModel } from [32m'../../../../models/ward.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-list.component/ward-list.component.ts:3:25:
+[37m      3 │ import { BedModel } from [32m'../../../../models/bed.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/ward.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:5:26:
+[37m      5 │ import { WardModel } from [32m'../../../../models/ward.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:6:25:
+[37m      6 │ import { BedModel } from [32m'../../../../models/bed.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:7:29:
+[37m      7 │ import { PatientModel } from [32m'../../../../models/patientModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:8:28:
+[37m      8 │ import { DoctorModel } from [32m'../../../../models/doctorModel'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/admission-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:9:34:
+[37m      9 │ ...ssionResponse } from [32m'../../../../models/admission-response.model'[37m;
+        ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/admission.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:10:33:
+[37m      10 │ ...rt { AdmissionRequest } from [32m'../../../../models/admission.model'[37m;
+         ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:11:30:
+[37m      11 │ import { FacilityModel } from [32m'../../../../models/bed.model'[37m;
+         ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'f' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward-management.component/ward-management.component.ts:478:29:
+[37m      478 │       bed.facilities.forEach([32mf[37m => this.selectedFacilityIds.add(f....
+          ╵                              [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/ward.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward.component/ward.component.ts:5:26:
+[37m      5 │ import { WardModel } from [32m'../../../../models/ward.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/ward/ward.component/ward.component.ts:6:25:
+[37m      6 │ import { BedModel } from [32m'../../../../models/bed.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/doctorDepartmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/public/landing-page/landing-page.component.ts:7:38:
+[37m      7 │ ...ctorDepartmentModel } from [32m'../../../models/doctorDepartmentModel'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/ScheduleSlotModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/public/landing-page/landing-page.component.ts:8:34:
+[37m      8 │ import { ScheduleSlotModel } from [32m'../../../models/ScheduleSlotModel'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../../models/nav-item.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/shared/layout/layout/layout.component.ts:8:25:
+[37m      8 │ import { NavGroup } from [32m'../../../../models/nav-item.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../../models/login.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/shared/profile-card/profile-card.component.ts:6:30:
+[37m      6 │ import { LoginResponse } from [32m'../../../models/login.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS7006: Parameter 'n' implicitly has an 'any' type.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/shared/profile-card/profile-card.component.ts:55:41:
+[37m      55 │ ... this.user.name.split(' ').map([32mn[37m => n[0]).join('').toUpperCase(...
+         ╵                                   [32m^[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/ward.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/admission.service.ts:4:26:
+[37m      4 │ import { WardModel } from [32m'../models/ward.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/admission.service.ts:5:25:
+[37m      5 │ import { BedModel } from [32m'../models/bed.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/admission.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/admission.service.ts:6:33:
+[37m      6 │ import { AdmissionRequest } from [32m'../models/admission.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/admission-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/admission.service.ts:7:34:
+[37m      7 │ ...rt { AdmissionResponse } from [32m'../models/admission-response.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/appointmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/appointment.service.ts:4:33:
+[37m      4 │ import { AppointmentModel } from [32m'../models/appointmentModel'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/AppointmentResponseModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/appointment.service.ts:6:41:
+[37m      6 │ ...pointmentResponseModel } from [32m'../models/AppointmentResponseModel'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/login.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/auth.service.ts:4:89:
+[37m      4 │ ...LoginResponse, ResetPasswordRequest } from [32m'../models/login.model'[37m;
+        ╵                                               [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/diet-assignment.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/diet-assignment.service.ts:5:31:
+[37m      5 │ ...DietAssignment } from [32m'../../models/dietary/diet-assignment.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/diet-history.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/diet-history.service.ts:5:28:
+[37m      5 │ import { DietHistory } from [32m'../../models/dietary/diet-history.model'[37m;
+        ╵                             [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/diet-plan.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/diet-plan.service.ts:5:25:
+[37m      5 │ import { DietPlan } from [32m'../../models/dietary/diet-plan.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/dietary-dashboard.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/dietary-dashboard.service.ts:5:38:
+[37m      5 │ ...shboardStats } from [32m'../../models/dietary/dietary-dashboard.model'[37m;
+        ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/kitchen-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/dietary-dashboard.service.ts:6:29:
+[37m      6 │ ...t { KitchenOrder } from [32m'../../models/dietary/kitchen-order.model'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/patient-diet-alert.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/dietary-dashboard.service.ts:7:33:
+[37m      7 │ ...ntDietAlert } from [32m'../../models/dietary/patient-diet-alert.model'[37m;
+        ╵                       [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/meal-schedule.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/dietary-dashboard.service.ts:8:29:
+[37m      8 │ ...t { MealSchedule } from [32m'../../models/dietary/meal-schedule.model'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/dietician.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/dietician.service.ts:5:26:
+[37m      5 │ import { Dietician } from [32m'../../models/dietary/dietician.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/kitchen-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/kitchen-order.service.ts:5:29:
+[37m      5 │ ...t { KitchenOrder } from [32m'../../models/dietary/kitchen-order.model'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/meal-schedule.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/meal-schedule.service.ts:5:29:
+[37m      5 │ ...t { MealSchedule } from [32m'../../models/dietary/meal-schedule.model'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/dietary/patient-diet-alert.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/dietary/patient-diet-alert.service.ts:5:33:
+[37m      5 │ ...ntDietAlert } from [32m'../../models/dietary/patient-diet-alert.model'[37m;
+        ╵                       [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/doctorModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/doctor.service.ts:4:49:
+[37m      4 │ ... { DoctorModel, DoctorResponseModel } from [32m'../models/doctorModel'[37m;
+        ╵                                               [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/doctorDepartmentModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/doctors-department.ts:3:38:
+[37m      3 │ ...t { DoctorDepartmentModel } from [32m'../models/doctorDepartmentModel'[37m;
+        ╵                                     [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/ambulance-trip.service.ts:5:30:
+[37m      5 │ import { AmbulanceTrip } from [32m'../../models/emergency'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/ambulance.service.ts:5:26:
+[37m      5 │ import { Ambulance } from [32m'../../models/emergency'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-bed.service.ts:5:29:
+[37m      5 │ import { EmergencyBed } from [32m'../../models/emergency'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-billing.service.ts:5:33:
+[37m      5 │ import { EmergencyBilling } from [32m'../../models/emergency'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-doctor-assignment.service.ts:5:42:
+[37m      5 │ import { EmergencyDoctorAssignment } from [32m'../../models/emergency'[37m;
+        ╵                                           [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-lab-order.service.ts:5:34:
+[37m      5 │ import { EmergencyLabOrder } from [32m'../../models/emergency'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-medicine.service.ts:5:34:
+[37m      5 │ import { EmergencyMedicine } from [32m'../../models/emergency'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-patient.service.ts:5:76:
+[37m      5 │ ...cyDashboard, EmergencyStatusUpdate } from [32m'../../models/emergency'[37m;
+        ╵                                              [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/emergency-timeline.service.ts:5:34:
+[37m      5 │ import { EmergencyTimeline } from [32m'../../models/emergency'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/emergency' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/emergency/triage.service.ts:5:23:
+[37m      5 │ import { Triage } from [32m'../../models/emergency'[37m;
+        ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/facility.service.ts:5:30:
+[37m      5 │ import { FacilityModel } from [32m'../models/bed.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/genericModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/generic.service.ts:5:29:
+[37m      5 │ import { GenericModel } from [32m'../models/genericModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/ward.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/infrastructure.service.ts:4:26:
+[37m      4 │ import { WardModel } from [32m'../models/ward.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/bed.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/infrastructure.service.ts:5:25:
+[37m      5 │ import { BedModel } from [32m'../models/bed.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/lab-config.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/lab-config.service.ts:5:93:
+[37m      5 │ ...estMasterDetail, TestParameter } from [32m'../models/lab-config.model'[37m;
+        ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/lab-config.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/lab-report.service.ts:5:33:
+[37m      5 │ import { InterpretPreview } from [32m'../models/lab-config.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/lab-report.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/lab-report.service.ts:6:40:
+[37m      6 │ import { LabDashboard, LabReport } from [32m'../models/lab-report.model'[37m;
+        ╵                                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/medicineModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/medicine.service.ts:4:30:
+[37m      4 │ import { MedicineModel } from [32m'../models/medicineModel'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/nav-item.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/navigation.service.ts:3:25:
+[37m      3 │ import { NavGroup } from [32m'../models/nav-item.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/nurseModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/nurse.service.ts:2:27:
+[37m      2 │ import { NurseModel } from [32m'../models/nurseModel'[37m;
+        ╵                            [32m~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/office-staff.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/office-staff.service.ts:3:33:
+[37m      3 │ import { OfficeStaffModel } from [32m'../models/office-staff.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/patientModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/patient.service.ts:4:29:
+[37m      4 │ import { PatientModel } from [32m'../models/patientModel'[37m;
+        ╵                              [32m~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/pharmacy-dashboard.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/pharmacy-dashboard.service.ts:5:39:
+[37m      5 │ ...PharmacyDashboardModel } from [32m'../models/pharmacy-dashboard.model'[37m;
+        ╵                                  [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/pharmacy-sale.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/pharmacy-sale.service.ts:5:34:
+[37m      5 │ import { PharmacySaleModel } from [32m'../models/pharmacy-sale.model'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/prescriptionModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/prescription.service.ts:4:34:
+[37m      4 │ import { PrescriptionModel } from [32m'../models/prescriptionModel'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/login.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/profile.service.ts:5:30:
+[37m      5 │ import { LoginResponse } from [32m'../models/login.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/purchase.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/purchase-pharmacy.service.ts:5:30:
+[37m      5 │ import { PurchaseModel } from [32m'../models/purchase.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/reports/analytics.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/reports/analytics.service.ts:17:7:
+[37m      17 │ } from [32m'../../models/reports/analytics.model'[37m;
+         ╵        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/ScheduleSlotModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/schedule-slot.service.ts:4:34:
+[37m      4 │ import { ScheduleSlotModel } from [32m'../models/ScheduleSlotModel'[37m;
+        ╵                                   [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/medicine-stock.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/stock.service.ts:5:35:
+[37m      5 │ import { MedicineStockModel } from [32m'../models/medicine-stock.model'[37m;
+        ╵                                    [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/stock-adjustment.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/stock.service.ts:6:56:
+[37m      6 │ ...Model, StockHistoryModel } from [32m'../models/stock-adjustment.model'[37m;
+        ╵                                    [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/login.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/storage.service.ts:2:30:
+[37m      2 │ import { LoginResponse } from [32m'../models/login.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/supplier.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/supplier.service.ts:5:30:
+[37m      5 │ import { SupplierModel } from [32m'../models/supplier.model'[37m;
+        ╵                               [32m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/surgery-category.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery-reference.service.ts:5:56:
+[37m      5 │ ...tegoryRequest } from [32m'../../models/surgery/surgery-category.model'[37m;
+        ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/surgery-master.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery-reference.service.ts:6:52:
+[37m      6 │ ...ryMasterRequest } from [32m'../../models/surgery/surgery-master.model'[37m;
+        ╵                           [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/operation-theatre.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery-reference.service.ts:7:58:
+[37m      7 │ ...eatreRequest } from [32m'../../models/surgery/operation-theatre.model'[37m;
+        ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/doctor-discount.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery-reference.service.ts:8:54:
+[37m      8 │ ...iscountRequest } from [32m'../../models/surgery/doctor-discount.model'[37m;
+        ╵                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/surgery.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery.service.ts:5:31:
+[37m      5 │ import { SurgeryRequest } from [32m'../../models/surgery/surgery.model'[37m;
+        ╵                                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/surgery-response.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery.service.ts:6:32:
+[37m      6 │ ...rgeryResponse } from [32m'../../models/surgery/surgery-response.model'[37m;
+        ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/surgery-schedule.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery.service.ts:7:32:
+[37m      7 │ ...rgerySchedule } from [32m'../../models/surgery/surgery-schedule.model'[37m;
+        ╵                         [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../../models/surgery/surgery-dashboard.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/surgery/surgery.service.ts:8:33:
+[37m      8 │ ...eryDashboard } from [32m'../../models/surgery/surgery-dashboard.model'[37m;
+        ╵                        [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/testMasterModel' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/test-master.service.ts:4:32:
+[37m      4 │ import { TestMasterModel } from [32m'../models/testMasterModel'[37m;
+        ╵                                 [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[31mX [41;31m[[41;97mERROR[41;31m][0m [1mTS2307: Cannot find module '../models/test-order.model' or its corresponding type declarations.[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/services/test-order.service.ts:5:41:
+[37m      5 │ import { TestOrderModel, LabStats } from [32m'../models/test-order.model'[37m;
+        ╵                                          [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+Watch mode enabled. Watching for file changes...
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m         [2m | [22m  [36m6.63 MB[39m[2m | [22m
+[32mstyles.css[39m         [2m | [22m[2mstyles[22m       [2m | [22m[36m397.82 kB[39m[2m | [22m
+[32mscripts.js[39m         [2m | [22m[2mscripts[22m      [2m | [22m[36m107.73 kB[39m[2m | [22m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m[2m | [22m  [1m7.13 MB[22m
+
+Application bundle generation complete. [19.883 seconds] - 2026-08-12T10:32:11.885Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.html:143:67:
+[37m      143 │ ... class="al-avatar">{{ appointment.patientName?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component AppointmentList.
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.ts:17:15:
+[37m      17 │   templateUrl: [32m'./appointment-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.html:39:50:
+[37m      39 │       <div class="result-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientBillingComponent.
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.ts:49:15:
+[37m      49 │   templateUrl: [32m'./patient-billing.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.html:40:55:
+[37m      40 │ ...         <div class="dl-avatar">{{ doctor.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                    [32m~~~~~~[0m
+
+  Warning occurs in the template of component DoctorList.
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.ts:11:15:
+[37m      11 │   templateUrl: [32m'./doctor-list.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/patient-list.component/patient-list.component.html:107:56:
+[37m      107 │ ...       <div class="pl-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientListComponent.
+
+    src/app/components/feature/patient-list.component/patient-list.component.ts:11:15:
+[37m      11 │   templateUrl: [32m'./patient-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:219:65:
+[37m      219 │ ...ble-wrapper" *ngIf="dashboard.recentSales?.[32mlength[37m; else noSales">
+          ╵                                               [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:254:76:
+[37m      254 │ ...*ngIf="dashboard.topSellingMedicines?.[32mlength[37m; else noTopSelling">
+          ╵                                          [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:279:64:
+[37m      279 │ ...piry-list" *ngIf="dashboard.expiryAlerts?.[32mlength[37m; else noExpiry">
+          ╵                                              [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.html:307:96:
+[37m      307 │ ...t; {{ rx.prescriptionItems?.[32mlength[37m || 0 }} medicines &middot; ...
+          ╵                                [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacySaleComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:29:15:
+[37m      29 │   templateUrl: [32m'./pharmacy-sale.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.88.242:[1m4200[22m/[39m
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m[2m | [22m[1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m [2m | [22m [36m6.63 MB[39m[2m | [22m
+
+Application bundle generation complete. [1.440 seconds] - 2026-08-12T10:35:31.816Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.html:143:67:
+[37m      143 │ ... class="al-avatar">{{ appointment.patientName?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component AppointmentList.
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.ts:17:15:
+[37m      17 │   templateUrl: [32m'./appointment-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.html:39:50:
+[37m      39 │       <div class="result-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientBillingComponent.
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.ts:49:15:
+[37m      49 │   templateUrl: [32m'./patient-billing.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.html:40:55:
+[37m      40 │ ...         <div class="dl-avatar">{{ doctor.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                    [32m~~~~~~[0m
+
+  Warning occurs in the template of component DoctorList.
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.ts:11:15:
+[37m      11 │   templateUrl: [32m'./doctor-list.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/patient-list.component/patient-list.component.html:107:56:
+[37m      107 │ ...       <div class="pl-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientListComponent.
+
+    src/app/components/feature/patient-list.component/patient-list.component.ts:11:15:
+[37m      11 │   templateUrl: [32m'./patient-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:219:65:
+[37m      219 │ ...ble-wrapper" *ngIf="dashboard.recentSales?.[32mlength[37m; else noSales">
+          ╵                                               [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:254:76:
+[37m      254 │ ...*ngIf="dashboard.topSellingMedicines?.[32mlength[37m; else noTopSelling">
+          ╵                                          [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:279:64:
+[37m      279 │ ...piry-list" *ngIf="dashboard.expiryAlerts?.[32mlength[37m; else noExpiry">
+          ╵                                              [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.html:307:96:
+[37m      307 │ ...t; {{ rx.prescriptionItems?.[32mlength[37m || 0 }} medicines &middot; ...
+          ╵                                [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacySaleComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:29:15:
+[37m      29 │   templateUrl: [32m'./pharmacy-sale.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+Page reload sent to client(s).
+[33m>[39m Changes detected. Rebuilding...
+[32m√[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m[2m | [22m[1mRaw size[22m
+[32mmain.js[39m            [2m | [22m[2mmain[22m [2m | [22m [36m6.63 MB[39m[2m | [22m
+
+Application bundle generation complete. [0.836 seconds] - 2026-08-12T10:39:19.621Z
+
+[1m[33m[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.html:143:67:
+[37m      143 │ ... class="al-avatar">{{ appointment.patientName?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component AppointmentList.
+
+    src/app/components/feature/appointment/appointment-list.component/appointment-list.component.ts:17:15:
+[37m      17 │   templateUrl: [32m'./appointment-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.html:39:50:
+[37m      39 │       <div class="result-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientBillingComponent.
+
+    src/app/components/feature/billing/patient-billing/patient-billing.component.ts:49:15:
+[37m      49 │   templateUrl: [32m'./patient-billing.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.html:40:55:
+[37m      40 │ ...         <div class="dl-avatar">{{ doctor.name?.[32mcharAt[37m(0) }}</div>
+         ╵                                                    [32m~~~~~~[0m
+
+  Warning occurs in the template of component DoctorList.
+
+    src/app/components/feature/doctors/doctor-list/doctor-list.ts:11:15:
+[37m      11 │   templateUrl: [32m'./doctor-list.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/patient-list.component/patient-list.component.html:107:56:
+[37m      107 │ ...       <div class="pl-avatar">{{ patient.name?.[32mcharAt[37m(0) }}</div>
+          ╵                                                   [32m~~~~~~[0m
+
+  Warning occurs in the template of component PatientListComponent.
+
+    src/app/components/feature/patient-list.component/patient-list.component.ts:11:15:
+[37m      11 │   templateUrl: [32m'./patient-list.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:219:65:
+[37m      219 │ ...ble-wrapper" *ngIf="dashboard.recentSales?.[32mlength[37m; else noSales">
+          ╵                                               [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:254:76:
+[37m      254 │ ...*ngIf="dashboard.topSellingMedicines?.[32mlength[37m; else noTopSelling">
+          ╵                                          [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.html:279:64:
+[37m      279 │ ...piry-list" *ngIf="dashboard.expiryAlerts?.[32mlength[37m; else noExpiry">
+          ╵                                              [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacyDashboardComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-dashboard/pharmacy-dashboard.component.ts:13:15:
+[37m      13 │   templateUrl: [32m'./pharmacy-dashboard.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mNG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be replaced with the '.' operator. Find more at https://v21.angular.dev/extended-diagnostics/NG8107[0m [1m[35m[plugin angular-compiler][0m
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.html:307:96:
+[37m      307 │ ...t; {{ rx.prescriptionItems?.[32mlength[37m || 0 }} medicines &middot; ...
+          ╵                                [32m~~~~~~[0m
+
+  Warning occurs in the template of component PharmacySaleComponent.
+
+    src/app/components/feature/pharmacy/pharmacy-sale/pharmacy-sale.component.ts:29:15:
+[37m      29 │   templateUrl: [32m'./pharmacy-sale.component.html'[37m,
+         ╵                [32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[39m[22m
+Page reload sent to client(s).

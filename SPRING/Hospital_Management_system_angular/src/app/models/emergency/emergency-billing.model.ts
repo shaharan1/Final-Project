@@ -1,0 +1,37 @@
+export interface EmergencyBilling {
+  id?: number;
+  emergencyPatientId?: number;
+  emergencyNumber?: string;
+  billNumber?: string;
+  registrationFee?: number;
+  consultationFee?: number;
+  bedCharge?: number;
+  medicineCharge?: number;
+  labCharge?: number;
+  radiologyCharge?: number;
+  procedureCharge?: number;
+  operationCharge?: number;
+  ambulanceCharge?: number;
+  consumablesCharge?: number;
+  doctorFee?: number;
+  nursingCharge?: number;
+  otherCharges?: number;
+  subtotal?: number;
+  discountPercent?: number;
+  discountAmount?: number;
+  vatPercent?: number;
+  vatAmount?: number;
+  insuranceCoverage?: number;
+  advancePaid?: number;
+  dueAmount?: number;
+  grandTotal?: number;
+  paymentStatus?: string;
+  insuranceProvider?: string;
+  insurancePolicyNumber?: string;
+  isInsuranceClaimed?: boolean;
+  paidAt?: string;
+  status?: string;
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

@@ -1,0 +1,176 @@
+<div class="dashboard-wrapper" *ngIf="!loading">
+  <!-- Hero Section with Animated Wave -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="wave-svg" viewBox="0 0 1440 200" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,128 C200,160 400,96 720,128 C1040,160 1240,96 1440,128 L1440,200 L0,200 Z" />
+      </svg>
+      <div class="hero-particles"></div>
+    </div>
+    <div class="hero-content">
+      <div class="dh-hero-icon">🍽️</div>
+      <h1 class="hero-title">Nutrition & Kitchen Command Center</h1>
+      <p class="hero-subtitle">Real-time dietary management • {{ currentTime | date:'fullDate' }} • {{ currentTime | date:'shortTime' }}</p>
+    </div>
+  </section>
+
+  <!-- KPI Cards Grid -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card glass" *ngFor="let card of kpiCards" [style.--accent-color]="card.color">
+        <div class="stat-icon" [style.background]="card.color + '20'">
+          <svg *ngIf="card.icon === 'plate'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <svg *ngIf="card.icon === 'patient'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <svg *ngIf="card.icon === 'clipboard'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/>
+          </svg>
+          <svg *ngIf="card.icon === 'kitchen'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <svg *ngIf="card.icon === 'truck'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 16 11"/><circle cx="5.5" cy="16.5" r="2.5"/><circle cx="18.5" cy="16.5" r="2.5"/>
+          </svg>
+          <svg *ngIf="card.icon === 'user'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+          <svg *ngIf="card.icon === 'fire'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+          <svg *ngIf="card.icon === 'chart'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <span class="stat-label">{{ card.label }}</span>
+          <span class="stat-value" [style.color]="card.color">{{ getAnimated(card.key) | number }}</span>
+          <span class="stat-sub" *ngIf="card.key === 'mealCompletionRate'">%</span>
+          <div class="stat-progress">
+            <div class="stat-progress-bar" [style.width.%]="getProgressPercent(getAnimated(card.key))" [style.background]="card.color"></div>
+          </div>
+        </div>
+        <div class="stat-glow" [style.box-shadow]="'0 0 20px ' + card.color + '40'"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Grid -->
+  <section class="content-grid">
+    <!-- Today's Orders -->
+    <div class="panel glass">
+      <div class="panel-head">
+        <h2 class="panel-title">Today's Kitchen Orders</h2>
+        <a routerLink="/dietary/kitchen-orders" class="panel-link">View All</a>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Patient</th>
+              <th>Meal</th>
+              <th>Ward</th>
+              <th>Status</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of todayOrders" (click)="goToOrder(order.id)">
+              <td class="cell-bold">{{ order.orderNumber }}</td>
+              <td>
+                <div class="patient-cell">
+                  <span class="pt-avatar">{{ order.patient?.name?.charAt(0) || 'P' }}</span>
+                  {{ order.patient?.name || 'Unknown' }}
+                </div>
+              </td>
+              <td>{{ order.mealTime | titlecase }}</td>
+              <td>{{ order.ward?.name || order.bedNumber || 'N/A' }}</td>
+              <td><span class="badge" [ngClass]="getStatusClass(order.status)">{{ order.status }}</span></td>
+              <td><span class="badge" [ngClass]="getStatusClass(order.priority)">{{ order.priority }}</span></td>
+            </tr>
+            <tr *ngIf="todayOrders.length === 0">
+              <td colspan="6" class="empty-row">No orders today</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Active Alerts -->
+    <div class="panel glass">
+      <div class="panel-head">
+        <h2 class="panel-title">Active Diet Alerts</h2>
+        <a routerLink="/dietary/diet-alerts" class="panel-link">View All</a>
+      </div>
+      <div class="alerts-list">
+        <div class="alert-card" *ngFor="let alert of activeAlerts" [style.border-left-color]="getAlertSeverityColor(alert.severity)">
+          <div class="alert-icon">{{ getAlertIcon(alert.alertType) }}</div>
+          <div class="alert-content">
+            <div class="alert-type">{{ alert.alertType }}</div>
+            <div class="alert-desc">{{ alert.description }}</div>
+            <div class="alert-meta">
+              <span class="badge" [ngClass]="'badge-' + alert.severity.toLowerCase()">{{ alert.severity }}</span>
+              <span class="alert-time">{{ alert.createdAt | date:'short' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="empty-alerts" *ngIf="activeAlerts.length === 0">No active alerts</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meal Schedule Timeline -->
+  <section class="panel glass">
+    <div class="panel-head">
+      <h2 class="panel-title">Meal Schedule Timeline</h2>
+      <a routerLink="/dietary/meal-schedule" class="panel-link">Manage</a>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let meal of mealSchedule; let i = index" [class.current]="meal.currentMeal">
+        <div class="timeline-marker" [style.background]="meal.currentMeal ? 'var(--accent, #0d6efd)' : 'var(--line)'"></div>
+        <div class="timeline-content">
+          <div class="timeline-time">{{ meal.servingTime }}</div>
+          <div class="timeline-meal">{{ meal.mealName }}</div>
+          <div class="timeline-prep">Prep: {{ meal.preparationStartTime }} - {{ meal.preparationEndTime || 'TBD' }}</div>
+          <span class="badge badge-info" *ngIf="meal.totalOrdersToday > 0">{{ meal.totalOrdersToday }} orders</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Access Modules -->
+  <section class="panel glass">
+    <div class="panel-head">
+      <h2 class="panel-title">Quick Access Modules</h2>
+    </div>
+    <div class="modules-grid">
+      <a class="module-card glass" *ngFor="let mod of subModules" [routerLink]="mod.route" [style.--module-color]="mod.color">
+        <div class="module-icon" [style.background]="mod.color + '20'">
+          <svg *ngIf="mod.icon === 'patient'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg *ngIf="mod.icon === 'clipboard'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+          <svg *ngIf="mod.icon === 'user'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <svg *ngIf="mod.icon === 'clock'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg *ngIf="mod.icon === 'kitchen'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <svg *ngIf="mod.icon === 'order'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <svg *ngIf="mod.icon === 'chart'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <svg *ngIf="mod.icon === 'report'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <svg *ngIf="mod.icon === 'alert'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="module-info">
+          <h3>{{ mod.label }}</h3>
+          <p>{{ mod.desc }}</p>
+        </div>
+        <span class="module-arrow">→</span>
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- Loading Skeleton -->
+<div class="loading-container" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Loading Nutrition Dashboard...</p>
+</div>

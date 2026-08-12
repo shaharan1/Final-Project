@@ -1,0 +1,169 @@
+<div class="pt-page-wrapper">
+  <div class="pt-form-container">
+
+    <div class="pt-form-header">
+      <div class="pt-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <div>
+        <h2>Patient Registration</h2>
+        <p class="pt-header-subtitle">Register a new patient record</p>
+      </div>
+    </div>
+
+    <div class="pt-form-body">
+
+      <div class="pt-form-grid">
+
+        <!-- Appointment Search -->
+        <div class="pt-section-title pt-section-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Appointment Lookup
+        </div>
+
+        <div class="pt-field pt-field-full">
+          <label class="pt-label">Appointment No <span class="pt-optional">(Optional)</span></label>
+          <div class="pt-search-row">
+            <input type="text" class="pt-input" placeholder="Enter Appointment Number"
+              [(ngModel)]="appointmentNumber" name="appointmentNumber">
+            <button type="button" class="pt-btn pt-btn-search" (click)="searchAppointment()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Search
+            </button>
+          </div>
+        </div>
+
+        <!-- Patient Details -->
+        <div class="pt-section-title pt-section-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Patient Details
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Patient Name</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.name" name="name" placeholder="Enter patient name">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Gender</label>
+          <select class="pt-input pt-select" [(ngModel)]="patient.gender" name="gender">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Date of Birth</label>
+          <input type="date" class="pt-input" [(ngModel)]="patient.dateOfBirth" name="dateOfBirth">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Blood Group</label>
+          <select class="pt-input pt-select" [(ngModel)]="patient.bloodGroup" name="bloodGroup">
+            <option value="">Select Blood Group</option>
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+          </select>
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Marital Status</label>
+          <select class="pt-input pt-select" [(ngModel)]="patient.maritalStatus" name="maritalStatus">
+            <option value="">Select</option>
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+            <option>Widowed</option>
+          </select>
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Phone</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.phone" name="phone" placeholder="+880">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Alternate Phone</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.alternatePhone" name="alternatePhone" placeholder="Optional">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Email</label>
+          <input type="email" class="pt-input" [(ngModel)]="patient.email" name="email" placeholder="name@example.com" autocomplete="off">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">National ID</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.nationalId" name="nationalId" placeholder="Enter National ID">
+        </div>
+
+        <!-- Address Section -->
+        <div class="pt-section-title pt-section-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Address
+        </div>
+
+        <div class="pt-field pt-field-full">
+          <label class="pt-label">Address</label>
+          <textarea class="pt-input pt-textarea" rows="3" [(ngModel)]="patient.address" name="address" placeholder="Enter full address"></textarea>
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">City</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.city" name="city" placeholder="Enter city">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">District</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.district" name="district" placeholder="Enter district">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Postal Code</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.postalCode" name="postalCode" placeholder="Enter postal code">
+        </div>
+
+        <!-- Emergency Contact Section -->
+        <div class="pt-section-title pt-section-full">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Emergency Contact
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Contact Name</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.emergencyContactName" name="emergencyContactName" placeholder="Enter contact name">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Phone</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.emergencyContactNumber" name="emergencyContactNumber" placeholder="Enter phone number">
+        </div>
+
+        <div class="pt-field">
+          <label class="pt-label">Relationship</label>
+          <input type="text" class="pt-input" [(ngModel)]="patient.relationship" name="relationship" placeholder="e.g. Father, Mother, Spouse">
+        </div>
+
+      </div>
+
+      <div class="pt-form-actions">
+        <button type="button" class="pt-btn pt-btn-primary" (click)="save()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          {{ patient.id ? 'Update Patient' : 'Save Patient' }}
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>

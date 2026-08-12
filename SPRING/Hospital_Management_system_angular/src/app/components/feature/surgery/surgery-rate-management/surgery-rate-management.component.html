@@ -1,0 +1,389 @@
+<div class="surgery-page">
+
+  <!-- ===== HERO ===== -->
+  <header class="surgery-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="surgery-hero-content">
+      <div class="surgery-hero-icon">⚙️</div>
+      <div>
+        <h1>Surgery Rate & Configuration</h1>
+        <p class="surgery-hero-sub">Manage rate card, categories, operation theatres and doctor discounts</p>
+      </div>
+      <div class="surgery-hero-actions">
+        <button class="surgery-btn surgery-btn-outline" (click)="loadAll()">⟳ Refresh</button>
+        <button class="surgery-btn surgery-btn-light" (click)="openAddByTab()">+ Add New</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TABS ===== -->
+  <div class="tabs-bar">
+    <button class="tab-btn" *ngFor="let t of tabs" [class.active]="activeTab === t.key" (click)="setTab(t.key)">
+      <span class="tab-icon">{{ t.icon }}</span> {{ t.label }}
+    </button>
+  </div>
+
+  <div class="tab-content">
+
+    <!-- ===== RATE CARD ===== -->
+    <section *ngIf="activeTab === 'masters'">
+      <div class="filter-bar">
+        <input type="text" class="dept-input" placeholder="Search procedure, code or category..." [(ngModel)]="searchMaster" />
+        <button class="surgery-btn surgery-btn-outline" (click)="searchMaster = ''">✕ Clear</button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table class="surgery-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Procedure</th>
+                <th>Category</th>
+                <th>Standard Rate</th>
+                <th>OT Charge</th>
+                <th>Anesthesia</th>
+                <th>Est. Duration</th>
+                <th>Status</th>
+                <th class="td-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of filteredMasters">
+                <td class="td-num">{{ m.surgeryCode }}</td>
+                <td class="td-name">{{ m.surgeryName }}</td>
+                <td>{{ m.categoryName || categoryNameMap[m.categoryId || 0] || '—' }}</td>
+                <td class="td-amount">{{ formatCurrency(m.standardRate) }}</td>
+                <td>{{ formatCurrency(m.otCharge) }}</td>
+                <td>{{ formatCurrency(m.anesthesiaCharge) }}</td>
+                <td>{{ m.estimatedDurationMin || '—' }} min</td>
+                <td><span class="badge" [ngClass]="m.active ? 'badge-success' : 'badge-secondary'">{{ m.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
+                <td class="td-actions">
+                  <div class="row-actions">
+                    <button class="action-btn action-edit" title="Edit" (click)="openMasterModal(m)">✏️</button>
+                    <button class="action-btn action-delete" title="Delete" (click)="deleteMaster(m)">🗑</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="filteredMasters.length === 0">
+                <td colspan="9" class="empty-row">No rate card entries found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CATEGORIES ===== -->
+    <section *ngIf="activeTab === 'categories'">
+      <div class="filter-bar">
+        <input type="text" class="dept-input" placeholder="Search category name or code..." [(ngModel)]="searchCategory" />
+        <button class="surgery-btn surgery-btn-outline" (click)="searchCategory = ''">✕ Clear</button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table class="surgery-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Sort</th>
+                <th>Status</th>
+                <th class="td-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let c of filteredCategories">
+                <td class="td-num">{{ c.code }}</td>
+                <td class="td-name">{{ c.name }}</td>
+                <td>{{ c.description || '—' }}</td>
+                <td>{{ c.sortOrder || 0 }}</td>
+                <td><span class="badge" [ngClass]="c.active ? 'badge-success' : 'badge-secondary'">{{ c.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
+                <td class="td-actions">
+                  <div class="row-actions">
+                    <button class="action-btn action-edit" title="Edit" (click)="openCategoryModal(c)">✏️</button>
+                    <button class="action-btn action-delete" title="Delete" (click)="deleteCategory(c)">🗑</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="filteredCategories.length === 0">
+                <td colspan="6" class="empty-row">No categories found</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OPERATION THEATRES ===== -->
+    <section *ngIf="activeTab === 'theatres'">
+      <div class="filter-bar">
+        <input type="text" class="dept-input" placeholder="Search OT name, code or location..." [(ngModel)]="searchTheatre" />
+        <button class="surgery-btn surgery-btn-outline" (click)="searchTheatre = ''">✕ Clear</button>
+      </div>
+      <div class="theatre-grid">
+        <div class="theatre-card" *ngFor="let t of filteredTheatres">
+          <div class="theatre-card-top">
+            <span class="theatre-avatar">🏥</span>
+            <div>
+              <div class="theatre-name">{{ t.otName }}</div>
+              <div class="theatre-code">{{ t.otCode }}</div>
+            </div>
+            <span class="badge" [ngClass]="t.status === 'AVAILABLE' ? 'badge-success' : (t.status === 'IN_USE' ? 'badge-warning' : 'badge-secondary')">{{ t.status.replace('_', ' ') }}</span>
+          </div>
+          <div class="theatre-meta">
+            <div><span>📍</span> {{ t.location || 'Location not set' }}</div>
+            <div><span>👥</span> Capacity {{ t.capacity || 1 }}</div>
+            <div><span>🔧</span> {{ t.equipmentAvailable || 'No equipment listed' }}</div>
+          </div>
+          <div class="theatre-actions">
+            <button class="surgery-btn surgery-btn-outline surgery-btn-sm" (click)="openTheatreModal(t)">✏️ Edit</button>
+            <button class="surgery-btn surgery-btn-danger surgery-btn-sm" (click)="deleteTheatre(t)">🗑 Delete</button>
+          </div>
+        </div>
+        <div class="rank-empty" *ngIf="filteredTheatres.length === 0">No operation theatres found</div>
+      </div>
+    </section>
+
+    <!-- ===== DOCTOR DISCOUNTS ===== -->
+    <section *ngIf="activeTab === 'discounts'">
+      <div class="filter-bar">
+        <input type="text" class="dept-input" placeholder="Search doctor name..." [(ngModel)]="searchDiscount" />
+        <button class="surgery-btn surgery-btn-outline" (click)="searchDiscount = ''">✕ Clear</button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table class="surgery-table">
+            <thead>
+              <tr>
+                <th>Doctor</th>
+                <th>Personal %</th>
+                <th>Department %</th>
+                <th>Promo %</th>
+                <th>Effective %</th>
+                <th>Status</th>
+                <th class="td-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of filteredDiscounts">
+                <td class="td-name">{{ doctorName(d.doctorId) }}</td>
+                <td>{{ d.percentageDiscount || 0 }}%</td>
+                <td>{{ d.departmentDiscount || 0 }}%</td>
+                <td>{{ d.specialPromoDiscount || 0 }}%</td>
+                <td class="td-amount">{{ totalDiscount(d) }}%</td>
+                <td><span class="badge" [ngClass]="d.active ? 'badge-success' : 'badge-secondary'">{{ d.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
+                <td class="td-actions">
+                  <div class="row-actions">
+                    <button class="action-btn action-edit" title="Edit" (click)="openDiscountModal(d)">✏️</button>
+                    <button class="action-btn action-delete" title="Delete" (click)="deleteDiscount(d)">🗑</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="filteredDiscounts.length === 0">
+                <td colspan="7" class="empty-row">No doctor discounts configured</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ modalTitle }}</h3>
+        <button class="modal-close" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Category form -->
+        <ng-container *ngIf="activeTab === 'categories'">
+          <label class="form-label">Code *</label>
+          <input type="text" class="dept-input" [(ngModel)]="categoryForm.code" placeholder="e.g. CAR, ORTHO" />
+          <label class="form-label">Name *</label>
+          <input type="text" class="dept-input" [(ngModel)]="categoryForm.name" placeholder="e.g. Cardiac Surgery" />
+          <label class="form-label">Description</label>
+          <textarea class="dept-input textarea" rows="2" [(ngModel)]="categoryForm.description"></textarea>
+          <label class="form-label">Sort Order</label>
+          <input type="number" class="dept-input" [(ngModel)]="categoryForm.sortOrder" />
+          <label class="check-label"><input type="checkbox" [(ngModel)]="categoryForm.active" /> Active</label>
+        </ng-container>
+
+        <!-- Master form -->
+        <ng-container *ngIf="activeTab === 'masters'">
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Code *</label>
+              <input type="text" class="dept-input" [(ngModel)]="masterForm.surgeryCode" placeholder="e.g. CABG-01" />
+            </div>
+            <div>
+              <label class="form-label">Category *</label>
+              <select class="dept-input" [(ngModel)]="masterForm.categoryId">
+                <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+              </select>
+            </div>
+          </div>
+          <label class="form-label">Procedure Name *</label>
+          <input type="text" class="dept-input" [(ngModel)]="masterForm.surgeryName" placeholder="e.g. Coronary Artery Bypass Graft" />
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Standard Rate *</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.standardRate" />
+            </div>
+            <div>
+              <label class="form-label">OT Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.otCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Anesthesia Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.anesthesiaCharge" />
+            </div>
+            <div>
+              <label class="form-label">Nursing Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.nursingCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Equipment Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.equipmentCharge" />
+            </div>
+            <div>
+              <label class="form-label">Consumable Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.consumableCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">ICU Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.icuCharge" />
+            </div>
+            <div>
+              <label class="form-label">Package Rate</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.packageRate" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Surgeon Fee</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.surgeonFee" />
+            </div>
+            <div>
+              <label class="form-label">Assistant Surgeon Fee</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.assistantSurgeonFee" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Ward / Cabin Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.wardCabinCharge" />
+            </div>
+            <div>
+              <label class="form-label">Medicine Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.medicineCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Laboratory Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.laboratoryCharge" />
+            </div>
+            <div>
+              <label class="form-label">Radiology Charge</label>
+              <input type="number" class="dept-input" min="0" step="0.01" [(ngModel)]="masterForm.radiologyCharge" />
+            </div>
+          </div>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Est. Duration (min)</label>
+              <input type="number" class="dept-input" min="15" step="15" [(ngModel)]="masterForm.estimatedDurationMin" />
+            </div>
+            <div>
+              <label class="form-label">Notes</label>
+              <input type="text" class="dept-input" [(ngModel)]="masterForm.notes" />
+            </div>
+          </div>
+          <label class="check-label"><input type="checkbox" [(ngModel)]="masterForm.active" /> Active</label>
+        </ng-container>
+
+        <!-- Theatre form -->
+        <ng-container *ngIf="activeTab === 'theatres'">
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">OT Code *</label>
+              <input type="text" class="dept-input" [(ngModel)]="theatreForm.otCode" placeholder="e.g. OT-01" />
+            </div>
+            <div>
+              <label class="form-label">OT Name *</label>
+              <input type="text" class="dept-input" [(ngModel)]="theatreForm.otName" placeholder="e.g. Main Operating Theatre" />
+            </div>
+          </div>
+          <label class="form-label">Location</label>
+          <input type="text" class="dept-input" [(ngModel)]="theatreForm.location" placeholder="e.g. Block B, Floor 3" />
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Capacity</label>
+              <input type="number" class="dept-input" min="1" [(ngModel)]="theatreForm.capacity" />
+            </div>
+            <div>
+              <label class="form-label">Status</label>
+              <select class="dept-input" [(ngModel)]="theatreForm.status">
+                <option value="AVAILABLE">AVAILABLE</option>
+                <option value="IN_USE">IN USE</option>
+                <option value="MAINTENANCE">MAINTENANCE</option>
+                <option value="RESERVED">RESERVED</option>
+              </select>
+            </div>
+          </div>
+          <label class="form-label">Equipment Available</label>
+          <textarea class="dept-input textarea" rows="2" [(ngModel)]="theatreForm.equipmentAvailable"></textarea>
+          <label class="check-label"><input type="checkbox" [(ngModel)]="theatreForm.active" /> Active</label>
+        </ng-container>
+
+        <!-- Discount form -->
+        <ng-container *ngIf="activeTab === 'discounts'">
+          <label class="form-label">Doctor *</label>
+          <select class="dept-input" [(ngModel)]="discountForm.doctorId">
+            <option *ngFor="let d of doctors" [value]="d.id">{{ d.name }}</option>
+          </select>
+          <div class="modal-two-col">
+            <div>
+              <label class="form-label">Personal Discount %</label>
+              <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.percentageDiscount" />
+            </div>
+            <div>
+              <label class="form-label">Department Discount %</label>
+              <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.departmentDiscount" />
+            </div>
+          </div>
+          <label class="form-label">Promo Discount %</label>
+          <input type="number" class="dept-input" min="0" max="100" step="0.1" [(ngModel)]="discountForm.specialPromoDiscount" />
+          <div class="field-hint">
+            Effective discount: {{ (discountForm.percentageDiscount || 0) + (discountForm.departmentDiscount || 0) + (discountForm.specialPromoDiscount || 0) }}%
+          </div>
+          <label class="check-label"><input type="checkbox" [(ngModel)]="discountForm.active" /> Active</label>
+        </ng-container>
+
+      </div>
+      <div class="modal-footer">
+        <button class="surgery-btn surgery-btn-outline" (click)="closeModal()">Cancel</button>
+        <button class="surgery-btn surgery-btn-primary" (click)="saveByTab()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" *ngIf="msg" [ngClass]="msgType === 'error' ? 'toast-error' : 'toast-success'">
+    <span>{{ msg }}</span>
+    <button class="toast-close" (click)="msg = ''">×</button>
+  </div>
+</div>

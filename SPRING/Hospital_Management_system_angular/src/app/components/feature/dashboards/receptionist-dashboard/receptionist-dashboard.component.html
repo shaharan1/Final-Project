@@ -1,0 +1,88 @@
+
+  <app-profile-card></app-profile-card>
+
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-float-icon">👥</div>
+      <p class="eyebrow">Front Desk</p>
+      <h1>Reception Dashboard</h1>
+      <p class="hero-desc">Manage patient check-ins, walk-ins, and the daily appointment queue from the front desk.</p>
+      <div class="hero-actions">
+        <a routerLink="/patient" class="btn-primary">+ Quick Register</a>
+        <a routerLink="/admittedpatient" class="btn-ghost">Check-in Patient</a>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Patients</span>
+      <span class="stat-value">{{ stats!.totalPatients | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Today's Appointments</span>
+      <span class="stat-value">{{ stats!.todayAppointments | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Active Admissions</span>
+      <span class="stat-value">{{ stats!.admittedPatients | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Pending Check-ins</span>
+      <span class="stat-value">{{ todayAppointments.length | number }}</span>
+    </div>
+  </section>
+
+  <section *ngIf="!loading" class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Appointment Queue</h2>
+        <span class="panel-tag">Live</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>#</th><th>Patient</th><th>Doctor</th><th>Time</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appt of todayAppointments; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(appt.patientName) }}</span>{{ appt.patientName }}</div></td>
+            <td>{{ appt.doctorName }}</td>
+            <td>{{ appt.appointmentTime }}</td>
+            <td><span class="badge {{ getBadgeClass(appt.status) }}">{{ formatStatus(appt.status) }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel quick-actions-panel">
+      <div class="panel-head">
+        <h2>Quick Actions</h2>
+      </div>
+      <div class="quick-actions-grid">
+        <a routerLink="/patient" class="quick-action-card">
+          <span class="qa-icon qa-icon--teal">+</span>
+          <span class="qa-text">Register Patient</span>
+        </a>
+        <a routerLink="/appointments/create" class="quick-action-card">
+          <span class="qa-icon qa-icon--amber">A</span>
+          <span class="qa-text">Book Appointment</span>
+        </a>
+        <a routerLink="/admittedpatient" class="quick-action-card">
+          <span class="qa-icon qa-icon--clay">C</span>
+          <span class="qa-text">Check-in Patient</span>
+        </a>
+        <a routerLink="/bed" class="quick-action-card">
+          <span class="qa-icon qa-icon--teal">B</span>
+          <span class="qa-text">Bed Availability</span>
+        </a>
+      </div>
+    </div>
+  </section>

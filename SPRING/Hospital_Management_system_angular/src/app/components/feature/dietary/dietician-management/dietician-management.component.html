@@ -1,0 +1,122 @@
+<div class="dietary-page">
+  <div class="page-header">
+    <svg class="diet-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div>
+      <div class="ph-icon">👨‍⚕️</div>
+      <h1 class="page-title">Dietician Management</h1>
+      <p class="page-subtitle">Manage dietician profiles, schedules, and assignments</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Dietician
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading dieticians...</p>
+  </div>
+
+  <div class="error-container" *ngIf="msg">
+    <div class="error-card" [class.error-success]="msgType==='success'" [class.error-error]="msgType==='error'">
+      <span class="error-icon">{{ msgType==='success' ? '✓' : '!' }}</span>
+      <p>{{ msg }}</p>
+    </div>
+  </div>
+
+  <div class="filter-bar glass" *ngIf="!loading">
+    <div class="search-group">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" placeholder="Search by name, specialization, license..." [(ngModel)]="searchTerm" (ngModelChange)="filterDieticians()">
+    </div>
+  </div>
+
+  <div class="cards-grid" *ngIf="!loading">
+    <div class="staff-card glass" *ngFor="let d of filteredDieticians">
+      <div class="staff-avatar">{{ getInitials(d.user?.name || d.specialization) }}</div>
+      <div class="staff-info">
+        <h3>{{ d.user?.name || 'N/A' }}</h3>
+        <span class="staff-spec">{{ d.specialization }}</span>
+      </div>
+      <div class="staff-details">
+        <div class="detail-row"><span class="detail-lbl">License</span><span class="detail-val">{{ d.licenseNumber || 'N/A' }}</span></div>
+        <div class="detail-row"><span class="detail-lbl">Experience</span><span class="detail-val">{{ d.experienceYears || 0 }} yrs</span></div>
+        <div class="detail-row"><span class="detail-lbl">Phone</span><span class="detail-val">{{ d.phone || 'N/A' }}</span></div>
+        <div class="detail-row"><span class="detail-lbl">Duty Hours</span><span class="detail-val">{{ d.dutyHours || 'N/A' }}</span></div>
+      </div>
+      <div class="staff-status">
+        <span class="badge" [ngClass]="d.active ? 'badge-success' : 'badge-secondary'">{{ d.active ? 'Active' : 'Inactive' }}</span>
+      </div>
+      <div class="staff-actions">
+        <button class="action-btn secondary" (click)="openEditModal(d)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
+        <button class="action-btn danger" (click)="confirmDelete(d)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredDieticians.length === 0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="80" height="80"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <h3>No Dieticians Found</h3>
+      <p>{{ searchTerm ? 'Try a different search term' : 'Add your first dietician to get started' }}</p>
+    </div>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="showModal = false">
+    <div class="modal glass" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingItem ? 'Edit Dietician' : 'Add New Dietician' }}</h2>
+        <button class="btn-close" (click)="showModal = false">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group"><label>Name</label><input type="text" [(ngModel)]="formModel.userName" placeholder="Full name"></div>
+          <div class="form-group"><label>Email</label><input type="email" [(ngModel)]="formModel.email" placeholder="Email address"></div>
+          <div class="form-group"><label>Specialization *</label><input type="text" [(ngModel)]="formModel.specialization" placeholder="e.g., Clinical Nutrition" required></div>
+          <div class="form-group"><label>Qualification</label><input type="text" [(ngModel)]="formModel.qualification" placeholder="e.g., M.Sc. Nutrition"></div>
+          <div class="form-group"><label>Experience (Years)</label><input type="number" [(ngModel)]="formModel.experienceYears"></div>
+          <div class="form-group"><label>License Number</label><input type="text" [(ngModel)]="formModel.licenseNumber" placeholder="e.g., DIET-001"></div>
+          <div class="form-group"><label>Phone</label><input type="text" [(ngModel)]="formModel.phone" placeholder="Phone number"></div>
+          <div class="form-group"><label>Available Days</label><input type="text" [(ngModel)]="formModel.availableDays" placeholder="e.g., Mon-Fri"></div>
+          <div class="form-group"><label>Duty Hours</label><input type="text" [(ngModel)]="formModel.dutyHours" placeholder="e.g., 8AM - 4PM"></div>
+          <div class="form-group">
+            <label>Status</label>
+            <select [(ngModel)]="formModel.active">
+              <option [value]="true">Active</option>
+              <option [value]="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="showModal = false">Cancel</button>
+        <button class="btn btn-primary" (click)="saveItem()" [disabled]="loading">{{ loading ? 'Saving...' : (editingItem ? 'Update' : 'Create') }}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()">
+    <div class="modal modal-sm glass" (click)="$event.stopPropagation()">
+      <div class="modal-header"><h2>Confirm Delete</h2><button class="btn-close" (click)="cancelDelete()">×</button></div>
+      <div class="modal-body">
+        <div class="delete-warning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" width="48" height="48"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <p>Delete <strong>{{ itemToDelete?.user?.name || itemToDelete?.specialization }}</strong>?</p>
+          <span class="text-muted">This action cannot be undone.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
+        <button class="btn btn-danger" (click)="deleteItem()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

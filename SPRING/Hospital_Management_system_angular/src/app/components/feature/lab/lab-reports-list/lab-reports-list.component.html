@@ -1,0 +1,59 @@
+<div class="lr-page">
+  <section class="lr-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="lr-hero-content">
+      <div class="lr-hero-icon">📋</div>
+      <div>
+        <h1>Lab Report Registry</h1>
+        <p class="lr-hero-sub">All auto-generated pathology reports with status filtering.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="lr-search-bar">
+    <i class="bi bi-search"></i>
+    <input [(ngModel)]="searchKeyword" placeholder="Search patient, test, report #...">
+  </div>
+
+  <div class="lr-panel">
+    <div class="lr-tabs">
+      <button class="lr-tab" [class.active]="filter === 'all'" (click)="setFilter('all')">All <span>{{ counts()['all'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'pending'" (click)="setFilter('pending')">Pending Verify <span>{{ counts()['pending'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'ready'" (click)="setFilter('ready')">Ready <span>{{ counts()['ready'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'abnormal'" (click)="setFilter('abnormal')">Abnormal <span>{{ counts()['abnormal'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'critical'" (click)="setFilter('critical')">Critical <span>{{ counts()['critical'] }}</span></button>
+      <button class="lr-tab" [class.active]="filter === 'dengue'" (click)="setFilter('dengue')">Dengue <span>{{ counts()['dengue'] }}</span></button>
+    </div>
+
+    <div *ngIf="loading" class="lr-loading"><div class="lr-spinner"></div><p>Loading reports...</p></div>
+
+    <div *ngIf="!loading && filtered.length === 0" class="lr-empty">
+      <i class="bi bi-inbox"></i>
+      <p>No reports found.</p>
+    </div>
+
+    <div class="lr-list" *ngIf="!loading && filtered.length > 0">
+      <div class="lr-head">
+        <span>Patient</span><span>Test</span><span>Report #</span><span>Status</span><span>Date</span><span></span>
+      </div>
+      <div class="lr-row" *ngFor="let r of filtered" (click)="openReport(r.id)">
+        <div class="lr-patient">
+          <div class="lr-avatar">{{ getInitials(r.patientName) }}</div>
+          <div>
+            <strong>{{ r.patientName }}</strong>
+            <small>{{ r.patientCode }}</small>
+          </div>
+        </div>
+        <span class="lr-test">{{ r.testName }}</span>
+        <span class="lr-num">{{ r.reportNumber }}</span>
+        <span><span class="lr-chip" [class]="statusChipClass(r.reportStatus)">{{ formatStatus(r.reportStatus) }}</span></span>
+        <span class="lr-date">{{ formatDate(r.reportedDate || r.createdDate) }}</span>
+        <span class="lr-open"><i class="bi bi-chevron-right"></i></span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,246 @@
+<div class="triage-container">
+  <div class="page-header">
+    <svg class="em-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div class="ph-icon">📋</div>
+    <div class="header-title">
+      <h1>Triage Management</h1>
+      <p class="subtitle">Emergency patient triage assessment and prioritization</p>
+    </div>
+    <div class="triage-legend">
+      <span class="legend-label">Triage Levels:</span>
+      <span class="legend-badge" style="background:#ef4444;">1 - Resuscitation</span>
+      <span class="legend-badge" style="background:#f97316;">2 - Emergent</span>
+      <span class="legend-badge" style="background:#eab308;color:#000;">3 - Urgent</span>
+      <span class="legend-badge" style="background:#22c55e;">4 - Less Urgent</span>
+      <span class="legend-badge" style="background:#3b82f6;">5 - Non-Urgent</span>
+    </div>
+  </div>
+
+  <div *ngIf="msg" class="alert" [ngClass]="{'alert-success': msgType==='success', 'alert-error': msgType==='error', 'alert-warning': msgType==='warning'}">
+    {{ msg }}
+    <button class="alert-close" (click)="msg=''">&times;</button>
+  </div>
+
+  <div class="triage-layout">
+    <div class="panel-left">
+      <div class="glass-card">
+        <div class="card-header">
+          <h2>Patient Queue</h2>
+          <select class="filter-select" [(ngModel)]="statusFilter" (ngModelChange)="onStatusFilterChange()">
+            <option value="ALL">All Pending</option>
+            <option value="REGISTERED">Registered</option>
+            <option value="TRIAGE_PENDING">Triage Pending</option>
+          </select>
+        </div>
+        <div class="patient-list" *ngIf="!loading; else loadingTpl">
+          <div *ngIf="filteredPatients.length === 0" class="empty-state">
+            <span class="empty-icon">🩺</span>
+            <p>No patients awaiting triage</p>
+          </div>
+          <div *ngFor="let p of filteredPatients" class="patient-row"
+               [class.selected]="selectedPatient?.id === p.id"
+               (click)="selectPatient(p)">
+            <div class="patient-row-top">
+              <span class="emergency-badge">{{ p.emergencyNumber }}</span>
+              <span class="patient-name">{{ p.patientName }}</span>
+            </div>
+            <div class="patient-row-bottom">
+              <span class="arrival-time">{{ formatTime(p.arrivalTime || p.createdAt || '') }}</span>
+              <span class="symptoms-text">{{ p.symptoms || p.chiefComplaint || 'N/A' }}</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #loadingTpl>
+          <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading patients...</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="glass-card recent-assessments" *ngIf="triages.length > 0">
+        <h2>Recent Assessments</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Emergency #</th>
+                <th>Level</th>
+                <th>BP</th>
+                <th>Pulse</th>
+                <th>Temp</th>
+                <th>SpO2</th>
+                <th>Resp</th>
+                <th>Pain</th>
+                <th>GCS</th>
+                <th>Assessed By</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of triages">
+                <td class="mono">{{ t.emergencyNumber }}</td>
+                <td>
+                  <span class="triage-badge" [style.background]="getTriageColor(t.triageLevel!)">
+                    {{ t.triageLevel }} - {{ getTriageLabel(t.triageLevel!) }}
+                  </span>
+                </td>
+                <td>{{ t.bloodPressureSystolic }}/{{ t.bloodPressureDiastolic }}</td>
+                <td>{{ t.pulse }}</td>
+                <td>{{ t.temperature }}&deg;C</td>
+                <td>{{ t.oxygenSaturation }}%</td>
+                <td>{{ t.respirationRate }}</td>
+                <td>{{ t.painScore }}/10</td>
+                <td>{{ t.glasgowComaScale }}/15</td>
+                <td>{{ t.assessedBy }}</td>
+                <td class="mono">{{ formatTime(t.assessedAt || t.createdAt || '') }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-right">
+      <div class="glass-card" *ngIf="selectedPatient; else noSelectionTpl">
+        <div class="card-header">
+          <h2>Triage Assessment</h2>
+          <button class="btn-close" (click)="selectedPatient = null">&times;</button>
+        </div>
+
+        <div class="selected-patient-info">
+          <div class="info-row">
+            <span class="info-label">Emergency #</span>
+            <span class="info-value">{{ selectedPatient.emergencyNumber }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Patient Name</span>
+            <span class="info-value">{{ selectedPatient.patientName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Age / Gender</span>
+            <span class="info-value">{{ selectedPatient.age || 'N/A' }} / {{ selectedPatient.gender || 'N/A' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Symptoms</span>
+            <span class="info-value">{{ selectedPatient.symptoms || selectedPatient.chiefComplaint || 'N/A' }}</span>
+          </div>
+        </div>
+
+        <div class="triage-level-section">
+          <h3>Triage Level</h3>
+          <div class="triage-cards">
+            <div *ngFor="let level of [1,2,3,4,5]" class="triage-card"
+                 [style.border-left-color]="getTriageColor(level)"
+                 [style.background]="triageForm.triageLevel === level ? getTriageColor(level) + '22' : 'transparent'"
+                 [class.active]="triageForm.triageLevel === level"
+                 (click)="triageForm.triageLevel = level">
+              <span class="triage-card-level" [style.color]="getTriageColor(level)">Level {{ level }}</span>
+              <span class="triage-card-label">{{ getTriageLabel(level) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="vitals-section">
+          <h3>Vital Signs</h3>
+          <div class="vitals-grid">
+            <div class="vital-field">
+              <label>BP Systolic (mmHg)</label>
+              <div class="vital-input-wrap">
+                <input type="number" [(ngModel)]="triageForm.bloodPressureSystolic" placeholder="120">
+                <span class="vital-dot" *ngIf="getVitalStatus('bloodPressureSystolic', triageForm.bloodPressureSystolic)"
+                      [ngClass]="{'dot-normal': getVitalStatus('bloodPressureSystolic', triageForm.bloodPressureSystolic)==='normal', 'dot-abnormal': getVitalStatus('bloodPressureSystolic', triageForm.bloodPressureSystolic)==='abnormal'}"></span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <label>BP Diastolic (mmHg)</label>
+              <div class="vital-input-wrap">
+                <input type="number" [(ngModel)]="triageForm.bloodPressureDiastolic" placeholder="80">
+                <span class="vital-dot" *ngIf="getVitalStatus('bloodPressureDiastolic', triageForm.bloodPressureDiastolic)"
+                      [ngClass]="{'dot-normal': getVitalStatus('bloodPressureDiastolic', triageForm.bloodPressureDiastolic)==='normal', 'dot-abnormal': getVitalStatus('bloodPressureDiastolic', triageForm.bloodPressureDiastolic)==='abnormal'}"></span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <label>Pulse (bpm)</label>
+              <div class="vital-input-wrap">
+                <input type="number" [(ngModel)]="triageForm.pulse" placeholder="75">
+                <span class="vital-dot" *ngIf="getVitalStatus('pulse', triageForm.pulse)"
+                      [ngClass]="{'dot-normal': getVitalStatus('pulse', triageForm.pulse)==='normal', 'dot-abnormal': getVitalStatus('pulse', triageForm.pulse)==='abnormal'}"></span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <label>Temperature (&deg;C)</label>
+              <div class="vital-input-wrap">
+                <input type="number" step="0.1" [(ngModel)]="triageForm.temperature" placeholder="36.8">
+                <span class="vital-dot" *ngIf="getVitalStatus('temperature', triageForm.temperature)"
+                      [ngClass]="{'dot-normal': getVitalStatus('temperature', triageForm.temperature)==='normal', 'dot-abnormal': getVitalStatus('temperature', triageForm.temperature)==='abnormal'}"></span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <label>Oxygen Saturation (%)</label>
+              <div class="vital-input-wrap">
+                <input type="number" [(ngModel)]="triageForm.oxygenSaturation" placeholder="98">
+                <span class="vital-dot" *ngIf="getVitalStatus('oxygenSaturation', triageForm.oxygenSaturation)"
+                      [ngClass]="{'dot-normal': getVitalStatus('oxygenSaturation', triageForm.oxygenSaturation)==='normal', 'dot-abnormal': getVitalStatus('oxygenSaturation', triageForm.oxygenSaturation)==='abnormal'}"></span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <label>Respiration Rate (/min)</label>
+              <div class="vital-input-wrap">
+                <input type="number" [(ngModel)]="triageForm.respirationRate" placeholder="16">
+                <span class="vital-dot" *ngIf="getVitalStatus('respirationRate', triageForm.respirationRate)"
+                      [ngClass]="{'dot-normal': getVitalStatus('respirationRate', triageForm.respirationRate)==='normal', 'dot-abnormal': getVitalStatus('respirationRate', triageForm.respirationRate)==='abnormal'}"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="vitals-slider-section">
+            <div class="vital-slider-field">
+              <label>Pain Score: <strong>{{ triageForm.painScore ?? 0 }}/10</strong></label>
+              <input type="range" min="0" max="10" [(ngModel)]="triageForm.painScore" class="pain-slider">
+              <div class="slider-labels">
+                <span>No Pain</span><span>Mild</span><span>Moderate</span><span>Severe</span><span>Worst</span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <label>Glasgow Coma Scale (3-15)</label>
+              <div class="vital-input-wrap">
+                <input type="number" min="3" max="15" [(ngModel)]="triageForm.glasgowComaScale" placeholder="15">
+                <span class="vital-dot" *ngIf="getVitalStatus('glasgowComaScale', triageForm.glasgowComaScale)"
+                      [ngClass]="{'dot-normal': getVitalStatus('glasgowComaScale', triageForm.glasgowComaScale)==='normal', 'dot-abnormal': getVitalStatus('glasgowComaScale', triageForm.glasgowComaScale)==='abnormal'}"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-section">
+          <div class="vital-field full-width">
+            <label>Assessment Notes</label>
+            <textarea [(ngModel)]="triageForm.assessmentNotes" rows="3" placeholder="Enter clinical assessment notes..."></textarea>
+          </div>
+          <div class="vital-field full-width">
+            <label>Assessed By</label>
+            <input type="text" [(ngModel)]="triageForm.assessedBy" placeholder="Nurse / Doctor name">
+          </div>
+        </div>
+
+        <button class="btn-submit" (click)="submitTriage()" [disabled]="saving || !triageForm.triageLevel">
+          <span *ngIf="saving" class="spinner-sm"></span>
+          {{ saving ? 'Saving...' : 'Submit Triage Assessment' }}
+        </button>
+      </div>
+
+      <ng-template #noSelectionTpl>
+        <div class="glass-card empty-selection">
+          <div class="empty-state">
+            <span class="empty-icon-large">&#x1FA7A;</span>
+            <h3>Select a Patient</h3>
+            <p>Click a patient from the queue to begin triage assessment</p>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

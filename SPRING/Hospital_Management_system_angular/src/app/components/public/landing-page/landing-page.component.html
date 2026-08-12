@@ -1,0 +1,427 @@
+<!-- ============ TOP HEADER ============ -->
+<header class="top-header">
+  <div class="header-container">
+    <div class="header-left">
+      <span class="header-item">
+        <img src="/assets/elite-care-logo.svg" alt="Elite Care Hospital" class="header-logo" />
+      </span>
+      <span class="header-divider">|</span>
+      <a href="tel:+8801712345678" class="header-item header-link">
+        <span class="header-icon">📞</span>
+        Emergency: +880 1712-345678 (24/7)
+      </a>
+      <span class="header-divider">|</span>
+      <a href="mailto:info@elitecare.com" class="header-item header-link">
+        <span class="header-icon">✉️</span>
+        info@elitecare.com
+      </a>
+      <span class="header-divider">|</span>
+      <span class="header-item">
+        <span class="header-icon">📍</span>
+        Dhaka, Bangladesh
+      </span>
+    </div>
+    <div class="header-right">
+      <a href="https://facebook.com" target="_blank" class="social-link" title="Facebook">f</a>
+      <a href="https://twitter.com" target="_blank" class="social-link" title="Twitter">𝕏</a>
+      <a href="https://linkedin.com" target="_blank" class="social-link" title="LinkedIn">in</a>
+      <a href="https://youtube.com" target="_blank" class="social-link" title="YouTube">▶</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="nav-container">
+    <a routerLink="/" class="nav-logo">
+      <img src="/assets/elite-care-logo.svg" alt="Elite Care Hospital" class="nav-logo-img" />
+    </a>
+    <ul class="nav-links" [class.open]="menuOpen">
+      <li><a routerLink="/" (click)="menuOpen=false">Home</a></li>
+      <li><a href="#about" (click)="menuOpen=false">About Us</a></li>
+      <li><a href="#departments" (click)="menuOpen=false">Departments</a></li>
+      <li><a href="#doctors" (click)="menuOpen=false">Doctors</a></li>
+      <li><a href="#services" (click)="menuOpen=false">Services</a></li>
+      <li><a href="#packages" (click)="menuOpen=false">Health Packages</a></li>
+      <li><a href="#contact" (click)="menuOpen=false">Contact</a></li>
+      <li><a routerLink="/login" class="nav-login-link" (click)="menuOpen=false">Staff Login</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#booking" class="nav-book-btn">Book Appointment</a>
+      <button class="hamburger" (click)="menuOpen = !menuOpen" [class.active]="menuOpen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO BANNER ============ -->
+<section class="hero-banner">
+  <div class="hero-container">
+    <div class="hero-content">
+      <p class="hero-tagline">Welcome to Elite Care Hospital</p>
+      <h1 class="hero-title">Your Health Is Our <span class="highlight">Top Priority</span></h1>
+      <p class="hero-desc">
+        Providing world-class healthcare services with compassion and excellence.
+        Our team of expert doctors is dedicated to your well-being.
+      </p>
+      <div class="hero-btns">
+        <a href="#booking" class="hero-btn-primary">Book Appointment</a>
+        <a routerLink="/login" class="hero-btn-secondary">Staff Login</a>
+      </div>
+      <div class="hero-hotline">
+        <span class="hotline-icon">📞</span>
+        <div>
+          <p class="hotline-label">Emergency Hotline</p>
+          <p class="hotline-number">+880 1712-345678</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hero-card-1">
+        <span class="hc-icon">🩺</span>
+        <span class="hc-text">Expert Doctors</span>
+      </div>
+      <div class="hero-card hero-card-2">
+        <span class="hc-icon">🏥</span>
+        <span class="hc-text">Modern Facility</span>
+      </div>
+      <div class="hero-card hero-card-3">
+        <span class="hc-icon">❤️</span>
+        <span class="hc-text">24/7 Care</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUICK SERVICES ============ -->
+<section class="section services-section" id="services">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">What We Offer</p>
+      <h2 class="section-title">Quick Services</h2>
+      <p class="section-desc">Access essential healthcare services at your fingertips.</p>
+    </div>
+    <div class="services-grid">
+      <a [href]="s.link" class="service-card" *ngFor="let s of services">
+        <span class="service-icon">{{ s.icon }}</span>
+        <h3 class="service-title">{{ s.title }}</h3>
+        <p class="service-desc">{{ s.desc }}</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT HOSPITAL ============ -->
+<section class="section about-section" id="about">
+  <div class="section-container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-img-placeholder">
+          <img src="/assets/elite-care-logo.svg" alt="Elite Care Hospital" class="about-logo" />
+        </div>
+      </div>
+      <div class="about-content">
+        <p class="section-tag">About Us</p>
+        <h2 class="section-title">A Trusted Name in Healthcare</h2>
+        <p class="about-text">
+          Elite Care Hospital has been serving the community for over 25 years with
+          compassionate, world-class healthcare. Our mission is to provide accessible,
+          affordable, and quality medical services to every patient.
+        </p>
+        <div class="about-mission">
+          <div class="about-mission-item">
+            <h4>Our Mission</h4>
+            <p>To deliver exceptional healthcare with empathy, innovation, and integrity.</p>
+          </div>
+          <div class="about-mission-item">
+            <h4>Our Vision</h4>
+            <p>To be the most trusted healthcare provider in the region.</p>
+          </div>
+        </div>
+        <div class="about-stats">
+          <div class="about-stat" *ngFor="let s of stats">
+            <span class="about-stat-value">{{ s.value }}</span>
+            <span class="about-stat-label">{{ s.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPARTMENTS ============ -->
+<section class="section departments-section" id="departments">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">Our Specialties</p>
+      <h2 class="section-title">Our Departments</h2>
+      <p class="section-desc">Specialized departments equipped with modern technology.</p>
+    </div>
+    <div class="departments-grid">
+      <div class="dept-card" *ngFor="let d of departments">
+        <span class="dept-icon">{{ d.icon }}</span>
+        <h3 class="dept-name">{{ d.name }}</h3>
+        <p class="dept-desc">{{ d.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUR DOCTORS ============ -->
+<section class="section doctors-section" id="doctors">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">Meet Our Team</p>
+      <h2 class="section-title">Our Doctors</h2>
+      <p class="section-desc">Highly qualified specialists dedicated to your health.</p>
+    </div>
+    <div class="doctors-grid">
+      <div class="doctor-card" *ngFor="let doc of doctors">
+        <img [src]="doc.photo" [alt]="doc.name" class="doctor-photo" />
+        <h3 class="doctor-name">{{ doc.name }}</h3>
+        <p class="doctor-spec">{{ doc.spec }}</p>
+        <div class="doctor-meta">
+          <span class="doctor-meta-item">⏱ {{ doc.exp }}</span>
+          <span class="doctor-meta-item">🎓 {{ doc.qual }}</span>
+        </div>
+        <div class="doctor-actions">
+          <a routerLink="/login" class="doctor-btn-outline">View Profile</a>
+          <a href="#booking" class="doctor-btn-fill">Book Appointment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOKING APPOINTMENT ============ -->
+<section class="section booking-section" id="booking">
+  <div class="section-container">
+    <div class="booking-grid">
+      <div class="booking-info">
+        <p class="section-tag">Get Started</p>
+        <h2 class="section-title">Book an Appointment</h2>
+        <p class="booking-desc">
+          Fill out the form and our team will get back to you within 24 hours
+          to confirm your appointment.
+        </p>
+        <div class="booking-contact-list">
+          <div class="booking-contact-item">
+            <span>&#9742;</span>
+            <div>
+              <p class="bci-label">Call Us</p>
+              <p class="bci-value">+880 1712-345678</p>
+            </div>
+          </div>
+          <div class="booking-contact-item">
+            <span>&#9993;</span>
+            <div>
+              <p class="bci-label">Email Us</p>
+              <p class="bci-value">info@elitecare.com</p>
+            </div>
+          </div>
+          <div class="booking-contact-item">
+            <span>&#9873;</span>
+            <div>
+              <p class="bci-label">Visit Us</p>
+              <p class="bci-value">123 Health Avenue, Dhaka</p>
+            </div>
+          </div>
+          <div class="booking-contact-item">
+            <span>&#9200;</span>
+            <div>
+              <p class="bci-label">Working Hours</p>
+              <p class="bci-value">24/7 Emergency Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking-form-wrapper">
+        <div class="booking-success" *ngIf="bookingSubmitted">
+          <span class="success-icon">&#10004;</span>
+          <h3>Appointment Booked Successfully!</h3>
+          <p *ngIf="bookingResponse">Appointment Number: <strong>{{ bookingResponse.appointmentNumber }}</strong></p>
+          <p *ngIf="bookingResponse">Doctor: {{ bookingResponse.doctorName }}</p>
+          <p *ngIf="bookingResponse">Fee: {{ bookingResponse.feeCharged }} Tk</p>
+        </div>
+
+        <div class="booking-success booking-fail" *ngIf="bookingFailed">
+          <span class="fail-icon">&#10008;</span>
+          <h3>Booking Failed!</h3>
+          <p>Please try again or call us directly.</p>
+        </div>
+
+        <form class="booking-form" *ngIf="!bookingSubmitted && !bookingFailed" [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Patient Name *</label>
+              <input type="text" class="form-control" formControlName="patientName" placeholder="Enter patient name">
+              <span class="field-error" *ngIf="bookingForm.get('patientName')?.touched && bookingForm.get('patientName')?.invalid">Required</span>
+            </div>
+            <div class="form-group">
+              <label>Mobile Number *</label>
+              <input type="tel" class="form-control" formControlName="mobileNumber" placeholder="+880">
+              <span class="field-error" *ngIf="bookingForm.get('mobileNumber')?.touched && bookingForm.get('mobileNumber')?.invalid">Required</span>
+            </div>
+          </div>
+
+          <div class="returning-badge" *ngIf="returningPatient">
+            <span>&#10004;</span> Returning Patient
+          </div>
+          <div class="new-patient-badge" *ngIf="!returningPatient && bookingForm.get('mobileNumber')?.value?.length >= 10">
+            <span>&#9679;</span> New Patient
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department *</label>
+              <select class="form-control" formControlName="doctorDepartmentId">
+                <option value="">Select Department</option>
+                <option *ngFor="let dept of doctorsDepartments" [value]="dept.id">{{ dept.departmentName }}</option>
+              </select>
+              <span class="field-error" *ngIf="bookingForm.get('doctorDepartmentId')?.touched && bookingForm.get('doctorDepartmentId')?.invalid">Required</span>
+            </div>
+            <div class="form-group">
+              <label>Doctor *</label>
+              <select class="form-control" formControlName="doctorId" [disabled]="!bookingForm.get('doctorDepartmentId')?.value">
+                <option value="">Select Doctor</option>
+                <option *ngFor="let doctor of doctors" [value]="doctor.id">{{ doctor.name }}</option>
+              </select>
+              <span class="field-error" *ngIf="bookingForm.get('doctorId')?.touched && bookingForm.get('doctorId')?.invalid">Required</span>
+              <div class="no-data" *ngIf="bookingForm.get('doctorDepartmentId')?.value && doctors.length === 0">
+                No doctors found in this department.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Appointment Date *</label>
+              <input type="date" class="form-control" formControlName="appointmentDate">
+              <span class="field-error" *ngIf="bookingForm.get('appointmentDate')?.touched && bookingForm.get('appointmentDate')?.invalid">Required</span>
+            </div>
+            <div class="form-group">
+              <label>Available Time Slots *</label>
+              <select class="form-control" formControlName="appointmentTime"
+                [disabled]="!bookingForm.get('doctorId')?.value || !bookingForm.get('appointmentDate')?.value">
+                <option value="">Select Available Time</option>
+                <option *ngFor="let slot of availableSlots" [value]="slot.startTime">
+                  {{ slot.startTime }} - {{ slot.endTime }}
+                </option>
+              </select>
+              <span class="field-error" *ngIf="bookingForm.get('appointmentTime')?.touched && bookingForm.get('appointmentTime')?.invalid">Required</span>
+              <div class="no-data" *ngIf="bookingForm.get('doctorId')?.value && bookingForm.get('appointmentDate')?.value && availableSlots.length === 0">
+                No available slots for the selected doctor and date.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label>Problem Description *</label>
+              <textarea rows="3" class="form-control" formControlName="problemDescription" placeholder="Describe your symptoms or reason for visit"></textarea>
+              <span class="field-error" *ngIf="bookingForm.get('problemDescription')?.touched && bookingForm.get('problemDescription')?.invalid">Required</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Payment Method *</label>
+              <select class="form-control" formControlName="paymentMethod">
+                <option value="">Select Payment</option>
+                <option value="Cash">Cash</option>
+                <option value="Bkash">bKash</option>
+                <option value="Nagad">Nagad</option>
+                <option value="Bank">Bank</option>
+              </select>
+              <span class="field-error" *ngIf="bookingForm.get('paymentMethod')?.touched && bookingForm.get('paymentMethod')?.invalid">Required</span>
+            </div>
+            <div class="form-group">
+              <label>Transaction ID</label>
+              <input type="text" class="form-control" formControlName="transactionId" placeholder="If paying digitally">
+            </div>
+          </div>
+
+          <div class="fee-box" *ngIf="fee > 0">
+            Consultation Fee: <strong>{{ fee }} Tk</strong>
+          </div>
+
+          <button type="submit" class="booking-submit">Book Appointment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CHOOSE US ============ -->
+<section class="section why-section">
+  <div class="section-container">
+    <div class="section-header">
+      <p class="section-tag">Why Us</p>
+      <h2 class="section-title">Why Choose Elite Care</h2>
+      <p class="section-desc">We go above and beyond to ensure the best patient experience.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card" *ngFor="let w of whyChooseUs">
+        <span class="why-icon">{{ w.icon }}</span>
+        <h3 class="why-title">{{ w.title }}</h3>
+        <p class="why-desc">{{ w.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" id="contact">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 class="footer-heading">
+          <img src="/assets/elite-care-logo.svg" alt="Elite Care Hospital" class="footer-logo-img" />
+        </h4>
+        <p class="footer-text">Providing world-class healthcare with compassion and excellence since 2000.</p>
+        <div class="footer-social">
+          <a href="https://facebook.com" target="_blank" class="footer-social-link">f</a>
+          <a href="https://twitter.com" target="_blank" class="footer-social-link">𝕏</a>
+          <a href="https://linkedin.com" target="_blank" class="footer-social-link">in</a>
+          <a href="https://youtube.com" target="_blank" class="footer-social-link">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#departments">Departments</a></li>
+          <li><a href="#doctors">Our Doctors</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#booking">Book Appointment</a></li>
+          <li><a routerLink="/login">Staff Login</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Departments</h4>
+        <ul class="footer-links">
+          <li><a href="#departments">Cardiology</a></li>
+          <li><a href="#departments">Neurology</a></li>
+          <li><a href="#departments">Orthopedics</a></li>
+          <li><a href="#departments">Pediatrics</a></li>
+          <li><a href="#departments">Gynecology</a></li>
+          <li><a href="#departments">General Medicine</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Contact Info</h4>
+        <ul class="footer-contact">
+          <li><span>📍</span> 123 Health Avenue, Dhaka, Bangladesh</li>
+          <li><span>📞</span> <a href="tel:+8801712345678">+880 1712-345678</a></li>
+          <li><span>✉️</span> <a href="mailto:info@elitecare.com">info@elitecare.com</a></li>
+          <li><span>🕐</span> 24/7 Emergency Available</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Elite Care Hospital. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>

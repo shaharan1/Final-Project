@@ -1,0 +1,187 @@
+<div class="lab-page">
+  <section class="lab-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <div class="lab-hero-icon">📝</div>
+      <div>
+        <h1>Dynamic Test Result Entry</h1>
+        <p class="lab-hero-sub">{{ readyCount }} ready · {{ testingCount }} testing · {{ doneCount }} result entered · Enter results and auto-compare against reference ranges</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-panel">
+    <div class="panel-toolbar">
+      <div class="tab-group">
+        <button class="tab-btn" [class.active]="activeTab === 'READY'" (click)="activeTab = 'READY'">
+          Ready <span class="badge">{{ readyCount }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'TESTING'" (click)="activeTab = 'TESTING'">
+          Testing <span class="badge">{{ testingCount }}</span>
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'DONE'" (click)="activeTab = 'DONE'">
+          Entered <span class="badge">{{ doneCount }}</span>
+        </button>
+      </div>
+      <div class="toolbar-right">
+        <input class="search-input" [(ngModel)]="searchKeyword" placeholder="Search patient, test, ID...">
+        <button class="btn-refresh" (click)="loadOrders()" [disabled]="loading">
+          <i class="bi bi-arrow-clockwise" [class.spin]="loading"></i> Refresh
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-block">
+      <div class="spinner"></div>
+      <p>Loading test orders...</p>
+    </div>
+
+    <div *ngIf="!loading && filteredOrders.length === 0" class="empty-block">
+      <i class="bi bi-inbox"></i>
+      <h3>No test orders here</h3>
+      <p>Orders with sample received status appear in Ready, and active testing orders appear in Testing.</p>
+    </div>
+
+    <div class="order-list" *ngIf="!loading && filteredOrders.length > 0">
+      <div class="order-card" *ngFor="let order of filteredOrders">
+        <div class="order-avatar" [style.background]="getAvatarColor(order.patientName)">
+          {{ getInitials(order.patientName) }}
+        </div>
+        <div class="order-info">
+          <h4>{{ order.testName }} <span *ngIf="hasReport(order)" class="reported-chip"><i class="bi bi-patch-check"></i> Reported</span></h4>
+          <div class="order-meta">
+            <span><i class="bi bi-person"></i> {{ order.patientName }}</span>
+            <span><i class="bi bi-person-vcard"></i> {{ order.patientCode }}</span>
+            <span *ngIf="order.patientGender"><i class="bi bi-gender-ambiguous"></i> {{ order.patientGender }}</span>
+          </div>
+        </div>
+        <div class="order-side">
+          <span class="status-chip" [class.st-received]="order.orderStatus === 'SAMPLE_RECEIVED'"
+                [class.st-testing]="order.orderStatus === 'TESTING'"
+                [class.st-entered]="order.orderStatus === 'RESULT_ENTERED'">
+            {{ order.orderStatus === 'RESULT_ENTERED' ? 'Result Entered' : order.orderStatus.replace('_', ' ') }}
+          </span>
+          <div class="order-actions">
+            <button *ngIf="order.orderStatus === 'SAMPLE_RECEIVED'" class="btn-outline" (click)="openStartModal(order)">
+              <i class="bi bi-play-fill"></i> Start Testing
+            </button>
+            <button *ngIf="!hasReport(order)" class="btn-primary" (click)="openEntry(order)">
+              <i class="bi bi-pencil-square"></i> Enter Result
+            </button>
+            <button *ngIf="hasReport(order)" class="btn-link" [routerLink]="['/lab/report', getReportId(order)]">
+              View Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- START TESTING MODAL -->
+<div class="modal-overlay" *ngIf="showStartModal">
+  <div class="modal-box modal-sm">
+    <div class="modal-head">
+      <h3><i class="bi bi-eyedropper"></i> Start Testing</h3>
+      <button class="modal-close" (click)="closeStartModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p>Mark <strong>{{ selectedOrder?.testName }}</strong> for <strong>{{ selectedOrder?.patientName }}</strong> as currently testing?</p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" (click)="closeStartModal()">Cancel</button>
+      <button class="btn-primary" (click)="startTesting()"><i class="bi bi-play-fill"></i> Start Testing</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT ENTRY MODAL -->
+<div class="modal-overlay modal-wide" *ngIf="showEntryModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3><i class="bi bi-pencil-square"></i> Result Entry — {{ detail?.testName }}</h3>
+      <button class="modal-close" (click)="closeEntry()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="entry-patient-bar" *ngIf="selectedOrder">
+        <div class="ep-item"><i class="bi bi-person"></i><div><span>Patient</span><strong>{{ selectedOrder.patientName }}</strong></div></div>
+        <div class="ep-item"><i class="bi bi-person-vcard"></i><div><span>Code</span><strong>{{ selectedOrder.patientCode }}</strong></div></div>
+        <div class="ep-item"><i class="bi bi-gender-ambiguous"></i><div><span>Gender</span><strong>{{ selectedOrder.patientGender || '—' }}</strong></div></div>
+        <div class="ep-item"><i class="bi bi-calendar3"></i><div><span>Age</span><strong>{{ computeAge(selectedOrder.patientDateOfBirth) != null ? computeAge(selectedOrder.patientDateOfBirth) + ' yrs' : '—' }}</strong></div></div>
+        <div class="ep-item"><i class="bi bi-box-seam"></i><div><span>Test</span><strong>{{ selectedOrder.testName }}</strong></div></div>
+      </div>
+
+      <div class="live-summary" [class]="liveSummary.cls">
+        <div class="ls-label">{{ liveSummary.label }}</div>
+        <div class="ls-text">{{ liveSummary.text }}</div>
+        <div class="ls-counts">
+          <span *ngIf="normalCount > 0" class="cnt cnt-normal">{{ normalCount }} Normal</span>
+          <span *ngIf="abnormalCount > 0" class="cnt cnt-abnormal">{{ abnormalCount }} Abnormal</span>
+          <span *ngIf="criticalCount > 0" class="cnt cnt-critical">{{ criticalCount }} Critical</span>
+        </div>
+      </div>
+
+      <div class="entry-rows">
+        <div class="entry-row" *ngFor="let row of rows">
+          <div class="er-left">
+            <div class="er-name">
+              {{ row.parameter.parameterName }}
+              <span *ngIf="row.parameter.parameterCode" class="er-code">{{ row.parameter.parameterCode }}</span>
+            </div>
+            <div class="er-range">
+              <span *ngIf="row.preview?.referenceRangeDisplay">Reference: <b>{{ row.preview?.referenceRangeDisplay }}</b></span>
+              <span *ngIf="!row.preview?.referenceRangeDisplay && row.parameter.normalText">Normal: <b>{{ row.parameter.normalText }}</b></span>
+            </div>
+          </div>
+          <div class="er-input">
+            <input *ngIf="!isQualitative(row.parameter)"
+                   type="text"
+                   inputmode="decimal"
+                   [(ngModel)]="row.value"
+                   (input)="onValueChange(row)"
+                   placeholder="{{ row.parameter.unit || 'Result value' }}">
+            <select *ngIf="isQualitative(row.parameter) && allowedValueList(row.parameter).length > 0"
+                    [(ngModel)]="row.value"
+                    (change)="onValueChange(row)">
+              <option value="">— select —</option>
+              <option *ngFor="let v of allowedValueList(row.parameter)" [value]="v">{{ v }}</option>
+            </select>
+            <input *ngIf="isQualitative(row.parameter) && allowedValueList(row.parameter).length === 0"
+                   type="text"
+                   [(ngModel)]="row.value"
+                   (input)="onValueChange(row)"
+                   placeholder="{{ row.parameter.unit || 'Result text' }}">
+            <span class="er-unit" *ngIf="row.parameter.unit">{{ row.parameter.unit }}</span>
+          </div>
+          <div class="er-preview">
+            <div *ngIf="row.loading" class="mini-spinner"></div>
+            <ng-container *ngIf="!row.loading && row.preview">
+              <span class="chip" [class]="statusChipClass(row.preview.status)">{{ formatStatus(row.preview.status) }}</span>
+              <div class="er-interp">{{ row.preview.interpretation }}</div>
+            </ng-container>
+            <span *ngIf="!row.loading && !row.preview" class="er-hint">Enter value for auto interpretation</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="savedReportId" class="save-success">
+        <i class="bi bi-check-circle"></i>
+        <div>
+          <strong>Report saved successfully!</strong>
+          <span>Report #{{ savedReportId }} — you can preview and verify it now.</span>
+        </div>
+        <button class="btn-primary" (click)="goToReport()"><i class="bi bi-eye"></i> Preview Report</button>
+      </div>
+    </div>
+    <div class="modal-foot" *ngIf="!savedReportId">
+      <button class="btn-ghost" (click)="closeEntry()">Cancel</button>
+      <button class="btn-primary" [disabled]="!canSave() || saving" (click)="saveReport()">
+        <i class="bi bi-save"></i> {{ saving ? 'Saving...' : 'Save Report' }}
+      </button>
+    </div>
+  </div>
+</div>

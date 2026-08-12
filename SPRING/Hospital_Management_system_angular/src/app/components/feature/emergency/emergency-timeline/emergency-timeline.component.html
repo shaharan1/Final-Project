@@ -1,0 +1,86 @@
+<div class="emergency-timeline-container">
+  <div class="page-header">
+    <svg class="em-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div class="ph-icon">⏰</div>
+    <h1>Patient Timeline</h1>
+  </div>
+
+  <div class="content-grid">
+    <div class="left-panel">
+      <div class="glass-card patient-selector">
+        <h3>Select Patient</h3>
+        <div class="patient-list">
+          <div class="patient-item" *ngFor="let p of patients"
+               [class.selected]="selectedPatient?.id === p.id"
+               (click)="selectPatient(p)">
+            <span class="patient-name">{{ p.firstName }} {{ p.lastName }}</span>
+            <span class="patient-id">#{{ p.id }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card legend-panel" *ngIf="selectedPatient">
+        <h3>Event Legend</h3>
+        <div class="legend-list">
+          <div class="legend-item" *ngFor="let evt of eventTypes">
+            <span class="legend-dot" [style.background]="evt.color"></span>
+            <span class="legend-icon">{{ evt.icon }}</span>
+            <span class="legend-label">{{ evt.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="glass-card timeline-view" *ngIf="selectedPatient && !loading">
+        <h3>Timeline — {{ selectedPatient.firstName }} {{ selectedPatient.lastName }}</h3>
+        <div class="timeline">
+          <div class="timeline-item" *ngFor="let event of timeline; let last = last"
+               [style.--event-color]="getEventColor(event.eventType)">
+            <div class="timeline-marker">
+              <div class="timeline-dot" [style.background]="getEventColor(event.eventType)">
+                {{ getEventIcon(event.eventType) }}
+              </div>
+              <div class="timeline-line" *ngIf="!last"></div>
+            </div>
+            <div class="timeline-card glass-card-inner">
+              <div class="event-header">
+                <span class="event-type" [style.color]="getEventColor(event.eventType)">{{ getEventLabel(event.eventType) }}</span>
+                <span class="event-time">{{ formatTime(event.timestamp) }}</span>
+              </div>
+              <div class="event-body">
+                <p class="event-description">{{ event.description }}</p>
+                <div class="event-meta">
+                  <span *ngIf="event.performedBy" class="meta-item">
+                    <span class="meta-icon">👤</span> {{ event.performedBy }}
+                  </span>
+                  <span *ngIf="event.department" class="meta-item">
+                    <span class="meta-icon">🏢</span> {{ event.department }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-timeline" *ngIf="timeline.length === 0">
+          <div class="empty-icon">📋</div>
+          <p>No timeline events recorded for this patient</p>
+        </div>
+      </div>
+
+      <div class="glass-card loading-card" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Loading timeline...</p>
+      </div>
+
+      <div class="glass-card empty-patient" *ngIf="!selectedPatient && !loading">
+        <div class="empty-icon">📋</div>
+        <h3>Select a Patient</h3>
+        <p>Choose an emergency patient to view their event timeline</p>
+      </div>
+    </div>
+  </div>
+</div>

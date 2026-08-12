@@ -1,0 +1,352 @@
+<div class="wm-container">
+
+  <!-- Hero Section -->
+  <div class="wm-hero">
+    <div class="wm-hero-content">
+      <div class="wm-hero-icon">🏥</div>
+      <h1>Ward & Bed Management</h1>
+      <p>Monitor hospital wards, bed occupancy, and patient admissions in real-time</p>
+    </div>
+    <div class="wm-hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Summary Stats -->
+  <div class="wm-stats-row">
+    <div class="wm-stat-card wm-stat-total">
+      <div class="wm-stat-icon">+</div>
+      <div class="wm-stat-info">
+        <span class="wm-stat-value">{{ totalBeds }}</span>
+        <span class="wm-stat-label">Total Beds</span>
+      </div>
+    </div>
+    <div class="wm-stat-card wm-stat-available">
+      <div class="wm-stat-icon">+</div>
+      <div class="wm-stat-info">
+        <span class="wm-stat-value">{{ availableBeds }}</span>
+        <span class="wm-stat-label">Available</span>
+      </div>
+    </div>
+    <div class="wm-stat-card wm-stat-occupied">
+      <div class="wm-stat-icon"></div>
+      <div class="wm-stat-info">
+        <span class="wm-stat-value">{{ occupiedBeds }}</span>
+        <span class="wm-stat-label">Occupied</span>
+      </div>
+    </div>
+    <div class="wm-stat-card wm-stat-maintenance">
+      <div class="wm-stat-icon">!</div>
+      <div class="wm-stat-info">
+        <span class="wm-stat-value">{{ maintenanceBeds }}</span>
+        <span class="wm-stat-label">Maintenance</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ward List View -->
+  <div *ngIf="!selectedWard">
+    <div class="wm-section-header">
+      <h2 class="wm-section-title">Hospital Wards</h2>
+      <button class="wm-add-btn" (click)="openCreateWardModal()">+ New Ward</button>
+    </div>
+    <div class="wm-ward-grid">
+      <div class="wm-ward-card" *ngFor="let ward of wards" (click)="selectWard(ward)">
+        <div class="wm-ward-header">
+          <h3>{{ ward.name }}</h3>
+          <span class="wm-room-badge">{{ ward.roomType }}</span>
+        </div>
+        <div class="wm-ward-dept">{{ ward.departmentName }}</div>
+        <div class="wm-ward-occupancy">
+          <div class="wm-occ-bar">
+            <div class="wm-occ-fill" [style.width.%]="getWardTotal(ward) > 0 ? (getWardOccupied(ward) / getWardTotal(ward) * 100) : 0"></div>
+          </div>
+          <div class="wm-occ-stats">
+            <span class="wm-occ-avail">{{ getWardAvailable(ward) }} free</span>
+            <span class="wm-occ-used">{{ getWardOccupied(ward) }} occupied</span>
+          </div>
+        </div>
+        <div class="wm-ward-meta">
+          <span>{{ getWardTotal(ward) }} beds</span>
+          <span>&#2547; {{ ward.basePricePerDay }}/day</span>
+        </div>
+        <div class="wm-ward-actions">
+          <button class="wm-ward-btn">View Beds</button>
+          <button class="wm-ward-btn-delete" (click)="deleteWard(ward, $event)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bed Grid View -->
+  <div *ngIf="selectedWard">
+    <div class="wm-beds-header">
+      <button class="wm-back-btn" (click)="backToWards()">&#8592; Back to Wards</button>
+      <h2>{{ selectedWard.name }} — Bed Layout</h2>
+      <div class="wm-ward-badge">{{ selectedWard.roomType }} | {{ selectedWard.departmentName }}</div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="wm-filters">
+      <input class="wm-search" placeholder="Search bed number..." [(ngModel)]="searchKeyword">
+      <div class="wm-filter-pills">
+        <button class="wm-pill" [class.active]="statusFilter==='ALL'" (click)="statusFilter='ALL'">All</button>
+        <button class="wm-pill wm-pill-available" [class.active]="statusFilter==='AVAILABLE'" (click)="statusFilter='AVAILABLE'">Available</button>
+        <button class="wm-pill wm-pill-occupied" [class.active]="statusFilter==='OCCUPIED'" (click)="statusFilter='OCCUPIED'">Occupied</button>
+        <button class="wm-pill wm-pill-maintenance" [class.active]="statusFilter==='MAINTENANCE'" (click)="statusFilter='MAINTENANCE'">Maintenance</button>
+      </div>
+      <button class="wm-add-btn" (click)="openCreateBedModal()">+ New Bed</button>
+    </div>
+
+    <!-- Bed Cards Grid -->
+    <div class="wm-bed-grid">
+      <div class="wm-bed-card" *ngFor="let bed of filteredBeds" [ngClass]="getBedStatusClass(bed.status)">
+
+        <!-- Top Row: Bed Number + Status -->
+        <div class="wm-bed-top">
+          <div class="wm-bed-number">{{ bed.bedNumber }}</div>
+          <div class="wm-bed-status-badge" [ngClass]="'badge-' + bed.status.toLowerCase()">
+            <span class="wm-bed-dot"></span> {{ bed.status }}
+          </div>
+        </div>
+
+        <!-- Room Type Tag -->
+        <div class="wm-bed-type-tag">
+          <span class="wm-bed-type-icon">{{ getRoomTypeIcon(selectedWard && selectedWard.roomType ? selectedWard.roomType : '') }}</span>
+          {{ selectedWard && selectedWard.roomType ? selectedWard.roomType : 'General' }} Ward
+        </div>
+
+        <!-- Facilities -->
+        <div class="wm-bed-facilities" *ngIf="bed.facilities && bed.facilities.length > 0">
+          <div class="wm-facility-label">Room Facilities</div>
+          <div class="wm-facility-chips">
+            <span class="wm-facility-chip" *ngFor="let fac of bed.facilities">
+              <span class="wm-facility-icon">{{ getFacilityIcon(fac.name) }}</span>
+              {{ fac.name }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Ward + Cost -->
+        <div class="wm-bed-meta-row">
+          <span class="wm-bed-cost">{{ bed.totalDailyCost | number:'1.0-0' }} &#2547;/day</span>
+        </div>
+
+        <!-- Occupied: Patient Details -->
+        <div class="wm-bed-details" *ngIf="bed.status==='OCCUPIED' && getAdmissionForBed(bed) as adm">
+          <div class="wm-bed-detail-row">
+            <span class="wm-bed-detail-icon">♥</span>
+            <div>
+              <div class="wm-bed-detail-label">Patient</div>
+              <div class="wm-bed-detail-value">{{ adm.patientName }}</div>
+              <div class="wm-bed-detail-sub">{{ adm.patientCode }}</div>
+            </div>
+          </div>
+          <div class="wm-bed-detail-row">
+            <span class="wm-bed-detail-icon wm-detail-steth">✦</span>
+            <div>
+              <div class="wm-bed-detail-label">Doctor</div>
+              <div class="wm-bed-detail-value">Dr. {{ adm.doctorName }}</div>
+            </div>
+          </div>
+          <div class="wm-bed-detail-row" *ngIf="adm.initialDiagnosis">
+            <span class="wm-bed-detail-icon wm-detail-note">✎</span>
+            <div>
+              <div class="wm-bed-detail-label">Diagnosis</div>
+              <div class="wm-bed-detail-value wm-detail-diag">{{ adm.initialDiagnosis }}</div>
+            </div>
+          </div>
+          <div class="wm-bed-detail-row">
+            <span class="wm-bed-detail-icon wm-detail-clock">◷</span>
+            <div>
+              <div class="wm-bed-detail-label">Admitted</div>
+              <div class="wm-bed-detail-value">{{ adm.admissionDate | date:'dd-MMM-yyyy' }}</div>
+              <div class="wm-bed-detail-sub">{{ getDaysSinceAdmission(adm.admissionDate) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Available: Empty Bed -->
+        <div class="wm-bed-details wm-bed-empty-info" *ngIf="bed.status==='AVAILABLE'">
+          <div class="wm-bed-empty-icon">✓</div>
+          <div class="wm-bed-empty-text">Ready for Admission</div>
+        </div>
+
+        <!-- Maintenance -->
+        <div class="wm-bed-details wm-bed-empty-info" *ngIf="bed.status==='MAINTENANCE'">
+          <div class="wm-bed-maint-icon">!</div>
+          <div class="wm-bed-empty-text">Under Maintenance</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="wm-bed-actions">
+          <button class="wm-bed-btn wm-bed-btn-facility" (click)="openFacilityModal(bed)">
+            ✦ Facilities
+          </button>
+          <button class="wm-bed-btn wm-bed-btn-admit" *ngIf="bed.status==='AVAILABLE'" (click)="openAdmitModal(bed)">
+            + Admit Patient
+          </button>
+          <button class="wm-bed-btn wm-bed-btn-discharge" *ngIf="bed.status==='OCCUPIED'" (click)="dischargePatient(bed)">
+            Discharge
+          </button>
+          <button class="wm-bed-btn wm-bed-btn-delete" (click)="deleteBed(bed)">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wm-empty" *ngIf="filteredBeds.length === 0">
+      <p>No beds found matching your criteria.</p>
+    </div>
+  </div>
+
+  <!-- Facility Assign Modal -->
+  <div class="wm-modal-overlay" *ngIf="showFacilityModal" (click)="closeFacilityModal()">
+    <div class="wm-modal wm-facility-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Manage Facilities — {{ facilityBed?.bedNumber }}</h3>
+        <button class="wm-modal-close" (click)="closeFacilityModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body">
+        <p class="wm-facility-hint">Select facilities available in this bed/room:</p>
+        <div class="wm-facility-grid">
+          <label class="wm-facility-item" *ngFor="let fac of allFacilities"
+                 [class.selected]="isFacilitySelected(fac.id)">
+            <input type="checkbox"
+                   [checked]="isFacilitySelected(fac.id)"
+                   (change)="toggleFacility(fac.id)" />
+            <div class="wm-facility-card">
+              <span class="wm-facility-chk">✓</span>
+              <div class="wm-facility-name">{{ fac.name }}</div>
+              <div class="wm-facility-price" *ngIf="fac.standardCharge > 0">+&#2547; {{ fac.standardCharge }}/day</div>
+              <div class="wm-facility-price wm-facility-free" *ngIf="fac.standardCharge === 0">Free</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="wm-modal-footer">
+        <button class="wm-btn-cancel" (click)="closeFacilityModal()">Cancel</button>
+        <button class="wm-btn-confirm" (click)="saveFacilities()" [disabled]="facilitySaving">
+          {{ facilitySaving ? 'Saving...' : 'Save Facilities' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admit Modal -->
+  <div class="wm-modal-overlay" *ngIf="showAdmitModal" (click)="closeAdmitModal()">
+    <div class="wm-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Admit Patient</h3>
+        <button class="wm-modal-close" (click)="closeAdmitModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body" *ngIf="admitBed">
+        <div class="wm-modal-bed-info">
+          <span class="wm-modal-bed-num">{{ admitBed.bedNumber }}</span>
+          <span class="wm-modal-bed-cost">{{ admitBed.totalDailyCost | number:'1.0-0' }} &#2547;/day</span>
+        </div>
+
+        <div class="wm-form-group">
+          <label>Patient <small>(Search by name, code or phone)</small></label>
+          <div class="wm-patient-search-wrap">
+            <input *ngIf="!selectedPatientDisplay"
+                   class="wm-form-input wm-patient-search"
+                   type="text"
+                   placeholder="Type patient name, code or phone..."
+                   [(ngModel)]="patientSearchKeyword"
+                   (input)="onPatientSearch()"
+                   (focus)="onPatientInputFocus()"
+                   (blur)="onPatientInputBlur()" />
+            <div *ngIf="selectedPatientDisplay" class="wm-patient-selected">
+              <span class="wm-patient-selected-text">{{ selectedPatientDisplay }}</span>
+              <button class="wm-patient-clear" (click)="clearPatient()">&times;</button>
+            </div>
+            <div class="wm-patient-dropdown" *ngIf="showPatientDropdown && filteredPatients.length > 0">
+              <div class="wm-patient-option" *ngFor="let p of filteredPatients"
+                   (mousedown)="selectPatient(p)">
+                <span class="wm-po-code">{{ p.patientCode }}</span>
+                <span class="wm-po-name">{{ p.name }}</span>
+                <span class="wm-po-phone">{{ p.phone }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wm-form-group">
+          <label>Assigned Doctor <small *ngIf="doctorAutoFilled" class="wm-auto-tag">(Auto-filled)</small></label>
+          <select class="wm-form-select" [(ngModel)]="admission.doctorId" [disabled]="doctorAutoFilled">
+            <option [ngValue]="0">Select Doctor</option>
+            <option *ngFor="let d of doctors" [ngValue]="d.id">Dr. {{ d.name }} ({{ d.specialization }})</option>
+          </select>
+        </div>
+
+        <div class="wm-form-group">
+          <label>Initial Diagnosis <small *ngIf="admission.initialDiagnosis" class="wm-auto-tag">(Auto-filled from prescription)</small></label>
+          <textarea class="wm-form-textarea" rows="3" [(ngModel)]="admission.initialDiagnosis" placeholder="Enter diagnosis..."></textarea>
+        </div>
+      </div>
+      <div class="wm-modal-footer">
+        <button class="wm-btn-cancel" (click)="closeAdmitModal()">Cancel</button>
+        <button class="wm-btn-confirm" (click)="admitPatient()">Confirm Admission</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Ward Modal -->
+  <div class="wm-modal-overlay" *ngIf="showCreateWardModal" (click)="closeCreateWardModal()">
+    <div class="wm-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Create New Ward</h3>
+        <button class="wm-modal-close" (click)="closeCreateWardModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body">
+        <div class="wm-form-group">
+          <label>Ward Name</label>
+          <input class="wm-form-input" type="text" [(ngModel)]="newWard.name" placeholder="e.g. Cardiac Ward A">
+        </div>
+        <div class="wm-form-group">
+          <label>Room Type</label>
+          <select class="wm-form-select" [(ngModel)]="newWard.roomType">
+            <option *ngFor="let rt of roomTypes" [value]="rt">{{ rt.replace('_', ' ') }}</option>
+          </select>
+        </div>
+        <div class="wm-form-group">
+          <label>Total Beds</label>
+          <input class="wm-form-input" type="number" [(ngModel)]="newWard.totalBeds" min="1">
+        </div>
+        <div class="wm-form-group">
+          <label>Base Price Per Day (&#2547;)</label>
+          <input class="wm-form-input" type="number" [(ngModel)]="newWard.basePricePerDay" min="0">
+        </div>
+      </div>
+      <div class="wm-modal-footer">
+        <button class="wm-btn-cancel" (click)="closeCreateWardModal()">Cancel</button>
+        <button class="wm-btn-confirm" (click)="createWard()">Create Ward</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Bed Modal -->
+  <div class="wm-modal-overlay" *ngIf="showCreateBedModal" (click)="closeCreateBedModal()">
+    <div class="wm-modal" (click)="$event.stopPropagation()">
+      <div class="wm-modal-header">
+        <h3>Add New Bed</h3>
+        <button class="wm-modal-close" (click)="closeCreateBedModal()">&times;</button>
+      </div>
+      <div class="wm-modal-body">
+        <div class="wm-form-group">
+          <label>Bed Number</label>
+          <input class="wm-form-input" type="text" [(ngModel)]="newBed.bedNumber" placeholder="e.g. B-101">
+        </div>
+        <div class="wm-modal-footer">
+          <button class="wm-btn-cancel" (click)="closeCreateBedModal()">Cancel</button>
+          <button class="wm-btn-confirm" (click)="createBed()">Create Bed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

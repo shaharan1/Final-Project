@@ -1,0 +1,476 @@
+/* ─── Container ─── */
+.pl-container {
+  font-family: 'Inter', sans-serif;
+  padding: 24px;
+  min-height: 100vh;
+  background: #f0fdf4;
+}
+
+/* ─── Card ─── */
+.pl-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* ─── Header ─── */
+.pl-header {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pl-header-heartbeat {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.pl-header .wave-path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+  animation: plDrawWave 4s ease forwards;
+}
+
+@keyframes plDrawWave {
+  to { stroke-dashoffset: 0; }
+}
+
+.pl-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pl-header-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+.pl-header-text h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.pl-header-subtitle {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ─── Buttons ─── */
+.pl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.pl-btn-add {
+  background: #fff;
+  color: #059669;
+  padding: 12px 22px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pl-btn-add:hover {
+  background: #f0fdf4;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.pl-btn-clear {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 10px 18px;
+  border: 1px solid #e2e8f0;
+}
+
+.pl-btn-clear:hover {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+/* ─── Toolbar ─── */
+.pl-toolbar {
+  padding: 20px 32px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pl-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pl-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pl-input-icon {
+  position: absolute;
+  left: 12px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.pl-input {
+  height: 40px;
+  padding: 0 14px 0 36px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #334155;
+  background: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+  width: 200px;
+}
+
+.pl-input::placeholder {
+  color: #94a3b8;
+}
+
+.pl-input:focus {
+  border-color: #059669;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.pl-record-count {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.pl-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #059669, #0891b2);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  padding: 0 8px;
+  margin-right: 6px;
+}
+
+/* ─── Table ─── */
+.pl-table-wrapper {
+  overflow-x: auto;
+}
+
+.pl-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pl-table thead tr {
+  background: #f8fafc;
+}
+
+.pl-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.pl-th-num {
+  width: 60px;
+  text-align: center;
+}
+
+.pl-th-action {
+  width: 260px;
+  text-align: center;
+}
+
+.pl-table td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.pl-table-row {
+  transition: background 0.15s ease;
+}
+
+.pl-table-row:hover {
+  background: #f0fdf4;
+}
+
+.pl-td-num {
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ─── Badges ─── */
+.pl-code-badge {
+  display: inline-block;
+  background: #f0f9ff;
+  color: #0369a1;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #bae6fd;
+}
+
+.pl-blood-badge {
+  display: inline-block;
+  background: #fef2f2;
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+}
+
+/* ─── Patient Name Cell ─── */
+.pl-patient-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.pl-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #059669, #0891b2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* ─── Action Buttons ─── */
+.pl-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pl-btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.pl-btn-view {
+  background: #ecfeff;
+  color: #0891b2;
+  border: 1px solid #a5f3fc;
+}
+
+.pl-btn-view:hover {
+  background: #0891b2;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.3);
+}
+
+.pl-btn-edit {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #fff;
+  border: none;
+}
+
+.pl-btn-edit:hover {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.pl-btn-delete {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.pl-btn-delete:hover {
+  background: #dc2626;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+/* ─── Empty State ─── */
+.pl-empty {
+  padding: 64px 32px;
+  text-align: center;
+}
+
+.pl-empty-icon {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #f0fdf4, #ecfeff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #059669;
+}
+
+.pl-empty h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.pl-empty p {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .pl-container {
+    padding: 16px;
+  }
+
+  .pl-header {
+    padding: 20px 24px;
+  }
+
+  .pl-toolbar {
+    padding: 16px 24px;
+  }
+
+  .pl-input {
+    width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pl-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .pl-header-left {
+    flex-direction: column;
+  }
+
+  .pl-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pl-filter-group {
+    flex-direction: column;
+  }
+
+  .pl-input {
+    width: 100%;
+  }
+
+  .pl-btn-clear {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pl-record-count {
+    text-align: center;
+  }
+
+  .pl-actions {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pl-btn-action {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .pl-container {
+    padding: 10px;
+  }
+
+  .pl-header {
+    padding: 16px;
+  }
+
+  .pl-header-text h2 {
+    font-size: 18px;
+  }
+
+  .pl-toolbar {
+    padding: 12px 16px;
+  }
+
+  .pl-table th,
+  .pl-table td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}

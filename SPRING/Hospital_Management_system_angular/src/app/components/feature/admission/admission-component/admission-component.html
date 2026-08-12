@@ -1,0 +1,66 @@
+<div class="adm-container">
+    <div class="adm-card">
+        <div class="adm-card-header">
+            <h3>Patient Admission</h3>
+            <p>Admit a patient to a ward and bed</p>
+        </div>
+        <div class="adm-card-body">
+
+            <!-- Patient -->
+            <div class="adm-form-group">
+                <label>Patient <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="admission.patientId" name="patientId">
+                    <option [ngValue]="0">Select Patient</option>
+                    <option *ngFor="let p of patients" [ngValue]="p.id">
+                        {{p.patientCode}} - {{p.name}}
+                    </option>
+                </select>
+            </div>
+
+            <!-- Doctor -->
+            <div class="adm-form-group">
+                <label>Assigned Doctor <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="admission.doctorId" name="doctorId">
+                    <option [ngValue]="0">Select Doctor</option>
+                    <option *ngFor="let d of doctors" [ngValue]="d.id">
+                        Dr. {{d.name}} ({{d.specialization}})
+                    </option>
+                </select>
+            </div>
+
+            <!-- Ward -->
+            <div class="adm-form-group">
+                <label>Ward <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="selectedWardId" (ngModelChange)="onWardChange($event)" name="ward">
+                    <option [ngValue]="0">Select Ward</option>
+                    <option *ngFor="let w of wards" [ngValue]="w.id">
+                        {{w.name}} ({{w.roomType}})
+                    </option>
+                </select>
+            </div>
+
+            <!-- Bed -->
+            <div class="adm-form-group">
+                <label>Bed <span class="adm-required">*</span></label>
+                <select class="adm-select" [(ngModel)]="admission.bedId" [disabled]="beds.length === 0" name="bedId">
+                    <option [ngValue]="0">{{ beds.length === 0 ? 'Select a ward first' : 'Select Bed' }}</option>
+                    <option *ngFor="let b of beds" [ngValue]="b.id">
+                        {{b.bedNumber}} - &#2547;{{b.totalDailyCost}}/day
+                    </option>
+                </select>
+            </div>
+
+            <!-- Diagnosis -->
+            <div class="adm-form-group">
+                <label>Initial Diagnosis</label>
+                <textarea class="adm-textarea" rows="4" [(ngModel)]="admission.initialDiagnosis" name="diagnosis"
+                    placeholder="Enter initial diagnosis..."></textarea>
+            </div>
+
+            <!-- Button -->
+            <button class="adm-btn" (click)="admit()" [disabled]="submitting">
+                {{ submitting ? 'Admitting...' : 'Admit Patient' }}
+            </button>
+        </div>
+    </div>
+</div>

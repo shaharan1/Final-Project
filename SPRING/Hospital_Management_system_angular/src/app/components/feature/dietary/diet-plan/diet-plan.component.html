@@ -1,0 +1,265 @@
+<div class="dietary-page">
+  <div class="page-header">
+    <svg class="diet-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div>
+      <div class="ph-icon">📋</div>
+      <h1 class="page-title">Diet Plan Management</h1>
+      <p class="page-subtitle">Create and manage therapeutic diet plans with full nutrition details</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create Diet Plan
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading diet plans...</p>
+  </div>
+
+  <div class="error-container" *ngIf="!loading && msg">
+    <div class="error-card" [class.error-success]="msgType==='success'" [class.error-error]="msgType==='error'">
+      <span class="error-icon">{{ msgType==='success' ? '✓' : '!' }}</span>
+      <p>{{ msg }}</p>
+    </div>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="filter-bar glass" *ngIf="!loading">
+    <div class="search-group" style="flex: 1;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" placeholder="Search diet plans..." [(ngModel)]="searchTerm" (ngModelChange)="filterPlans()">
+    </div>
+    <select class="filter-select" [(ngModel)]="filterDietType" (ngModelChange)="filterPlans()" style="min-width: 200px;">
+      <option value="">All Diet Types</option>
+      <option *ngFor="let type of dietTypes" [value]="type">{{ type }}</option>
+    </select>
+  </div>
+
+  <!-- Diet Plan Cards -->
+  <div class="plans-grid" *ngIf="!loading">
+    <div class="plan-card glass" *ngFor="let plan of filteredPlans" (click)="togglePlanDetail(plan)">
+      <div class="plan-header">
+        <div class="plan-icon" [style.background]="getDietTypeColor(plan.dietType) + '20'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24" [style.color]="getDietTypeColor(plan.dietType)">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="plan-title-area">
+          <h3>{{ plan.name }}</h3>
+          <span class="diet-type-badge" [ngClass]="getDietTypeBadgeClass(plan.dietType)">{{ plan.dietType }}</span>
+        </div>
+        <span class="plan-status" [class.active]="plan.active" [class.inactive]="!plan.active">
+          {{ plan.active ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+      
+      <div class="plan-nutrition">
+        <div class="nutri-main">
+          <span class="nutri-value">{{ plan.totalCalories || 0 }}</span>
+          <span class="nutri-label">Calories</span>
+        </div>
+        <div class="nutri-mini-grid">
+          <div class="nutri-mini"><span class="nutri-mini-val">{{ plan.protein || 0 }}g</span><span class="nutri-mini-lbl">Protein</span></div>
+          <div class="nutri-mini"><span class="nutri-mini-val">{{ plan.carbohydrate || 0 }}g</span><span class="nutri-mini-lbl">Carbs</span></div>
+          <div class="nutri-mini"><span class="nutri-mini-val">{{ plan.fat || 0 }}g</span><span class="nutri-mini-lbl">Fat</span></div>
+          <div class="nutri-mini"><span class="nutri-mini-val">{{ plan.fiber || 0 }}g</span><span class="nutri-mini-lbl">Fiber</span></div>
+        </div>
+        <div class="nutri-price" *ngIf="plan.pricePerDay && plan.pricePerDay > 0">
+          <span class="nutri-price-val">৳{{ plan.pricePerDay }}</span>
+          <span class="nutri-price-lbl">Per Day</span>
+        </div>
+      </div>
+
+      <!-- Expanded Detail -->
+      <div class="plan-detail" *ngIf="expandedPlanId === plan.id">
+        <div class="detail-section">
+          <h4>Meal Schedule</h4>
+          <div class="meal-timeline">
+            <div class="meal-item" *ngFor="let meal of getMeals(plan)">
+              <span class="meal-time">{{ meal.time }}</span>
+              <span class="meal-name">{{ meal.name }}</span>
+              <span class="meal-content">{{ meal.content }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="detail-section">
+          <h4>Nutrition Breakdown</h4>
+          <div class="nutrition-full-grid">
+            <div class="nutri-full"><span class="nutri-full-lbl">Calories</span><span class="nutri-full-val">{{ plan.totalCalories || 0 }} kcal</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Protein</span><span class="nutri-full-val">{{ plan.protein || 0 }} g</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Carbohydrates</span><span class="nutri-full-val">{{ plan.carbohydrate || 0 }} g</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Fat</span><span class="nutri-full-val">{{ plan.fat || 0 }} g</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Fiber</span><span class="nutri-full-val">{{ plan.fiber || 0 }} g</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Sodium</span><span class="nutri-full-val">{{ plan.sodium || 0 }} mg</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Potassium</span><span class="nutri-full-val">{{ plan.potassium || 0 }} mg</span></div>
+            <div class="nutri-full"><span class="nutri-full-lbl">Water Intake</span><span class="nutri-full-val">{{ plan.waterIntakeMl || 0 }} ml</span></div>
+          </div>
+        </div>
+        <div class="detail-section" *ngIf="plan.vitaminRecommendation">
+          <h4>Vitamin Recommendations</h4>
+          <p>{{ plan.vitaminRecommendation }}</p>
+        </div>
+        <div class="detail-section" *ngIf="plan.doctorRecommendation">
+          <h4>Doctor Recommendations</h4>
+          <p>{{ plan.doctorRecommendation }}</p>
+        </div>
+        <div class="detail-section" *ngIf="plan.dieticianNotes">
+          <h4>Dietician Notes</h4>
+          <p>{{ plan.dieticianNotes }}</p>
+        </div>
+      </div>
+
+      <div class="plan-actions" *ngIf="expandedPlanId !== plan.id">
+        <button class="action-btn secondary" (click)="$event.stopPropagation(); openEditModal(plan)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Edit
+        </button>
+        <button class="action-btn danger" (click)="$event.stopPropagation(); confirmDelete(plan)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredPlans.length === 0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="80" height="80"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <h3>No Diet Plans Found</h3>
+      <p>{{ searchTerm || filterDietType ? 'Try adjusting your search or filters' : 'Create your first diet plan to get started' }}</p>
+    </div>
+  </div>
+
+  <!-- Create/Edit Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal modal-xl glass" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingPlan ? 'Edit Diet Plan' : 'Create Diet Plan' }}</h2>
+        <button class="btn-close" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Plan Name *</label>
+            <input type="text" [(ngModel)]="formModel.name" placeholder="e.g., Diabetic Cardiac Diet" required>
+          </div>
+          <div class="form-group">
+            <label>Diet Type *</label>
+            <select [(ngModel)]="formModel.dietType" required>
+              <option value="">Select Type</option>
+              <option *ngFor="let t of dietTypes" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea [(ngModel)]="formModel.description" rows="2" placeholder="Brief description of this diet plan"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Meal Schedule</h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Breakfast</label>
+              <textarea [(ngModel)]="formModel.breakfast" rows="2" placeholder="Meal description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="formModel.breakfastTime">
+            </div>
+            <div class="form-group">
+              <label>Morning Snacks</label>
+              <textarea [(ngModel)]="formModel.morningSnacks" rows="2" placeholder="Snack description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="formModel.morningSnacksTime">
+            </div>
+            <div class="form-group">
+              <label>Lunch</label>
+              <textarea [(ngModel)]="formModel.lunch" rows="2" placeholder="Meal description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="formModel.lunchTime">
+            </div>
+            <div class="form-group">
+              <label>Evening Snacks</label>
+              <textarea [(ngModel)]="formModel.eveningSnacks" rows="2" placeholder="Snack description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="formModel.eveningSnacksTime">
+            </div>
+            <div class="form-group">
+              <label>Dinner</label>
+              <textarea [(ngModel)]="formModel.dinner" rows="2" placeholder="Meal description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="formModel.dinnerTime">
+            </div>
+            <div class="form-group">
+              <label>Night Diet</label>
+              <textarea [(ngModel)]="formModel.nightDiet" rows="2" placeholder="Light meal description"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" [(ngModel)]="formModel.nightDietTime">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Nutrition Information</h4>
+          <div class="form-grid">
+            <div class="form-group"><label>Total Calories</label><input type="number" [(ngModel)]="formModel.totalCalories" placeholder="e.g., 2000"></div>
+            <div class="form-group"><label>Protein (g)</label><input type="number" step="0.1" [(ngModel)]="formModel.protein" placeholder="e.g., 75"></div>
+            <div class="form-group"><label>Carbohydrate (g)</label><input type="number" step="0.1" [(ngModel)]="formModel.carbohydrate" placeholder="e.g., 250"></div>
+            <div class="form-group"><label>Fat (g)</label><input type="number" step="0.1" [(ngModel)]="formModel.fat" placeholder="e.g., 65"></div>
+            <div class="form-group"><label>Fiber (g)</label><input type="number" step="0.1" [(ngModel)]="formModel.fiber" placeholder="e.g., 25"></div>
+            <div class="form-group"><label>Sodium (mg)</label><input type="number" [(ngModel)]="formModel.sodium" placeholder="e.g., 2300"></div>
+            <div class="form-group"><label>Potassium (mg)</label><input type="number" [(ngModel)]="formModel.potassium" placeholder="e.g., 3500"></div>
+            <div class="form-group"><label>Water Intake (ml)</label><input type="number" [(ngModel)]="formModel.waterIntakeMl" placeholder="e.g., 2500"></div>
+            <div class="form-group"><label>Price Per Day (৳)</label><input type="number" step="0.01" [(ngModel)]="formModel.pricePerDay" placeholder="e.g., 500"></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Recommendations & Notes</h4>
+          <div class="form-grid">
+            <div class="form-group full-width"><label>Vitamin Recommendations</label><textarea [(ngModel)]="formModel.vitaminRecommendation" rows="3" placeholder="Vitamin supplements and recommendations"></textarea></div>
+            <div class="form-group full-width"><label>Doctor Recommendations</label><textarea [(ngModel)]="formModel.doctorRecommendation" rows="3" placeholder="Doctor's clinical notes"></textarea></div>
+            <div class="form-group full-width"><label>Dietician Notes</label><textarea [(ngModel)]="formModel.dieticianNotes" rows="3" placeholder="Dietician's instructions"></textarea></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="savePlan()" [disabled]="loading">
+          <span *ngIf="loading"><svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="1"/></svg></span>
+          {{ loading ? 'Saving...' : (editingPlan ? 'Update Plan' : 'Create Plan') }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()">
+    <div class="modal modal-sm glass" (click)="$event.stopPropagation()">
+      <div class="modal-header"><h2>Confirm Delete</h2><button class="btn-close" (click)="cancelDelete()">×</button></div>
+      <div class="modal-body">
+        <div class="delete-warning">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2" width="48" height="48"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <p>Are you sure you want to delete <strong>{{ planToDelete?.name }}</strong>?</p>
+          <span class="text-muted">This action cannot be undone.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
+        <button class="btn btn-danger" (click)="deletePlan()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

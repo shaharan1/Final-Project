@@ -1,0 +1,78 @@
+
+  <app-profile-card></app-profile-card>
+
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-float-icon">🏥</div>
+      <p class="eyebrow">Ward Operations</p>
+      <h1>Ward Manager Dashboard</h1>
+      <p class="hero-desc">Monitor bed occupancy across all wards, track admissions, and manage ward-level operations.</p>
+      <div class="hero-actions">
+        <a routerLink="/bed" class="btn-primary">Manage Beds</a>
+        <a routerLink="/ward" class="btn-ghost">View Wards</a>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Beds</span>
+      <span class="stat-value">{{ stats!.totalBeds | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Occupied</span>
+      <span class="stat-value">{{ stats!.admittedPatients | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Available</span>
+      <span class="stat-value">{{ stats!.availableBeds | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Occupancy Rate</span>
+      <span class="stat-value">{{ occupancyRate }}%</span>
+    </div>
+  </section>
+
+  <section *ngIf="!loading" class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Ward-wise Occupancy</h2>
+        <span class="panel-tag">Live</span>
+      </div>
+      <div class="ward-list">
+        <div class="ward-row" *ngFor="let ward of wards">
+          <span class="ward-name">{{ ward.wardName }}</span>
+          <div class="ward-bar"><div class="ward-fill {{ getBarClass(ward.percentage) }}" [style.width.%]="ward.percentage"></div></div>
+          <span class="ward-pct">{{ ward.percentage }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent Ward Admissions</h2>
+        <a routerLink="/admittedpatient" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Ward</th><th>Bed</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admission of recentAdmissions">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(admission.patientName) }}</span>{{ admission.patientName }}</div></td>
+            <td>{{ admission.wardName }}</td>
+            <td>{{ admission.bedNumber }}</td>
+            <td><span class="badge {{ getBadgeClass(admission.status) }}">{{ formatStatus(admission.status) }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+

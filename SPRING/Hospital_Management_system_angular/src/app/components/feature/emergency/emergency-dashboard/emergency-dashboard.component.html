@@ -1,0 +1,220 @@
+<div class="dashboard-wrapper">
+  <!-- Skeleton Loader -->
+  <div *ngIf="loading" class="skeleton-container">
+    <div class="skeleton-header">
+      <div class="skeleton-block skeleton-title"></div>
+      <div class="skeleton-block skeleton-subtitle"></div>
+    </div>
+    <div class="skeleton-grid">
+      <div class="skeleton-block skeleton-card" *ngFor="let i of [1,2,3,4,5,6,7,8]"></div>
+    </div>
+    <div class="skeleton-table">
+      <div class="skeleton-block skeleton-row" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div *ngIf="!loading" class="dashboard-content">
+    <!-- Hero Header -->
+    <header class="hero-header glass">
+      <svg class="em-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+      </svg>
+      <div class="hero-left">
+        <div class="hero-title-row">
+          <div class="hero-icon">🚑</div>
+          <div class="pulse-indicator">
+            <span class="pulse-dot"></span>
+            <span class="pulse-ring"></span>
+          </div>
+          <div>
+            <h1 class="hero-title">Emergency Department</h1>
+            <p class="hero-subtitle">{{ getCurrentDateTime() }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="action-btn action-register" (click)="navigateTo('/emergency/registration')">
+          <i class="bi bi-person-plus-fill"></i>
+          <span>Register Patient</span>
+        </button>
+        <button class="action-btn action-status" (click)="navigateTo('/emergency/status-board')">
+          <i class="bi bi-clipboard2-pulse-fill"></i>
+          <span>Status Board</span>
+        </button>
+        <button class="action-btn action-ambulance" (click)="navigateTo('/emergency/ambulances')">
+          <i class="bi bi-truck"></i>
+          <span>Ambulances</span>
+        </button>
+        <button class="action-btn action-refresh" (click)="refresh()">
+          <i class="bi bi-arrow-clockwise"></i>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Error Banner -->
+    <div *ngIf="error" class="error-banner glass">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <span>{{ error }}</span>
+      <button (click)="error = ''" class="error-dismiss"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <!-- KPI Cards Grid -->
+    <section class="kpi-section">
+      <div class="kpi-grid">
+        <div
+          *ngFor="let card of dashboardCards"
+          class="kpi-card glass"
+          (click)="navigateTo(card.route)"
+          [style.--card-accent]="card.color"
+        >
+          <div class="kpi-icon" [style.background]="card.color + '22'" [style.color]="card.color">
+            <i class="bi" [ngClass]="card.icon"></i>
+          </div>
+          <div class="kpi-content">
+            <span class="kpi-value" *ngIf="!card.isCurrency && !card.isTime">{{ card.value | number }}</span>
+            <span class="kpi-value" *ngIf="card.isCurrency">{{ formatCurrency(card.value) }}</span>
+            <span class="kpi-value" *ngIf="card.isTime">{{ card.value | number }}<small>{{ card.suffix }}</small></span>
+            <span class="kpi-label">{{ card.label }}</span>
+          </div>
+          <div class="kpi-glow" [style.background]="card.color"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Triage Distribution -->
+    <section class="triage-section glass">
+      <h2 class="section-title">
+        <i class="bi bi-bar-chart-fill"></i>
+        Triage Distribution
+      </h2>
+      <div class="charts-row">
+        <div class="chart-container">
+          <canvas #triagePieChart></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas #statusBarChart></canvas>
+        </div>
+      </div>
+      <div class="triage-grid">
+        <div
+          *ngFor="let t of triageDistribution"
+          class="triage-item"
+          [style.--triage-color]="t.color"
+        >
+          <div class="triage-badge" [style.background]="t.color">
+            <span class="triage-level">{{ t.level }}</span>
+          </div>
+          <div class="triage-info">
+            <span class="triage-count">{{ t.count }}</span>
+            <span class="triage-label">{{ t.label }}</span>
+          </div>
+          <div class="triage-bar">
+            <div class="triage-bar-fill" [style.background]="t.color" [style.width]="(patients.length ? (t.count / patients.length * 100) : 0) + '%'"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Patients Table -->
+    <section class="table-section glass">
+      <div class="table-header">
+        <h2 class="section-title">
+          <i class="bi bi-people-fill"></i>
+          Recent Emergency Patients
+        </h2>
+        <div class="status-filters">
+          <button
+            *ngFor="let status of statusFilters"
+            class="filter-tab"
+            [class.active]="selectedStatus === status"
+            (click)="filterByStatus(status)"
+          >
+            {{ status === 'All' ? 'All' : getStatusLabel(status) }}
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container" *ngIf="filteredPatients.length > 0">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Emergency #</th>
+              <th>Patient Name</th>
+              <th>Triage Level</th>
+              <th>Status</th>
+              <th>Arrival Time</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let patient of filteredPatients" class="table-row">
+              <td class="cell-id">{{ patient.emergencyNumber || patient.id }}</td>
+              <td class="cell-name">
+                <div class="patient-info">
+                  <span class="patient-avatar" [style.background]="getTriageColor(patient.triageLevel) + '33'" [style.color]="getTriageColor(patient.triageLevel)">
+                    {{ patient.patientName ? patient.patientName.charAt(0) : '?' }}
+                  </span>
+                  <span>{{ patient.patientName || 'Unknown' }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="triage-pill" [style.background]="getTriageColor(patient.triageLevel) + '22'" [style.color]="getTriageColor(patient.triageLevel)" [style.border-color]="getTriageColor(patient.triageLevel) + '44'">
+                  <i class="bi bi-flag-fill"></i>
+                  Level {{ patient.triageLevel }} - {{ getTriageLabel(patient.triageLevel) }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(patient.status)">
+                  {{ patient.status | titlecase }}
+                </span>
+              </td>
+              <td class="cell-time">{{ patient.arrivalTime | date:'short' }}</td>
+              <td class="cell-actions">
+                <button class="table-action-btn view-btn" title="View Details" (click)="navigateTo('/emergency/registration')">
+                  <i class="bi bi-eye-fill"></i>
+                </button>
+                <button class="table-action-btn triage-btn" title="Triage" (click)="navigateTo('/emergency/triage')">
+                  <i class="bi bi-clipboard2-pulse-fill"></i>
+                </button>
+                <button class="table-action-btn assign-btn" title="Assign Doctor" (click)="navigateTo('/emergency/assignments')">
+                  <i class="bi bi-person-plus-fill"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredPatients.length === 0">
+        <i class="bi bi-inbox"></i>
+        <p>No patients found for the selected filter.</p>
+      </div>
+    </section>
+
+    <!-- Quick Status Bar -->
+    <footer class="status-bar glass">
+      <div class="status-item critical" *ngIf="dashboard.criticalPatients && dashboard.criticalPatients > 0">
+        <i class="bi bi-exclamation-octagon-fill"></i>
+        <span>{{ dashboard.criticalPatients }} Critical Patient{{ dashboard.criticalPatients > 1 ? 's' : '' }}</span>
+      </div>
+      <div class="status-item waiting" *ngIf="dashboard.waitingPatients && dashboard.waitingPatients > 0">
+        <i class="bi bi-hourglass-split"></i>
+        <span>{{ dashboard.waitingPatients }} Waiting</span>
+      </div>
+      <div class="status-item ambulances" *ngIf="dashboard.ambulancesActive && dashboard.ambulancesActive > 0">
+        <i class="bi bi-truck"></i>
+        <span>{{ dashboard.ambulancesActive }} Ambulance{{ dashboard.ambulancesActive > 1 ? 's' : '' }} Active</span>
+      </div>
+      <div class="status-item beds" *ngIf="dashboard.availableEmergencyBeds !== undefined">
+        <i class="bi bi-bed"></i>
+        <span>{{ dashboard.availableEmergencyBeds }} Beds Available</span>
+      </div>
+      <div class="status-item auto-refresh">
+        <i class="bi bi-arrow-repeat"></i>
+        <span>Auto-refresh: 30s</span>
+      </div>
+    </footer>
+  </div>
+</div>

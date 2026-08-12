@@ -1,0 +1,316 @@
+<div class="dietary-page">
+  <div class="page-header">
+    <svg class="diet-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
+    <div>
+      <h1 class="page-title"><i class="bi bi-heart-pulse"></i> Patient Diet Management</h1>
+      <p class="page-subtitle">Assign diet plans and manage patient dietary needs</p>
+    </div>
+  </div>
+
+  <!-- Error/Success Message -->
+  <div class="error-container" *ngIf="msg">
+    <div class="error-card" [ngClass]="{'error-success': msgType==='success','error-error': msgType==='error'}">
+      <div class="error-icon"><i class="bi" [ngClass]="{'bi-check-lg': msgType==='success','bi-x-lg': msgType==='error'}"></i></div>
+      <span>{{ msg }}</span>
+      <button class="btn-close" (click)="msg=''">&times;</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading patient data...</p>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="search-group">
+        <input class="search-input" type="text" placeholder="Search patients by name, code or phone..." [(ngModel)]="searchTerm" (ngModelChange)="filterPatients()">
+      </div>
+      <div class="filter-group">
+        <select class="filter-select" [(ngModel)]="filterWard" (ngModelChange)="filterPatients()">
+          <option value="">All Wards</option>
+          <option *ngFor="let ward of getUniqueWards()" [value]="ward">{{ ward }}</option>
+        </select>
+        <select class="filter-select" [(ngModel)]="filterStatus" (ngModelChange)="filterPatients()">
+          <option value="">All Patients</option>
+          <option value="ACTIVE">Active Diet</option>
+          <option value="NO_DIET">No Diet Plan</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Patients Grid -->
+    <div class="patient-grid">
+      <div class="patient-card" *ngFor="let patient of filteredPatients; trackBy: trackById">
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="patient-avatar">{{ getPatientInitials(patient.name) }}</div>
+          <div class="patient-info">
+            <h3>{{ patient.name }}</h3>
+            <span class="patient-code">{{ patient.patientCode }}</span>
+          </div>
+        </div>
+
+        <!-- Card Meta -->
+        <div class="card-meta">
+          <div class="meta-item">
+            <span class="meta-label">Ward</span>
+            <span class="meta-value">{{ getPatientWard(patient.id) }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Bed</span>
+            <span class="meta-value">{{ getPatientBed(patient.id) }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Age</span>
+            <span class="meta-value">{{ calculateAge(patient.dateOfBirth) }}y</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Phone</span>
+            <span class="meta-value">{{ patient.phone || '-' }}</span>
+          </div>
+        </div>
+
+        <!-- Diet Status -->
+        <div class="diet-status" *ngIf="getAssignmentForPatient(patient.id) as a">
+          <span class="diet-badge" [ngClass]="getDietTypeBadgeClass(a.dietPlan?.dietType)">{{ a.dietPlan?.dietType || 'Unknown' }}</span>
+          <span class="diet-price" *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0">৳{{ a.dietPlan.pricePerDay }}/day</span>
+          <span class="diet-amount" *ngIf="a.totalAmount && a.totalAmount > 0">Total: ৳{{ a.totalAmount | number:'1.0-0' }}</span>
+          <span class="status-badge badge-success">ACTIVE</span>
+        </div>
+        <div class="diet-status" *ngIf="!getAssignmentForPatient(patient.id)">
+          <span class="diet-badge badge-secondary">NO DIET PLAN</span>
+        </div>
+
+        <!-- Meal Preview (compact) -->
+        <div class="assignment-meals" *ngIf="getAssignmentForPatient(patient.id) as a">
+          <div class="meal-row" *ngFor="let meal of getMeals(a.dietPlan)">
+            <span class="meal-time">{{ meal.time }}</span>
+            <span class="meal-name">{{ meal.name }}</span>
+            <span class="meal-content">{{ meal.content }}</span>
+          </div>
+        </div>
+
+        <!-- Card Actions -->
+        <div class="card-actions">
+          <button class="action-btn primary" (click)="openAssignDiet(patient)" *ngIf="!getAssignmentForPatient(patient.id)">
+            <i class="bi bi-plus-circle"></i> Assign Diet
+          </button>
+          <button class="action-btn primary" (click)="openUpdateDiet(patient)" *ngIf="getAssignmentForPatient(patient.id)">
+            <i class="bi bi-pencil-square"></i> Update
+          </button>
+          <button class="action-btn secondary" (click)="viewPatientDiet(patient)">
+            <i class="bi bi-eye"></i> Details
+          </button>
+          <button class="action-btn danger" (click)="openAddAlert(patient)">
+            <i class="bi bi-bell"></i> Alert
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredPatients.length === 0">
+        <i class="bi bi-heart-pulse" style="font-size:3rem"></i>
+        <h3>No patients found</h3>
+        <p>Try adjusting your search filters</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign/Update Diet Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModals()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="bi bi-heart-pulse"></i> {{ isEditMode ? 'Update Diet Plan' : 'Assign Diet Plan' }}</h2>
+        <button class="btn-close" (click)="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-patient">Patient: <strong>{{ selectedPatient?.name }}</strong> ({{ selectedPatient?.patientCode }})</p>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Diet Plan *</label>
+            <select [(ngModel)]="assignmentForm.dietPlanId">
+              <option value="">Select Diet Plan</option>
+              <option *ngFor="let plan of dietPlans" [value]="plan.id">{{ plan.name }} ({{ plan.dietType }})</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Start Date *</label>
+            <input type="date" [(ngModel)]="assignmentForm.startDate">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="date" [(ngModel)]="assignmentForm.endDate">
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select [(ngModel)]="assignmentForm.status">
+              <option value="ACTIVE">Active</option>
+              <option value="ON_HOLD">On Hold</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Target Calories</label>
+            <input type="number" [(ngModel)]="assignmentForm.targetCalories" placeholder="e.g., 2000">
+          </div>
+          <div class="form-group">
+            <label>Price Per Day (৳)</label>
+            <input type="number" step="0.01" [(ngModel)]="assignmentForm.pricePerDay" placeholder="e.g., 500">
+          </div>
+          <div class="form-group full-width">
+            <label>Reason</label>
+            <input type="text" [(ngModel)]="assignmentForm.reason" placeholder="e.g., Post-surgery recovery">
+          </div>
+          <div class="form-group full-width">
+            <label>Special Instructions</label>
+            <textarea [(ngModel)]="assignmentForm.specialInstructions" placeholder="e.g., No spicy food, low salt" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveAssignment()">
+          <i class="bi" [ngClass]="{'bi-plus-circle': !isEditMode, 'bi-check-circle': isEditMode}"></i>
+          {{ isEditMode ? 'Update Diet' : 'Assign Diet' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Diet Details Modal -->
+  <div class="modal-overlay" *ngIf="showDetailModal" (click)="closeModals()">
+    <div class="modal modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="bi bi-heart-pulse"></i> Diet Details - {{ selectedPatient?.name }}</h2>
+        <button class="btn-close" (click)="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Patient Info -->
+        <div class="detail-section">
+          <h3><i class="bi bi-person"></i> Patient Information</h3>
+          <div class="card-meta">
+            <div class="meta-item">
+              <span class="meta-label">Code</span>
+              <span class="meta-value">{{ selectedPatient?.patientCode }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Date of Birth</span>
+              <span class="meta-value">{{ selectedPatient?.dateOfBirth }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Ward</span>
+              <span class="meta-value">{{ getPatientWard(selectedPatient?.id) }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Bed</span>
+              <span class="meta-value">{{ getPatientBed(selectedPatient?.id) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diet Assignments -->
+        <div class="detail-section" *ngIf="patientAssignments.length > 0">
+          <h3><i class="bi bi-clipboard2-pulse"></i> Diet Assignments</h3>
+          <div class="assignment-list">
+            <div class="assignment-card" *ngFor="let a of patientAssignments">
+              <div class="assignment-header">
+                <h4>{{ a.dietPlan?.name || 'Unknown Plan' }}</h4>
+                <span class="assignment-diet-type" [ngClass]="getDietTypeBadgeClass(a.dietPlan?.dietType)">{{ a.dietPlan?.dietType }}</span>
+              </div>
+              <div class="assignment-meta">
+                <span>Since: {{ a.startDate }}</span>
+                <span *ngIf="a.endDate">Until: {{ a.endDate }}</span>
+                <span>Status: {{ a.status }}</span>
+                <span *ngIf="a.wardName">Ward: {{ a.wardName }}</span>
+                <span *ngIf="a.bedNumber">Bed: {{ a.bedNumber }}</span>
+                <span *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0" style="color:#19c184; font-weight:600;">Rate: ৳{{ a.dietPlan.pricePerDay }}/day</span>
+                <span *ngIf="a.totalAmount && a.totalAmount > 0" style="color:#19c184; font-weight:600;">Total: ৳{{ a.totalAmount | number:'1.0-0' }}</span>
+              </div>
+              <div class="assignment-meals" *ngIf="a.dietPlan">
+                <div class="meal-row" *ngFor="let meal of getMeals(a.dietPlan)">
+                  <span class="meal-time">{{ meal.time }}</span>
+                  <span class="meal-name">{{ meal.name }}</span>
+                  <span class="meal-content">{{ meal.content }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="detail-section" *ngIf="patientAssignments.length === 0">
+          <div class="empty-assignment">No diet assignments found</div>
+        </div>
+
+        <!-- Change History -->
+        <div class="detail-section" *ngIf="patientHistory.length > 0">
+          <h3><i class="bi bi-clock-history"></i> Change History</h3>
+          <div class="history-timeline">
+            <div class="history-item" *ngFor="let h of patientHistory">
+              <div class="history-marker"></div>
+              <div class="history-content">
+                <div class="history-header">
+                  <span class="history-action" [ngClass]="getActionClass(h.action)">{{ h.action }}</span>
+                  <span class="history-date">{{ h.changedDate }}</span>
+                </div>
+                <p class="history-desc">{{ h.dietType || h.mealType }} &mdash; {{ h.previousValue }} &rarr; {{ h.newValue }}</p>
+                <div class="history-meta" *ngIf="h.reason">Reason: {{ h.reason }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModals()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Alert Modal -->
+  <div class="modal-overlay" *ngIf="showAlertModal" (click)="closeModals()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="bi bi-bell"></i> Add Diet Alert</h2>
+        <button class="btn-close" (click)="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-patient">Patient: <strong>{{ selectedPatient?.name }}</strong> ({{ selectedPatient?.patientCode }})</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Alert Type *</label>
+            <select [(ngModel)]="alertForm.alertType">
+              <option *ngFor="let type of alertTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Severity *</label>
+            <select [(ngModel)]="alertForm.severity">
+              <option *ngFor="let s of severities" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label>Description *</label>
+            <textarea [(ngModel)]="alertForm.description" placeholder="e.g., Diabetic patient, avoid sugar" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Allergen Name</label>
+            <input type="text" [(ngModel)]="alertForm.allergenName" placeholder="e.g., Peanuts">
+          </div>
+          <div class="form-group">
+            <label>Special Instructions</label>
+            <input type="text" [(ngModel)]="alertForm.specialInstructions" placeholder="Additional notes...">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModals()">Cancel</button>
+        <button class="btn btn-danger" (click)="saveAlert()">
+          <i class="bi bi-bell"></i> Create Alert
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="lab-page">
+  <div class="lab-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">✅</div>
+      <div>
+        <h1>Lab Verification</h1>
+        <p class="lab-hero-sub">{{ filteredOrders.length }} pending verification · Verify test results and generate lab reports</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="lab-search-row">
+    <div class="lab-search-wrap">
+      <span class="lab-search-icon">🔍</span>
+      <input class="lab-search" placeholder="Search patient, test, result..." [(ngModel)]="searchKeyword">
+    </div>
+  </div>
+
+  <div class="lab-table-card">
+    <div class="lab-table-header">
+      <h3>Results Pending Verification</h3>
+      <span class="lab-table-count lab-count-purple">{{ filteredOrders.length }} tests</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th>Patient</th>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Normal Range</th>
+            <th>Entered By</th>
+            <th class="th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index" class="lab-row">
+            <td class="td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lab-patient-cell">
+                <div class="lab-avatar" [style.background]="getAvatarColor(order.patientName)">{{ getInitials(order.patientName) }}</div>
+                <div>
+                  <div class="lab-patient-name">{{ order.patientName }}</div>
+                  <div class="lab-patient-sub">{{ order.patientCode }}</div>
+                </div>
+              </div>
+            </td>
+            <td><div class="lab-test-name">{{ order.testName }}<br><small class="lab-test-sub">{{ order.testCode }}</small></div></td>
+            <td><span class="lab-result-value">{{ order.resultValue }}</span></td>
+            <td><span class="lab-range">{{ order.normalRange }}</span></td>
+            <td>{{ order.resultEnteredBy }}</td>
+            <td>
+              <button class="lab-action-btn lab-verify-btn" (click)="openVerifyModal(order)">
+                <span class="lab-btn-icon">✓</span> Verify
+              </button>
+              <button class="lab-action-btn lab-pdf-btn" (click)="viewPdf(order)">
+                <span class="lab-btn-icon">PDF</span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="7">
+              <div class="lab-empty-state">
+                <div class="lab-empty-icon lab-empty-purple">✓</div>
+                <h4>All verified!</h4>
+                <p>No results pending verification</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Verify Modal -->
+  <div class="lab-modal-overlay" *ngIf="showVerifyModal" (click)="closeVerifyModal()">
+    <div class="lab-modal" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-purple">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">✓</div>
+          <div><h3>Verify Result</h3><p>Review and approve the test result</p></div>
+        </div>
+        <button class="lab-modal-close" (click)="closeVerifyModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info-card">
+          <div class="lab-info-row"><span class="lab-info-label">Test</span><span class="lab-info-value">{{ selectedOrder.testName }}</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Patient</span><span class="lab-info-value">{{ selectedOrder.patientName }}</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Result</span><span class="lab-info-value lab-result-highlight">{{ selectedOrder.resultValue }}</span></div>
+          <div class="lab-info-row"><span class="lab-info-label">Normal Range</span><span class="lab-info-value">{{ selectedOrder.normalRange }}</span></div>
+        </div>
+        <div class="lab-form-group">
+          <label>Verified By <span class="lab-required">*</span></label>
+          <input class="lab-form-input" [(ngModel)]="verifiedBy" placeholder="Senior lab technician name">
+        </div>
+        <div class="lab-form-group">
+          <label>Verification Notes</label>
+          <textarea class="lab-form-textarea" rows="3" [(ngModel)]="verificationNotes" placeholder="Any notes about the result..."></textarea>
+        </div>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeVerifyModal()">Cancel</button>
+        <button class="lab-btn-primary lab-btn-purple" (click)="verifyResult()">Verify & Approve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF Modal -->
+  <div class="lab-modal-overlay" *ngIf="showPdfModal" (click)="closePdfModal()">
+    <div class="lab-modal lab-modal-pdf" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-blue">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">Ⓟ</div>
+          <div><h3>Lab Report</h3><p>{{ selectedOrder?.testName }} - {{ selectedOrder?.patientName }}</p></div>
+        </div>
+        <div class="lab-pdf-actions">
+          <button class="lab-btn-download" (click)="downloadPdf()">⬇ Download</button>
+          <button class="lab-modal-close" (click)="closePdfModal()">&times;</button>
+        </div>
+      </div>
+      <div class="lab-modal-body lab-pdf-body">
+        <iframe *ngIf="pdfUrl" [src]="pdfUrl" class="lab-pdf-frame"></iframe>
+      </div>
+    </div>
+  </div>
+</div>

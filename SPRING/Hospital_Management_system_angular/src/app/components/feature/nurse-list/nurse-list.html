@@ -1,0 +1,140 @@
+<div class="nl-container">
+
+  <div class="nl-card">
+
+    <div class="nl-header">
+      <svg class="nl-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+      </svg>
+      <div class="nl-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z" />
+          <path d="M9 14h6" />
+          <path d="M12 14v4" />
+          <path d="M8 22h8" />
+          <path d="M9 18h6" />
+        </svg>
+      </div>
+      <div class="nl-header-text">
+        <h2>Nurse Management</h2>
+        <p>Monitor and manage nursing staff across all wards</p>
+      </div>
+    </div>
+
+    <div class="nl-toolbar">
+      <div class="nl-search-group">
+        <div class="nl-search-wrapper">
+          <svg class="nl-search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input class="nl-input nl-search-input" placeholder="Search by name, email or phone..."
+            [(ngModel)]="searchText" (keyup)="search()" />
+        </div>
+      </div>
+
+      <div class="nl-filter-group">
+        <div class="nl-search-wrapper">
+          <svg class="nl-search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" />
+            <path d="M3 9l2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
+          </svg>
+          <input class="nl-input nl-ward-input" placeholder="Ward Name" [(ngModel)]="ward" />
+        </div>
+        <button class="nl-btn nl-btn-ward" (click)="searchWard()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          Ward Search
+        </button>
+      </div>
+
+      <div class="nl-action-group">
+        <button class="nl-btn nl-btn-duty" (click)="loadOnDuty()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          On Duty
+        </button>
+        <button class="nl-btn nl-btn-refresh" (click)="reset()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10" />
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <div class="nl-table-wrapper">
+      <table class="nl-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Ward</th>
+            <th>Shift</th>
+            <th>Experience</th>
+            <th>Duty</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let nurse of filteredNurses" class="nl-table-row">
+            <td class="nl-id-cell">{{ nurse.id }}</td>
+            <td>
+              <div class="nl-name-cell">
+                <div class="nl-avatar">{{ nurse.name.charAt(0) }}</div>
+                <span>{{ nurse.name }}</span>
+              </div>
+            </td>
+            <td class="nl-email-cell">{{ nurse.email }}</td>
+            <td>{{ nurse.phone }}</td>
+            <td>
+              <span class="nl-ward-tag">{{ nurse.assignedWard }}</span>
+            </td>
+            <td>
+              <span class="nl-shift-tag">{{ nurse.shift }}</span>
+            </td>
+            <td>{{ nurse.experienceYears }} Years</td>
+            <td>
+              <span class="nl-badge" [ngClass]="nurse.onDuty ? 'nl-badge-on' : 'nl-badge-off'">
+                <span class="nl-badge-dot"></span>
+                {{ nurse.onDuty ? 'ON DUTY' : 'OFF DUTY' }}
+              </span>
+            </td>
+            <td>
+              <span class="nl-badge" [ngClass]="nurse.active ? 'nl-badge-active' : 'nl-badge-inactive'">
+                <span class="nl-badge-dot"></span>
+                {{ nurse.active ? 'ACTIVE' : 'INACTIVE' }}
+              </span>
+            </td>
+            <td>
+              <div class="nl-action-buttons">
+                <button class="nl-action-btn nl-action-duty" (click)="changeDutyStatus(nurse)">
+                  Duty
+                </button>
+                <button class="nl-action-btn nl-action-active" (click)="changeActiveStatus(nurse)">
+                  Active
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>

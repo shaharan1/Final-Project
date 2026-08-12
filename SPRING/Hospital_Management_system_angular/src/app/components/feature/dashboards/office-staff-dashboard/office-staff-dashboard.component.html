@@ -1,0 +1,83 @@
+
+  <app-profile-card></app-profile-card>
+
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-float-icon">📝</div>
+      <p class="eyebrow">Front Office</p>
+      <h1>Office Staff Dashboard</h1>
+      <p class="hero-desc">Manage registrations, appointment scheduling, and admissions documentation for the hospital.</p>
+      <div class="hero-actions">
+        <a routerLink="/patient" class="btn-primary">+ New Registration</a>
+        <a routerLink="/appointment-list" class="btn-ghost">View Appointments</a>
+      </div>
+    </div>
+    <div class="hero-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
+        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="#C0524A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+  </section>
+
+  <div *ngIf="loading" style="text-align:center; padding:2rem;">Loading dashboard...</div>
+
+  <section *ngIf="!loading" class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Patients</span>
+      <span class="stat-value">{{ stats!.totalPatients | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Today's Appointments</span>
+      <span class="stat-value">{{ stats!.todayAppointments | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Active Admissions</span>
+      <span class="stat-value">{{ stats!.activeAdmissions | number }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Pending Admissions</span>
+      <span class="stat-value">{{ stats!.pendingAdmissions | number }}</span>
+    </div>
+  </section>
+
+  <section *ngIf="!loading" class="grid-2col">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Recent Admissions</h2>
+        <a routerLink="/admittedpatient" class="panel-link">View All →</a>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Ward</th><th>Bed</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let admission of recentAdmissions">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(admission.patientName) }}</span>{{ admission.patientName }}</div></td>
+            <td>{{ admission.wardName }}</td>
+            <td>{{ admission.bedNumber }}</td>
+            <td><span class="badge {{ getBadgeClass(admission.status) }}">{{ formatStatus(admission.status) }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Today's Appointments</h2>
+        <span class="panel-tag">Today</span>
+      </div>
+      <table class="mini-table">
+        <thead>
+          <tr><th>Patient</th><th>Doctor</th><th>Time</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appt of todayAppointments">
+            <td><div class="patient-cell"><span class="pt-avatar">{{ getInitials(appt.patientName) }}</span>{{ appt.patientName }}</div></td>
+            <td>{{ appt.doctorName }}</td>
+            <td>{{ appt.appointmentTime }}</td>
+            <td><span class="badge {{ getBadgeClass(appt.status) }}">{{ formatStatus(appt.status) }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>

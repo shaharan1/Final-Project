@@ -1,0 +1,113 @@
+<div class="dashboard-wrapper">
+  <section class="hero-section">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+      </svg>
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-icon">💊</div>
+          <span class="hero-badge">Analytics</span>
+          <h1>Pharmacy Reports</h1>
+          <p>Track sales trends, top selling medicines, and inventory alerts.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading pharmacy analytics...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <div class="error-card">
+      <div class="error-icon">!</div>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadData()">Retry</button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error && data" class="dashboard-content">
+    <div class="actions-bar">
+      <button class="btn-back" (click)="goBack()">&#8592; Back to Reports</button>
+      <div class="export-group">
+        <button class="btn-export" (click)="exportPdf()">PDF</button>
+        <button class="btn-export" (click)="exportExcel()">Excel</button>
+        <button class="btn-export" (click)="exportCsv()">CSV</button>
+        <button class="btn-export" (click)="printReport()">Print</button>
+      </div>
+    </div>
+
+    <div class="stats-row stats-row--5">
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--green"></div>
+        <div class="stat-body">
+          <span class="stat-label">Total Sales</span>
+          <span class="stat-value">{{ data.totalSales | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--blue"></div>
+        <div class="stat-body">
+          <span class="stat-label">Daily Sales</span>
+          <span class="stat-value">{{ data.dailySales | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--purple"></div>
+        <div class="stat-body">
+          <span class="stat-label">Monthly Sales</span>
+          <span class="stat-value">{{ data.monthlySales | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--yellow"></div>
+        <div class="stat-body">
+          <span class="stat-label">Low Stock</span>
+          <span class="stat-value stat-value--warning">{{ data.lowStockMedicines | number }}</span>
+        </div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-glow stat-glow--red"></div>
+        <div class="stat-body">
+          <span class="stat-label">Expired</span>
+          <span class="stat-value stat-value--danger">{{ data.expiredMedicines | number }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid charts-grid--2">
+      <div class="panel glass">
+        <div class="panel-header"><h3>Sales Trend</h3></div>
+        <div class="chart-container"><canvas #salesTrendChart></canvas></div>
+      </div>
+      <div class="panel glass">
+        <div class="panel-header"><h3>Top Medicines</h3></div>
+        <div class="chart-container chart-container--tall"><canvas #topMedicinesChart></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel glass table-panel">
+      <div class="panel-header"><h3>Top Selling Medicines</h3></div>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Quantity Sold</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let med of data.topSellingMedicines">
+              <td class="cell-bold">{{ med.name }}</td>
+              <td>{{ med.quantity | number }}</td>
+              <td class="cell-amount">{{ med.revenue | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

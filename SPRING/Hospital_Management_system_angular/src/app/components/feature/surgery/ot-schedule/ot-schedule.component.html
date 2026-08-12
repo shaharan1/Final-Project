@@ -1,0 +1,105 @@
+<div class="surgery-page">
+
+  <!-- ===== HERO ===== -->
+  <header class="surgery-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="surgery-hero-content">
+      <div class="surgery-hero-icon">🗓️</div>
+      <div>
+        <h1>OT Schedule</h1>
+        <p class="surgery-hero-sub">Daily theatre schedule and upcoming operations</p>
+      </div>
+      <div class="surgery-hero-actions">
+        <a routerLink="/surgery/register" class="surgery-btn surgery-btn-light">+ Register Surgery</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STAT STRIP ===== -->
+  <section class="stat-strip">
+    <div class="mini-stat"><span class="mini-value">{{ todayCount }}</span><span class="mini-label">Today's Surgeries</span></div>
+    <div class="mini-stat"><span class="mini-value">{{ inProgressCount }}</span><span class="mini-label">In Progress</span></div>
+    <div class="mini-stat"><span class="mini-value">{{ completedCount }}</span><span class="mini-label">Completed</span></div>
+    <div class="mini-stat"><span class="mini-value">{{ upcomingCount }}</span><span class="mini-label">Upcoming (7 days)</span></div>
+  </section>
+
+  <div class="schedule-grid">
+
+    <!-- ===== DAILY SCHEDULE ===== -->
+    <section class="panel panel-main">
+      <div class="panel-header">
+        <h3>Daily Schedule — {{ dayText() }}</h3>
+        <input type="date" class="dept-input date-picker" [(ngModel)]="selectedDate" (change)="onDateChange()" />
+      </div>
+      <div class="table-wrap">
+        <table class="surgery-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Surgery No</th>
+              <th>Procedure</th>
+              <th>Patient</th>
+              <th>Theatre</th>
+              <th>Surgeon</th>
+              <th>Priority</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of schedule">
+              <td class="td-time">{{ s.startTime || '—' }}<span *ngIf="s.endTime"> – {{ s.endTime }}</span></td>
+              <td class="td-num">{{ s.surgeryNumber }}</td>
+              <td class="td-name">{{ s.surgeryName || '—' }}</td>
+              <td>
+                <div class="td-patient">{{ s.patientName }}</div>
+                <div class="td-muted">{{ s.patientCode }}</div>
+              </td>
+              <td>{{ s.operationTheatreName || '—' }}</td>
+              <td>{{ s.surgeonName || '—' }}</td>
+              <td><span class="prio-badge" [ngClass]="getPriorityClass(s.priority)">{{ s.priority }}</span></td>
+              <td>
+                <button class="badge schedule-status" [ngClass]="getStatusClass(s.status)" (click)="viewDetails(s.surgeryId)">
+                  {{ s.status.replace('_', ' ') }}
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="!loading && schedule.length === 0">
+              <td colspan="8" class="empty-row">No surgeries scheduled for this date</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== UPCOMING ===== -->
+    <section class="panel">
+      <div class="panel-header"><h3>Upcoming Surgeries (7 Days)</h3></div>
+      <div class="upcoming-list">
+        <ng-container *ngFor="let group of upcomingByDate">
+          <div class="upcoming-date">
+            <span class="date-dot"></span> {{ group.date }}
+          </div>
+          <div class="upcoming-item" *ngFor="let s of group.items">
+            <div class="upcoming-time">{{ s.startTime || '—' }}</div>
+            <div class="upcoming-main">
+              <div class="upcoming-name">{{ s.surgeryName || s.surgeryNumber }}</div>
+              <div class="upcoming-meta">{{ s.patientName }} · {{ s.operationTheatreName || 'No OT' }}</div>
+            </div>
+            <span class="prio-badge prio-sm" [ngClass]="getPriorityClass(s.priority)">{{ s.priority }}</span>
+          </div>
+        </ng-container>
+        <div class="rank-empty" *ngIf="upcoming.length === 0">No upcoming surgeries in the next 7 days</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" *ngIf="msg" [ngClass]="msgType === 'error' ? 'toast-error' : 'toast-success'">
+    <span>{{ msg }}</span>
+    <button class="toast-close" (click)="msg = ''">×</button>
+  </div>
+</div>

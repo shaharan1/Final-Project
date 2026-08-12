@@ -1,0 +1,88 @@
+<div class="ld-page">
+  <section class="ld-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="ld-hero-content">
+      <div class="ld-hero-icon">🔬</div>
+      <div>
+        <h1>Lab Report Dashboard</h1>
+        <p class="ld-hero-sub">Live status of auto-generated pathology reports across the hospital.</p>
+      </div>
+      <div class="ld-hero-actions">
+        <button class="ld-refresh" (click)="loadDashboard()" [disabled]="loading"><i class="bi bi-arrow-clockwise" [class.spin]="loading"></i> Refresh</button>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="ld-loading"><div class="ld-spinner"></div><p>Loading dashboard...</p></div>
+  <div *ngIf="error" class="ld-error"><i class="bi bi-exclamation-triangle"></i>{{ error }}</div>
+
+  <ng-container *ngIf="dashboard && !loading">
+    <div class="ld-kpis">
+      <div class="kpi-card" (click)="openReportsTab('all')">
+        <div class="kpi-icon" style="background:#eff6ff;color:#1d4ed8"><i class="bi bi-clipboard-data"></i></div>
+        <div><strong>{{ dashboard.totalReports }}</strong><span>Total Reports</span></div>
+      </div>
+      <div class="kpi-card" (click)="openReportsTab('normal')">
+        <div class="kpi-icon" style="background:#dcfce7;color:#15803d"><i class="bi bi-check-circle"></i></div>
+        <div><strong>{{ dashboard.normalReports }}</strong><span>Normal</span></div>
+      </div>
+      <div class="kpi-card" (click)="openReportsTab('abnormal')">
+        <div class="kpi-icon" style="background:#ffedd5;color:#c2410c"><i class="bi bi-exclamation-triangle"></i></div>
+        <div><strong>{{ dashboard.abnormalReports }}</strong><span>Abnormal</span></div>
+      </div>
+      <div class="kpi-card" (click)="openReportsTab('critical')">
+        <div class="kpi-icon" style="background:#fee2e2;color:#b91c1c"><i class="bi bi-exclamation-octagon"></i></div>
+        <div><strong>{{ dashboard.criticalReports }}</strong><span>Critical</span></div>
+      </div>
+      <div class="kpi-card" (click)="openReportsTab('dengue')">
+        <div class="kpi-icon" style="background:#fff1f2;color:#be185d"><i class="bi bi-bug"></i></div>
+        <div><strong>{{ dashboard.denguePositive }}</strong><span>Dengue Positive</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#fffbeb;color:#a16207"><i class="bi bi-hourglass-split"></i></div>
+        <div><strong>{{ dashboard.pendingVerification }}</strong><span>Pending Verify</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#f0fdf4;color:#15803d"><i class="bi bi-patch-check"></i></div>
+        <div><strong>{{ dashboard.readyReports }}</strong><span>Ready</span></div>
+      </div>
+    </div>
+
+    <div class="ld-columns">
+      <div class="ld-card ld-alerts">
+        <h3><i class="bi bi-bell"></i> Critical Alerts</h3>
+        <div *ngIf="dashboard.criticalAlerts.length === 0" class="ld-alert-empty">
+          <i class="bi bi-shield-check"></i>
+          <p>No critical alerts. All clear!</p>
+        </div>
+        <div class="ld-alert" *ngFor="let alert of dashboard.criticalAlerts">
+          <i class="bi bi-exclamation-octagon"></i>
+          <span>{{ alert }}</span>
+        </div>
+      </div>
+
+      <div class="ld-card ld-recent">
+        <h3><i class="bi bi-clock-history"></i> Recent Reports</h3>
+        <div *ngIf="dashboard.recentReports.length === 0" class="ld-alert-empty">
+          <i class="bi bi-inbox"></i>
+          <p>No reports yet.</p>
+        </div>
+        <div class="ld-report-row" *ngFor="let r of dashboard.recentReports" (click)="openReport(r.id)">
+          <div class="ld-report-avatar">{{ getInitials(r.patientName) }}</div>
+          <div class="ld-report-info">
+            <strong>{{ r.patientName }}</strong>
+            <span>{{ r.testName }} <b>{{ r.reportNumber }}</b></span>
+          </div>
+          <div class="ld-report-right">
+            <span class="ld-chip" [class]="statusChipClass(r.reportStatus)">{{ formatStatus(r.reportStatus) }}</span>
+            <small>{{ formatDate(r.reportedDate || r.createdDate) }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

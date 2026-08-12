@@ -1,0 +1,96 @@
+<div class="invoice-page">
+
+  <!-- ===== PRINT ACTIONS ===== -->
+  <div class="print-toolbar">
+    <button class="toolbar-btn toolbar-back" (click)="backToList()">← Back</button>
+    <div class="toolbar-right">
+      <button class="toolbar-btn" *ngIf="surgery?.billingInvoiceId" (click)="viewInvoice()">🧾 Go to Invoice</button>
+      <button class="toolbar-btn toolbar-print" (click)="print()">🖨 Print / Save PDF</button>
+    </div>
+  </div>
+
+  <!-- ===== INVOICE SHEET ===== -->
+  <div class="invoice-sheet" *ngIf="surgery">
+    <header class="inv-header">
+      <div class="inv-hospital">
+        <div class="inv-logo">⚕</div>
+        <div>
+          <h2>Modern Hospital</h2>
+          <p>Surgery Service Invoice</p>
+        </div>
+      </div>
+      <div class="inv-meta">
+        <div class="inv-row"><span>Invoice #</span><strong>{{ surgery.billingInvoiceNumber || ('SURG-' + surgery.surgeryNumber) }}</strong></div>
+        <div class="inv-row"><span>Date</span><strong>{{ todayText() }}</strong></div>
+        <div class="inv-row"><span>Surgery No</span><strong>{{ surgery.surgeryNumber }}</strong></div>
+        <div class="inv-row"><span>Status</span>
+          <strong><span class="inv-status" [class.inv-paid]="surgery.billingStatus === 'PAID'">{{ surgery.billingStatus || 'PENDING' }}</span></strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="inv-parties">
+      <div class="inv-party">
+        <h4>Patient</h4>
+        <p class="inv-name">{{ surgery.patientName }}</p>
+        <p>Code: {{ surgery.patientCode }}</p>
+        <p>Phone: {{ surgery.patientPhone || '—' }}</p>
+        <p *ngIf="surgery.wardName">Ward: {{ surgery.wardName }}{{ surgery.bedNumber ? ' · Bed ' + surgery.bedNumber : '' }}</p>
+      </div>
+      <div class="inv-party inv-party-right">
+        <h4>Procedure</h4>
+        <p class="inv-name">{{ surgery.surgeryName || '—' }}</p>
+        <p>Surgeon: {{ surgery.surgeonName || '—' }}</p>
+        <p>Assistant: {{ surgery.assistantSurgeonName || '—' }}</p>
+        <p>Anesthesiologist: {{ surgery.anesthesiologistName || '—' }}</p>
+      </div>
+    </section>
+
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th class="align-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of chargeRows(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ r.label }}</td>
+          <td>{{ surgery.surgeryDate }}</td>
+          <td class="align-right">{{ formatCurrency(r.value) }}</td>
+        </tr>
+        <tr *ngIf="chargeRows().length === 0">
+          <td colspan="4" class="empty-cell">No itemized charges</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <section class="inv-summary">
+      <div class="inv-summary-line"><span>Subtotal</span><span>{{ formatCurrency(surgery.subtotal) }}</span></div>
+      <div class="inv-summary-line"><span>Discount ({{ toNumber(surgery.discountPercent) }}%)</span><span class="neg">{{ formatCurrency(surgery.discountAmount) }}</span></div>
+      <div class="inv-summary-line"><span>VAT ({{ toNumber(surgery.vatRate) }}%)</span><span>{{ formatCurrency(surgery.vatAmount) }}</span></div>
+      <div class="inv-summary-line"><span>Insurance Coverage</span><span class="neg">{{ formatCurrency(surgery.insuranceCoverage) }}</span></div>
+      <div class="inv-summary-line"><span>Advance Paid</span><span class="neg">{{ formatCurrency(surgery.advancePaid) }}</span></div>
+      <div class="inv-summary-line inv-grand"><span>Total Payable</span><span>{{ formatCurrency(surgery.finalPayable) }}</span></div>
+    </section>
+
+    <footer class="inv-footer">
+      <p>Thank you for choosing Modern Hospital. This is a computer-generated surgery service invoice.</p>
+      <p class="inv-sign">Authorized Signature ____________________</p>
+    </footer>
+  </div>
+
+  <div class="loading-box" *ngIf="!surgery && !loading">
+    <p>No surgery record found.</p>
+    <button class="toolbar-btn toolbar-back" (click)="backToList()">← Back to List</button>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" *ngIf="msg" [ngClass]="msgType === 'error' ? 'toast-error' : 'toast-success'">
+    <span>{{ msg }}</span>
+    <button class="toast-close" (click)="msg = ''">×</button>
+  </div>
+</div>

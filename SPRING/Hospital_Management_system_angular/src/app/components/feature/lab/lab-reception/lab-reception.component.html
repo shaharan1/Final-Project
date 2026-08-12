@@ -1,0 +1,134 @@
+<div class="lab-page">
+  <!-- Hero -->
+  <div class="lab-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">🔬</div>
+      <div>
+        <h1>Lab Reception</h1>
+        <p class="lab-hero-sub">{{ filteredOrders.length }} pending orders · Receive test orders and initiate sample collection</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="lab-search-row">
+    <div class="lab-search-wrap">
+      <span class="lab-search-icon">🔍</span>
+      <input class="lab-search" placeholder="Search patient, test code, test name..." [(ngModel)]="searchKeyword">
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="lab-table-card">
+    <div class="lab-table-header">
+      <h3>Pending Test Orders</h3>
+      <span class="lab-table-count">{{ filteredOrders.length }} orders</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th>Patient</th>
+            <th>Code</th>
+            <th>Test</th>
+            <th>Test Code</th>
+            <th>Price</th>
+            <th>Prescribed By</th>
+            <th>Date</th>
+            <th class="th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders; let i = index" class="lab-row">
+            <td class="td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lab-patient-cell">
+                <div class="lab-avatar" [style.background]="getAvatarColor(order.patientName)">{{ getInitials(order.patientName) }}</div>
+                <div>
+                  <div class="lab-patient-name">{{ order.patientName }}</div>
+                  <div class="lab-patient-sub">{{ order.patientGender }}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="lab-code-badge">{{ order.patientCode }}</span></td>
+            <td>
+              <div class="lab-test-name">{{ order.testName }}</div>
+            </td>
+            <td><span class="lab-test-code">{{ order.testCode }}</span></td>
+            <td><span class="lab-price">&#2547; {{ order.standardPrice | number:'1.0-0' }}</span></td>
+            <td>Dr. {{ order.doctorName }}</td>
+            <td><span class="lab-date">{{ order.orderedDate | date:'dd MMM, yyyy' }}</span></td>
+            <td>
+              <button class="lab-action-btn lab-collect-btn" (click)="openCollectModal(order)">
+                <span class="lab-btn-icon">+</span> Collect
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredOrders.length === 0 && !loading">
+            <td colspan="9">
+              <div class="lab-empty-state">
+                <div class="lab-empty-icon">✓</div>
+                <h4>All caught up!</h4>
+                <p>No pending test orders at the moment</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Collect Sample Modal -->
+  <div class="lab-modal-overlay" *ngIf="showCollectModal" (click)="closeCollectModal()">
+    <div class="lab-modal" (click)="$event.stopPropagation()">
+      <div class="lab-modal-header lab-modal-header-blue">
+        <div class="lab-modal-header-content">
+          <div class="lab-modal-icon">+</div>
+          <div>
+            <h3>Collect Sample</h3>
+            <p>Record sample collection details</p>
+          </div>
+        </div>
+        <button class="lab-modal-close" (click)="closeCollectModal()">&times;</button>
+      </div>
+      <div class="lab-modal-body" *ngIf="selectedOrder">
+        <div class="lab-modal-info-card">
+          <div class="lab-info-row">
+            <span class="lab-info-label">Test</span>
+            <span class="lab-info-value">{{ selectedOrder.testName }}</span>
+          </div>
+          <div class="lab-info-row">
+            <span class="lab-info-label">Patient</span>
+            <span class="lab-info-value">{{ selectedOrder.patientName }} ({{ selectedOrder.patientCode }})</span>
+          </div>
+          <div class="lab-info-row">
+            <span class="lab-info-label">Price</span>
+            <span class="lab-info-value lab-info-price">&#2547; {{ selectedOrder.standardPrice | number:'1.0-0' }}</span>
+          </div>
+        </div>
+
+        <div class="lab-form-group">
+          <label>Collector Name</label>
+          <input class="lab-form-input" [(ngModel)]="collectorName" placeholder="Who collected the sample?">
+        </div>
+        <div class="lab-form-group">
+          <label>Sample Type</label>
+          <select class="lab-form-select" [(ngModel)]="sampleType">
+            <option value="">Select sample type</option>
+            <option *ngFor="let type of sampleTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="lab-modal-footer">
+        <button class="lab-btn-cancel" (click)="closeCollectModal()">Cancel</button>
+        <button class="lab-btn-primary" (click)="collectSample()">Confirm Collection</button>
+      </div>
+    </div>
+  </div>
+</div>

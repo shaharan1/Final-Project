@@ -1,0 +1,240 @@
+<div class="rr-page">
+  <section class="rr-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="rr-hero-content">
+      <div class="rr-hero-icon">⚙️</div>
+      <div>
+        <h1>Reference Range &amp; Interpretation Rules</h1>
+        <p class="rr-hero-sub">Manage reference ranges, critical limits and auto-interpretation rules per test parameter.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="rr-layout">
+    <aside class="rr-sidebar">
+      <input class="rr-search" [(ngModel)]="searchKeyword" (input)="filterMasters()" placeholder="Search test masters...">
+      <div *ngIf="loading" class="rr-side-loading"><div class="spinner"></div></div>
+      <div class="rr-master-list">
+        <div class="rr-master-item" *ngFor="let m of filteredMasters"
+             [class.active]="selectedMaster?.id === m.id"
+             (click)="selectMaster(m)">
+          <div class="rr-master-icon">{{ getInitials(m.testName) }}</div>
+          <div class="rr-master-info">
+            <strong>{{ m.testName }}</strong>
+            <span>{{ m.testCode }}</span>
+          </div>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+        <div *ngIf="!loading && filteredMasters.length === 0" class="rr-side-empty">No test masters found.</div>
+      </div>
+    </aside>
+
+    <section class="rr-main">
+      <div *ngIf="!selectedMaster" class="rr-placeholder">
+        <i class="bi bi-sliders2"></i>
+        <h3>Select a test master</h3>
+        <p>Choose a test from the left panel to manage its parameters, reference ranges and interpretation rules.</p>
+      </div>
+
+      <div *ngIf="detailLoading" class="rr-loading"><div class="spinner"></div><p>Loading parameters...</p></div>
+
+      <ng-container *ngIf="detail && !detailLoading">
+        <div class="rr-main-head">
+          <div>
+            <h2>{{ detail.testName }}</h2>
+            <span class="rr-code">{{ detail.testCode }} &bull; ৳{{ detail.standardPrice }}</span>
+          </div>
+          <span class="rr-param-count">{{ detail.parameters.length }} parameter(s)</span>
+        </div>
+
+        <div *ngIf="detail.parameters.length === 0" class="rr-no-params">
+          <i class="bi bi-droplet-half"></i>
+          <p>No parameters configured for this test yet.</p>
+        </div>
+
+        <div class="rr-param-card" *ngFor="let param of detail.parameters">
+          <div class="rr-param-head" (click)="toggleParam(param.id!)">
+            <div class="rr-param-name">
+              <i class="bi bi-bezier2"></i>
+              <div>
+                <strong>{{ param.parameterName }}</strong>
+                <span>{{ param.parameterCode }}<span *ngIf="param.unit"> &bull; unit: {{ param.unit }}</span></span>
+              </div>
+            </div>
+            <div class="rr-param-right">
+              <span class="rr-type-chip">{{ param.resultType }}</span>
+              <i class="bi" [class.bi-chevron-down]="isExpanded(param.id!)" [class.bi-chevron-right]="!isExpanded(param.id!)"></i>
+            </div>
+          </div>
+
+          <div class="rr-param-body" *ngIf="isExpanded(param.id!)">
+            <div class="rr-section">
+              <div class="rr-section-title">Reference Ranges <span class="rr-count-badge">{{ parameterRanges(param).length }}</span></div>
+
+              <div class="rr-range-row" *ngFor="let r of parameterRanges(param)">
+                <ng-container *ngIf="!r.editing">
+                  <div class="rr-range-meta">
+                    <span class="rr-tag">{{ rangeLabel(r) }}</span>
+                    <span class="rr-tag rr-tag-alt">{{ r.displayRange || (r.minValue + ' - ' + r.maxValue) }}</span>
+                    <span *ngIf="r.criticalLow != null" class="rr-tag rr-tag-danger">Crit Low: {{ r.criticalLow }}</span>
+                    <span *ngIf="r.criticalHigh != null" class="rr-tag rr-tag-danger">Crit High: {{ r.criticalHigh }}</span>
+                    <span *ngIf="r.active === false" class="rr-tag rr-tag-muted">Inactive</span>
+                  </div>
+                  <div class="rr-range-actions">
+                    <button class="rr-icon-btn" title="Edit" (click)="editRange(r)"><i class="bi bi-pencil"></i></button>
+                    <button class="rr-icon-btn rr-danger" title="Delete" (click)="deleteRange(r)"><i class="bi bi-trash"></i></button>
+                  </div>
+                </ng-container>
+
+                <ng-container *ngIf="r.editing">
+                  <div class="rr-range-edit">
+                    <div class="rr-edit-grid">
+                      <label>Gender
+                        <select [(ngModel)]="r.genderScope">
+                          <option *ngFor="let g of genderOptions" [value]="g">{{ g }}</option>
+                        </select>
+                      </label>
+                      <label>Min Age
+                        <input type="number" [(ngModel)]="r.minAgeYears" placeholder="years">
+                      </label>
+                      <label>Max Age
+                        <input type="number" [(ngModel)]="r.maxAgeYears" placeholder="years">
+                      </label>
+                      <label>Min Value
+                        <input type="number" step="any" [(ngModel)]="r.minValue">
+                      </label>
+                      <label>Max Value
+                        <input type="number" step="any" [(ngModel)]="r.maxValue">
+                      </label>
+                      <label>Critical Low
+                        <input type="number" step="any" [(ngModel)]="r.criticalLow">
+                      </label>
+                      <label>Critical High
+                        <input type="number" step="any" [(ngModel)]="r.criticalHigh">
+                      </label>
+                      <label>Display Range
+                        <input type="text" [(ngModel)]="r.displayRange" placeholder="e.g. 150 - 450">
+                      </label>
+                      <label>Priority
+                        <input type="number" [(ngModel)]="r.priority">
+                      </label>
+                    </div>
+                    <div class="rr-edit-actions">
+                      <button class="rr-btn-ghost" (click)="cancelRangeEdit(r)">Cancel</button>
+                      <button class="rr-btn-primary" [disabled]="editingRange?.saving" (click)="saveRange(r)">{{ editingRange?.saving ? 'Saving...' : 'Save' }}</button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+              <div class="rr-add-block">
+                <div class="rr-add-title"><i class="bi bi-plus-circle"></i> Add Reference Range</div>
+                <div class="rr-edit-grid">
+                  <label>Gender
+                    <select [(ngModel)]="newRange.genderScope">
+                      <option *ngFor="let g of genderOptions" [value]="g">{{ g }}</option>
+                    </select>
+                  </label>
+                  <label>Min Age
+                    <input type="number" [(ngModel)]="newRange.minAgeYears" placeholder="years">
+                  </label>
+                  <label>Max Age
+                    <input type="number" [(ngModel)]="newRange.maxAgeYears" placeholder="years">
+                  </label>
+                  <label>Min Value
+                    <input type="number" step="any" [(ngModel)]="newRange.minValue">
+                  </label>
+                  <label>Max Value
+                    <input type="number" step="any" [(ngModel)]="newRange.maxValue">
+                  </label>
+                  <label>Critical Low
+                    <input type="number" step="any" [(ngModel)]="newRange.criticalLow">
+                  </label>
+                  <label>Critical High
+                    <input type="number" step="any" [(ngModel)]="newRange.criticalHigh">
+                  </label>
+                  <label>Display Range
+                    <input type="text" [(ngModel)]="newRange.displayRange" placeholder="e.g. 150 - 450">
+                  </label>
+                  <label>Priority
+                    <input type="number" [(ngModel)]="newRange.priority">
+                  </label>
+                </div>
+                <div class="rr-add-actions">
+                  <button class="rr-btn-primary" (click)="addRange(param)"><i class="bi bi-plus-lg"></i> Add Range</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="rr-section">
+              <div class="rr-section-title">Interpretation Rules <span class="rr-count-badge">{{ parameterRules(param).length }}</span></div>
+
+              <div class="rr-rule-row" *ngFor="let rule of parameterRules(param)">
+                <ng-container *ngIf="!rule.editing">
+                  <span class="rr-tag" [class]="'st-' + rule.parameterStatus.toLowerCase()">{{ rule.parameterStatus.replace('_', ' ') }}</span>
+                  <span class="rr-rule-match" *ngIf="rule.valueMatch">when <b>{{ rule.valueMatch }}</b> → </span>
+                  <span class="rr-rule-text">{{ rule.interpretationText }}</span>
+                  <div class="rr-range-actions">
+                    <button class="rr-icon-btn" title="Edit" (click)="rule.editing = true"><i class="bi bi-pencil"></i></button>
+                    <button class="rr-icon-btn rr-danger" title="Delete" (click)="deleteRule(rule, param)"><i class="bi bi-trash"></i></button>
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="rule.editing">
+                  <div class="rr-rule-edit">
+                    <div class="rr-edit-grid rr-edit-grid-3">
+                      <label>Status
+                        <select [(ngModel)]="rule.parameterStatus">
+                          <option *ngFor="let s of statusOptions" [value]="s">{{ s.replace('_', ' ') }}</option>
+                        </select>
+                      </label>
+                      <label>Value Match
+                        <input type="text" [(ngModel)]="rule.valueMatch" placeholder="e.g. positive / contains ...">
+                      </label>
+                      <label>Display Order
+                        <input type="number" [(ngModel)]="rule.displayOrder">
+                      </label>
+                    </div>
+                    <label class="rr-full">Interpretation Text
+                      <textarea rows="2" [(ngModel)]="rule.interpretationText"></textarea>
+                    </label>
+                    <div class="rr-edit-actions">
+                      <button class="rr-btn-ghost" (click)="rule.editing = false">Cancel</button>
+                      <button class="rr-btn-primary" (click)="saveRule(rule)">Save</button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+              <div class="rr-add-block">
+                <div class="rr-add-title"><i class="bi bi-plus-circle"></i> Add Interpretation Rule</div>
+                <div class="rr-edit-grid rr-edit-grid-3">
+                  <label>Status
+                    <select [(ngModel)]="newRule.parameterStatus">
+                      <option *ngFor="let s of statusOptions" [value]="s">{{ s.replace('_', ' ') }}</option>
+                    </select>
+                  </label>
+                  <label>Value Match
+                    <input type="text" [(ngModel)]="newRule.valueMatch" placeholder="e.g. positive / detected / +">
+                  </label>
+                  <label>Display Order
+                    <input type="number" [(ngModel)]="newRule.displayOrder">
+                  </label>
+                </div>
+                <label class="rr-full">Interpretation Text
+                  <textarea rows="2" [(ngModel)]="newRule.interpretationText" placeholder="e.g. Dengue NS1 antigen detected."></textarea>
+                </label>
+                <div class="rr-add-actions">
+                  <button class="rr-btn-primary" (click)="addRule(param)"><i class="bi bi-plus-lg"></i> Add Rule</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </section>
+  </div>
+</div>
