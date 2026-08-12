@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -73,7 +73,8 @@ export class PharmacySaleComponent implements OnInit {
   constructor(
     private saleService: PharmacySaleService,
     private stockService: StockService,
-    private prescriptionService: PrescriptionService
+    private prescriptionService: PrescriptionService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -87,10 +88,12 @@ export class PharmacySaleComponent implements OnInit {
         this.saleHistory = data;
         this.filteredSales = [...data];
         this.loadingSales = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.error = 'Failed to load sales history.';
         this.loadingSales = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -102,17 +105,20 @@ export class PharmacySaleComponent implements OnInit {
       (s.patientName || '').toLowerCase().includes(term) ||
       (s.paymentMethod || '').toLowerCase().includes(term)
     );
+    this.cdr.markForCheck();
   }
 
   searchMedicines(): void {
     this.lowStockWarning = '';
-    if (this.medicineSearchTerm.length < 2) { this.searchedMedicines = []; return; }
+    if (this.medicineSearchTerm.length < 2) { this.searchedMedicines = []; this.cdr.markForCheck(); return; }
     this.stockService.search(this.medicineSearchTerm).subscribe({
       next: (data: any) => {
         this.searchedMedicines = data.filter((s: any) => (s.availableQuantity || s.stockQuantity || 0) > 0);
+        this.cdr.markForCheck();
       },
       error: () => {
         this.searchedMedicines = [];
+        this.cdr.markForCheck();
       }
     });
   }
@@ -140,16 +146,19 @@ export class PharmacySaleComponent implements OnInit {
     this.medicineSearchTerm = '';
     this.searchedMedicines = [];
     this.calculateTotals();
+    this.cdr.markForCheck();
   }
 
   updateCartItemQty(item: PharmacySaleItemModel): void {
     item.subtotal = item.quantity * (item.unitPrice || 0) - (item.discount || 0);
     this.calculateTotals();
+    this.cdr.markForCheck();
   }
 
   removeCartItem(index: number): void {
     this.cartItems.splice(index, 1);
     this.calculateTotals();
+    this.cdr.markForCheck();
   }
 
   calculateTotals(): void {
@@ -169,10 +178,12 @@ export class PharmacySaleComponent implements OnInit {
       next: (data: PrescriptionModel[]) => {
         this.pendingPrescriptions = data;
         this.loadingPrescriptions = false;
+        this.cdr.markForCheck();
       },
       error: () => {
         this.loadingPrescriptions = false;
         this.error = 'Failed to load pending prescriptions.';
+        this.cdr.markForCheck();
       }
     });
   }
@@ -182,6 +193,7 @@ export class PharmacySaleComponent implements OnInit {
     this.selectedPrescription = null;
     this.dispenseLines = [];
     this.prescriptionSearch = '';
+    this.cdr.markForCheck();
   }
 
   get filteredPendingPrescriptions(): PrescriptionModel[] {
@@ -194,6 +206,7 @@ export class PharmacySaleComponent implements OnInit {
 
   selectPrescription(rx: PrescriptionModel): void {
     this.selectedPrescription = rx;
+    this.cdr.markForCheck();
     this.dispenseLines = (rx.prescriptionItems || []).map((item: PrescriptionItemModel) => ({
       medicineName: item.medicineName || '',
       dosage: item.dosage || '',
@@ -222,18 +235,20 @@ export class PharmacySaleComponent implements OnInit {
             line.unitPrice = match.salePrice;
           }
         }
+        this.cdr.markForCheck();
       },
       error: () => {}
     });
   }
 
   searchStockForLine(line: DispenseLine, term: string): void {
-    if (term.length < 2) { line.options = []; return; }
+    if (term.length < 2) { line.options = []; this.cdr.markForCheck(); return; }
     this.stockService.search(term).subscribe({
       next: (data: MedicineStockModel[]) => {
         line.options = data.filter(s => (s.availableQuantity ?? s.stockQuantity ?? 0) > 0);
+        this.cdr.markForCheck();
       },
-      error: () => { line.options = []; }
+      error: () => { line.options = []; this.cdr.markForCheck(); }
     });
   }
 
@@ -243,6 +258,7 @@ export class PharmacySaleComponent implements OnInit {
     line.batchNumber = stock.batchNumber;
     line.unitPrice = stock.salePrice;
     line.options = [];
+    this.cdr.markForCheck();
   }
 
   get dispenseReady(): boolean {
