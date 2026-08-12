@@ -383,6 +383,7 @@ export class PharmacySaleComponent implements OnInit {
     this.subtotal = 0;
     this.discount = 0;
     this.vat = 0;
+    this.vatManual = false;
     this.netPayable = 0;
     this.paidAmount = 0;
     this.changeAmount = 0;
