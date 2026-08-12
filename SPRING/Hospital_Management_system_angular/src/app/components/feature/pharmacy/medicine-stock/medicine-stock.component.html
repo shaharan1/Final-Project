@@ -101,6 +101,9 @@
               <button class="btn-icon history" (click)="openHistoryModal(med)" title="Stock History">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </button>
+              <button class="btn-icon edit-price" (click)="openPriceModal(med)" title="Update Rate / Price">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -128,6 +131,7 @@
         <div class="card-actions">
           <button class="btn btn-sm btn-outline" (click)="openAdjustModal(med)">Adjust</button>
           <button class="btn btn-sm btn-outline" (click)="openHistoryModal(med)">History</button>
+          <button class="btn btn-sm btn-outline" (click)="openPriceModal(med)">Update Rate</button>
         </div>
       </div>
       <div class="empty-state" *ngIf="filteredMedicines.length === 0">
@@ -306,6 +310,39 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-outline" (click)="closeHistoryModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Rate / Price Modal -->
+    <div class="modal-overlay" *ngIf="showPriceModal" (click)="closePriceModal()">
+      <div class="modal modal-sm glass-card" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Update Rate - {{ selectedMedicine?.medicineName }}</h2>
+          <button class="btn-close" (click)="closePriceModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="adjust-medicine-info">
+            <span>Batch: <code>{{ selectedMedicine?.batchNumber }}</code></span>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Purchase Price (&#2547;)</label>
+              <input type="number" [(ngModel)]="priceFormModel.purchasePrice" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Sale Price (&#2547;)</label>
+              <input type="number" [(ngModel)]="priceFormModel.salePrice" min="0" step="0.01">
+            </div>
+            <div class="form-group full-width">
+              <label>VAT (%)</label>
+              <input type="number" [(ngModel)]="priceFormModel.vat" min="0" step="0.01">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" (click)="closePriceModal()">Cancel</button>
+          <button class="btn btn-primary" (click)="savePrice()" [disabled]="saving">Update Rate</button>
         </div>
       </div>
     </div>

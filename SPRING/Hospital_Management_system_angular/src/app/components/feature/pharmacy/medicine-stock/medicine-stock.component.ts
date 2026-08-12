@@ -32,6 +32,9 @@ export class MedicineStockComponent implements OnInit {
   showAddModal = false;
   showAdjustModal = false;
   showHistoryModal = false;
+  showPriceModal = false;
+
+  priceFormModel: { purchasePrice: number; salePrice: number; vat: number } = { purchasePrice: 0, salePrice: 0, vat: 0 };
 
   selectedMedicine: MedicineStockModel | null = null;
   stockHistory: StockHistoryModel[] = [];
@@ -242,5 +245,43 @@ export class MedicineStockComponent implements OnInit {
     this.selectedMedicine = null;
     this.stockHistory = [];
     this.cdr.detectChanges();
+  }
+
+  openPriceModal(medicine: MedicineStockModel): void {
+    this.selectedMedicine = medicine;
+    this.priceFormModel = {
+      purchasePrice: medicine.purchasePrice,
+      salePrice: medicine.salePrice,
+      vat: medicine.vat ?? 0
+    };
+    this.showPriceModal = true;
+    this.cdr.detectChanges();
+  }
+
+  closePriceModal(): void {
+    this.showPriceModal = false;
+    this.selectedMedicine = null;
+    this.cdr.detectChanges();
+  }
+
+  savePrice(): void {
+    if (this.saving || !this.selectedMedicine?.id) return;
+    this.saving = true;
+    const medicine = this.selectedMedicine;
+    const updated: MedicineStockModel = {
+      ...medicine,
+      purchasePrice: this.priceFormModel.purchasePrice,
+      salePrice: this.priceFormModel.salePrice,
+      vat: this.priceFormModel.vat
+    };
+    this.stockService.updateStock(medicine.id!, updated).subscribe({
+      next: () => {
+        this.saving = false;
+        this.loadStock();
+        this.closePriceModal();
+        this.cdr.detectChanges();
+      },
+      error: () => { this.error = 'Failed to update rate.'; this.saving = false; this.cdr.detectChanges(); }
+    });
   }
 }
