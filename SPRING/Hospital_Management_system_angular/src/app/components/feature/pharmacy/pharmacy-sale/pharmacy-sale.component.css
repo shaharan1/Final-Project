@@ -640,16 +640,19 @@
 .discount-input::-webkit-outer-spin-button,
 .discount-input::-webkit-inner-spin-button,
 .paid-input::-webkit-outer-spin-button,
-.paid-input::-webkit-inner-spin-button {
+.paid-input::-webkit-inner-spin-button,
+.vat-input::-webkit-outer-spin-button,
+.vat-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
 .discount-input:focus,
-.paid-input:focus {
+.paid-input:focus,
+.vat-input:focus {
   border-color: #6610f2;
   box-shadow: 0 0 0 3px rgba(102, 16, 242, 0.1);
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .total-row {
