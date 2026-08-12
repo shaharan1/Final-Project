@@ -74,7 +74,7 @@ export class PharmacySaleComponent implements OnInit {
     private saleService: PharmacySaleService,
     private stockService: StockService,
     private prescriptionService: PrescriptionService,
-    private cdr: ChangeDetectorRef
+    public cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -296,23 +296,28 @@ export class PharmacySaleComponent implements OnInit {
     }
     this.closePrescriptionModal();
     this.calculateTotals();
+    this.cdr.markForCheck();
   }
 
   clearActivePrescription(): void {
     this.activePrescriptionId = null;
     this.activePrescriptionNo = '';
+    this.cdr.markForCheck();
   }
 
   onDiscountChange(): void {
     this.calculateTotals();
+    this.cdr.markForCheck();
   }
 
   onPaidChange(): void {
     this.changeAmount = Math.max(0, this.paidAmount - this.netPayable);
+    this.cdr.markForCheck();
   }
 
   selectPayment(method: string): void {
     this.paymentMethod = method;
+    this.cdr.markForCheck();
   }
 
   confirmSale(): void {
@@ -344,11 +349,13 @@ export class PharmacySaleComponent implements OnInit {
         this.resetForm();
         this.processingSale = false;
         this.successMessage = 'Sale completed successfully!';
+        this.cdr.markForCheck();
         setTimeout(() => this.successMessage = '', 3000);
       },
       error: () => {
         this.error = 'Failed to process sale. Please try again.';
         this.processingSale = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -374,11 +381,13 @@ export class PharmacySaleComponent implements OnInit {
   viewSaleDetail(sale: PharmacySaleModel): void {
     this.selectedSale = sale;
     this.showSaleDetailModal = true;
+    this.cdr.markForCheck();
   }
 
   closeSaleDetailModal(): void {
     this.showSaleDetailModal = false;
     this.selectedSale = null;
+    this.cdr.markForCheck();
   }
 
   getStatusClass(status: string): string {

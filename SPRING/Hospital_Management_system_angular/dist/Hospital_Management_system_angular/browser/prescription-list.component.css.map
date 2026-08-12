@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/feature/prescription/prescription-list.component.css"],
-  "sourcesContent": [".table th {\n  font-weight: 600;\n  font-size: 0.85rem;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n\n.table-hover tbody tr:hover {\n  background-color: rgba(13, 110, 253, 0.05);\n}\n\n.btn-outline-primary:hover {\n  background-color: #0d6efd;\n  color: white;\n}\n\n.btn-outline-secondary:hover {\n  background-color: #6c757d;\n  color: white;\n}\n\n@media (max-width: 768px) {\n  .card-header { flex-direction: column !important; gap: 10px; }\n  .table td, .table th { padding: 10px 8px; font-size: 13px; }\n  .btn { font-size: 13px; padding: 6px 12px; }\n}\n"],
-  "mappings": ";AAAA,CAAC,MAAM;AACL,eAAa;AACb,aAAW;AACX,kBAAgB;AAChB,kBAAgB;AAClB;AAEA,CAAC,YAAY,MAAM,EAAE;AACnB,oBAAkB,KAAK,EAAE,EAAE,GAAG,EAAE,GAAG,EAAE;AACvC;AAEA,CAAC,mBAAmB;AAClB,oBAAkB;AAClB,SAAO;AACT;AAEA,CAAC,qBAAqB;AACpB,oBAAkB;AAClB,SAAO;AACT;AAEA,QAAO,WAAY;AACjB,GAAC;AAAc,oBAAgB;AAAmB,SAAK;AAAM;AAC7D,GAvBD,MAuBQ;AAAA,EAAI,CAvBZ,MAuBmB;AAAK,aAAS,KAAK;AAAK,eAAW;AAAM;AAC3D,GAAC;AAAM,eAAW;AAAM,aAAS,IAAI;AAAM;AAC7C;",
-  "names": []
-}

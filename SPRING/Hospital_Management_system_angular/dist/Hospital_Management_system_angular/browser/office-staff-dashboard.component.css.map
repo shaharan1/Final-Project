@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/components/feature/dashboards/office-staff-dashboard/office-staff-dashboard.component.css"],
-  "sourcesContent": [":host {\r\n  display: block;\r\n}\r\n\r\n.hero-float-icon {\r\n  font-size: 42px;\r\n  width: 64px;\r\n  height: 64px;\r\n  border-radius: 18px;\r\n  background: rgba(255, 255, 255, 0.12);\r\n  backdrop-filter: blur(10px);\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  animation: iconFloat 3s ease-in-out infinite;\r\n  flex-shrink: 0;\r\n  margin-bottom: 12px;\r\n}\r\n@keyframes iconFloat {\r\n  0%, 100% { transform: translateY(0); }\r\n  50% { transform: translateY(-6px); }\r\n}\r\n"],
-  "mappings": ";AAAA;AACE,WAAS;AACX;AAEA,CAAC;AACC,aAAW;AACX,SAAO;AACP,UAAQ;AACR,iBAAe;AACf,cAAY,KAAK,GAAG,EAAE,GAAG,EAAE,GAAG,EAAE;AAChC,2BAAiB,KAAK;AAAtB,mBAAiB,KAAK;AACtB,WAAS;AACT,eAAa;AACb,mBAAiB;AACjB,aAAW,UAAU,GAAG,YAAY;AACpC,eAAa;AACb,iBAAe;AACjB;AACA,WAJa;AAKX;AAAW,eAAW,WAAW;AAAI;AACrC;AAAM,eAAW,WAAW;AAAO;AACrC;",
-  "names": []
-}
