@@ -99,45 +99,148 @@ export class PharmacyReportComponent implements OnInit {
     });
   }
 
-  private fmt(n: any): string {
-    return (Number(n) || 0).toFixed(2);
-  }
-
   generatePDF(): void {
-    const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text('Elite Care - Pharmacy Report', 14, 18);
-    doc.setFontSize(11);
-    let y = 32;
-    const add = (t: string) => { doc.text(t, 14, y); y += 8; };
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const PAGE_W = 210, M = 15, USABLE = PAGE_W - M * 2;
+    const BLUE: [number, number, number] = [25, 118, 210];
+    const money = (n: any) =>
+      'BDT ' + (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    let y = 0;
+
+    const header = (title: string) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(BLUE[0], BLUE[1], BLUE[2]);
+      doc.text('ELITE CARE HOSPITAL', M, 20);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(15); doc.setTextColor(60);
+      doc.text(title, PAGE_W - M, 20, { align: 'right' });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90);
+      doc.text('House #25, Road #12, Dhanmondi, Dhaka-1209', M, 27);
+      doc.text('Phone : +880 1711-123456  |  Email : info@elitecarehospital.com', M, 32);
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M, 36, USABLE, 1.2, 'F');
+      y = 46;
+    };
+
+    const banner = (text: string) => {
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M, y, USABLE, 7, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(255, 255, 255);
+      doc.text(text, M + 3, y + 5);
+      y += 11;
+    };
+
+    const drawTable = (
+      headers: string[], widths: number[], rows: string[][],
+      aligns: ('left' | 'right' | 'center')[] = []
+    ) => {
+      const rowH = 7;
+      const top = y;
+      const xs: number[] = [];
+      let cx = M;
+      for (const w of widths) { xs.push(cx); cx += w; }
+      const totalW = widths.reduce((a, b) => a + b, 0);
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M, top, totalW, rowH, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(255, 255, 255);
+      for (let i = 0; i < headers.length; i++) {
+        const a = aligns[i] || 'left';
+        const tx = xs[i] + (a === 'right' ? widths[i] - 3 : a === 'center' ? widths[i] / 2 : 3);
+        doc.text(headers[i], tx, top + 5, { align: a });
+      }
+      y += rowH;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(40);
+      for (const row of rows) {
+        for (let i = 0; i < row.length; i++) {
+          const a = aligns[i] || 'left';
+          const tx = xs[i] + (a === 'right' ? widths[i] - 3 : a === 'center' ? widths[i] / 2 : 3);
+          doc.text(String(row[i] ?? ''), tx, y + 5, { align: a });
+        }
+        y += rowH;
+      }
+      doc.setFillColor(200, 200, 200);
+      doc.rect(M, top, totalW, 0.2, 'F');
+      doc.rect(M, y - 0.2, totalW, 0.2, 'F');
+      doc.rect(M, top, 0.2, y - top, 'F');
+      doc.rect(M + totalW - 0.2, top, 0.2, y - top, 'F');
+      for (let i = 1; i < widths.length; i++) doc.rect(xs[i], top, 0.2, y - top, 'F');
+      for (let r = 1; r <= rows.length; r++) doc.rect(M, top + r * rowH, totalW, 0.2, 'F');
+      y += 6;
+    };
+
+    const footer = () => {
+      const fy = 283;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(60);
+      doc.text('Thank you for choosing', M, fy);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+      doc.text('ELITE CARE HOSPITAL', M, fy + 7);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text('Get Well Soon', M, fy + 14);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+      doc.text('Authorized Signature', PAGE_W - M, fy + 7, { align: 'right' });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text('Pharmacy / Store', PAGE_W - M, fy + 14, { align: 'right' });
+      doc.setFillColor(120, 120, 120);
+      doc.rect(PAGE_W - M - 55, fy + 4, 55, 0.3, 'F');
+      doc.setFontSize(9); doc.setTextColor(120);
+      doc.text('Powered By Elite IT Institute', PAGE_W / 2, 292, { align: 'center' });
+    };
+
+    header('PHARMACY REPORT');
+
     if (this.activeTab === 'daily' && this.dailySalesResult) {
-      add('Daily Sales Report - ' + this.dailyDate);
-      add('Total Sales: ' + (this.dailySalesResult.totalSales ?? 0));
-      add('Medicines Sold: ' + (this.dailySalesResult.totalCount ?? 0));
-      add('Revenue: Tk ' + this.fmt(this.dailySalesResult.totalRevenue));
+      const d = this.dailySalesResult;
+      banner('DAILY SALES REPORT');
+      drawTable(['Particulars', 'Value'], [110, 70], [
+        ['Report Date', d.date ?? this.dailyDate],
+        ['Total Transactions', String(d.totalCount ?? d.totalTransactions ?? 0)],
+        ['Total Revenue', money(d.totalRevenue ?? d.totalSales)]
+      ], ['left', 'right']);
     } else if (this.activeTab === 'monthly' && this.monthlySalesResult) {
-      add('Monthly Sales Report - ' + this.monthlyYear + '/' + this.monthlyMonth);
-      add('Total Sales: ' + (this.monthlySalesResult.totalSales ?? 0));
-      add('Medicines Sold: ' + (this.monthlySalesResult.totalCount ?? 0));
-      add('Revenue: Tk ' + this.fmt(this.monthlySalesResult.totalRevenue));
-      (this.monthlySalesResult.breakdown || []).forEach((b: any) => add('  ' + b.date + ' - Sales: ' + b.sales + ', Revenue: Tk ' + this.fmt(b.revenue)));
+      const d = this.monthlySalesResult;
+      const period = d.year + '/' + String(d.month).padStart(2, '0');
+      banner('MONTHLY SALES REPORT');
+      drawTable(['Particulars', 'Value'], [110, 70], [
+        ['Period', period],
+        ['Total Transactions', String(d.totalCount ?? d.totalTransactions ?? 0)],
+        ['Total Revenue', money(d.totalRevenue ?? d.totalSales)]
+      ], ['left', 'right']);
+      banner('DAILY BREAKDOWN');
+      drawTable(['Date', 'Sales', 'Revenue'], [90, 45, 45],
+        (d.breakdown || []).map((b: any) => [b.date, String(b.sales), money(b.revenue)]),
+        ['left', 'right', 'right']);
     } else if (this.activeTab === 'purchase' && this.purchaseReportResult) {
-      add('Purchase Report - ' + this.purchaseStartDate + ' to ' + this.purchaseEndDate);
-      add('Total Purchases: ' + (this.purchaseReportResult.totalPurchases ?? 0));
-      add('Total Amount: Tk ' + this.fmt(this.purchaseReportResult.totalAmount));
+      const d = this.purchaseReportResult;
+      banner('PURCHASE REPORT');
+      drawTable(['Particulars', 'Value'], [110, 70], [
+        ['Period', (d.startDate ?? this.purchaseStartDate) + ' to ' + (d.endDate ?? this.purchaseEndDate)],
+        ['Total Purchases', String(d.totalPurchases ?? d.totalTransactions ?? 0)],
+        ['Total Amount', money(d.totalAmount)]
+      ], ['left', 'right']);
     } else if (this.activeTab === 'stock' && this.stockReportResult) {
-      add('Stock Report');
-      add('Total Medicines: ' + (this.stockReportResult.totalMedicines ?? 0));
-      add('Available Stock: ' + (this.stockReportResult.totalAvailableStock ?? 0));
-      add('Low Stock: ' + (this.stockReportResult.lowStock ?? 0));
-      add('Expired: ' + (this.stockReportResult.expired ?? 0));
-      add('Expiring Soon: ' + (this.stockReportResult.expiringSoon ?? 0));
+      const d = this.stockReportResult;
+      banner('STOCK REPORT');
+      drawTable(['Metric', 'Value'], [120, 60], [
+        ['Total Medicines', String(d.totalMedicines ?? 0)],
+        ['Available Stock', String(d.totalAvailableStock ?? 0)],
+        ['Low Stock', String(d.lowStock ?? 0)],
+        ['Expired', String(d.expired ?? 0)],
+        ['Expiring Soon', String(d.expiringSoon ?? 0)]
+      ], ['left', 'right']);
     } else if (this.activeTab === 'supplier' && this.supplierReportResult) {
-      add('Supplier Report');
-      (this.supplierReportResult.suppliers || []).forEach((s: any) => add(s.name + ' - Outstanding Dues: Tk ' + this.fmt(s.totalDue)));
+      const list: any[] = this.supplierReportResult || [];
+      banner('SUPPLIER DUE REPORT');
+      drawTable(['#', 'Supplier Name', 'Total Due', 'Status'], [15, 105, 35, 25],
+        list.map((s, i) => [
+          String(i + 1),
+          (s.name || '').length > 38 ? (s.name as string).substring(0, 36) + '…' : (s.name || ''),
+          money(s.totalDue),
+          s.active ? 'Active' : 'Inactive'
+        ]),
+        ['center', 'left', 'right', 'center']);
     } else {
-      add('No report data. Please generate a report first.');
+      banner('REPORT');
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(80);
+      doc.text('No report data available. Please generate a report first.', M, y + 4);
     }
-    doc.save('pharmacy-report.pdf');
+
+    footer();
+    doc.save('pharmacy-' + this.activeTab + '-report.pdf');
   }
 }
