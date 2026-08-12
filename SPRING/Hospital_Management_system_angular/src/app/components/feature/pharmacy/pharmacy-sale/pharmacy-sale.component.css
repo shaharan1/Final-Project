@@ -571,9 +571,9 @@
 .form-group input {
   width: 100%;
   padding: 0.6rem 0.85rem;
-  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
   font-size: 0.88rem;
   color: #f0f4f8;
   outline: none;
