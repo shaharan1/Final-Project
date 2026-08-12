@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { jsPDF } from 'jspdf';
 import { BillingDashboardService } from '../../../../services/billing/billing-dashboard.service';
 import { PaymentService } from '../../../../services/billing/payment.service';
 import { RefundService } from '../../../../services/billing/refund.service';
@@ -640,8 +641,263 @@ export class BillingReportsComponent implements OnInit {
     }
   }
 
+  generatePdf(): void {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const PAGE_W = 210, M = 15, USABLE = PAGE_W - M * 2;
+    const BLUE: [number, number, number] = [25, 118, 210];
+    const money = (n: any) =>
+      'BDT ' + (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    let y = 0;
+    const title = 'BILLING REPORT';
+
+    const header = (t: string) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(BLUE[0], BLUE[1], BLUE[2]);
+      doc.text('ELITE CARE HOSPITAL', M, 20);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(15); doc.setTextColor(60);
+      doc.text(t, PAGE_W - M, 20, { align: 'right' });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(90);
+      doc.text('House #25, Road #12, Dhanmondi, Dhaka-1209', M, 27);
+      doc.text('Phone : +880 1711-123456  |  Email : info@elitecarehospital.com', M, 32);
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M, 36, USABLE, 1.2, 'F');
+      y = 46;
+    };
+
+    const ensure = (h: number) => { if (y + h > 278) { doc.addPage(); header(title); } };
+
+    const banner = (text: string) => {
+      ensure(12);
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M, y, USABLE, 7, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(255, 255, 255);
+      doc.text(text, M + 3, y + 5);
+      y += 11;
+    };
+
+    const drawTable = (
+      headers: string[], widths: number[], rows: string[][],
+      aligns: ('left' | 'right' | 'center')[] = []
+    ) => {
+      ensure(rows.length * 7 + 20);
+      const rowH = 7;
+      const top = y;
+      const xs: number[] = [];
+      let cx = M;
+      for (const w of widths) { xs.push(cx); cx += w; }
+      const totalW = widths.reduce((a, b) => a + b, 0);
+      doc.setFillColor(BLUE[0], BLUE[1], BLUE[2]); doc.rect(M, top, totalW, rowH, 'F');
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(255, 255, 255);
+      for (let i = 0; i < headers.length; i++) {
+        const a = aligns[i] || 'left';
+        const tx = xs[i] + (a === 'right' ? widths[i] - 3 : a === 'center' ? widths[i] / 2 : 3);
+        doc.text(headers[i], tx, top + 5, { align: a });
+      }
+      y += rowH;
+      const hasRows = rows.length > 0;
+      const rowCount = hasRows ? rows.length : 1;
+      if (!hasRows) {
+        doc.setFont('helvetica', 'italic'); doc.setFontSize(10); doc.setTextColor(120);
+        doc.text('No records found.', M + 3, y + 5);
+        y += rowH;
+      } else {
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(40);
+        for (const row of rows) {
+          for (let i = 0; i < row.length; i++) {
+            const a = aligns[i] || 'left';
+            const tx = xs[i] + (a === 'right' ? widths[i] - 3 : a === 'center' ? widths[i] / 2 : 3);
+            doc.text(String(row[i] ?? ''), tx, y + 5, { align: a });
+          }
+          y += rowH;
+        }
+      }
+      doc.setFillColor(200, 200, 200);
+      doc.rect(M, top, totalW, 0.2, 'F');
+      doc.rect(M, y - 0.2, totalW, 0.2, 'F');
+      doc.rect(M, top, 0.2, y - top, 'F');
+      doc.rect(M + totalW - 0.2, top, 0.2, y - top, 'F');
+      for (let i = 1; i < widths.length; i++) doc.rect(xs[i], top, 0.2, y - top, 'F');
+      for (let r = 1; r <= rowCount; r++) doc.rect(M, top + r * rowH, totalW, 0.2, 'F');
+      y += 6;
+    };
+
+    const footer = () => {
+      const fy = 283;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(60);
+      doc.text('Thank you for choosing', M, fy);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+      doc.text('ELITE CARE HOSPITAL', M, fy + 7);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text('Get Well Soon', M, fy + 14);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+      doc.text('Authorized Signature', PAGE_W - M, fy + 7, { align: 'right' });
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+      doc.text('Billing / Accounts', PAGE_W - M, fy + 14, { align: 'right' });
+      doc.setFillColor(120, 120, 120);
+      doc.rect(PAGE_W - M - 55, fy + 4, 55, 0.3, 'F');
+      doc.setFontSize(9); doc.setTextColor(120);
+      doc.text('Powered By Elite IT Institute', PAGE_W / 2, 292, { align: 'center' });
+    };
+
+    header(title);
+
+    switch (this.activeTab) {
+      case 'daily-collection': {
+        banner('DAILY COLLECTION REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Report Date', this.selectedDate || '-'],
+          ['Total Collection', money(this.dailyTotalCollection)],
+          ['Cash', money(this.dailyCashTotal)],
+          ['Card', money(this.dailyCardTotal)],
+          ['Mobile', money(this.dailyMobileTotal)],
+          ['Insurance', money(this.dailyInsuranceTotal)],
+          ['Total Bills', String(this.dailyBillCount)]
+        ], ['left', 'right']);
+        banner('DAILY TRANSACTIONS');
+        drawTable(['Invoice #', 'Patient', 'Amount', 'Method', 'Status', 'Time'], [40, 55, 30, 20, 20, 15],
+          this.dailyCollection.map(r => [r.invoiceNumber, r.patientName, money(r.amount), r.method, r.status, r.time]),
+          ['left', 'left', 'right', 'center', 'center', 'right']);
+        break;
+      }
+      case 'monthly-collection': {
+        banner('MONTHLY COLLECTION REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Revenue', money(this.monthlyTotalRevenue)],
+          ['Average Daily', money(this.monthlyAvgDaily)],
+          ['Peak Day', this.formatMonthLabel(this.monthlyPeakDay)],
+          ['Peak Amount', money(this.monthlyPeakAmount)],
+          ['Total Bills', String(this.monthlyTotalBills)]
+        ], ['left', 'right']);
+        banner('DAILY REVENUE BREAKDOWN');
+        drawTable(['Date', 'Revenue'], [120, 60],
+          this.monthlyCollection.map(d => [this.formatMonthLabel(d.date), money(d.revenue)]), ['left', 'right']);
+        break;
+      }
+      case 'department-revenue': {
+        banner('DEPARTMENT REVENUE REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Revenue', money(this.departmentTotalRevenue)],
+          ['Departments', String(this.departmentRevenue.length)]
+        ], ['left', 'right']);
+        banner('DEPARTMENT DETAILS');
+        drawTable(['Department', 'Revenue', 'Patient Count', 'Average Bill'], [70, 40, 35, 35],
+          this.departmentRevenue.map(d => [d.department, money(d.revenue), String(d.patientCount), money(d.averageBill)]),
+          ['left', 'right', 'right', 'right']);
+        break;
+      }
+      case 'doctor-revenue': {
+        const docRev = this.doctorRevenue.reduce((s, d) => s + d.revenue, 0);
+        banner('DOCTOR REVENUE REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Doctors', String(this.doctorRevenue.length)],
+          ['Total Revenue', money(docRev)]
+        ], ['left', 'right']);
+        banner('DOCTOR DETAILS');
+        drawTable(['Doctor', 'Department', 'Revenue', 'Patient Count', 'Average Bill'], [55, 35, 35, 30, 25],
+          this.doctorRevenue.map(d => [d.doctorName, d.department, money(d.revenue), String(d.patientCount), money(d.averageBill)]),
+          ['left', 'left', 'right', 'right', 'right']);
+        break;
+      }
+      case 'pharmacy-revenue': {
+        banner('PHARMACY REVENUE REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Revenue', money(this.pharmacyTotalRevenue)],
+          ['Total Profit', money(this.pharmacyTotalProfit)],
+          ['Medicines Sold', String(this.pharmacyRevenue.length)]
+        ], ['left', 'right']);
+        banner('PHARMACY REVENUE DETAILS');
+        drawTable(['Medicine', 'Qty Sold', 'Revenue', 'Cost', 'Profit'], [55, 25, 30, 35, 35],
+          this.pharmacyRevenue.map(r => [r.medicineName, String(r.quantitySold), money(r.revenue), money(r.cost), money(r.profit)]),
+          ['left', 'right', 'right', 'right', 'right']);
+        break;
+      }
+      case 'laboratory-revenue': {
+        banner('LABORATORY REVENUE REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Revenue', money(this.labTotalRevenue)],
+          ['Total Tests', String(this.labTotalTests)],
+          ['Test Types', String(this.labRevenue.length)]
+        ], ['left', 'right']);
+        banner('LABORATORY TEST REVENUE');
+        drawTable(['Test Name', 'Count', 'Revenue', 'Avg Price'], [70, 25, 40, 45],
+          this.labRevenue.map(r => [r.testName, String(r.count), money(r.revenue), money(r.averagePrice)]),
+          ['left', 'right', 'right', 'right']);
+        break;
+      }
+      case 'insurance-report': {
+        banner('INSURANCE REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Claimed', money(this.insuranceTotalClaimed)],
+          ['Total Approved', money(this.insuranceTotalApproved)],
+          ['Pending Claims', String(this.insurancePendingCount)]
+        ], ['left', 'right']);
+        banner('INSURANCE CLAIMS');
+        drawTable(['Invoice #', 'Patient', 'Provider', 'Claimed', 'Approved', 'Status', 'Claim Date'], [28, 35, 32, 22, 22, 18, 23],
+          this.insuranceClaims.map(c => [c.invoiceNumber, c.patientName, c.provider, money(c.claimed), money(c.approved), c.status, c.claimDate]),
+          ['left', 'left', 'left', 'right', 'right', 'center', 'right']);
+        break;
+      }
+      case 'pending-due': {
+        banner('PENDING DUE REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Pending Due', money(this.pendingTotalDue)],
+          ['30-59 Days Overdue', String(this.pendingOverdue30)],
+          ['60+ Days Overdue', String(this.pendingOverdue60)],
+          ['Total Patients', String(this.pendingDues.length)]
+        ], ['left', 'right']);
+        banner('PENDING DUE DETAILS');
+        drawTable(['Patient', 'Invoice #', 'Total', 'Paid', 'Due', 'Due Date', 'Days Overdue'], [35, 28, 25, 25, 25, 25, 17],
+          this.pendingDues.map(d => [d.patientName, d.invoiceNumber, money(d.total), money(d.paid), money(d.due), d.dueDate, String(d.daysOverdue)]),
+          ['left', 'left', 'right', 'right', 'right', 'right', 'right']);
+        break;
+      }
+      case 'refund-report': {
+        banner('REFUND REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Refunded', money(this.refundTotalAmount)],
+          ['Approved / Processed', String(this.refundApprovedCount)],
+          ['Pending Refunds', String(this.refundPendingCount)],
+          ['Total Refunds', String(this.refunds.length)]
+        ], ['left', 'right']);
+        banner('REFUND DETAILS');
+        drawTable(['Invoice #', 'Patient', 'Amount', 'Reason', 'Status', 'Refund Date'], [28, 35, 28, 39, 20, 30],
+          this.refunds.map(r => [
+            r.invoiceNumber, r.patientName, money(r.amount),
+            (r.reason || '').length > 30 ? (r.reason as string).substring(0, 28) + '…' : (r.reason || ''),
+            r.status, r.refundDate
+          ]),
+          ['left', 'left', 'right', 'left', 'center', 'right']);
+        break;
+      }
+      case 'profit-loss': {
+        const margin = this.plTotalRevenue > 0 ? ((this.plTotalProfit / this.plTotalRevenue) * 100).toFixed(1) + '%' : '0%';
+        banner('PROFIT & LOSS REPORT');
+        drawTable(['Particulars', 'Value'], [110, 70], [
+          ['Total Revenue', money(this.plTotalRevenue)],
+          ['Total Expenses', money(this.plTotalExpenses)],
+          ['Net Profit', money(this.plTotalProfit)],
+          ['Profit Margin', margin]
+        ], ['left', 'right']);
+        banner('MONTHLY BREAKDOWN');
+        drawTable(['Month', 'Revenue', 'Expenses', 'Profit', 'Margin'], [50, 32, 32, 32, 34],
+          this.profitLoss.map(p => [
+            this.formatProfitLossMonth(p.month), money(p.revenue), money(p.expenses), money(p.profit),
+            (p.revenue > 0 ? ((p.profit / p.revenue) * 100).toFixed(1) : '0') + '%'
+          ]),
+          ['left', 'right', 'right', 'right', 'right']);
+        break;
+      }
+      default: {
+        banner('REPORT');
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(80);
+        doc.text('No report data available. Please generate a report first.', M, y + 4);
+      }
+    }
+
+    footer();
+    doc.save('billing-' + this.activeTab + '-report.pdf');
+  }
+
   exportPdf(): void {
-    window.print();
+    this.generatePdf();
   }
 
   exportExcel(): void {
@@ -684,7 +940,7 @@ export class BillingReportsComponent implements OnInit {
   }
 
   printReport(): void {
-    window.print();
+    this.generatePdf();
   }
 
   formatCurrency(value: number): string {
