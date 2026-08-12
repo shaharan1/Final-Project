@@ -90,8 +90,8 @@
             <td>{{ med.genericName }}</td>
             <td><code>{{ med.batchNumber }}</code></td>
             <td [class.qty-low]="(med.availableQuantity ?? med.stockQuantity) <= (med.minimumStockLevel ?? 0) && (med.availableQuantity ?? med.stockQuantity) > 0" [class.qty-zero]="(med.availableQuantity ?? med.stockQuantity) === 0">{{ med.availableQuantity ?? med.stockQuantity }}</td>
-            <td>{{ med.purchasePrice | currency }}</td>
-            <td>{{ med.salePrice | currency }}</td>
+            <td>&#2547;{{ med.purchasePrice | number:'1.2-2' }}</td>
+            <td>&#2547;{{ med.salePrice | number:'1.2-2' }}</td>
             <td [ngClass]="getExpiryClass(med)">{{ med.expiryDate }}</td>
             <td><span class="badge" [ngClass]="getStatusBadgeClass(getMedicineStatus(med))">{{ getMedicineStatus(med) }}</span></td>
             <td class="actions-cell">
@@ -121,8 +121,8 @@
           <div class="card-row"><span class="label">Generic:</span><span>{{ med.genericName }}</span></div>
           <div class="card-row"><span class="label">Batch:</span><code>{{ med.batchNumber }}</code></div>
           <div class="card-row"><span class="label">Qty:</span><span [class.qty-low]="(med.availableQuantity ?? med.stockQuantity) <= (med.minimumStockLevel ?? 0)" [class.qty-zero]="(med.availableQuantity ?? med.stockQuantity) === 0">{{ med.availableQuantity ?? med.stockQuantity }}</span></div>
-          <div class="card-row"><span class="label">Purchase:</span><span>{{ med.purchasePrice | currency }}</span></div>
-          <div class="card-row"><span class="label">Sale:</span><span>{{ med.salePrice | currency }}</span></div>
+          <div class="card-row"><span class="label">Purchase:</span><span>&#2547;{{ med.purchasePrice | number:'1.2-2' }}</span></div>
+          <div class="card-row"><span class="label">Sale:</span><span>&#2547;{{ med.salePrice | number:'1.2-2' }}</span></div>
           <div class="card-row"><span class="label">Expiry:</span><span [ngClass]="getExpiryClass(med)">{{ med.expiryDate }}</span></div>
         </div>
         <div class="card-actions">
