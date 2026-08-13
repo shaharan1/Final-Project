@@ -128,8 +128,8 @@
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 .rx-search input:focus {
-  border-color: #6610f2;
-  box-shadow: 0 0 0 3px rgba(102, 16, 242, 0.15);
+  border-color: #0891b2;
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
 }
 .rx-count {
   font-size: 0.85rem;
@@ -211,14 +211,14 @@
   padding: 16px 18px;
   background: #fff;
   border: 1px solid #eef0f4;
-  border-left: 4px solid #6610f2;
+  border-left: 4px solid #059669;
   border-radius: 14px;
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
 .rx-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
-  border-left-color: #0d6efd;
+  border-left-color: #0891b2;
 }
 .rx-avatar {
   flex: 0 0 auto;
@@ -309,9 +309,9 @@
   border-color: #e2e8f0;
 }
 .rx-print:hover {
-  background: #0d6efd;
+  background: #0891b2;
   color: #fff;
-  border-color: #0d6efd;
+  border-color: #0891b2;
 }
 
 /* Dark theme */

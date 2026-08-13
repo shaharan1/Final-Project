@@ -6,7 +6,7 @@
 
 /* Header */
 .gl-header {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
   padding: 22px 26px;
   color: #fff;
   display: flex;
@@ -14,7 +14,7 @@
   justify-content: space-between;
   gap: 12px;
   border-radius: 18px;
-  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.25);
+  box-shadow: 0 12px 30px rgba(8, 145, 178, 0.25);
   flex-wrap: wrap;
   position: relative;
   overflow: hidden;
@@ -177,14 +177,14 @@
   padding: 18px;
   background: #fff;
   border: 1px solid #eef0f4;
-  border-top: 4px solid #6d28d9;
+  border-top: 4px solid #059669;
   border-radius: 14px;
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
 .gl-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
-  border-top-color: #4f46e5;
+  border-top-color: #0891b2;
 }
 .gl-card-top {
   display: flex;
@@ -198,7 +198,7 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  background: linear-gradient(135deg, #059669, #0891b2);
   color: #fff;
   font-weight: 700;
   font-size: 1.1rem;
