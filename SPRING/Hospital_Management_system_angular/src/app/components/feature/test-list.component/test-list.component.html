@@ -1,111 +1,70 @@
-<div class="container mt-4">
+<div class="tl-wrap">
 
-<div class="card shadow">
+  <!-- Header -->
+  <div class="test-header">
+    <svg class="test-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+    </svg>
 
-<div class="test-header">
+    <div class="test-header-left">
+      <div class="test-icon">🧪</div>
+      <div>
+        <h4>Test Catalog</h4>
+        <p class="test-sub">Browse and manage laboratory tests</p>
+      </div>
+    </div>
 
-<svg class="test-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
-  <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
-</svg>
+    <a routerLink="/tests/create" class="tl-new-btn">
+      <i class="bi bi-plus-lg"></i> Add Test
+    </a>
+  </div>
 
-<div class="test-icon">📋</div>
-<h4>Test List</h4>
+  <!-- Toolbar -->
+  <div class="tl-toolbar">
+    <div class="tl-search">
+      <i class="bi bi-search"></i>
+      <input type="text" [value]="keyword" (input)="onSearch($event)"
+             placeholder="Search tests by name or code" />
+    </div>
+    <div class="tl-count">{{ filtered.length }} test{{ filtered.length === 1 ? '' : 's' }}</div>
+  </div>
 
-<a
-routerLink="/tests/create"
-class="btn btn-light">
+  <!-- Empty -->
+  <div *ngIf="filtered.length === 0" class="tl-state">
+    <div class="tl-empty-icon"><i class="bi bi-clipboard-x"></i></div>
+    <p class="tl-empty-title">No tests found</p>
+    <p class="tl-empty-sub">Try a different search or add a new test.</p>
+  </div>
 
-Add Test
+  <!-- Grid -->
+  <div class="tl-grid" *ngIf="filtered.length > 0">
+    <div class="tl-card" *ngFor="let t of filtered">
+      <div class="tl-card-top">
+        <div class="tl-avatar"><i class="bi bi-flask"></i></div>
+        <span class="tl-code">{{ t.testCode }}</span>
+        <span class="tl-status" [class.active]="t.active" [class.inactive]="!t.active">
+          {{ t.active ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
 
-</a>
+      <div class="tl-name">{{ t.testName }}</div>
 
-</div>
+      <div class="tl-range" *ngIf="t.normalRange">
+        <i class="bi bi-activity"></i> {{ t.normalRange }}
+      </div>
 
-<div class="card-body">
-
-<input
-class="form-control mb-3"
-placeholder="Search Test"
-[(ngModel)]="keyword"
-(keyup)="search()">
-
-<table class="table table-bordered">
-
-<thead>
-
-<tr>
-
-<th>Code</th>
-<th>Name</th>
-<th>Price</th>
-<th>Range</th>
-<th>Status</th>
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr *ngFor="let t of tests">
-
-<td>{{t.testCode}}</td>
-
-<td>{{t.testName}}</td>
-
-<td>{{t.standardPrice}}</td>
-
-<td>{{t.normalRange}}</td>
-
-<td>
-
-<span
-class="badge bg-success"
-*ngIf="t.active">
-
-Active
-
-</span>
-
-<span
-class="badge bg-danger"
-*ngIf="!t.active">
-
-Inactive
-
-</span>
-
-</td>
-
-<td>
-
-<button
-class="btn btn-warning btn-sm me-2"
-(click)="edit(t.id!)">
-
-Edit
-
-</button>
-
-<button
-class="btn btn-danger btn-sm"
-(click)="delete(t.id!)">
-
-Delete
-
-</button>
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
+      <div class="tl-footer">
+        <div class="tl-price">{{ t.standardPrice | number: '1.2-2' }} ৳</div>
+        <div class="tl-actions">
+          <button class="tl-btn tl-edit" (click)="edit(t.id!)" title="Edit">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="tl-btn tl-del" (click)="delete(t.id!)" title="Delete">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>

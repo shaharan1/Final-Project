@@ -41,22 +41,18 @@ export class TestListComponent {
 
   }
 
-  search(){
+  get filtered(): TestMasterModel[] {
+    const k = this.keyword.trim().toLowerCase();
+    if (!k) return this.tests;
+    return this.tests.filter(t =>
+      (t.testName || '').toLowerCase().includes(k) ||
+      (t.testCode || '').toLowerCase().includes(k)
+    );
+  }
 
-    if(this.keyword==''){
-
-      this.load();
-
-      return;
-
-    }
-
-    this.service.search(this.keyword).subscribe(res=>{
-
-      this.tests=res;
-
-    });
-
+  onSearch(event: Event): void {
+    this.keyword = (event.target as HTMLInputElement).value;
+    this.cdr.markForCheck();
   }
 
   edit(id:number){
