@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class GenericListComponent implements OnInit {
 
   generics: GenericModel[] = [];
+  keyword = '';
 
   constructor(
     private genericService: GenericService,
@@ -23,6 +24,17 @@ export class GenericListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+  get filtered(): GenericModel[] {
+    const k = this.keyword.trim().toLowerCase();
+    if (!k) return this.generics;
+    return this.generics.filter(g => (g.genericName || '').toLowerCase().includes(k));
+  }
+
+  onSearch(event: Event): void {
+    this.keyword = (event.target as HTMLInputElement).value;
+    this.cdr.markForCheck();
   }
 
   loadData() {
@@ -50,6 +62,10 @@ export class GenericListComponent implements OnInit {
 
     this.router.navigate(['/generic', id]);
 
+  }
+
+  initial(name: string | undefined): string {
+    return (name && name.trim().charAt(0)) ? name.trim().charAt(0).toUpperCase() : '?';
   }
 
 }

@@ -1,63 +1,60 @@
-<div class="container mt-4">
+<div class="gl-wrap">
 
-  <div class="card shadow">
-
-    <div class="card-header bg-success text-white">
-      <h4>Generic List</h4>
+  <!-- Header -->
+  <div class="gl-header">
+    <svg class="gl-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="gl-wave-path"/>
+    </svg>
+    <div class="gl-header-left">
+      <div class="gl-icon">📁</div>
+      <div>
+        <h4>Medicine Generics</h4>
+        <p class="gl-sub">Manage generic medicine names</p>
+      </div>
     </div>
+    <a routerLink="/generics" class="gl-new-btn">
+      <i class="bi bi-plus-lg"></i> Add Generic
+    </a>
+  </div>
 
-    <div class="card-body">
-
-      <table class="table table-bordered table-hover">
-
-        <thead>
-
-          <tr>
-
-            <th>#</th>
-            <th>Generic Name</th>
-            <th width="180">Action</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          <tr *ngFor="let g of generics; let i = index">
-
-            <td>{{ i + 1 }}</td>
-
-            <td>{{ g.genericName }}</td>
-
-            <td>
-
-              <button
-                class="btn btn-warning btn-sm me-2"
-                (click)="edit(g.id!)">
-
-                Update
-
-              </button>
-
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="delete(g.id!)">
-
-                Delete
-
-              </button>
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
+  <!-- Toolbar -->
+  <div class="gl-toolbar">
+    <div class="gl-search">
+      <i class="bi bi-search"></i>
+      <input type="text" [value]="keyword" (input)="onSearch($event)"
+             placeholder="Search generic name" />
     </div>
+    <div class="gl-count">{{ filtered.length }} generic{{ filtered.length === 1 ? '' : 's' }}</div>
+  </div>
 
+  <!-- Empty -->
+  <div *ngIf="filtered.length === 0" class="gl-state">
+    <div class="gl-empty-icon"><i class="bi bi-folder-x"></i></div>
+    <p class="gl-empty-title">No generics found</p>
+    <p class="gl-empty-sub">Try a different search or add a new generic.</p>
+  </div>
+
+  <!-- Grid -->
+  <div class="gl-grid" *ngIf="filtered.length > 0">
+    <div class="gl-card" *ngFor="let g of filtered">
+      <div class="gl-card-top">
+        <div class="gl-avatar">{{ initial(g.genericName) }}</div>
+        <span class="gl-tag">Generic</span>
+      </div>
+
+      <div class="gl-name">{{ g.genericName }}</div>
+
+      <div class="gl-footer">
+        <div class="gl-actions">
+          <button class="gl-btn gl-edit" (click)="edit(g.id!)" title="Update">
+            <i class="bi bi-pencil"></i> Update
+          </button>
+          <button class="gl-btn gl-del" (click)="delete(g.id!)" title="Delete">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
