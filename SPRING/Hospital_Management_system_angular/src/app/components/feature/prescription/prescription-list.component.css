@@ -12,9 +12,9 @@
   gap: 16px;
   padding: 22px 26px;
   border-radius: 18px;
-  background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
   color: #fff;
-  box-shadow: 0 12px 30px rgba(102, 16, 242, 0.25);
+  box-shadow: 0 12px 30px rgba(8, 145, 178, 0.25);
   flex-wrap: wrap;
   position: relative;
   overflow: hidden;
@@ -227,7 +227,7 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  background: linear-gradient(135deg, #059669, #0891b2);
   color: #fff;
   font-weight: 700;
   font-size: 1.05rem;
