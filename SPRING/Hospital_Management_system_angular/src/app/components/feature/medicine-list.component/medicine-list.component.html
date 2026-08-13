@@ -1,72 +1,83 @@
-<div class="pharma-page">
-  <section class="hero-section">
+<div class="lab-page">
+
+  <!-- Hero -->
+  <div class="lab-hero">
     <div class="hero-bg">
       <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
         <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
       </svg>
     </div>
-    <div class="hero-content">
-      <div class="hero-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+    <div class="lab-hero-content">
+      <div class="lab-hero-icon">💊</div>
+      <div>
+        <h1>Medicine Catalog</h1>
+        <p>Browse and manage all registered medicines in the pharmacy</p>
       </div>
-      <h1>Medicine Catalog</h1>
-      <p>Browse and manage all registered medicines in the pharmacy</p>
     </div>
-  </section>
-
-  <div class="toolbar glass-card">
-    <div class="search-box">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="Search medicines..." (input)="onSearch($event)">
-    </div>
-    <button class="btn btn-primary" routerLink="/medicines/create">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Add Medicine
-    </button>
   </div>
 
-  <div class="table-container glass-card">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Medicine Name</th>
-          <th>Generic</th>
-          <th>Dosage</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let m of filteredMedicines; let i = index">
-          <td class="id-cell">{{ i + 1 }}</td>
-          <td>
-            <div class="name-cell">
-              <div class="cell-avatar">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+  <!-- Search -->
+  <div class="lab-search-row">
+    <div class="lab-search-wrap">
+      <span class="lab-search-icon">🔍</span>
+      <input class="lab-search" placeholder="Search medicines..." [(ngModel)]="searchTerm" (input)="onSearch($event)">
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="lab-table-card">
+    <div class="lab-table-header">
+      <h3>Medicine List</h3>
+      <span class="lab-table-count">{{ medicines.length }} medicines</span>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="th-num">#</th>
+            <th>Medicine Name</th>
+            <th>Generic</th>
+            <th>Dosage</th>
+            <th class="th-action">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of medicines; let i = index" class="lab-row">
+            <td class="td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lab-medicine-cell">
+                <div class="lab-medicine-avatar">{{ m.medicineName ? m.medicineName.charAt(0) : '?' }}</div>
+                <div>
+                  <div class="lab-medicine-name">{{ m.medicineName }}</div>
+                  <div class="lab-medicine-sub">{{ m.genericName || '-' }}</div>
+                </div>
               </div>
-              <span>{{ m.medicineName }}</span>
-            </div>
-          </td>
-          <td><span class="generic-tag">{{ m.genericName || '-' }}</span></td>
-          <td><span class="dosage-tag">{{ m.dosage || '-' }}</span></td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-icon edit" (click)="edit(m.id!)" title="Edit">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="btn-icon delete" (click)="deleteMed(m.id!)" title="Delete">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr *ngIf="filteredMedicines.length === 0">
-          <td colspan="5" class="empty-row">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
-            <p>No medicines found</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td><span class="lab-generic-badge">{{ m.genericName || '-' }}</span></td>
+            <td><span class="lab-dosage-tag">{{ m.dosage || '-' }}</span></td>
+            <td>
+              <div class="lab-action-buttons">
+                <button class="lab-btn lab-edit" (click)="edit(m.id!)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="lab-btn lab-delete" (click)="delete(m.id!)" title="Delete">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="medicines.length === 0">
+            <td colspan="5">
+              <div class="lab-empty-state">
+                <div class="lab-empty-icon">✓</div>
+                <h4>No medicines found</h4>
+                <p>Add a new medicine to get started.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </div>
