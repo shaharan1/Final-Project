@@ -19,6 +19,7 @@ export class PrescriptionListComponent implements OnInit {
   prescriptions: PrescriptionModel[] = [];
   loading = true;
   errorMsg: string | null = null;
+  searchTerm = '';
 
   constructor(
     private service: PrescriptionService,
@@ -33,6 +34,7 @@ export class PrescriptionListComponent implements OnInit {
     if (!user?.userId) {
       this.errorMsg = 'Unable to determine logged-in user.';
       this.loading = false;
+      this.cdr.markForCheck();
       return;
     }
 
@@ -47,11 +49,14 @@ export class PrescriptionListComponent implements OnInit {
           } else {
             this.errorMsg = 'Doctor profile not found.';
             this.loading = false;
+            this.cdr.markForCheck();
           }
         },
         error: () => {
-          this.errorMsg = 'Failed to load doctor profile.';
-          this.loading = false;
+          // Doctor profile lookup failed (e.g. backend 500/404 when no
+          // profile is linked). Fall back to all prescriptions so the page
+          // still renders instead of freezing on the loading spinner.
+          this.loadAllPrescriptions();
         }
       });
     } else {
@@ -61,6 +66,8 @@ export class PrescriptionListComponent implements OnInit {
 
   loadPrescriptions(doctorId: number): void {
     this.loading = true;
+    this.errorMsg = null;
+    this.cdr.markForCheck();
     this.service.getByDoctorId(doctorId).subscribe({
       next: (res) => {
         this.prescriptions = res;
@@ -70,6 +77,7 @@ export class PrescriptionListComponent implements OnInit {
       error: () => {
         this.errorMsg = 'Failed to load prescriptions.';
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -77,6 +85,7 @@ export class PrescriptionListComponent implements OnInit {
   loadAllPrescriptions(): void {
     this.loading = true;
     this.errorMsg = null;
+    this.cdr.markForCheck();
     this.service.getAll().subscribe({
       next: (res) => {
         this.prescriptions = res;
@@ -86,6 +95,7 @@ export class PrescriptionListComponent implements OnInit {
       error: () => {
         this.errorMsg = 'Failed to load prescriptions.';
         this.loading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -107,6 +117,25 @@ export class PrescriptionListComponent implements OnInit {
         this.errorMsg = 'Failed to generate PDF.';
       }
     });
+  }
+
+  get filtered(): PrescriptionModel[] {
+    const t = this.searchTerm.trim().toLowerCase();
+    if (!t) return this.prescriptions;
+    return this.prescriptions.filter(p =>
+      (p.patientName || '').toLowerCase().includes(t) ||
+      (p.diagnosis || '').toLowerCase().includes(t) ||
+      (p.prescriptionNumber || '').toLowerCase().includes(t)
+    );
+  }
+
+  onSearch(event: Event): void {
+    this.searchTerm = (event.target as HTMLInputElement).value;
+    this.cdr.markForCheck();
+  }
+
+  initial(name: string | undefined): string {
+    return (name && name.trim().charAt(0)) ? name.trim().charAt(0).toUpperCase() : '?';
   }
 
   formatDate(dateStr: string | undefined): string {

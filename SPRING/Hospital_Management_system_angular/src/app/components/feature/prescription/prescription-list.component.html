@@ -1,106 +1,74 @@
-<div class="container-fluid py-4">
+<div class="rx-wrap">
 
-  <div class="card shadow-lg border-0 rounded-4 mb-4">
-
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-
-      <h4 class="mb-0 fw-bold">
-        My Prescriptions
-      </h4>
-
-      <button class="btn btn-light btn-sm" (click)="router.navigate(['/prescriptions/create/0'])">
-        <i class="bi bi-plus-circle me-1"></i>
-        New Prescription
-      </button>
-
+  <!-- Hero -->
+  <div class="rx-hero">
+    <div class="rx-hero-text">
+      <div class="rx-hero-icon"><i class="bi bi-prescription2"></i></div>
+      <div>
+        <h3 class="rx-title">My Prescriptions</h3>
+        <p class="rx-sub">View, edit and print patient prescriptions</p>
+      </div>
     </div>
+    <button class="rx-new-btn" (click)="router.navigate(['/prescriptions/create/0'])">
+      <i class="bi bi-plus-lg"></i> New Prescription
+    </button>
+  </div>
 
-    <div class="card-body">
+  <!-- Toolbar -->
+  <div class="rx-toolbar" *ngIf="!loading && !errorMsg">
+    <div class="rx-search">
+      <i class="bi bi-search"></i>
+      <input type="text" [value]="searchTerm" (input)="onSearch($event)"
+             placeholder="Search patient, diagnosis or Rx #" />
+    </div>
+    <div class="rx-count">{{ filtered.length }} prescription{{ filtered.length === 1 ? '' : 's' }}</div>
+  </div>
 
-      <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
+  <!-- Loading -->
+  <div *ngIf="loading" class="rx-state">
+    <div class="rx-spinner"></div>
+    <p>Loading prescriptions...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMsg" class="rx-error">
+    <i class="bi bi-exclamation-triangle"></i>
+    <p>{{ errorMsg }}</p>
+  </div>
+
+  <!-- Empty -->
+  <div *ngIf="!loading && !errorMsg && filtered.length === 0" class="rx-state">
+    <div class="rx-empty-icon"><i class="bi bi-prescription2"></i></div>
+    <p class="rx-empty-title">No prescriptions found</p>
+    <p class="rx-empty-sub" *ngIf="searchTerm">Try a different search term.</p>
+    <p class="rx-empty-sub" *ngIf="!searchTerm">Create a new prescription to get started.</p>
+  </div>
+
+  <!-- List -->
+  <div *ngIf="!loading && filtered.length > 0" class="rx-list">
+    <div class="rx-card" *ngFor="let p of filtered; let i = index">
+      <div class="rx-avatar">{{ initial(p.patientName) }}</div>
+
+      <div class="rx-info">
+        <div class="rx-line1">
+          <span class="rx-patient">{{ p.patientName || 'N/A' }}</span>
+          <span class="rx-rx-badge">{{ p.prescriptionNumber || 'N/A' }}</span>
         </div>
-        <p class="mt-3 text-muted">Loading prescriptions...</p>
+        <div class="rx-diagnosis" [title]="p.diagnosis">{{ p.diagnosis || 'No diagnosis' }}</div>
+        <div class="rx-meta">
+          <span class="rx-date"><i class="bi bi-calendar3"></i> {{ formatDate(p.createdDate) }}</span>
+        </div>
       </div>
 
-      <div *ngIf="errorMsg" class="alert alert-danger">
-        {{ errorMsg }}
+      <div class="rx-actions">
+        <button class="rx-btn rx-edit" (click)="editPrescription(p.id!)" title="Edit Prescription">
+          <i class="bi bi-pencil"></i> <span>Edit</span>
+        </button>
+        <button class="rx-btn rx-print" (click)="viewPdf(p.id!)" title="View / Print PDF">
+          <i class="bi bi-printer"></i> <span>Print</span>
+        </button>
       </div>
-
-      <div *ngIf="!loading && !errorMsg && prescriptions.length === 0" class="text-center py-5">
-        <i class="bi bi-prescription display-4 text-muted"></i>
-        <p class="mt-3 text-muted">No prescriptions found.</p>
-      </div>
-
-      <div *ngIf="!loading && prescriptions.length > 0" class="table-responsive">
-
-        <table class="table table-hover align-middle">
-
-          <thead class="table-light">
-
-            <tr>
-
-              <th>#</th>
-
-              <th>Prescription No.</th>
-
-              <th>Patient</th>
-
-              <th>Diagnosis</th>
-
-              <th>Date</th>
-
-              <th class="text-end">Actions</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            <tr *ngFor="let p of prescriptions; let i = index">
-
-              <td>{{ i + 1 }}</td>
-
-              <td>{{ p.prescriptionNumber || 'N/A' }}</td>
-
-              <td>{{ p.patientName || 'N/A' }}</td>
-
-              <td>
-                <span class="text-truncate d-inline-block" style="max-width: 200px;" [title]="p.diagnosis">
-                  {{ p.diagnosis || 'N/A' }}
-                </span>
-              </td>
-
-              <td>{{ formatDate(p.createdDate) }}</td>
-
-              <td class="text-end">
-
-                <button class="btn btn-outline-primary btn-sm me-1"
-                  (click)="editPrescription(p.id!)"
-                  title="Edit Prescription">
-                  <i class="bi bi-pencil"></i> Edit
-                </button>
-
-                <button class="btn btn-outline-secondary btn-sm"
-                  (click)="viewPdf(p.id!)"
-                  title="View / Print PDF">
-                  <i class="bi bi-printer"></i> Print
-                </button>
-
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
     </div>
-
   </div>
 
 </div>
