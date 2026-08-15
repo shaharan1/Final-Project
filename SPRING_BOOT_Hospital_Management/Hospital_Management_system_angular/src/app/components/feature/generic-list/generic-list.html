@@ -1,60 +1,84 @@
-<div class="container mt-4">
+<div class="container py-4">
 
-  <div class="card shadow">
+  <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
 
-    <div class="card-header bg-success text-white">
-      <h4>Generic List</h4>
+    <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center px-4 py-3">
+      <h4 class="mb-0 fw-semibold">
+        📁 Generic List
+      </h4>
+      <a
+        routerLink="/generics"
+        class="btn btn-light btn-sm">
+        <i class="bi bi-plus-lg me-1"></i>
+        Add Generic
+      </a>
     </div>
 
-    <div class="card-body">
+    <div class="card-body p-0">
 
-      <table class="table table-bordered table-hover">
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading generics...</p>
+      </div>
 
-        <thead>
+      <div *ngIf="errorMsg" class="alert alert-danger m-4">
+        {{ errorMsg }}
+      </div>
 
-          <tr>
+      <div *ngIf="!loading && !errorMsg && generics.length === 0" class="text-center py-5">
+        <i class="bi bi-inbox display-4 text-muted"></i>
+        <p class="mt-3 text-muted">No generics found.</p>
+      </div>
 
-            <th>#</th>
-            <th>Generic Name</th>
-            <th width="180">Action</th>
+      <div *ngIf="!loading && generics.length > 0" class="table-responsive">
 
-          </tr>
+        <table class="table table-hover align-middle mb-0">
 
-        </thead>
+          <thead class="table-light">
 
-        <tbody>
+            <tr>
 
-          <tr *ngFor="let g of generics; let i = index">
+              <th class="px-4">#</th>
+              <th>Generic Name</th>
+              <th class="text-end pe-4">Actions</th>
 
-            <td>{{ i + 1 }}</td>
+            </tr>
 
-            <td>{{ g.genericName }}</td>
+          </thead>
 
-            <td>
+          <tbody>
 
-              <button
-                class="btn btn-warning btn-sm me-2"
-                (click)="edit(g.id!)">
+            <tr *ngFor="let g of generics; let i = index">
 
-                Update
+              <td class="px-4">{{ i + 1 }}</td>
 
-              </button>
+              <td class="fw-medium">{{ g.genericName }}</td>
 
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="delete(g.id!)">
+              <td class="text-end pe-4">
 
-                Delete
+                <button
+                  class="btn btn-sm btn-outline-warning me-2"
+                  (click)="edit(g.id!)">
+                  <i class="bi bi-pencil"></i>
+                </button>
 
-              </button>
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="delete(g.id!)">
+                  <i class="bi bi-trash"></i>
+                </button>
 
-            </td>
+              </td>
 
-          </tr>
+            </tr>
 
-        </tbody>
+          </tbody>
 
-      </table>
+        </table>
+
+      </div>
 
     </div>
 
