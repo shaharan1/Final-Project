@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -72,7 +72,8 @@ export class PharmacySaleComponent implements OnInit {
   constructor(
     private saleService: PharmacySaleService,
     private stockService: StockService,
-    private prescriptionService: PrescriptionService
+    private prescriptionService: PrescriptionService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
