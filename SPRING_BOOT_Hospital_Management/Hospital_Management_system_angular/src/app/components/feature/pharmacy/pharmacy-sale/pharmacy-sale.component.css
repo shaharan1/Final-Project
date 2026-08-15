@@ -1147,11 +1147,11 @@ tbody tr:hover {
 }
 .rx-patient {
   font-size: 0.95rem;
-  color: #212529;
+  color: #f0f4f8;
 }
 .rx-meta {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
