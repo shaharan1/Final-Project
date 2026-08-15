@@ -41,13 +41,16 @@ export class PrescriptionListComponent implements OnInit {
         if (doctor?.id) {
           this.loadPrescriptions(doctor.id);
         } else {
-          this.errorMsg = 'Doctor profile not found.';
-          this.loading = false;
+          this.loadAllPrescriptions();
         }
       },
       error: (err) => {
-        this.errorMsg = err?.status === 404 ? 'Doctor profile not found.' : 'Failed to load doctor profile.';
-        this.loading = false;
+        if (err?.status === 404) {
+          this.loadAllPrescriptions();
+        } else {
+          this.errorMsg = 'Failed to load doctor profile.';
+          this.loading = false;
+        }
       }
     });
   }
@@ -55,6 +58,21 @@ export class PrescriptionListComponent implements OnInit {
   loadPrescriptions(doctorId: number): void {
     this.loading = true;
     this.service.getByDoctorId(doctorId).subscribe({
+      next: (res) => {
+        this.prescriptions = res;
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.errorMsg = 'Failed to load prescriptions.';
+        this.loading = false;
+      }
+    });
+  }
+
+  loadAllPrescriptions(): void {
+    this.loading = true;
+    this.service.getAll().subscribe({
       next: (res) => {
         this.prescriptions = res;
         this.loading = false;
