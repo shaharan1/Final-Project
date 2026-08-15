@@ -146,10 +146,13 @@ public class DoctorServiceImp implements DoctorService {
     @Override
     @Transactional(readOnly = true)
     public DoctorResponse getByUserId(Long id) {
-
-        return doctorRepository.findByUserId(id)
-                .map(DoctorMapper::toDto)
-                .orElse(null);
+        try {
+            return doctorRepository.findByUserId(id)
+                    .map(DoctorMapper::toDto)
+                    .orElse(null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
