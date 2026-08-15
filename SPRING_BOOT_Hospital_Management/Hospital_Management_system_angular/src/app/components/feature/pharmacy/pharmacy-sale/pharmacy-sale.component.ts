@@ -168,6 +168,7 @@ export class PharmacySaleComponent implements OnInit {
       next: (data: PrescriptionModel[]) => {
         this.pendingPrescriptions = data;
         this.loadingPrescriptions = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.loadingPrescriptions = false;
@@ -196,6 +197,7 @@ export class PharmacySaleComponent implements OnInit {
       unitPrice: 0,
       options: []
     } as DispenseLine));
+    this.cdr.detectChanges();
     this.autoMatchDispenseLines();
   }
 
@@ -212,6 +214,7 @@ export class PharmacySaleComponent implements OnInit {
             line.unitPrice = match.salePrice;
           }
         }
+        this.cdr.detectChanges();
       },
       error: () => {}
     });
