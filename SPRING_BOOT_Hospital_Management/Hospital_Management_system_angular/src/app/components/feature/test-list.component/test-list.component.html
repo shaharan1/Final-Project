@@ -1,111 +1,118 @@
 <div class="container mt-4">
 
-<div class="card shadow">
+  <div class="card shadow-lg border-0">
 
-<div class="test-header">
+    <div class="card-header bg-info text-white">
+      <div class="test-header d-flex align-items-center">
 
-<svg class="test-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
-  <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
-</svg>
+        <svg class="test-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+        </svg>
 
-<div class="test-icon">📋</div>
-<h4>Test List</h4>
+        <div class="test-icon ms-3">📋</div>
+        <h4 class="mb-0 ms-3">Test List</h4>
 
-<a
-routerLink="/tests/create"
-class="btn btn-light">
+      </div>
+    </div>
 
-Add Test
+    <div class="card-body p-0">
 
-</a>
+      <input
+        class="form-control border-bottom mb-3"
+        placeholder="Search Test"
+        [(ngModel)]="keyword"
+        (keyup)="search()">
 
-</div>
+      <table class="table table-bordered mb-0">
 
-<div class="card-body">
+        <thead class="table-light">
 
-<input
-class="form-control mb-3"
-placeholder="Search Test"
-[(ngModel)]="keyword"
-(keyup)="search()">
+          <tr>
 
-<table class="table table-bordered">
+            <th>Code</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Range</th>
+            <th>Status</th>
+            <th>Action</th>
 
-<thead>
+          </tr>
 
-<tr>
+        </thead>
 
-<th>Code</th>
-<th>Name</th>
-<th>Price</th>
-<th>Range</th>
-<th>Status</th>
-<th>Action</th>
+        <tbody>
 
-</tr>
+          <tr *ngFor="let t of tests">
 
-</thead>
+            <td>{{t.testCode}}</td>
 
-<tbody>
+            <td>{{t.testName}}</td>
 
-<tr *ngFor="let t of tests">
+            <td>{{t.standardPrice}}</td>
 
-<td>{{t.testCode}}</td>
+            <td>{{t.normalRange}}</td>
 
-<td>{{t.testName}}</td>
+            <td>
 
-<td>{{t.standardPrice}}</td>
+              <span
+              class="badge bg-success"
+              *ngIf="t.active">
 
-<td>{{t.normalRange}}</td>
+                Active
 
-<td>
+              </span>
 
-<span
-class="badge bg-success"
-*ngIf="t.active">
+              <span
+              class="badge bg-danger"
+              *ngIf="!t.active">
 
-Active
+                Inactive
 
-</span>
+              </span>
 
-<span
-class="badge bg-danger"
-*ngIf="!t.active">
+            </td>
 
-Inactive
+            <td>
 
-</span>
+              <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="edit(t.id!)">
 
-</td>
+                Edit
 
-<td>
+              </button>
 
-<button
-class="btn btn-warning btn-sm me-2"
-(click)="edit(t.id!)">
+              <button
+              class="btn btn-danger btn-sm"
+              (click)="delete(t.id!)">
 
-Edit
+                Delete
 
-</button>
+              </button>
 
-<button
-class="btn btn-danger btn-sm"
-(click)="delete(t.id!)">
+            </td>
 
-Delete
+          </tr>
 
-</button>
+        </tbody>
 
-</td>
+      </table>
 
-</tr>
+    </div>
 
-</tbody>
+    <div class="card-footer bg-white border-top">
 
-</table>
+      <a
+      routerLink="/tests/create"
+      class="btn btn-info w-100">
 
-</div>
+        <i class="bi bi-plus me-1"></i>
+        Add Test
 
-</div>
+      </a>
+
+    </div>
+
+  </div>
 
 </div>
