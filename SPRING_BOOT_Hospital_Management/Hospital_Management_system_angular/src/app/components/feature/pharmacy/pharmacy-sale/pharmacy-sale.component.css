@@ -1234,7 +1234,7 @@ tbody tr:hover {
   font-size: 0.82rem;
 }
 .match-option:hover { background: rgba(102, 16, 242, 0.06); }
-.match-option em { color: #6c757d; font-size: 0.75rem; }
+.match-option em { color: rgba(255, 255, 255, 0.5); font-size: 0.75rem; }
 .opt-price { color: #6610f2; font-weight: 600; white-space: nowrap; }
 
 .rx-footer {
