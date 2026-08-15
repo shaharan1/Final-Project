@@ -47,6 +47,10 @@ export class MedicineListComponent implements OnInit {
     );
   }
 
+  delete(id: number) {
+    this.deleteMed(id);
+  }
+
   deleteMed(id: number) {
     if (confirm('Delete this medicine?')) {
       this.medicineService.delete(id).subscribe(() => this.load());
