@@ -45,8 +45,8 @@ export class PrescriptionListComponent implements OnInit {
           this.loading = false;
         }
       },
-      error: () => {
-        this.errorMsg = 'Failed to load doctor profile.';
+      error: (err) => {
+        this.errorMsg = err?.status === 404 ? 'Doctor profile not found.' : 'Failed to load doctor profile.';
         this.loading = false;
       }
     });
