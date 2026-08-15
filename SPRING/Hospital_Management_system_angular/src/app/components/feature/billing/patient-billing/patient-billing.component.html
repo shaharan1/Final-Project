@@ -36,7 +36,7 @@
   <!-- Patient Search Results -->
   <div class="patient-results glass" *ngIf="showPatientSearch && filteredPatients.length > 0">
     <div class="result-item" *ngFor="let patient of filteredPatients" (click)="selectPatient(patient)">
-      <div class="result-avatar">{{ patient.name?.charAt(0) }}</div>
+      <div class="result-avatar">{{ (patient.name || '').charAt(0) }}</div>
       <div class="result-info">
         <strong>{{ patient.name }}</strong>
         <span>{{ patient.patientCode }} &bull; {{ patient.phone }}</span>

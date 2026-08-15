@@ -37,7 +37,7 @@
             <td class="dl-id-cell">{{ doctor.id }}</td>
             <td>
               <div class="dl-name-cell">
-                <div class="dl-avatar">{{ doctor.name?.charAt(0) }}</div>
+                <div class="dl-avatar">{{ (doctor.name || '').charAt(0) }}</div>
                 <span>{{ doctor.name }}</span>
               </div>
             </td>

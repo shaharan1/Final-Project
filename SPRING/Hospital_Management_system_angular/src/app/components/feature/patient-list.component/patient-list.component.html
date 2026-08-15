@@ -104,7 +104,7 @@
             </td>
             <td>
               <div class="pl-patient-name">
-                <div class="pl-avatar">{{ patient.name?.charAt(0) }}</div>
+                <div class="pl-avatar">{{ (patient.name || '').charAt(0) }}</div>
                 {{ patient.name }}
               </div>
             </td>

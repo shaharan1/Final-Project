@@ -216,7 +216,7 @@
           <h3>Recent Sales</h3>
           <a routerLink="/pharmacy-sale" class="panel-link">View All</a>
         </div>
-        <div class="table-wrapper" *ngIf="dashboard.recentSales?.length; else noSales">
+        <div class="table-wrapper" *ngIf="(dashboard.recentSales || []).length; else noSales">
           <table class="data-table">
             <thead>
               <tr>
@@ -251,7 +251,7 @@
         <div class="panel-header">
           <h3>Top Selling Medicines</h3>
         </div>
-        <div class="top-selling-list" *ngIf="dashboard.topSellingMedicines?.length; else noTopSelling">
+        <div class="top-selling-list" *ngIf="(dashboard.topSellingMedicines || []).length; else noTopSelling">
           <div class="top-item" *ngFor="let med of dashboard.topSellingMedicines; let i = index">
             <div class="top-rank" [ngClass]="{'rank-gold': i === 0, 'rank-silver': i === 1, 'rank-bronze': i === 2}">
               {{ i + 1 }}
@@ -276,7 +276,7 @@
           <h3>Expiry Alerts</h3>
           <a routerLink="/medicine-stock" class="panel-link panel-link--red">View All</a>
         </div>
-        <div class="expiry-list" *ngIf="dashboard.expiryAlerts?.length; else noExpiry">
+        <div class="expiry-list" *ngIf="(dashboard.expiryAlerts || []).length; else noExpiry">
           <div class="expiry-item" *ngFor="let alert of dashboard.expiryAlerts">
             <div class="expiry-indicator" [style.background]="getExpiryColor(alert.daysLeft)"></div>
             <div class="expiry-info">

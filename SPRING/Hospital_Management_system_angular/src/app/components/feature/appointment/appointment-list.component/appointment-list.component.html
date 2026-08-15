@@ -140,7 +140,7 @@
             </td>
             <td>
               <div class="al-name-cell">
-                <div class="al-avatar">{{ appointment.patientName?.charAt(0) }}</div>
+                <div class="al-avatar">{{ (appointment.patientName || '').charAt(0) }}</div>
                 <span>{{ appointment.patientName }}</span>
               </div>
             </td>
