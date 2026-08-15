@@ -202,9 +202,8 @@ export class PharmacySaleComponent implements OnInit {
   }
 
   private autoMatchDispenseLines(): void {
-    this.stockService.getAll().subscribe({
-      next: (allStock: MedicineStockModel[]) => {
-        const available = allStock.filter(s => (s.availableQuantity ?? s.stockQuantity ?? 0) > 0);
+    this.stockService.getAvailable().subscribe({
+      next: (available: MedicineStockModel[]) => {
         for (const line of this.dispenseLines) {
           const match = available.find(s => s.medicineName.toLowerCase() === line.medicineName.toLowerCase());
           if (match) {
