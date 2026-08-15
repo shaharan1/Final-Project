@@ -1,22 +1,44 @@
 <div class="container mt-4">
 
-  <div class="card shadow-lg">
+  <div class="card shadow">
 
-    <div class="card-header bg-success text-white">
-      <h4 class="mb-0">Generic List</h4>
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+      <h4>Generic List</h4>
+      <button class="btn btn-light btn-sm" routerLink="/generics/create">
+        <i class="bi bi-plus-circle me-1"></i> Add Generic
+      </button>
     </div>
 
     <div class="card-body">
 
-      <table class="table table-bordered table-hover mb-0">
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading generics...</p>
+      </div>
 
-        <thead class="table-light">
+      <div *ngIf="errorMsg" class="alert alert-danger">
+        {{ errorMsg }}
+      </div>
+
+      <div *ngIf="!loading && !errorMsg">
+        <input
+          class="form-control mb-3"
+          placeholder="Search Generic"
+          [(ngModel)]="keyword"
+          (keyup)="search()">
+      </div>
+
+      <table class="table table-bordered table-hover">
+
+        <thead>
 
           <tr>
 
             <th>#</th>
             <th>Generic Name</th>
-            <th>Action</th>
+            <th width="180">Action</th>
 
           </tr>
 
