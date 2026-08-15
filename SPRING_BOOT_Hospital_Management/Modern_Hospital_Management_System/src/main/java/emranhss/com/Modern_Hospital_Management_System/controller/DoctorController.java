@@ -79,8 +79,12 @@ public class DoctorController {
 
 
     @GetMapping("/user/{id}")
-    public DoctorResponse getByUserId(@PathVariable Long id) {
-        return doctorService.getByUserId(id);
+    public ResponseEntity<DoctorResponse> getByUserId(@PathVariable Long id) {
+        DoctorResponse doctor = doctorService.getByUserId(id);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(doctor);
     }
 
     @PostMapping("/{id}/photo")
