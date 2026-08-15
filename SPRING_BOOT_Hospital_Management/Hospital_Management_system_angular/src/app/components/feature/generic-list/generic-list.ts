@@ -14,8 +14,6 @@ import { Router } from '@angular/router';
 export class GenericListComponent implements OnInit {
 
   generics: GenericModel[] = [];
-  loading = false;
-  errorMsg: string | null = null;
 
   constructor(
     private genericService: GenericService,
@@ -28,18 +26,9 @@ export class GenericListComponent implements OnInit {
   }
 
   loadData() {
-    this.loading = true;
-    this.errorMsg = null;
-    this.genericService.getAll().subscribe({
-      next: (data) => {
-        this.generics = data;
-        this.loading = false;
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.errorMsg = 'Failed to load generics.';
-        this.loading = false;
-      }
+    this.genericService.getAll().subscribe(data => {
+      this.generics = data;
+      this.cdr.markForCheck();
     });
   }
 
@@ -47,15 +36,10 @@ export class GenericListComponent implements OnInit {
 
     if (confirm('Delete this Generic?')) {
 
-      this.genericService.delete(id).subscribe({
-        next: () => {
+      this.genericService.delete(id).subscribe(() => {
 
-          this.loadData();
+        this.loadData();
 
-        },
-        error: () => {
-          this.errorMsg = 'Failed to delete generic.';
-        }
       });
 
     }

@@ -14,11 +14,9 @@ import { TestMasterService } from '../../../services/test-master.service';
 export class TestListComponent {
 
 
- tests:TestMasterModel[]=[];
+  tests:TestMasterModel[]=[];
 
   keyword='';
-  loading = false;
-  errorMsg: string | null = null;;
 
   constructor(
     private service:TestMasterService,
@@ -34,25 +32,17 @@ export class TestListComponent {
 
   load(){
 
-    this.loading = true;
-    this.errorMsg = null;
-    this.service.getAll().subscribe({
-      next: (res) => {
-        this.tests = res;
-        this.loading = false;
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.errorMsg = 'Failed to load tests.';
-        this.loading = false;
-      }
+    this.service.getAll().subscribe(res=>{
+
+      this.tests=res;
+      this.cdr.markForCheck();
+
     });
 
   }
 
   search(){
 
-    this.errorMsg = null;
     if(this.keyword==''){
 
       this.load();
@@ -61,16 +51,10 @@ export class TestListComponent {
 
     }
 
-    this.loading = true;
-    this.service.search(this.keyword).subscribe({
-      next: (res) => {
-        this.tests = res;
-        this.loading = false;
-      },
-      error: () => {
-        this.errorMsg = 'Failed to search tests.';
-        this.loading = false;
-      }
+    this.service.search(this.keyword).subscribe(res=>{
+
+      this.tests=res;
+
     });
 
   }
@@ -85,15 +69,10 @@ export class TestListComponent {
 
     if(confirm("Delete?")){
 
-      this.service.delete(id).subscribe({
-        next: () => {
+      this.service.delete(id).subscribe(()=>{
 
-          this.load();
+        this.load();
 
-        },
-        error: () => {
-          this.errorMsg = 'Failed to delete test.';
-        }
       });
 
     }

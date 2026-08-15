@@ -1,132 +1,111 @@
-<div class="container py-4">
+<div class="container mt-4">
 
-  <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+<div class="card shadow">
 
-    <div class="card-header bg-gradient text-white d-flex justify-content-between align-items-center px-4 py-3 position-relative">
+<div class="test-header">
 
-      <svg class="position-absolute start-0 top-0 w-100 h-100" viewBox="0 0 1200 120" preserveAspectRatio="none" style="z-index: 1;">
-        <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
-      </svg>
+<svg class="test-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
+  <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
+</svg>
 
-      <div class="position-relative" style="z-index: 2;">
-        <h4 class="mb-0 fw-semibold">🧪 Test List</h4>
-      </div>
+<div class="test-icon">📋</div>
+<h4>Test List</h4>
 
-      <a
-        routerLink="/tests/create"
-        class="btn btn-light btn-sm position-relative"
-        style="z-index: 2;">
-        <i class="bi bi-plus-lg me-1"></i>
-        Add Test
-      </a>
+<a
+  routerLink="/tests/create"
+  class="btn btn-light">
 
-    </div>
+  Add Test
 
-    <div class="card-body p-0">
+</a>
 
-      <div class="p-4">
+</div>
 
-        <input
-          class="form-control border-2 rounded-3 mb-0"
-          placeholder="🔍 Search Test"
-          [(ngModel)]="keyword"
-          (keyup)="search()">
+<div class="card-body">
 
-      </div>
+<input
+class="form-control mb-3"
+placeholder="Search Test"
+[(ngModel)]="keyword"
+(keyup)="search()">
 
-      <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-3 text-muted">Loading tests...</p>
-      </div>
+<table class="table table-bordered">
 
-      <div *ngIf="errorMsg" class="alert alert-danger m-4">
-        {{ errorMsg }}
-      </div>
+<thead>
 
-      <div *ngIf="!loading && !errorMsg && tests.length === 0" class="text-center py-5">
-        <i class="bi bi-inbox display-4 text-muted"></i>
-        <p class="mt-3 text-muted">No tests found.</p>
-      </div>
+<tr>
 
-      <div *ngIf="!loading && tests.length > 0" class="table-responsive">
+<th>Code</th>
+<th>Name</th>
+<th>Price</th>
+<th>Range</th>
+<th>Status</th>
+<th>Action</th>
 
-        <table class="table table-hover align-middle mb-0">
+</tr>
 
-          <thead class="table-light">
+</thead>
 
-            <tr>
+<tbody>
 
-              <th class="px-4">Code</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Range</th>
-              <th>Status</th>
-              <th class="text-end pe-4">Actions</th>
+<tr *ngFor="let t of tests">
 
-            </tr>
+<td>{{t.testCode}}</td>
 
-          </thead>
+<td>{{t.testName}}</td>
 
-          <tbody>
+<td>{{t.standardPrice}}</td>
 
-            <tr *ngFor="let t of tests">
+<td>{{t.normalRange}}</td>
 
-              <td class="px-4 fw-medium">{{t.testCode}}</td>
+<td>
 
-              <td>{{t.testName}}</td>
+<span
+class="badge bg-success"
+*ngIf="t.active">
 
-              <td>৳{{t.standardPrice}}</td>
+Active
 
-              <td>
-                <span class="text-truncate d-inline-block" style="max-width: 180px;" [title]="t.normalRange">
-                  {{t.normalRange}}
-                </span>
-              </td>
+</span>
 
-              <td>
+<span
+class="badge bg-danger"
+*ngIf="!t.active">
 
-                <span
-                  class="badge bg-success"
-                  *ngIf="t.active">
-                  Active
-                </span>
+Inactive
 
-                <span
-                  class="badge bg-secondary"
-                  *ngIf="!t.active">
-                  Inactive
-                </span>
+</span>
 
-              </td>
+</td>
 
-              <td class="text-end pe-4">
+<td>
 
-                <button
-                  class="btn btn-sm btn-outline-warning me-2"
-                  (click)="edit(t.id!)">
-                  <i class="bi bi-pencil"></i>
-                </button>
+<button
+class="btn btn-warning btn-sm me-2"
+(click)="edit(t.id!)">
 
-                <button
-                  class="btn btn-sm btn-outline-danger"
-                  (click)="delete(t.id!)">
-                  <i class="bi bi-trash"></i>
-                </button>
+Edit
 
-              </td>
+</button>
 
-            </tr>
+<button
+class="btn btn-danger btn-sm"
+(click)="delete(t.id!)">
 
-          </tbody>
+Delete
 
-        </table>
+</button>
 
-      </div>
+</td>
 
-    </div>
+</tr>
 
-  </div>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
 
 </div>
