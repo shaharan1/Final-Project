@@ -14,6 +14,9 @@ import { Router } from '@angular/router';
 export class GenericListComponent implements OnInit {
 
   generics: GenericModel[] = [];
+  loading = false;
+  errorMsg = '';
+  keyword = '';
 
   constructor(
     private genericService: GenericService,
@@ -26,8 +29,32 @@ export class GenericListComponent implements OnInit {
   }
 
   loadData() {
+    this.loading = true;
+    this.errorMsg = '';
+    this.genericService.getAll().subscribe({
+      next: data => {
+        this.generics = data;
+        this.loading = false;
+        this.cdr.markForCheck();
+      },
+      error: err => {
+        this.loading = false;
+        this.errorMsg = 'Failed to load generics.';
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  search() {
+    const k = this.keyword.trim().toLowerCase();
+    if (!k) {
+      this.loadData();
+      return;
+    }
     this.genericService.getAll().subscribe(data => {
-      this.generics = data;
+      this.generics = data.filter(g =>
+        (g.genericName || '').toLowerCase().includes(k)
+      );
       this.cdr.markForCheck();
     });
   }

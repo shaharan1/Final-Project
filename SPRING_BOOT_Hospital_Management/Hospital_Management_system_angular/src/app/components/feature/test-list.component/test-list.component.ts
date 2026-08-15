@@ -17,6 +17,8 @@ export class TestListComponent {
  tests:TestMasterModel[]=[];
 
   keyword='';
+  loading = false;
+  errorMsg = '';
 
   constructor(
     private service:TestMasterService,
@@ -32,11 +34,23 @@ export class TestListComponent {
 
   load(){
 
-    this.service.getAll().subscribe(res=>{
+    this.loading = true;
+    this.errorMsg = '';
+    this.service.getAll().subscribe({
+      next: res => {
 
-      this.tests=res;
-      this.cdr.markForCheck();
+        this.tests = res;
+        this.loading = false;
+        this.cdr.markForCheck();
 
+      },
+      error: err => {
+
+        this.loading = false;
+        this.errorMsg = 'Failed to load tests.';
+        this.cdr.markForCheck();
+
+      }
     });
 
   }
