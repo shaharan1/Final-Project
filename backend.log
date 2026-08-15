@@ -1,0 +1,1504 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------< emranhss.com:Modern_Hospital_Management_System >-----------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.1.0:run (default-cli) > test-compile @ Modern_Hospital_Management_System >>>
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ Modern_Hospital_Management_System ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 9 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ Modern_Hospital_Management_System ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ Modern_Hospital_Management_System ---
+[INFO] skip non existing resourceDirectory F:\JEE69\Final-Project\SPRING_BOOT_Hospital_Management\Modern_Hospital_Management_System\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ Modern_Hospital_Management_System ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target\test-classes
+[INFO] 
+[INFO] <<< spring-boot:4.1.0:run (default-cli) < test-compile @ Modern_Hospital_Management_System <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.1.0:run (default-cli) @ Modern_Hospital_Management_System ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.0)
+
+2026-08-15T16:25:41.792+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] odernHospitalManagementSystemApplication : Starting ModernHospitalManagementSystemApplication using Java 17.0.5 with PID 11004 (F:\JEE69\Final-Project\SPRING_BOOT_Hospital_Management\Modern_Hospital_Management_System\target\classes started by Admin in F:\JEE69\Final-Project\SPRING_BOOT_Hospital_Management\Modern_Hospital_Management_System)
+2026-08-15T16:25:41.795+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] odernHospitalManagementSystemApplication : No active profile set, falling back to 1 default profile: "default"
+2026-08-15T16:25:41.840+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-08-15T16:25:41.841+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-08-15T16:25:42.691+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-15T16:25:42.871+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 172 ms. Found 75 JPA repository interfaces.
+2026-08-15T16:25:43.431+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8085 (http)
+2026-08-15T16:25:43.442+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-15T16:25:43.443+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-08-15T16:25:43.483+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1640 ms
+2026-08-15T16:25:43.643+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-08-15T16:25:43.688+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.1.Final
+2026-08-15T16:25:44.068+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-15T16:25:44.097+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-15T16:25:44.339+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@28867d07
+2026-08-15T16:25:44.341+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-15T16:25:44.412+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/hospital?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: hospital/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-08-15T16:25:45.050+06:00  WARN 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at emranhss.com.Modern_Hospital_Management_System.entity.OfficeStaff.joinDate.
+2026-08-15T16:25:45.164+06:00  WARN 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at emranhss.com.Modern_Hospital_Management_System.entity.Report.createDate.
+2026-08-15T16:25:45.165+06:00  WARN 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at emranhss.com.Modern_Hospital_Management_System.entity.Report.deliveryDate.
+2026-08-15T16:25:45.169+06:00  WARN 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000033: Encountered use of deprecated annotation [interface jakarta.persistence.Temporal] at emranhss.com.Modern_Hospital_Management_System.entity.Report.testDate.
+2026-08-15T16:25:46.653+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table billing_payments 
+       modify column payment_method enum ('BANK_TRANSFER','CARD','CASH','INSURANCE','MOBILE_BANKING','ONLINE_PAYMENT','SPLIT') not null
+Hibernate: 
+    alter table billing_payments 
+       modify column payment_status enum ('COMPLETED','FAILED','PARTIAL','PENDING','REFUNDED') not null
+Hibernate: 
+    alter table lab_report_results 
+       modify column status enum ('ABNORMAL','BORDERLINE','CRITICAL_HIGH','CRITICAL_LOW','HIGH','LOW','NEGATIVE','NON_REACTIVE','NORMAL','PENDING','POSITIVE','REACTIVE') not null
+Hibernate: 
+    alter table lab_reports 
+       modify column report_status enum ('ABNORMAL','CRITICAL','DENGUE_POSITIVE','NEEDS_DOCTOR_REVIEW','NORMAL','PENDING','READY') not null
+Hibernate: 
+    alter table test_parameters 
+       modify column result_type enum ('MULTI_OPTION','NUMERIC','POSITIVE_NEGATIVE','TEXT') not null
+2026-08-15T16:25:46.946+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-15T16:25:47.012+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-15T16:25:48.711+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-08-15T16:25:48.712+06:00  WARN 11004 --- [Modern_Hospital_Management_System] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-08-15T16:25:50.520+06:00  WARN 11004 --- [Modern_Hospital_Management_System] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-08-15T16:25:50.854+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-08-15T16:25:51.333+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8085 (http) with context path '/'
+2026-08-15T16:25:51.339+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] odernHospitalManagementSystemApplication : Started ModernHospitalManagementSystemApplication in 9.906 seconds (process running for 10.316)
+Hibernate: 
+    select
+        count(*) 
+    from
+        charge_categories cc1_0
+2026-08-15T16:25:51.409+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] e.c.M.config.ChargeCategorySeeder        : Charge categories already seeded. Skipping.
+Hibernate: 
+    select
+        count(*) 
+    from
+        patients p1_0
+Hibernate: 
+    select
+        count(*) 
+    from
+        dieticians d1_0
+[SKIP] Dietary data already seeded.
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        tm1_0.id,
+        tm1_0.active,
+        tm1_0.normal_range,
+        tm1_0.standard_price,
+        tm1_0.test_code,
+        tm1_0.test_name 
+    from
+        test_masters tm1_0 
+    where
+        tm1_0.test_code=?
+Hibernate: 
+    select
+        tp1_0.id,
+        tp1_0.active,
+        tp1_0.allowed_values,
+        tp1_0.decimal_precision,
+        tp1_0.display_order,
+        tp1_0.normal_text,
+        tp1_0.parameter_code,
+        tp1_0.parameter_name,
+        tp1_0.result_type,
+        tp1_0.test_master_id,
+        tp1_0.unit 
+    from
+        test_parameters tp1_0 
+    where
+        tp1_0.test_master_id=? 
+    order by
+        tp1_0.display_order
+Hibernate: 
+    select
+        rr1_0.id,
+        rr1_0.active,
+        rr1_0.critical_high,
+        rr1_0.critical_low,
+        rr1_0.display_range,
+        rr1_0.gender_scope,
+        rr1_0.max_age_years,
+        rr1_0.max_value,
+        rr1_0.min_age_years,
+        rr1_0.min_value,
+        rr1_0.priority,
+        rr1_0.test_parameter_id 
+    from
+        reference_ranges rr1_0 
+    where
+        rr1_0.test_parameter_id=? 
+    order by
+        rr1_0.priority
+Hibernate: 
+    select
+        ir1_0.id,
+        ir1_0.active,
+        ir1_0.display_order,
+        ir1_0.interpretation_text,
+        ir1_0.parameter_status,
+        ir1_0.test_parameter_id,
+        ir1_0.value_match 
+    from
+        interpretation_rules ir1_0 
+    where
+        ir1_0.test_parameter_id=? 
+    order by
+        ir1_0.display_order
+Hibernate: 
+    select
+        count(*) 
+    from
+        lab_rules lr1_0
+2026-08-15T16:25:51.665+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] e.c.M.config.LabDataSeeder               : Lab data seeding completed.
+Hibernate: 
+    select
+        count(*) 
+    from
+        surgery_categories sc1_0
+Hibernate: 
+    select
+        count(*) 
+    from
+        operation_theatres ot1_0
+2026-08-15T16:25:51.672+06:00  INFO 11004 --- [Modern_Hospital_Management_System] [  restartedMain] e.c.M.config.SurgeryDataSeeder           : Surgery data already seeded. Skipping.
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.active,
+        u1_0.email,
+        u1_0.image,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.role 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
