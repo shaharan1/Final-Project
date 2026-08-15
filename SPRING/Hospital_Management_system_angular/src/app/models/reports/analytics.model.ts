@@ -53,10 +53,10 @@ export interface PharmacyAnalytics {
   totalSales: number;
   dailySales: number;
   monthlySales: number;
-  topSellingMedicines: { name: string; quantity: number; revenue: number }[];
+  topSellingMedicines: { medicineName: string; totalQuantitySold: number }[];
   lowStockMedicines: number;
   expiredMedicines: number;
-  salesTrend: { date: string; amount: number }[];
+  salesTrend: Record<string, number>;
 }
 
 export interface RevenueAnalytics {

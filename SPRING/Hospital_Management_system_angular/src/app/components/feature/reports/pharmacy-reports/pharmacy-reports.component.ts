@@ -59,9 +59,58 @@ export class PharmacyReportsComponent implements OnInit, AfterViewInit, OnDestro
     this.router.navigate(['/reports']);
   }
 
-  exportPdf(): void { alert('Export coming soon'); }
-  exportExcel(): void { alert('Export coming soon'); }
-  exportCsv(): void { alert('Export coming soon'); }
+  exportPdf(): void {
+    if (!this.data) return;
+    const win = window.open('', '_blank');
+    if (!win) {
+      alert('Please allow pop-ups to export the PDF.');
+      return;
+    }
+    win.document.write(this.buildPrintHtml());
+    win.document.close();
+    win.focus();
+    setTimeout(() => win.print(), 400);
+  }
+
+  exportExcel(): void {
+    if (!this.data) return;
+    const rows = [
+      '<table border="1" cellspacing="0" cellpadding="6">',
+      '<tr><th colspan="2" style="background:#198754;color:#fff;">Pharmacy Report</th></tr>',
+      this.statRow('Total Sales', this.fmt(this.data.totalSales)),
+      this.statRow('Daily Sales', this.fmt(this.data.dailySales)),
+      this.statRow('Monthly Sales', this.fmt(this.data.monthlySales)),
+      this.statRow('Low Stock Medicines', String(this.data.lowStockMedicines)),
+      this.statRow('Expired Medicines', String(this.data.expiredMedicines)),
+      '<tr><th colspan="2" style="background:#198754;color:#fff;">Top Selling Medicines</th></tr>',
+      '<tr><th>Medicine</th><th>Quantity Sold</th></tr>',
+      ...this.data.topSellingMedicines.map(m =>
+        `<tr><td>${this.esc(m.medicineName)}</td><td>${m.totalQuantitySold}</td></tr>`),
+      '</table>'
+    ].join('');
+    this.downloadFile(rows, 'pharmacy-report.xls', 'application/vnd.ms-excel');
+  }
+
+  exportCsv(): void {
+    if (!this.data) return;
+    const rows: (string | number)[][] = [
+      ['Pharmacy Report'],
+      ['Metric', 'Value'],
+      ['Total Sales', this.fmt(this.data.totalSales)],
+      ['Daily Sales', this.fmt(this.data.dailySales)],
+      ['Monthly Sales', this.fmt(this.data.monthlySales)],
+      ['Low Stock Medicines', this.data.lowStockMedicines],
+      ['Expired Medicines', this.data.expiredMedicines],
+      [],
+      ['Top Selling Medicines', 'Quantity Sold'],
+      ...this.data.topSellingMedicines.map(m => [m.medicineName, m.totalQuantitySold])
+    ];
+    const csv = rows
+      .map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
+      .join('\r\n');
+    this.downloadFile(csv, 'pharmacy-report.csv', 'text/csv;charset=utf-8;');
+  }
+
   printReport(): void { window.print(); }
 
   private initCharts(): void {
@@ -72,8 +121,9 @@ export class PharmacyReportsComponent implements OnInit, AfterViewInit, OnDestro
 
   private initSalesTrendChart(): void {
     if (!this.salesTrendChartRef || !this.data) return;
-    const labels = this.data.salesTrend.map(s => s.date);
-    const values = this.data.salesTrend.map(s => s.amount);
+    const entries = Object.entries(this.data.salesTrend || {});
+    const labels = entries.map(([date]) => date);
+    const values = entries.map(([, amount]) => amount);
     const chart = new Chart(this.salesTrendChartRef.nativeElement, {
       type: 'line',
       data: {
@@ -106,8 +156,8 @@ export class PharmacyReportsComponent implements OnInit, AfterViewInit, OnDestro
   private initTopMedicinesChart(): void {
     if (!this.topMedicinesChartRef || !this.data) return;
     const meds = this.data.topSellingMedicines.slice(0, 10);
-    const labels = meds.map(m => m.name);
-    const values = meds.map(m => m.quantity);
+    const labels = meds.map(m => m.medicineName);
+    const values = meds.map(m => m.totalQuantitySold);
     const chart = new Chart(this.topMedicinesChartRef.nativeElement, {
       type: 'bar',
       data: {
