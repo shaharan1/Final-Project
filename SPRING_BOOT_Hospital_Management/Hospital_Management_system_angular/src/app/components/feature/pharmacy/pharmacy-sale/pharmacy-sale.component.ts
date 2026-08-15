@@ -214,6 +214,7 @@ export class PharmacySaleComponent implements OnInit {
           }
         }
         this.cdr.detectChanges();
+        this.autoAddMatchedToCart();
       },
       error: () => {}
     });
@@ -272,6 +273,50 @@ export class PharmacySaleComponent implements OnInit {
     }
     this.closePrescriptionModal();
     this.calculateTotals();
+  }
+
+  private autoAddMatchedToCart(): void {
+    const matched = this.dispenseLines.filter(l => l.stockId > 0 && l.quantity > 0);
+    if (matched.length === 0) return;
+
+    if (this.selectedPrescription) {
+      this.patientName = this.selectedPrescription.patientName || this.patientName;
+      this.patientPhone = this.selectedPrescription.patientPhone || this.patientPhone;
+      this.patientType = 'OUTPATIENT';
+      this.doctorName = this.selectedPrescription.doctorName || this.doctorName;
+    }
+
+    for (const line of matched) {
+      const existing = this.cartItems.find(c => c.medicineStockId === line.stockId);
+      if (existing) {
+        existing.quantity += line.quantity;
+        existing.subtotal = existing.quantity * (existing.unitPrice || 0) - (existing.discount || 0);
+      } else {
+        this.cartItems.push({
+          medicineStockId: line.stockId,
+          medicineName: line.stockName,
+          batchNumber: line.batchNumber,
+          quantity: line.quantity,
+          unitPrice: line.unitPrice,
+          discount: 0,
+          subtotal: line.quantity * line.unitPrice
+        });
+      }
+    }
+
+    if (this.selectedPrescription?.id) {
+      this.activePrescriptionId = this.selectedPrescription.id;
+      this.activePrescriptionNo = this.selectedPrescription.prescriptionNumber || '';
+    }
+
+    const unmatched = this.dispenseLines.length - matched.length;
+    this.closePrescriptionModal();
+    this.calculateTotals();
+
+    if (unmatched > 0) {
+      this.error = `${unmatched} medicine(s) could not be auto-matched to stock and were not added to the cart.`;
+      setTimeout(() => { if (this.error.startsWith(`${unmatched} medicine`)) this.error = ''; }, 5000);
+    }
   }
 
   clearActivePrescription(): void {
