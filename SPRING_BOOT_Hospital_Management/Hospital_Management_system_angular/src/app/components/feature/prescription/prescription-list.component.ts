@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { PrescriptionModel } from '../../../models/prescriptionModel';
 import { PrescriptionService } from '../../../services/prescription.service';
@@ -10,7 +11,7 @@ import { LoginResponse } from '../../../models/login.model';
 @Component({
   selector: 'app-prescription-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './prescription-list.component.html',
   styleUrl: './prescription-list.component.css',
 })
@@ -19,6 +20,7 @@ export class PrescriptionListComponent implements OnInit {
   prescriptions: PrescriptionModel[] = [];
   loading = true;
   errorMsg: string | null = null;
+  keyword = '';
 
   constructor(
     private service: PrescriptionService,
@@ -109,5 +111,16 @@ export class PrescriptionListComponent implements OnInit {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return 'N/A';
     return d.toLocaleDateString('en-GB');
+  }
+
+  get filteredPrescriptions(): PrescriptionModel[] {
+    const k = this.keyword.trim().toLowerCase();
+    if (!k) return this.prescriptions;
+    return this.prescriptions.filter(p =>
+      (p.prescriptionNumber || '').toLowerCase().includes(k) ||
+      (p.patientName || '').toLowerCase().includes(k) ||
+      (p.diagnosis || '').toLowerCase().includes(k) ||
+      (p.doctorName || '').toLowerCase().includes(k)
+    );
   }
 }

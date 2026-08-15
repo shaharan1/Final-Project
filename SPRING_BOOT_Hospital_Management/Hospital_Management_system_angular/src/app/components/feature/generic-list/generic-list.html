@@ -1,85 +1,84 @@
-<div class="container mt-4">
+<div class="lp-page">
 
-  <div class="card shadow">
+  <!-- Hero -->
+  <div class="lp-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">💊</div>
+      <div>
+        <h1>Generic List</h1>
+        <p class="lp-hero-sub">{{ loading ? 'Loading…' : generics.length + ' generics available' }} · Manage medicine generics</p>
+      </div>
+    </div>
+  </div>
 
-    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-      <h4>Generic List</h4>
-      <button class="btn btn-light btn-sm" routerLink="/generics/create">
-        <i class="bi bi-plus-circle me-1"></i> Add Generic
-      </button>
+  <!-- Search -->
+  <div class="lp-search-row">
+    <div class="lp-search-wrap">
+      <span class="lp-search-icon">🔍</span>
+      <input class="lp-search" placeholder="Search generic..." [(ngModel)]="keyword" (keyup)="search()">
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="lp-table-card">
+    <div class="lp-table-header">
+      <h3>All Generics</h3>
+      <div class="d-flex align-items-center gap-2">
+        <span class="lp-table-count lp-count-green" *ngIf="!loading">{{ generics.length }} generics</span>
+        <button class="lp-action-btn lp-primary-btn" routerLink="/generics/create">
+          <span class="lp-btn-icon">＋</span> Add Generic
+        </button>
+      </div>
     </div>
 
-    <div class="card-body">
+    <div class="lp-loading" *ngIf="loading">
+      <div class="lp-spinner"></div>
+      <p>Loading generics…</p>
+    </div>
 
-      <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-3 text-muted">Loading generics...</p>
-      </div>
+    <div *ngIf="errorMsg" class="alert alert-danger m-4">{{ errorMsg }}</div>
 
-      <div *ngIf="errorMsg" class="alert alert-danger">
-        {{ errorMsg }}
-      </div>
+    <div *ngIf="!loading && !errorMsg && generics.length === 0" class="lp-empty-state">
+      <div class="lp-empty-icon lp-empty-green">✓</div>
+      <h4>No generics yet</h4>
+      <p>Click "Add Generic" to create one.</p>
+    </div>
 
-      <div *ngIf="!loading && !errorMsg">
-        <input
-          class="form-control mb-3"
-          placeholder="Search Generic"
-          [(ngModel)]="keyword"
-          (keyup)="search()">
-      </div>
-
-      <table class="table table-bordered table-hover">
-
+    <div class="table-responsive" *ngIf="!loading && generics.length > 0">
+      <table class="table">
         <thead>
-
           <tr>
-
-            <th>#</th>
+            <th class="lp-th-num">#</th>
             <th>Generic Name</th>
-            <th width="180">Action</th>
-
+            <th class="lp-th-action">Action</th>
           </tr>
-
         </thead>
-
         <tbody>
-
-          <tr *ngFor="let g of generics; let i = index">
-
-            <td>{{ i + 1 }}</td>
-
-            <td>{{ g.genericName }}</td>
-
+          <tr *ngFor="let g of generics; let i = index" class="lp-row">
+            <td class="lp-td-num">{{ i + 1 }}</td>
             <td>
-
-              <button
-                class="btn btn-warning btn-sm me-2"
-                (click)="edit(g.id!)">
-
-                Update
-
-              </button>
-
-              <button
-                class="btn btn-danger btn-sm"
-                (click)="delete(g.id!)">
-
-                Delete
-
-              </button>
-
+              <div class="lp-patient-cell">
+                <div class="lp-avatar">{{ (g.genericName || '?').charAt(0).toUpperCase() }}</div>
+                <span class="lp-patient-name">{{ g.genericName }}</span>
+              </div>
             </td>
-
+            <td class="text-center">
+              <button class="lp-action-btn lp-warning-btn me-1" (click)="edit(g.id!)" title="Update">
+                <span class="lp-btn-icon">✎</span> Update
+              </button>
+              <button class="lp-action-btn lp-danger-btn" (click)="delete(g.id!)" title="Delete">
+                <span class="lp-btn-icon">🗑</span> Delete
+              </button>
+            </td>
           </tr>
-
         </tbody>
-
       </table>
-
     </div>
-
   </div>
 
 </div>

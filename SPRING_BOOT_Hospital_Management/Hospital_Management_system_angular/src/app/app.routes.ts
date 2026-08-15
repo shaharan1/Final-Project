@@ -176,8 +176,8 @@ export const routes: Routes = [
 
       // ============ Prescriptions ============
       { path: 'prescriptions', component: PrescriptionListComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'Nurse', 'Pharmacist'])], data: { title: 'Prescriptions' } },
-      { path: 'prescriptions/edit/:id', component: PrescriptionComponent, canActivate: [roleGuard(['Doctor'])], data: { title: 'Edit Prescription' } },
-      { path: 'prescriptions/create/:appointmentId', component: PrescriptionComponent, canActivate: [roleGuard(['Doctor'])], data: { title: 'Create Prescription' } },
+      { path: 'prescriptions/edit/:id', component: PrescriptionComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'Nurse', 'Pharmacist'])], data: { title: 'Edit Prescription' } },
+      { path: 'prescriptions/create/:appointmentId', component: PrescriptionComponent, canActivate: [roleGuard(['Admin', 'Doctor', 'Nurse', 'Pharmacist'])], data: { title: 'Create Prescription' } },
 
       // ============ Patients ============
       { path: 'patient', component: PatientComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Add Patient' } },

@@ -1,106 +1,114 @@
-<div class="container-fluid py-4">
+<div class="lp-page">
 
-  <div class="card shadow-lg border-0 rounded-4 mb-4">
+  <!-- Hero -->
+  <div class="lp-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
+    </div>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">📋</div>
+      <div>
+        <h1>My Prescriptions</h1>
+        <p class="lp-hero-sub">{{ loading ? 'Loading…' : filteredPrescriptions.length + ' prescriptions' }} · View and manage patient prescriptions</p>
+      </div>
+    </div>
+  </div>
 
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+  <!-- Search -->
+  <div class="lp-search-row">
+    <div class="lp-search-wrap">
+      <span class="lp-search-icon">🔍</span>
+      <input class="lp-search" placeholder="Search patient, number, diagnosis..." [(ngModel)]="keyword">
+    </div>
+  </div>
 
-      <h4 class="mb-0 fw-bold">
-        My Prescriptions
-      </h4>
-
-      <button class="btn btn-light btn-sm" (click)="router.navigate(['/prescriptions/create/0'])">
-        <i class="bi bi-plus-circle me-1"></i>
-        New Prescription
-      </button>
-
+  <!-- Table Card -->
+  <div class="lp-table-card">
+    <div class="lp-table-header">
+      <h3>All Prescriptions</h3>
+      <div class="d-flex align-items-center gap-2">
+        <span class="lp-table-count lp-count-blue" *ngIf="!loading">{{ filteredPrescriptions.length }} prescriptions</span>
+        <button class="lp-action-btn lp-primary-btn" (click)="router.navigate(['/prescriptions/create/0'])">
+          <span class="lp-btn-icon">＋</span> New Prescription
+        </button>
+      </div>
     </div>
 
-    <div class="card-body">
-
-      <div *ngIf="loading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-3 text-muted">Loading prescriptions...</p>
-      </div>
-
-      <div *ngIf="errorMsg" class="alert alert-danger">
-        {{ errorMsg }}
-      </div>
-
-      <div *ngIf="!loading && !errorMsg && prescriptions.length === 0" class="text-center py-5">
-        <i class="bi bi-prescription display-4 text-muted"></i>
-        <p class="mt-3 text-muted">No prescriptions found.</p>
-      </div>
-
-      <div *ngIf="!loading && prescriptions.length > 0" class="table-responsive">
-
-        <table class="table table-hover align-middle">
-
-          <thead class="table-light">
-
-            <tr>
-
-              <th>#</th>
-
-              <th>Prescription No.</th>
-
-              <th>Patient</th>
-
-              <th>Diagnosis</th>
-
-              <th>Date</th>
-
-              <th class="text-end">Actions</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            <tr *ngFor="let p of prescriptions; let i = index">
-
-              <td>{{ i + 1 }}</td>
-
-              <td>{{ p.prescriptionNumber || 'N/A' }}</td>
-
-              <td>{{ p.patientName || 'N/A' }}</td>
-
-              <td>
-                <span class="text-truncate d-inline-block" style="max-width: 200px;" [title]="p.diagnosis">
-                  {{ p.diagnosis || 'N/A' }}
-                </span>
-              </td>
-
-              <td>{{ formatDate(p.createdDate) }}</td>
-
-              <td class="text-end">
-
-                <button class="btn btn-outline-primary btn-sm me-1"
-                  (click)="editPrescription(p.id!)"
-                  title="Edit Prescription">
-                  <i class="bi bi-pencil"></i> Edit
-                </button>
-
-                <button class="btn btn-outline-secondary btn-sm"
-                  (click)="viewPdf(p.id!)"
-                  title="View / Print PDF">
-                  <i class="bi bi-printer"></i> Print
-                </button>
-
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
+    <div class="lp-loading" *ngIf="loading">
+      <div class="lp-spinner"></div>
+      <p>Loading prescriptions…</p>
     </div>
 
+    <div *ngIf="errorMsg" class="alert alert-danger m-4">{{ errorMsg }}</div>
+
+    <div *ngIf="!loading && !errorMsg && prescriptions.length === 0" class="lp-empty-state">
+      <div class="lp-empty-icon lp-empty-green">✓</div>
+      <h4>No prescriptions yet</h4>
+      <p>Create a new prescription to get started.</p>
+    </div>
+
+    <div *ngIf="!loading && prescriptions.length > 0 && filteredPrescriptions.length === 0" class="lp-empty-state">
+      <div class="lp-empty-icon lp-empty-green">🔍</div>
+      <h4>No matches</h4>
+      <p>No prescriptions match your search.</p>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading && filteredPrescriptions.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="lp-th-num">#</th>
+            <th>Patient</th>
+            <th>Prescription No.</th>
+            <th>Diagnosis</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th class="lp-th-action">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of filteredPrescriptions; let i = index" class="lp-row">
+            <td class="lp-td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lp-patient-cell">
+                <div class="lp-avatar">{{ (p.patientName || '?').charAt(0).toUpperCase() }}</div>
+                <div>
+                  <div class="lp-patient-name">{{ p.patientName || 'N/A' }}</div>
+                  <div class="lp-patient-sub" *ngIf="p.patientAge || p.patientGender">
+                    {{ p.patientAge || '' }}{{ p.patientAge && p.patientGender ? ', ' : '' }}{{ p.patientGender || '' }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><span class="lp-pill">{{ p.prescriptionNumber || 'N/A' }}</span></td>
+            <td>
+              <span class="text-truncate d-inline-block lp-diagnosis" [title]="p.diagnosis">
+                {{ p.diagnosis || 'N/A' }}
+              </span>
+            </td>
+            <td>{{ p.doctorName || 'N/A' }}</td>
+            <td><span class="lp-date">{{ formatDate(p.createdDate) }}</span></td>
+            <td>
+              <span class="lp-pill" [style.background]="p.dispensed ? 'linear-gradient(135deg,#d1e7dd,#badbcc)' : 'linear-gradient(135deg,#fff3cd,#ffe69c)'"
+                [style.color]="p.dispensed ? '#0f5132' : '#997404'">
+                {{ p.dispensed ? 'Dispensed' : 'Pending' }}
+              </span>
+            </td>
+            <td class="text-center text-nowrap">
+              <button class="lp-action-btn lp-primary-btn me-1" (click)="editPrescription(p.id!)" title="Edit">
+                <span class="lp-btn-icon">✎</span> Edit
+              </button>
+              <button class="lp-action-btn lp-secondary-btn" (click)="viewPdf(p.id!)" title="Print">
+                <span class="lp-btn-icon">🖨</span> Print
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </div>
