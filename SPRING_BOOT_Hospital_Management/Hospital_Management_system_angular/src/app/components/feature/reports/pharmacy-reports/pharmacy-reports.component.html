@@ -96,14 +96,12 @@
             <tr>
               <th>Medicine</th>
               <th>Quantity Sold</th>
-              <th>Revenue</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let med of data.topSellingMedicines">
-              <td class="cell-bold">{{ med.name }}</td>
-              <td>{{ med.quantity | number }}</td>
-              <td class="cell-amount">{{ med.revenue | number:'1.2-2' }}</td>
+              <td class="cell-bold">{{ med.medicineName }}</td>
+              <td>{{ med.totalQuantitySold | number }}</td>
             </tr>
           </tbody>
         </table>
