@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 export class GenericListComponent implements OnInit {
 
   generics: GenericModel[] = [];
+  loading = false;
+  errorMsg: string | null = null;
 
   constructor(
     private genericService: GenericService,
