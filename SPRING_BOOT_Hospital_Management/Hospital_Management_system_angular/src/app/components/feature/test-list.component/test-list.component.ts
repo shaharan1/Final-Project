@@ -14,7 +14,7 @@ import { TestMasterService } from '../../../services/test-master.service';
 export class TestListComponent {
 
 
-  tests:TestMasterModel[]=[];
+ tests:TestMasterModel[]=[];
 
   keyword='';
 
