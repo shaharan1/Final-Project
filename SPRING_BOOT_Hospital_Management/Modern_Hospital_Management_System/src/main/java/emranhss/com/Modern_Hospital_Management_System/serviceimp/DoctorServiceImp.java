@@ -144,11 +144,12 @@ public class DoctorServiceImp implements DoctorService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public DoctorResponse getByUserId(Long id) {
 
-        Doctor c = doctorRepository.findByUserId(id)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-        return DoctorMapper.toDto(c);
+        return doctorRepository.findByUserId(id)
+                .map(DoctorMapper::toDto)
+                .orElse(null);
     }
 
 }
