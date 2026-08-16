@@ -17,7 +17,8 @@ export class AppointmentSlip implements AfterViewInit {
   appointment: any = null;
   loading = false;
   errorMsg = '';
-  searchNumber = '';
+  searchQuery = '';
+  results: any[] = [];
 
   private sourceNumber: string | null = null;
   private pendingAutoDownload = false;
