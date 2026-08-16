@@ -107,4 +107,14 @@ public ResponseEntity<List<AppointmentResponse>> filterAppointments(
                 appointmentService.getByAppointmentNumber(appointmentNumber)
         );
     }
+
+    // Search appointments by appointment number, patient name, or mobile number
+    @GetMapping("/search")
+    public ResponseEntity<List<AppointmentResponse>> searchAppointments(
+            @RequestParam String query) {
+
+        return ResponseEntity.ok(
+                appointmentService.searchAppointments(query)
+        );
+    }
 }
