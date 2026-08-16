@@ -84,6 +84,12 @@ export class AppointmentService {
     );
   }
 
+  searchAppointments(query: string) {
+    return this.http.get<AppointmentModel[]>(
+      `${this.apiUrl}/search?query=${encodeURIComponent(query)}`
+    );
+  }
+
 
   getById(id: number) {
 
