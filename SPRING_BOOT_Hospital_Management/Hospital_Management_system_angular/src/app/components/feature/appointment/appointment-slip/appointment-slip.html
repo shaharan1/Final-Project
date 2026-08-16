@@ -1,149 +1,111 @@
-<div #slip class="slip">
+<div class="slip-page">
 
-    <div class="header">
+  <div *ngIf="loading" class="slip-state">
+    <div class="slip-spinner"></div>
+    <p>Loading appointment details…</p>
+  </div>
 
-        <img src="assets/logo.png" width="90">
+  <div *ngIf="errorMsg" class="slip-state slip-state--error">
+    <div class="slip-state-icon">!</div>
+    <p>{{ errorMsg }}</p>
+  </div>
 
-        <h2>Modern Hospital Management System</h2>
+  <ng-container *ngIf="!loading && !errorMsg && appointment">
 
-        <p>Dhaka, Bangladesh</p>
+    <div #slip class="slip">
 
-        <hr>
+      <div class="slip-header">
+        <div class="slip-brand">
+          <img src="assets/logo.png" class="slip-logo" alt="Logo">
+          <div>
+            <h2>Modern Hospital Management System</h2>
+            <p>Dhaka, Bangladesh · 24/7 Helpline: +880-1700-000000</p>
+          </div>
+        </div>
+        <div class="slip-title">Appointment Slip</div>
+      </div>
 
-        <h3>Appointment Slip</h3>
+      <div class="slip-meta">
+        <span class="slip-meta-no">No. <strong>{{ appointment.appointmentNumber }}</strong></span>
+        <span class="slip-status">{{ appointment.status }}</span>
+      </div>
 
-    </div>
+      <div class="slip-grid">
 
-    <table>
+        <div class="slip-field">
+          <span class="slip-label">Patient Name</span>
+          <strong class="slip-value">{{ appointment.patientName }}</strong>
+        </div>
 
-        <tr>
+        <div class="slip-field">
+          <span class="slip-label">Mobile</span>
+          <strong class="slip-value">{{ appointment.mobileNumber }}</strong>
+        </div>
 
-            <th>Appointment No</th>
+        <div class="slip-field">
+          <span class="slip-label">Doctor</span>
+          <strong class="slip-value">{{ appointment.doctorName }}</strong>
+        </div>
 
-            <td>{{appointment.appointmentNumber}}</td>
+        <div class="slip-field">
+          <span class="slip-label">Specialization</span>
+          <strong class="slip-value">{{ appointment.doctorSpecialization }}</strong>
+        </div>
 
-        </tr>
+        <div class="slip-field">
+          <span class="slip-label">Appointment Date</span>
+          <strong class="slip-value">{{ appointment.appointmentDate }}</strong>
+        </div>
 
-        <tr>
+        <div class="slip-field">
+          <span class="slip-label">Appointment Time</span>
+          <strong class="slip-value">{{ appointment.appointmentTime }}</strong>
+        </div>
 
-            <th>Patient Name</th>
+        <div class="slip-field">
+          <span class="slip-label">Consultation Fee</span>
+          <strong class="slip-value">{{ appointment.feeCharged }} Tk</strong>
+        </div>
 
-            <td>{{appointment.patientName}}</td>
+        <div class="slip-field">
+          <span class="slip-label">Payment Method</span>
+          <strong class="slip-value">{{ appointment.paymentMethod }}</strong>
+        </div>
 
-        </tr>
+        <div class="slip-field slip-field--full">
+          <span class="slip-label">Transaction ID</span>
+          <strong class="slip-value">{{ appointment.transactionId }}</strong>
+        </div>
 
-        <tr>
+      </div>
 
-            <th>Mobile</th>
-
-            <td>{{appointment.mobileNumber}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Doctor</th>
-
-            <td>{{appointment.doctorName}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Specialization</th>
-
-            <td>{{appointment.doctorSpecialization}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Date</th>
-
-            <td>{{appointment.appointmentDate}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Time</th>
-
-            <td>{{appointment.appointmentTime}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Fee</th>
-
-            <td>{{appointment.feeCharged}} Tk</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Status</th>
-
-            <td>{{appointment.status}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Payment</th>
-
-            <td>{{appointment.paymentMethod}}</td>
-
-        </tr>
-
-        <tr>
-
-            <th>Transaction ID</th>
-
-            <td>{{appointment.transactionId}}</td>
-
-        </tr>
-
-    </table>
-
-    <br>
-
-    <div class="text-center">
-
-        <img src="assets/qr.png" width="120">
-
+      <div class="slip-qr">
+        <img src="assets/qr.png" width="110" alt="QR">
         <p>Scan for Verification</p>
+      </div>
+
+      <div class="slip-note">
+        Please arrive at least <strong>15 minutes</strong> before your scheduled appointment.
+      </div>
+
+      <div class="slip-footer">
+        Thank you for choosing Modern Hospital. We are committed to your care.
+      </div>
 
     </div>
 
-    <br>
+    <div class="buttons">
 
-    <p>
+      <button class="btn btn-primary me-2" (click)="printSlip()">
+        <i class="bi bi-printer me-1"></i> Print Slip
+      </button>
 
-        Please arrive at least 15 minutes before your scheduled appointment.
+      <button class="btn btn-success" (click)="downloadPDF()">
+        <i class="bi bi-download me-1"></i> Download PDF
+      </button>
 
-    </p>
+    </div>
 
-    <p>
-
-        Thank you for choosing Modern Hospital.
-
-    </p>
-
-</div>
-
-<div class="buttons">
-
-    <button class="btn btn-primary me-2" (click)="printSlip()">
-
-        Print Slip
-
-    </button>
-
-    <button class="btn btn-success" (click)="downloadPDF()">
-
-        Download PDF
-
-    </button>
+  </ng-container>
 
 </div>
