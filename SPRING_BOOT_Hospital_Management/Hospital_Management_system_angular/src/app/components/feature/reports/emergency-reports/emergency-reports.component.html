@@ -1,4 +1,4 @@
-﻿<div class="dashboard-wrapper">
+<div class="dashboard-wrapper">
   <section class="hero-section">
     <div class="hero-bg hero-bg--red">
       <div class="hero-content">
@@ -82,9 +82,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of data.severityDistribution">
-              <td class="cell-bold">{{ row.level }}</td>
-              <td>{{ row.count | number }}</td>
+            <tr *ngFor="let row of severityDistributionArray">
+              <td class="cell-bold">{{ row.key }}</td>
+              <td>{{ row.value | number }}</td>
             </tr>
           </tbody>
         </table>
@@ -98,9 +98,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of data.statusDistribution">
-                <td class="cell-bold">{{ row.status }}</td>
-                <td>{{ row.count | number }}</td>
+              <tr *ngFor="let row of statusDistributionArray">
+                <td class="cell-bold">{{ row.key }}</td>
+                <td>{{ row.value | number }}</td>
               </tr>
             </tbody>
           </table>

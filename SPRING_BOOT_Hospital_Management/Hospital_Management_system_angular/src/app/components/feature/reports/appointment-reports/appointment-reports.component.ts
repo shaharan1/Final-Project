@@ -31,6 +31,12 @@ export class AppointmentReportsComponent implements OnInit, AfterViewInit, OnDes
   error = '';
 
   private charts: Chart[] = [];
+  get dailyTrendArray(): { key: string; value: number }[] {
+    const d = this.data?.dailyTrend as any;
+    if (!d) return [];
+    return Object.entries(d).map(([key, value]) => ({ key, value: Number(value ?? 0) }));
+  }
+
 
   ngOnInit(): void {
     this.loadData();

@@ -29,6 +29,18 @@ export class EmergencyReportsComponent implements OnInit, AfterViewInit, OnDestr
   error = '';
 
   private charts: Chart[] = [];
+  get severityDistributionArray(): { key: string; value: number }[] {
+    const d = this.data?.severityDistribution as any;
+    if (!d) return [];
+    return Object.entries(d).map(([key, value]) => ({ key, value: Number(value ?? 0) }));
+  }
+
+  get statusDistributionArray(): { key: string; value: number }[] {
+    const d = this.data?.statusDistribution as any;
+    if (!d) return [];
+    return Object.entries(d).map(([key, value]) => ({ key, value: Number(value ?? 0) }));
+  }
+
 
   ngOnInit(): void {
     this.loadData();

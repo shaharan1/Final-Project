@@ -31,6 +31,12 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
   error = '';
 
   private charts: Chart[] = [];
+  get revenueByDepartmentArray(): { key: string; value: number }[] {
+    const d = this.data?.revenueByDepartment as any;
+    if (!d) return [];
+    return Object.entries(d).map(([key, value]) => ({ key, value: Number(value ?? 0) }));
+  }
+
 
   ngOnInit(): void {
     this.loadData();

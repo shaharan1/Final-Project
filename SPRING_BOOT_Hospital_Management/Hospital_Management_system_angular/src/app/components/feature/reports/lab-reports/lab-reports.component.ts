@@ -29,6 +29,12 @@ export class LabReportsComponent implements OnInit, AfterViewInit, OnDestroy {
   error = '';
 
   private charts: Chart[] = [];
+  get testCategoryDistributionArray(): { key: string; value: number }[] {
+    const d = this.data?.testCategoryDistribution as any;
+    if (!d) return [];
+    return Object.entries(d).map(([key, value]) => ({ key, value: Number(value ?? 0) }));
+  }
+
 
   ngOnInit(): void {
     this.loadData();

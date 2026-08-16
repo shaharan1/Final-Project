@@ -97,7 +97,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of data.departmentWisePatients">
+            <tr *ngFor="let row of departmentWisePatientsArray">
               <td class="cell-bold">{{ row.department }}</td>
               <td>{{ row.count | number }}</td>
             </tr>

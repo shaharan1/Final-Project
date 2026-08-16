@@ -110,9 +110,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of data.dailyTrend">
-              <td class="cell-bold">{{ row.date }}</td>
-              <td>{{ row.count | number }}</td>
+            <tr *ngFor="let row of dailyTrendArray">
+              <td class="cell-bold">{{ row.key }}</td>
+              <td>{{ row.value | number }}</td>
             </tr>
           </tbody>
         </table>

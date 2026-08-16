@@ -92,9 +92,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of data.testCategoryDistribution">
-              <td class="cell-bold">{{ row.category }}</td>
-              <td>{{ row.count | number }}</td>
+            <tr *ngFor="let row of testCategoryDistributionArray">
+              <td class="cell-bold">{{ row.key }}</td>
+              <td>{{ row.value | number }}</td>
             </tr>
           </tbody>
         </table>

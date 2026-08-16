@@ -110,9 +110,9 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let row of data.revenueByDepartment">
-              <td class="cell-bold">{{ row.department }}</td>
-              <td class="cell-amount">{{ row.revenue | number:'1.2-2' }}</td>
+            <tr *ngFor="let row of revenueByDepartmentArray">
+              <td class="cell-bold">{{ row.key }}</td>
+              <td class="cell-amount">{{ row.value | number:'1.2-2' }}</td>
             </tr>
           </tbody>
         </table>

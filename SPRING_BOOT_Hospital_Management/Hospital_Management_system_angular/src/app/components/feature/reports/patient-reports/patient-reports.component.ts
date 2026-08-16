@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, inj
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
+import { timeout } from 'rxjs';
 import { AnalyticsService } from '../../../../services/reports/analytics.service';
 import { PatientAnalytics } from '../../../../models/reports/analytics.model';
 import { toLabelValue } from '../../../../models/reports/chart.util';
@@ -30,6 +31,13 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
   error = '';
 
   private charts: Chart[] = [];
+  get departmentWisePatientsArray(): { department: string; count: number }[] {
+    const d = this.data?.departmentWisePatients as any;
+    if (!d) return [];
+    if (Array.isArray(d)) return d;
+    return Object.entries(d).map(([department, count]) => ({ department, count: Number(count ?? 0) }));
+  }
+
 
   ngOnInit(): void {
     this.loadData();
@@ -44,7 +52,7 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
   loadData(): void {
     this.loading = true;
     this.error = '';
-    this.analyticsService.getPatientAnalytics().subscribe({
+    this.analyticsService.getPatientAnalytics().pipe(timeout(30000)).subscribe({
       next: (res) => {
         this.data = res;
         this.loading = false;
