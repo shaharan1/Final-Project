@@ -177,6 +177,23 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return appointmentMapper.toResponse(appointment);    }
 
+    @Override
+    public List<AppointmentResponse> searchAppointments(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return List.of();
+        }
+        String q = query.trim();
+        List<Appointment> matches = new ArrayList<>();
+        matches.addAll(appointmentRepository.findByAppointmentNumberContainingIgnoreCase(q));
+        matches.addAll(appointmentRepository.findByPatientNameContainingIgnoreCase(q));
+        matches.addAll(appointmentRepository.findByMobileNumberContaining(q));
+
+        return matches.stream()
+                .distinct()
+                .map(appointmentMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
     //    --------------Filter Appointments---------------
 @Override
 @Transactional(readOnly = true)
