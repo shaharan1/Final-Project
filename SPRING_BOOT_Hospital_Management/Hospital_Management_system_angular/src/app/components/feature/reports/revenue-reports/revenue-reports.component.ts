@@ -77,8 +77,7 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
 
   private initDailyTrendChart(): void {
     if (!this.dailyTrendChartRef || !this.data) return;
-    const labels = this.data.dailyTrend.map(d => d.date);
-    const values = this.data.dailyTrend.map(d => d.amount);
+    const { labels, values } = toLabelValue(this.data.dailyTrend, 'date', 'amount');
     const chart = new Chart(this.dailyTrendChartRef.nativeElement, {
       type: 'line',
       data: {
@@ -110,8 +109,7 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
 
   private initMonthlyTrendChart(): void {
     if (!this.monthlyTrendChartRef || !this.data) return;
-    const labels = this.data.monthlyTrend.map(m => m.month);
-    const values = this.data.monthlyTrend.map(m => m.amount);
+    const { labels, values } = toLabelValue(this.data.monthlyTrend, 'month', 'amount');
     const chart = new Chart(this.monthlyTrendChartRef.nativeElement, {
       type: 'bar',
       data: {
@@ -140,8 +138,7 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
 
   private initPaymentMethodsChart(): void {
     if (!this.paymentMethodsChartRef || !this.data) return;
-    const labels = this.data.paymentMethodDistribution.map(m => m.method);
-    const values = this.data.paymentMethodDistribution.map(m => m.amount);
+    const { labels, values } = toLabelValue(this.data.paymentMethodDistribution, 'method', 'amount');
     const chart = new Chart(this.paymentMethodsChartRef.nativeElement, {
       type: 'pie',
       data: {
@@ -168,8 +165,7 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
 
   private initDeptRevenueChart(): void {
     if (!this.deptRevenueChartRef || !this.data) return;
-    const labels = this.data.revenueByDepartment.map(d => d.department);
-    const values = this.data.revenueByDepartment.map(d => d.revenue);
+    const { labels, values } = toLabelValue(this.data.revenueByDepartment, 'department', 'revenue');
     const chart = new Chart(this.deptRevenueChartRef.nativeElement, {
       type: 'bar',
       data: {

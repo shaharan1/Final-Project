@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { AnalyticsService } from '../../../../services/reports/analytics.service';
 import { EmergencyAnalytics } from '../../../../models/reports/analytics.model';
+import { toLabelValue } from '../../../../models/reports/chart.util';
 
 Chart.register(...registerables);
 
@@ -72,8 +73,7 @@ export class EmergencyReportsComponent implements OnInit, AfterViewInit, OnDestr
 
   private initSeverityChart(): void {
     if (!this.severityChartRef || !this.data) return;
-    const labels = this.data.severityDistribution.map(s => s.level);
-    const values = this.data.severityDistribution.map(s => s.count);
+    const { labels, values } = toLabelValue(this.data.severityDistribution, 'level', 'count');
     const chart = new Chart(this.severityChartRef.nativeElement, {
       type: 'pie',
       data: {
@@ -100,8 +100,7 @@ export class EmergencyReportsComponent implements OnInit, AfterViewInit, OnDestr
 
   private initStatusChart(): void {
     if (!this.statusChartRef || !this.data) return;
-    const labels = this.data.statusDistribution.map(s => s.status);
-    const values = this.data.statusDistribution.map(s => s.count);
+    const { labels, values } = toLabelValue(this.data.statusDistribution, 'status', 'count');
     const chart = new Chart(this.statusChartRef.nativeElement, {
       type: 'bar',
       data: {

@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { AnalyticsService } from '../../../../services/reports/analytics.service';
 import { LabAnalytics } from '../../../../models/reports/analytics.model';
+import { toLabelValue } from '../../../../models/reports/chart.util';
 
 Chart.register(...registerables);
 
@@ -72,8 +73,7 @@ export class LabReportsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initDailyTrendChart(): void {
     if (!this.dailyTrendChartRef || !this.data) return;
-    const labels = this.data.dailyTestTrend.map(d => d.date);
-    const values = this.data.dailyTestTrend.map(d => d.count);
+    const { labels, values } = toLabelValue(this.data.dailyTestTrend, 'date', 'count');
     const chart = new Chart(this.dailyTrendChartRef.nativeElement, {
       type: 'line',
       data: {
@@ -105,8 +105,7 @@ export class LabReportsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initCategoryChart(): void {
     if (!this.categoryChartRef || !this.data) return;
-    const labels = this.data.testCategoryDistribution.map(c => c.category);
-    const values = this.data.testCategoryDistribution.map(c => c.count);
+    const { labels, values } = toLabelValue(this.data.testCategoryDistribution, 'category', 'count');
     const chart = new Chart(this.categoryChartRef.nativeElement, {
       type: 'doughnut',
       data: {

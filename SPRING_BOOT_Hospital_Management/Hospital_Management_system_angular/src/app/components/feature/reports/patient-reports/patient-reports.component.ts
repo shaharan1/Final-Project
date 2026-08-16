@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { AnalyticsService } from '../../../../services/reports/analytics.service';
 import { PatientAnalytics } from '../../../../models/reports/analytics.model';
+import { toLabelValue } from '../../../../models/reports/chart.util';
 
 Chart.register(...registerables);
 
@@ -145,8 +146,7 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
 
   private initMonthlyTrendChart(): void {
     if (!this.monthlyTrendChartRef || !this.data) return;
-    const labels = this.data.monthlyRegistrationTrend.map(m => m.month);
-    const values = this.data.monthlyRegistrationTrend.map(m => m.count);
+    const { labels, values } = toLabelValue(this.data.monthlyRegistrationTrend, 'month', 'count');
     const chart = new Chart(this.monthlyTrendChartRef.nativeElement, {
       type: 'line',
       data: {
