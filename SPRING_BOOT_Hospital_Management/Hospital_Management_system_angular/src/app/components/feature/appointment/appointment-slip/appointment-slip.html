@@ -2,13 +2,13 @@
 
   <div class="slip-search">
     <h2>Appointment Slip</h2>
-    <p class="slip-search-sub">Enter an appointment number to view &amp; print the slip</p>
+    <p class="slip-search-sub">Search by appointment number, patient name, or mobile number</p>
     <div class="slip-search-row">
       <input
         type="text"
         class="slip-search-input"
-        placeholder="e.g. APP-2024-0001"
-        [(ngModel)]="searchNumber"
+        placeholder="e.g. APT-AB12CD34, Rahim, 01712..."
+        [(ngModel)]="searchQuery"
         (keyup.enter)="searchByNumber()" />
       <button class="slip-search-btn" (click)="searchByNumber()">
         <i class="bi bi-search me-1"></i> Search
@@ -24,6 +24,21 @@
   <div *ngIf="errorMsg" class="slip-state slip-state--error">
     <div class="slip-state-icon">!</div>
     <p>{{ errorMsg }}</p>
+  </div>
+
+  <div *ngIf="!loading && !errorMsg && results.length > 0" class="slip-results">
+    <p class="slip-results-title">{{ results.length }} appointments found — select one:</p>
+    <div class="slip-results-list">
+      <button
+        class="slip-result"
+        *ngFor="let r of results"
+        (click)="selectResult(r)">
+        <span class="slip-result-no">{{ r.appointmentNumber }}</span>
+        <span class="slip-result-name">{{ r.patientName }}</span>
+        <span class="slip-result-mobile">{{ r.mobileNumber }}</span>
+        <span class="slip-result-date">{{ r.appointmentDate }}</span>
+      </button>
+    </div>
   </div>
 
   <ng-container *ngIf="!loading && !errorMsg && appointment">
