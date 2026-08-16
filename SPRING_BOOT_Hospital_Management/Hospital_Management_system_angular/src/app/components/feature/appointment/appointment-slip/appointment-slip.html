@@ -1,5 +1,21 @@
 <div class="slip-page">
 
+  <div class="slip-search">
+    <h2>Appointment Slip</h2>
+    <p class="slip-search-sub">Enter an appointment number to view &amp; print the slip</p>
+    <div class="slip-search-row">
+      <input
+        type="text"
+        class="slip-search-input"
+        placeholder="e.g. APP-2024-0001"
+        [(ngModel)]="searchNumber"
+        (keyup.enter)="searchByNumber()" />
+      <button class="slip-search-btn" (click)="searchByNumber()">
+        <i class="bi bi-search me-1"></i> Search
+      </button>
+    </div>
+  </div>
+
   <div *ngIf="loading" class="slip-state">
     <div class="slip-spinner"></div>
     <p>Loading appointment details…</p>

@@ -17,6 +17,7 @@ export class AppointmentSlip implements AfterViewInit {
   appointment: any = null;
   loading = false;
   errorMsg = '';
+  searchNumber = '';
 
   private sourceNumber: string | null = null;
   private pendingAutoDownload = false;
@@ -47,6 +48,15 @@ export class AppointmentSlip implements AfterViewInit {
 
   ngAfterViewInit(): void {
     // Placeholder for post-render hooks if needed.
+  }
+
+  searchByNumber(): void {
+    const num = this.searchNumber.trim();
+    if (!num) {
+      this.errorMsg = 'Please enter an appointment number to search.';
+      return;
+    }
+    this.loadFromBackend(num);
   }
 
   private loadFromBackend(number: string): void {
