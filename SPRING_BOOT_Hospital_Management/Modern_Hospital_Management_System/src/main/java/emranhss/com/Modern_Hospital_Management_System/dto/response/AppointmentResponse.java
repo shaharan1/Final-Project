@@ -16,6 +16,9 @@ public class AppointmentResponse {
     private String appointmentNumber;
     private String status;
 
+    private Long serialNo;
+    private Integer tokenNumber;
+
     // Form parameters
     private String patientName;
     private String mobileNumber;

@@ -88,7 +88,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setCreatedDate(LocalDateTime.now());
 
         // Use clean mapper injection component mapping pattern
-        return appointmentMapper.toResponse(appointmentRepository.save(appointment));
+        Appointment saved = appointmentRepository.save(appointment);
+
+        // Global sequential serial number (matches the auto-generated id)
+        saved.setSerialNo(saved.getId());
+
+        // Per-doctor per-day queue token
+        Long token = appointmentRepository.countByDoctorIdAndAppointmentDate(
+                saved.getDoctor().getId(), saved.getAppointmentDate());
+        saved.setTokenNumber(token.intValue());
+
+        saved = appointmentRepository.save(saved);
+
+        return appointmentMapper.toResponse(saved);
     }
 
     @Override

@@ -23,6 +23,12 @@ public class Appointment {
     @Column(nullable = false, unique = true)
     private String appointmentNumber;
 
+    @Column(nullable = true)
+    private Long serialNo;          // Global sequential serial number
+
+    @Column(nullable = true)
+    private Integer tokenNumber;    // Per-doctor per-day queue token
+
     // Guest Info Fields
     private String patientName;
     private String mobileNumber;

@@ -1,25 +1,30 @@
 ﻿<div class="billing-page">
   <!-- Header -->
-  <div class="billing-header">
-    <svg class="billing-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
-    </svg>
-    <div class="header-left">
-      <div class="hero-icon">&#x1F4CB;</div>
-      <h1 class="page-title">Patient Billing</h1>
-      <p class="page-subtitle">Create bills, manage invoices & process payments</p>
+  <section class="lp-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6"/>
+      </svg>
     </div>
-    <div class="header-right">
-      <button class="btn btn-outline" (click)="toggleInvoiceList()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Invoices ({{ invoices.length }})
-      </button>
-      <a routerLink="/billing-dashboard" class="btn btn-secondary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        Dashboard
-      </a>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">📋</div>
+      <div>
+        <h1>Patient Billing</h1>
+        <p class="lp-hero-sub">Create bills, manage invoices &amp; process payments</p>
+      </div>
+      <div class="lp-hero-actions">
+        <button class="btn btn-outline" (click)="toggleInvoiceList()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M14 2H6a2 0 0 0-2 2v16a2 0 0 0 2 2h12a2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Invoices ({{ invoices.length }})
+        </button>
+        <a routerLink="/billing-dashboard" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          Dashboard
+        </a>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- Search Bar -->
   <div class="search-section glass">

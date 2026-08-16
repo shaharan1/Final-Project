@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findByDoctorIdAndAppointmentDate(Long doctorId, LocalDate appointmentDate);
 
+    long countByDoctorIdAndAppointmentDate(Long doctorId, LocalDate appointmentDate);
+
     List<Appointment> findByDoctorId(Long doctorId);
 
     List<Appointment> findByAppointmentDate(LocalDate appointmentDate);

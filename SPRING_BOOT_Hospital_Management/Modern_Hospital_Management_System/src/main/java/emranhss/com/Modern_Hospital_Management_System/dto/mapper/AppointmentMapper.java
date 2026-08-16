@@ -14,6 +14,8 @@ public class AppointmentMapper {
         response.setId(appointment.getId());
         response.setAppointmentNumber(appointment.getAppointmentNumber());
         response.setStatus(appointment.getStatus());
+        response.setSerialNo(appointment.getSerialNo());
+        response.setTokenNumber(appointment.getTokenNumber());
 
         // Map landing page form data/guest parameters
         response.setPatientName(appointment.getPatientName());

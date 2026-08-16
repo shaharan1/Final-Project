@@ -138,12 +138,16 @@ export class AppointmentSlip implements AfterViewInit {
       .slip-logo { width: 58px; height: 58px; border-radius: 12px; background: rgba(255,255,255,0.18); padding: 6px; }
       .slip-brand h2 { margin: 0; font-size: 19px; font-weight: 800; }
       .slip-brand p { margin: 4px 0 0; font-size: 12px; opacity: 0.85; }
-      .slip-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
-        background: rgba(255,255,255,0.16); padding: 10px 16px; border-radius: 12px; white-space: nowrap; }
+       .slip-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+         background: rgba(255,255,255,0.16); padding: 10px 16px; border-radius: 12px; white-space: nowrap; }
+       .slip-token { display: block; margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+         text-transform: none; opacity: 0.92; }
 
-      .slip-meta { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px;
-        background: #f0fdf4; border-bottom: 1px solid #e4e9ec; font-size: 14px; }
-      .slip-meta-no strong { color: #0f5132; }
+       .slip-meta { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px;
+         background: #f0fdf4; border-bottom: 1px solid #e4e9ec; font-size: 14px; }
+       .slip-meta-no strong { color: #0f5132; }
+       .slip-meta-serial { color: #0f5132; font-weight: 600; }
+       .slip-meta-serial strong { color: #0f5132; }
       .slip-status { background: #d1fae5; color: #065f46; font-weight: 700; font-size: 12px;
         padding: 5px 14px; border-radius: 20px; text-transform: uppercase; }
 

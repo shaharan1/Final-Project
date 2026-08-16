@@ -53,11 +53,15 @@
             <p>Dhaka, Bangladesh · 24/7 Helpline: +880-1700-000000</p>
           </div>
         </div>
-        <div class="slip-title">Appointment Slip</div>
+        <div class="slip-title">
+          Appointment Slip
+          <span class="slip-token" *ngIf="appointment.tokenNumber != null">Token: {{ appointment.tokenNumber }}</span>
+        </div>
       </div>
 
       <div class="slip-meta">
         <span class="slip-meta-no">No. <strong>{{ appointment.appointmentNumber }}</strong></span>
+        <span class="slip-meta-serial" *ngIf="appointment.serialNo != null">Serial No. <strong>{{ appointment.serialNo }}</strong></span>
         <span class="slip-status">{{ appointment.status }}</span>
       </div>
 
