@@ -192,12 +192,14 @@ export const routes: Routes = [
       // ============ Admission ============
       { path: 'admission', component: AdmissionComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Patient Admission' } },
       { path: 'admission-list', component: AdmissionListComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor', 'Nurse'])], data: { title: 'Admission List' } },
+      { path: 'admittedpatient', redirectTo: 'admission-list', pathMatch: 'full' },
 
       // ============ Wards & Beds ============
-      { path: 'ward-management', component: WardManagementComponent, canActivate: [roleGuard(['Admin', 'WardManager'])], data: { title: 'Ward Management' } },
+      { path: 'ward-management', component: WardManagementComponent, canActivate: [roleGuard(['Admin', 'WardManager', 'Receptionist'])], data: { title: 'Ward Management' } },
       { path: 'ward', component: WardComponent, canActivate: [roleGuard(['Admin', 'WardManager'])], data: { title: 'Add Ward' } },
       { path: 'ward-list', component: WardListComponent, canActivate: [roleGuard(['Admin', 'WardManager', 'Doctor', 'Nurse'])], data: { title: 'Ward List' } },
-      { path: 'bed-management', component: BedManagementComponent, canActivate: [roleGuard(['Admin', 'WardManager'])], data: { title: 'Bed Management' } },
+      { path: 'bed-management', component: BedManagementComponent, canActivate: [roleGuard(['Admin', 'WardManager', 'Receptionist'])], data: { title: 'Bed Management' } },
+      { path: 'bed', redirectTo: 'ward-management', pathMatch: 'full' },
 
       // ============ Laboratory ============
       { path: 'lab-reception', component: LabReceptionComponent, canActivate: [roleGuard(['Admin', 'LabTechnician', 'Receptionist'])], data: { title: 'Lab Reception' } },
