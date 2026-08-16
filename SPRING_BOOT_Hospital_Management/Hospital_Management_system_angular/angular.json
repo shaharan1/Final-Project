@@ -88,10 +88,12 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Hospital_Management_system_angular:build:production"
+              "buildTarget": "Hospital_Management_system_angular:build:production",
+              "proxyConfig": "proxy.conf.json"
             },
             "development": {
-              "buildTarget": "Hospital_Management_system_angular:build:development"
+              "buildTarget": "Hospital_Management_system_angular:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

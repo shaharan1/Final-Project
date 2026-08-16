@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { StorageService } from '../../../services/storage.service';
 import { ProfileService } from '../../../services/profile.service';
 import { LoginResponse } from '../../../models/login.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile-card',
@@ -73,7 +74,11 @@ export class ProfileCardComponent implements OnInit {
 
   getImageUrl(): string {
     if (this.previewUrl) return this.previewUrl;
-    if (this.user?.image) return 'http://localhost:8085' + this.user.image;
+    if (this.user?.image) {
+      const img = this.user.image;
+      if (img.startsWith('http')) return img;
+      return environment.imgUrl.replace(/\/$/, '') + (img.startsWith('/') ? img : '/' + img);
+    }
     return '';
   }
 

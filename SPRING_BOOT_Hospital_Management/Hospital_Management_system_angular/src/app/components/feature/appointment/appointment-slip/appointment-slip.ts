@@ -77,7 +77,7 @@ export class AppointmentSlip implements AfterViewInit {
       },
       error: () => {
         this.loading = false;
-        this.errorMsg = 'Could not load appointment details. Make sure the backend is running and reachable at http://localhost:8085 (open this page from the same machine as the backend).';
+        this.errorMsg = "Could not load appointment details. Make sure the backend is running and that 'ng serve' (port 4200) can reach it at http://localhost:8085.";
       }
     });
   }
@@ -98,7 +98,7 @@ export class AppointmentSlip implements AfterViewInit {
       },
       error: () => {
         this.loading = false;
-        this.errorMsg = 'Could not load appointment details. Make sure the backend is running and reachable at http://localhost:8085 (open this page from the same machine as the backend).';
+        this.errorMsg = "Could not load appointment details. Make sure the backend is running and that 'ng serve' (port 4200) can reach it at http://localhost:8085.";
       }
     });
   }
