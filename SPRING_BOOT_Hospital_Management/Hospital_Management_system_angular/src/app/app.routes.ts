@@ -182,7 +182,7 @@ export const routes: Routes = [
       // ============ Patients ============
       { path: 'patient', component: PatientComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Add Patient' } },
       { path: 'patient/edit/:id', component: PatientComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor'])], data: { title: 'Edit Patient' } },
-      { path: 'patient-list', component: PatientListComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor', 'Nurse'])], data: { title: 'Patient List' } },
+      { path: 'patient-list', component: PatientListComponent, canActivate: [roleGuard(['Admin', 'Receptionist', 'Doctor', 'Nurse', 'LabTechnician'])], data: { title: 'Patient List' } },
 
       // ============ Tests ============
       { path: 'tests/create', component: TestMasterComponent, canActivate: [roleGuard(['Admin', 'LabTechnician'])], data: { title: 'Add Test' } },
