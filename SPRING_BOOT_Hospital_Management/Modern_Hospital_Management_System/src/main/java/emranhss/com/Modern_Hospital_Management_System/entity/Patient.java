@@ -28,12 +28,12 @@ public class Patient {
     private String bloodGroup;
     private String maritalStatus;
 
-    @Column(unique = true)
+    @Column
     private String phone;
 
     private String alternatePhone;
 
-    @Column(unique = true,nullable = true)
+    @Column(nullable = true)
     private String email;
 
     private String nationalId;
