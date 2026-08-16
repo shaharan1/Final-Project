@@ -145,123 +145,146 @@ export class ReportsDashboardComponent implements OnInit, AfterViewInit, OnDestr
     return this.animatedValues[key] ?? 0;
   }
 
+  private toLabelValue(obj: any): { labels: string[]; values: number[] } {
+    const labels: string[] = [];
+    const values: number[] = [];
+    if (!obj) return { labels, values };
+    if (Array.isArray(obj)) {
+      for (const d of obj as any[]) {
+        const label = d.date ?? d.department ?? d.method ?? d.month ?? d.hour ?? d.status ?? d.category ?? d.ward ?? d.level ?? '';
+        const value = d.amount ?? d.count ?? d.revenue ?? d.patientCount ?? 0;
+        labels.push(label);
+        values.push(value);
+      }
+    } else {
+      for (const [k, v] of Object.entries(obj as Record<string, number>)) {
+        labels.push(k);
+        values.push(v);
+      }
+    }
+    return { labels, values };
+  }
+
   private initCharts(): void {
     if (!this.revenueChartRef?.nativeElement) return;
 
     this.charts.forEach(c => c.destroy());
     this.charts = [];
 
-    const textColor = '#94a3b8';
-    const gridColor = 'rgba(148,163,184,0.1)';
+    const textColor = '#64748b';
+    const gridColor = 'rgba(148,163,184,0.15)';
     Chart.defaults.color = textColor;
 
-    if (this.revenueAnalytics?.dailyTrend) {
-      const labels = this.revenueAnalytics.dailyTrend.map(d => {
-        const dt = new Date(d.date);
-        return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      });
-      const data = this.revenueAnalytics.dailyTrend.map(d => d.amount);
-      this.charts.push(new Chart(this.revenueChartRef.nativeElement, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [{
-            label: 'Revenue ($)',
-            data,
-            borderColor: '#0d6efd',
-            backgroundColor: 'rgba(13,110,253,0.1)',
-            fill: true,
-            tension: 0.4,
-            pointRadius: 3,
-            pointBackgroundColor: '#0d6efd'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { grid: { color: gridColor }, ticks: { maxTicksLimit: 10 } },
-            y: { grid: { color: gridColor }, ticks: { callback: (v: any) => '৳' + v } }
+    try {
+      if (this.revenueAnalytics?.dailyTrend) {
+        const { labels, values } = this.toLabelValue(this.revenueAnalytics.dailyTrend);
+        const formattedLabels = labels.map(l => {
+          const dt = new Date(l);
+          return isNaN(dt.getTime()) ? l : dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        });
+        this.charts.push(new Chart(this.revenueChartRef.nativeElement, {
+          type: 'line',
+          data: {
+            labels: formattedLabels,
+            datasets: [{
+              label: 'Revenue (৳)',
+              data: values,
+              borderColor: '#059669',
+              backgroundColor: 'rgba(5,150,105,0.12)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 3,
+              pointBackgroundColor: '#059669'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: gridColor }, ticks: { maxTicksLimit: 10 } },
+              y: { grid: { color: gridColor }, ticks: { callback: (v: any) => '৳' + v } }
+            }
           }
-        }
-      }));
-    }
-
-    if (this.appointmentAnalytics?.departmentWiseDistribution) {
-      this.charts.push(new Chart(this.appointmentsChartRef.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: this.appointmentAnalytics.departmentWiseDistribution.map(d => d.department),
-          datasets: [{
-            label: 'Appointments',
-            data: this.appointmentAnalytics.departmentWiseDistribution.map(d => d.count),
-            backgroundColor: ['#0d6efd','#198754','#fd7e14','#6610f2','#dc3545','#14b8a6','#0dcaf0','#ffc107'],
-            borderRadius: 6,
-            borderSkipped: false
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { grid: { display: false } },
-            y: { grid: { color: gridColor }, beginAtZero: true }
-          }
-        }
-      }));
-    }
-
-    if (this.revenueAnalytics?.paymentMethodDistribution?.length) {
-      const colors = ['#0d6efd','#198754','#fd7e14','#6610f2','#dc3545','#14b8a6'];
-      this.charts.push(new Chart(this.paymentChartRef.nativeElement, {
-        type: 'pie',
-        data: {
-          labels: this.revenueAnalytics.paymentMethodDistribution.map(p => p.method),
-          datasets: [{
-            data: this.revenueAnalytics.paymentMethodDistribution.map(p => p.amount),
-            backgroundColor: colors,
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true } } }
-        }
-      }));
-    }
-
-    if (this.patientAnalytics) {
-      const labels: string[] = [];
-      const values: number[] = [];
-      if (this.patientAnalytics.bloodGroupDistribution) {
-        for (const [k, v] of Object.entries(this.patientAnalytics.bloodGroupDistribution)) {
-          labels.push(k);
-          values.push(v);
-        }
+        }));
       }
-      if (labels.length) {
-        this.charts.push(new Chart(this.demographicsChartRef.nativeElement, {
-          type: 'doughnut',
+    } catch (e) { console.error('Revenue chart error', e); }
+
+    try {
+      if (this.appointmentAnalytics?.departmentWiseDistribution) {
+        const { labels, values } = this.toLabelValue(this.appointmentAnalytics.departmentWiseDistribution);
+        this.charts.push(new Chart(this.appointmentsChartRef.nativeElement, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Appointments',
+              data: values,
+              backgroundColor: ['#059669','#0891b2','#198754','#0d6efd','#dc3545','#14b8a6','#0dcaf0','#ffc107'],
+              borderRadius: 6,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { display: false } },
+              y: { grid: { color: gridColor }, beginAtZero: true }
+            }
+          }
+        }));
+      }
+    } catch (e) { console.error('Appointments chart error', e); }
+
+    try {
+      if (this.revenueAnalytics?.paymentMethodDistribution) {
+        const { labels, values } = this.toLabelValue(this.revenueAnalytics.paymentMethodDistribution);
+        const colors = ['#059669','#0891b2','#198754','#0d6efd','#dc3545','#14b8a6'];
+        this.charts.push(new Chart(this.paymentChartRef.nativeElement, {
+          type: 'pie',
           data: {
             labels,
             datasets: [{
               data: values,
-              backgroundColor: ['#0d6efd','#198754','#fd7e14','#6610f2','#dc3545','#14b8a6','#0dcaf0','#ffc107'],
+              backgroundColor: colors,
               borderWidth: 0
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '65%',
-            plugins: { legend: { position: 'right', labels: { padding: 12, usePointStyle: true } } }
+            plugins: { legend: { position: 'right', labels: { padding: 16, usePointStyle: true } } }
           }
         }));
       }
-    }
+    } catch (e) { console.error('Payment chart error', e); }
+
+    try {
+      if (this.patientAnalytics?.bloodGroupDistribution) {
+        const { labels, values } = this.toLabelValue(this.patientAnalytics.bloodGroupDistribution);
+        if (labels.length) {
+          this.charts.push(new Chart(this.demographicsChartRef.nativeElement, {
+            type: 'doughnut',
+            data: {
+              labels,
+              datasets: [{
+                data: values,
+                backgroundColor: ['#059669','#0891b2','#198754','#0d6efd','#dc3545','#14b8a6','#0dcaf0','#ffc107'],
+                borderWidth: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '65%',
+              plugins: { legend: { position: 'right', labels: { padding: 12, usePointStyle: true } } }
+            }
+          }));
+        }
+      }
+    } catch (e) { console.error('Demographics chart error', e); }
   }
 
   getActivityColor(type: string): string {

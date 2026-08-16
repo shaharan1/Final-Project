@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { AnalyticsService } from '../../../../services/reports/analytics.service';
 import { AppointmentAnalytics } from '../../../../models/reports/analytics.model';
+import { toLabelValue } from '../../../../models/reports/chart.util';
 
 Chart.register(...registerables);
 
@@ -76,8 +77,7 @@ export class AppointmentReportsComponent implements OnInit, AfterViewInit, OnDes
 
   private initDailyTrendChart(): void {
     if (!this.dailyTrendChartRef || !this.data) return;
-    const labels = this.data.dailyTrend.map(d => d.date);
-    const values = this.data.dailyTrend.map(d => d.count);
+    const { labels, values } = toLabelValue(this.data.dailyTrend, 'date', 'count');
     const chart = new Chart(this.dailyTrendChartRef.nativeElement, {
       type: 'line',
       data: {
@@ -109,8 +109,7 @@ export class AppointmentReportsComponent implements OnInit, AfterViewInit, OnDes
 
   private initDepartmentChart(): void {
     if (!this.departmentChartRef || !this.data) return;
-    const labels = this.data.departmentWiseDistribution.map(d => d.department);
-    const values = this.data.departmentWiseDistribution.map(d => d.count);
+    const { labels, values } = toLabelValue(this.data.departmentWiseDistribution, 'department', 'count');
     const chart = new Chart(this.departmentChartRef.nativeElement, {
       type: 'bar',
       data: {
@@ -139,8 +138,7 @@ export class AppointmentReportsComponent implements OnInit, AfterViewInit, OnDes
 
   private initStatusChart(): void {
     if (!this.statusChartRef || !this.data) return;
-    const labels = this.data.statusDistribution.map(s => s.status);
-    const values = this.data.statusDistribution.map(s => s.count);
+    const { labels, values } = toLabelValue(this.data.statusDistribution, 'status', 'count');
     const chart = new Chart(this.statusChartRef.nativeElement, {
       type: 'pie',
       data: {
@@ -163,8 +161,7 @@ export class AppointmentReportsComponent implements OnInit, AfterViewInit, OnDes
 
   private initPeakHoursChart(): void {
     if (!this.peakHoursChartRef || !this.data) return;
-    const labels = this.data.peakHours.map(h => `${h.hour}:00`);
-    const values = this.data.peakHours.map(h => h.count);
+    const { labels, values } = toLabelValue(this.data.peakHours, 'hour', 'count');
     const chart = new Chart(this.peakHoursChartRef.nativeElement, {
       type: 'bar',
       data: {

@@ -5,6 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { AnalyticsService } from '../../../../services/reports/analytics.service';
 import { RevenueAnalytics } from '../../../../models/reports/analytics.model';
+import { toLabelValue } from '../../../../models/reports/chart.util';
 
 Chart.register(...registerables);
 
