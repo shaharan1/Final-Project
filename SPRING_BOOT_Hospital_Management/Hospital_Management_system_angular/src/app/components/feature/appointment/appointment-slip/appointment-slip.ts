@@ -52,12 +52,39 @@ export class AppointmentSlip implements AfterViewInit {
   }
 
   searchByNumber(): void {
-    const num = this.searchNumber.trim();
-    if (!num) {
-      this.errorMsg = 'Please enter an appointment number to search.';
+    const query = this.searchQuery.trim();
+    if (!query) {
+      this.errorMsg = 'Please enter an appointment number, patient name, or mobile number.';
       return;
     }
-    this.loadFromBackend(num);
+    this.loading = true;
+    this.errorMsg = '';
+    this.appointment = null;
+    this.results = [];
+    this.appointmentService.searchAppointments(query).subscribe({
+      next: (res: any[]) => {
+        this.loading = false;
+        if (!res || res.length === 0) {
+          this.errorMsg = 'No appointment found for "' + query + '".';
+          return;
+        }
+        if (res.length === 1) {
+          this.appointment = res[0];
+          this.maybeAutoDownload();
+        } else {
+          this.results = res;
+        }
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMsg = 'Could not load appointment details from the server.';
+      }
+    });
+  }
+
+  selectResult(item: any): void {
+    this.results = [];
+    this.appointment = item;
   }
 
   private loadFromBackend(number: string): void {
