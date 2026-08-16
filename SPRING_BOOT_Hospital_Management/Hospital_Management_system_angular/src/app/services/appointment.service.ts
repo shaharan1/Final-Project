@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { AppointmentModel } from '../models/appointmentModel';
-import { Observable } from 'rxjs';
+import { Observable, timeout } from 'rxjs';
 import { AppointmentResponseModel } from '../models/AppointmentResponseModel';
 
 @Injectable({
@@ -81,13 +81,13 @@ export class AppointmentService {
   getByAppointmentNumber(appointmentNumber: string) {
     return this.http.get<AppointmentModel>(
       `${this.apiUrl}/number/${appointmentNumber}`
-    );
+    ).pipe(timeout(15000));
   }
 
   searchAppointments(query: string) {
     return this.http.get<AppointmentModel[]>(
       `${this.apiUrl}/search?query=${encodeURIComponent(query)}`
-    );
+    ).pipe(timeout(15000));
   }
 
 

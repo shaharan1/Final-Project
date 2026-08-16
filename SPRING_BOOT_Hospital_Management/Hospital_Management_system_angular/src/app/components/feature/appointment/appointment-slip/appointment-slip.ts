@@ -77,7 +77,7 @@ export class AppointmentSlip implements AfterViewInit {
       },
       error: () => {
         this.loading = false;
-        this.errorMsg = 'Could not load appointment details from the server.';
+        this.errorMsg = 'Could not load appointment details. Make sure the backend is running and reachable at http://localhost:8085 (open this page from the same machine as the backend).';
       }
     });
   }
@@ -98,7 +98,7 @@ export class AppointmentSlip implements AfterViewInit {
       },
       error: () => {
         this.loading = false;
-        this.errorMsg = 'Could not load appointment details from the server.';
+        this.errorMsg = 'Could not load appointment details. Make sure the backend is running and reachable at http://localhost:8085 (open this page from the same machine as the backend).';
       }
     });
   }
