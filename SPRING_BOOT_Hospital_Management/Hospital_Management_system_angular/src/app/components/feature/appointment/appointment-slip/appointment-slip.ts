@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { AppointmentService } from '../../../services/appointment.service';
+import { AppointmentService } from '../../../../services/appointment.service';
 
 @Component({
   selector: 'app-appointment-slip',
@@ -53,7 +53,7 @@ export class AppointmentSlip implements AfterViewInit {
     this.loading = true;
     this.errorMsg = '';
     this.appointmentService.getByAppointmentNumber(number).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.appointment = res;
         this.loading = false;
         this.maybeAutoDownload();
