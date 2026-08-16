@@ -137,7 +137,8 @@ export class AppointmentList implements OnInit {
       {
         state: {
           appointment: app
-        }
+        },
+        queryParams: { number: app.appointmentNumber }
       }
     );
 
@@ -151,7 +152,8 @@ export class AppointmentList implements OnInit {
         state: {
           appointment: app,
           autoDownload: true
-        }
+        },
+        queryParams: { number: app.appointmentNumber }
       }
     );
 

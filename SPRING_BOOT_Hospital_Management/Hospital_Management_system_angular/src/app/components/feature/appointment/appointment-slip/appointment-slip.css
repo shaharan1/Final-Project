@@ -170,6 +170,47 @@
   text-align: center;
 }
 
+/* ---------- Loading / Error states ---------- */
+.slip-state {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(5, 150, 105, 0.18);
+  border: 1px solid #e4e9ec;
+  padding: 56px 24px;
+  text-align: center;
+  color: #6c757d;
+}
+
+.slip-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #d1e7dd;
+  border-top-color: #198754;
+  border-radius: 50%;
+  animation: slipSpin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes slipSpin {
+  to { transform: rotate(360deg); }
+}
+
+.slip-state--error .slip-state-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f8d7da;
+  color: #842029;
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
 /* ---------- Print ---------- */
 @media print {
   .slip-page {
