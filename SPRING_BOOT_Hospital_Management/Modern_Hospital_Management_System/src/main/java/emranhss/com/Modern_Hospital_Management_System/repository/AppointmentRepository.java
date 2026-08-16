@@ -23,4 +23,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     Optional<Appointment> findByAppointmentNumber(String appointmentNumber);
 
+    List<Appointment> findByAppointmentNumberContainingIgnoreCase(String appointmentNumber);
+
+    List<Appointment> findByPatientNameContainingIgnoreCase(String patientName);
+
+    List<Appointment> findByMobileNumberContaining(String mobileNumber);
+
 }
