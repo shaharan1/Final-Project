@@ -21,6 +21,8 @@ public interface AppointmentService {
 
     AppointmentResponse getByAppointmentNumber(String appointmentNumber);
 
+    List<AppointmentResponse> searchAppointments(String query);
+
 
 
 
