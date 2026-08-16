@@ -1,112 +1,97 @@
-<div class="container mt-4">
+<div class="lp-page">
 
-<div class="card shadow">
-
-<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-  <h4 class="mb-0 fw-bold">Test List</h4>
-  <button class="btn btn-light btn-sm" routerLink="/tests/create">
-    <i class="bi bi-plus-circle me-1"></i> Add Test
-  </button>
-</div>
-
-<div class="card-body">
-
-  <div *ngIf="loading" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+  <!-- Hero -->
+  <div class="lp-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
+        <path d="M0,100 L150,100 L180,40 L210,160 L240,20 L270,180 L300,80 L330,120 L360,100 L600,100 L630,40 L660,160 L690,20 L720,180 L750,80 L780,120 L810,100 L1050,100 L1080,40 L1110,160 L1140,20 L1170,180 L1200,100" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" class="wave-path"/>
+      </svg>
     </div>
-    <p class="mt-3 text-muted">Loading tests...</p>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">🧪</div>
+      <div>
+        <h1>Test List</h1>
+        <p class="lp-hero-sub">{{ loading ? 'Loading…' : tests.length + ' lab tests' }} · Manage diagnostic tests &amp; pricing</p>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="errorMsg" class="alert alert-danger">
-    {{ errorMsg }}
+  <!-- Search -->
+  <div class="lp-search-row">
+    <div class="lp-search-wrap">
+      <span class="lp-search-icon">🔍</span>
+      <input class="lp-search" placeholder="Search test..." [(ngModel)]="keyword" (keyup)="search()">
+    </div>
   </div>
 
-  <div *ngIf="!loading && !errorMsg">
-    <input
-      class="form-control mb-3"
-      placeholder="Search Test"
-      [(ngModel)]="keyword"
-      (keyup)="search()">
-  </div>
-
-  <table class="table table-bordered">
-
-    <thead>
-
-    <tr>
-
-      <th>Code</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Range</th>
-      <th>Status</th>
-      <th>Action</th>
-
-    </tr>
-
-    </thead>
-
-    <tbody>
-
-    <tr *ngFor="let t of tests">
-
-      <td>{{t.testCode}}</td>
-
-      <td>{{t.testName}}</td>
-
-      <td>{{t.standardPrice}}</td>
-
-      <td>{{t.normalRange}}</td>
-
-      <td>
-
-        <span
-        class="badge bg-success"
-        *ngIf="t.active">
-
-        Active
-
-        </span>
-
-        <span
-        class="badge bg-danger"
-        *ngIf="!t.active">
-
-        Inactive
-
-        </span>
-
-      </td>
-
-      <td>
-
-        <button
-        class="btn btn-warning btn-sm me-2"
-        (click)="edit(t.id!)">
-
-        Edit
-
+  <!-- Table Card -->
+  <div class="lp-table-card">
+    <div class="lp-table-header">
+      <h3>All Lab Tests</h3>
+      <div class="d-flex align-items-center gap-2">
+        <span class="lp-table-count lp-count-green" *ngIf="!loading">{{ tests.length }} tests</span>
+        <button class="lp-action-btn lp-primary-btn" routerLink="/tests/create">
+          <span class="lp-btn-icon">＋</span> Add Test
         </button>
+      </div>
+    </div>
 
-        <button
-        class="btn btn-danger btn-sm"
-        (click)="delete(t.id!)">
+    <div class="lp-loading" *ngIf="loading">
+      <div class="lp-spinner"></div>
+      <p>Loading tests…</p>
+    </div>
 
-        Delete
+    <div *ngIf="errorMsg" class="alert alert-danger m-4">{{ errorMsg }}</div>
 
-        </button>
+    <div *ngIf="!loading && !errorMsg && tests.length === 0" class="lp-empty-state">
+      <div class="lp-empty-icon lp-empty-green">🧪</div>
+      <h4>No tests yet</h4>
+      <p>Click "Add Test" to create one.</p>
+    </div>
 
-      </td>
-
-    </tr>
-
-    </tbody>
-
-    </table>
-
-</div>
-
-</div>
+    <div class="table-responsive" *ngIf="!loading && tests.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="lp-th-num">#</th>
+            <th>Test</th>
+            <th>Code</th>
+            <th>Price</th>
+            <th>Range</th>
+            <th>Status</th>
+            <th class="lp-th-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of tests; let i = index" class="lp-row">
+            <td class="lp-td-num">{{ i + 1 }}</td>
+            <td>
+              <div class="lp-patient-cell">
+                <div class="lp-avatar">{{ (t.testName || '?').charAt(0).toUpperCase() }}</div>
+                <span class="lp-patient-name">{{ t.testName }}</span>
+              </div>
+            </td>
+            <td><span class="lp-pill">{{ t.testCode }}</span></td>
+            <td><span class="lp-date">৳ {{ t.standardPrice }}</span></td>
+            <td>{{ t.normalRange }}</td>
+            <td>
+              <span class="lp-pill" [style.background]="t.active ? 'linear-gradient(135deg,#d1e7dd,#badbcc)' : 'linear-gradient(135deg,#f8d7da,#f1b0b7)'"
+                [style.color]="t.active ? '#0f5132' : '#842029'">
+                {{ t.active ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
+            <td class="text-center text-nowrap">
+              <button class="lp-action-btn lp-warning-btn me-1" (click)="edit(t.id!)" title="Edit">
+                <span class="lp-btn-icon">✎</span> Edit
+              </button>
+              <button class="lp-action-btn lp-danger-btn" (click)="delete(t.id!)" title="Delete">
+                <span class="lp-btn-icon">🗑</span> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 </div>
