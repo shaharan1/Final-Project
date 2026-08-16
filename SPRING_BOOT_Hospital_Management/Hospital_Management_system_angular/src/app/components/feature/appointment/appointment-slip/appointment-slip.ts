@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import html2canvas from 'html2canvas';
@@ -28,7 +28,8 @@ export class AppointmentSlip implements AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private appointmentService: AppointmentService
+    private appointmentService: AppointmentService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -68,12 +69,13 @@ export class AppointmentSlip implements AfterViewInit {
           this.errorMsg = 'No appointment found for "' + query + '".';
           return;
         }
-        if (res.length === 1) {
-          this.appointment = res[0];
-          this.maybeAutoDownload();
-        } else {
+    
           this.results = res;
-        }
+          this.maybeAutoDownload();
+          this.cdr.detectChanges();
+          this.loading = false;
+          
+  
       },
       error: () => {
         this.loading = false;
