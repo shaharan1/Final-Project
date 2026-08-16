@@ -38,29 +38,28 @@ public class PatientServiceImp implements PatientService {
 
         Patient patient = patientMapper.toEntity(request);
 
-        Appointment appointment= new Appointment();
-
-
-        // Appointment থেকে Auto Fill
-        if (request.getAppointmentId() != null) {
-
-             appointment = appointmentRepository
-                    .findById(request.getAppointmentId())
-                    .orElseThrow(() ->
-                            new ResourceNotFoundException("Appointment not found"));
-
-
-            patient.setName(appointment.getPatientName());
-            patient.setPhone(appointment.getMobileNumber());
-
-        }
-
         patient.setPatientCode(generatePatientCode());
 
         Patient savedPatient = patientRepository.save(patient);
 
-        appointment.setPatient(savedPatient);
-        appointmentRepository.save(appointment);
+        // Appointment ???? Auto Fill (only when an appointment is linked)
+        if (request.getAppointmentId() != null) {
+
+            Appointment appointment = appointmentRepository
+                    .findById(request.getAppointmentId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException("Appointment not found"));
+
+            patient.setName(appointment.getPatientName());
+            patient.setPhone(appointment.getMobileNumber());
+
+            Patient updatedPatient = patientRepository.save(patient);
+
+            appointment.setPatient(updatedPatient);
+            appointmentRepository.save(appointment);
+
+            return patientMapper.toResponse(updatedPatient);
+        }
 
         return patientMapper.toResponse(savedPatient);
     }
