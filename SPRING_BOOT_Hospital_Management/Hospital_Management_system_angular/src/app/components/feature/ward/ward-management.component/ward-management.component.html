@@ -1,18 +1,24 @@
 <div class="wm-container">
 
-  <!-- Hero Section -->
-  <div class="wm-hero">
-    <div class="wm-hero-content">
-      <div class="wm-hero-icon">🏥</div>
-      <h1>Ward & Bed Management</h1>
-      <p>Monitor hospital wards, bed occupancy, and patient admissions in real-time</p>
-    </div>
-    <div class="wm-hero-pulse" aria-hidden="true">
-      <svg viewBox="0 0 400 120" width="100%" height="100%" preserveAspectRatio="none">
-        <polyline points="0,60 40,60 55,20 70,100 85,60 130,60 145,35 160,85 175,60 400,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Hero -->
+  <section class="lp-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6"/>
       </svg>
     </div>
-  </div>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">🏥</div>
+      <div>
+        <h1>Ward &amp; Bed Management</h1>
+        <p class="lp-hero-sub">Monitor hospital wards, bed occupancy, and patient admissions in real-time</p>
+      </div>
+    </div>
+    <div class="lp-hero-actions">
+      <button class="wm-add-btn" (click)="openCreateWardModal()">+ New Ward</button>
+    </div>
+  </section>
 
   <!-- Summary Stats -->
   <div class="wm-stats-row">
@@ -50,7 +56,6 @@
   <div *ngIf="!selectedWard">
     <div class="wm-section-header">
       <h2 class="wm-section-title">Hospital Wards</h2>
-      <button class="wm-add-btn" (click)="openCreateWardModal()">+ New Ward</button>
     </div>
     <div class="wm-ward-grid">
       <div class="wm-ward-card" *ngFor="let ward of wards" (click)="selectWard(ward)">

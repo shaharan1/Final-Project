@@ -2,19 +2,9 @@
 
 .wm-container { padding: 24px; max-width: 1400px; margin: 0 auto; }
 
-/* Hero */
-.wm-hero {
-  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
-  border-radius: 20px;
-  padding: 36px 40px;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 28px;
-}
-.wm-hero h1 { font-size: 28px; font-weight: 800; margin: 0 0 6px; }
-.wm-hero p { margin: 0; opacity: 0.85; font-size: 15px; }
-.wm-hero-pulse { position: absolute; right: 0; bottom: 0; left: 0; height: 60px; opacity: 0.4; }
+/* Hero uses the shared global .lp-hero design system */
+.lp-hero .wm-add-btn { background: #fff; color: #059669; box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+.lp-hero .wm-add-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.22); background: #fff; color: #047857; }
 
 /* Stats Row */
 .wm-stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
@@ -30,9 +20,9 @@
 }
 .wm-stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
 .wm-stat-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: #fff; }
-.wm-stat-total .wm-stat-icon { background: linear-gradient(135deg, #6610f2, #6f42c1); }
+.wm-stat-total .wm-stat-icon { background: linear-gradient(135deg, #059669, #0891b2); }
 .wm-stat-available .wm-stat-icon { background: linear-gradient(135deg, #198754, #20c997); }
-.wm-stat-occupied .wm-stat-icon { background: linear-gradient(135deg, #dc3545, #e83e8c); }
+.wm-stat-occupied .wm-stat-icon { background: linear-gradient(135deg, #ef4444, #dc3545); }
 .wm-stat-maintenance .wm-stat-icon { background: linear-gradient(135deg, #fd7e14, #ffc107); }
 .wm-stat-value { display: block; font-size: 26px; font-weight: 800; color: #1a1a2e; }
 .wm-stat-label { display: block; font-size: 13px; color: #6c757d; margin-top: 2px; }
@@ -51,7 +41,7 @@
   transition: transform 0.25s, box-shadow 0.25s;
   border: 2px solid transparent;
 }
-.wm-ward-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); border-color: #0d6efd; }
+.wm-ward-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); border-color: #059669; }
 .wm-ward-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
 .wm-ward-header h3 { margin: 0; font-size: 18px; font-weight: 700; color: #1a1a2e; }
 .wm-room-badge { background: #e9ecef; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #495057; }
@@ -70,7 +60,7 @@
   padding: 10px;
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  background: linear-gradient(135deg, #059669, #0891b2);
   color: #fff;
   font-weight: 600;
   font-size: 14px;
@@ -90,7 +80,7 @@
   cursor: pointer;
   transition: border-color 0.2s;
 }
-.wm-back-btn:hover { border-color: #0d6efd; color: #0d6efd; }
+.wm-back-btn:hover { border-color: #059669; color: #059669; }
 .wm-beds-header h2 { margin: 0; font-size: 22px; font-weight: 700; }
 .wm-ward-badge { background: #e9ecef; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
 
@@ -105,7 +95,7 @@
   transition: border-color 0.2s;
   outline: none;
 }
-.wm-search:focus { border-color: #0d6efd; }
+.wm-search:focus { border-color: #059669; }
 .wm-filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
 .wm-pill {
   padding: 8px 18px;
@@ -117,7 +107,7 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-.wm-pill.active { border-color: #0d6efd; background: #0d6efd; color: #fff; }
+.wm-pill.active { border-color: #059669; background: #059669; color: #fff; }
 .wm-pill-available.active { border-color: #198754; background: #198754; }
 .wm-pill-occupied.active { border-color: #dc3545; background: #dc3545; }
 .wm-pill-maintenance.active { border-color: #fd7e14; background: #fd7e14; }
@@ -280,7 +270,7 @@
   width: 100%; padding: 10px 14px; border: 2px solid #e9ecef; border-radius: 10px;
   font-size: 14px; outline: none; transition: border-color 0.2s;
 }
-.wm-form-select:focus, .wm-form-textarea:focus { border-color: #0d6efd; }
+.wm-form-select:focus, .wm-form-textarea:focus { border-color: #059669; }
 .wm-form-textarea { resize: vertical; }
 
 .wm-modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #e9ecef; }
@@ -331,7 +321,7 @@
 
 /* ── Manage Facilities Button ── */
 .wm-bed-btn-facility {
-  background: linear-gradient(135deg, #6610f2, #6f42c1) !important;
+  background: linear-gradient(135deg, #059669, #0891b2) !important;
   color: #fff !important; border: none !important;
   padding: 6px 12px !important; border-radius: 8px !important;
   font-size: .75rem !important; font-weight: 600 !important;
@@ -339,7 +329,7 @@
 }
 .wm-bed-btn-facility:hover {
   transform: translateY(-1px) !important;
-  box-shadow: 0 3px 10px rgba(102,16,242,.3) !important;
+  box-shadow: 0 3px 10px rgba(5,150,105,.3) !important;
 }
 
 /* ── Facility Modal ── */
@@ -354,7 +344,7 @@
 }
 .wm-facility-item input[type="checkbox"] {
   position: absolute; top: 8px; right: 8px; z-index: 2;
-  width: 16px; height: 16px; accent-color: #6610f2;
+  width: 16px; height: 16px; accent-color: #059669;
 }
 .wm-facility-card {
   border: 2px solid #e9ecef; border-radius: 10px;
@@ -362,14 +352,14 @@
   transition: all .15s; position: relative;
 }
 .wm-facility-item:hover .wm-facility-card {
-  border-color: #6610f2; background: #f3f0ff;
+  border-color: #059669; background: #ecfdf5;
 }
 .wm-facility-item.selected .wm-facility-card {
-  border-color: #6610f2; background: #ede7f6;
+  border-color: #059669; background: #ecfdf5;
 }
 .wm-facility-chk {
   display: none; position: absolute; top: 6px; right: 6px;
-  background: #6610f2; color: #fff; border-radius: 50%;
+  background: #059669; color: #fff; border-radius: 50%;
   width: 20px; height: 20px; font-size: .7rem;
   align-items: center; justify-content: center;
 }
@@ -385,7 +375,7 @@
   border-radius: 8px; font-size: .85rem; box-sizing: border-box;
   transition: border-color .2s;
 }
-.wm-patient-search:focus { outline: none; border-color: #0d6efd; }
+.wm-patient-search:focus { outline: none; border-color: #059669; }
 .wm-patient-selected {
   display: flex; align-items: center; justify-content: space-between;
   background: #e8f5e9; border: 2px solid #66bb6a; border-radius: 8px;
@@ -408,9 +398,9 @@
   padding: 8px 12px; cursor: pointer; transition: background .15s;
   border-bottom: 1px solid #f5f5f5;
 }
-.wm-patient-option:hover { background: #f0f7ff; }
+.wm-patient-option:hover { background: #f0fdf9; }
 .wm-po-code {
-  background: #e3f2fd; color: #1565c0; padding: 2px 6px;
+  background: #d1fae5; color: #047857; padding: 2px 6px;
   border-radius: 4px; font-size: .72rem; font-weight: 700; font-family: monospace;
 }
 .wm-po-name { font-size: .82rem; font-weight: 600; color: #333; flex: 1; }
@@ -422,13 +412,11 @@
   width: 100%; padding: 8px 12px; border: 2px solid #e9ecef;
   border-radius: 8px; font-size: .85rem; box-sizing: border-box;
 }
-.wm-form-input:focus { outline: none; border-color: #0d6efd; }
+.wm-form-input:focus { outline: none; border-color: #059669; }
 
 /* Responsive */
 @media (max-width: 768px) {
   .wm-container { padding: 16px; }
-  .wm-hero { padding: 24px 20px; }
-  .wm-hero h1 { font-size: 22px; }
   .wm-stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .wm-ward-grid { grid-template-columns: 1fr; }
   .wm-bed-grid { grid-template-columns: 1fr; }
@@ -439,21 +427,6 @@
   .wm-stats-row { grid-template-columns: 1fr 1fr; }
 }
 
-.wm-hero-icon {
-  font-size: 36px;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-bottom: 14px;
-  animation: iconFloat 3s ease-in-out infinite;
-}
-@keyframes iconFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
+/* fade-in to match the shared .lp-* design system */
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lp-hero, .wm-stats-row, .wm-section-header, .wm-filters, .wm-ward-grid, .wm-bed-grid { animation: lpFadeIn .5s ease both; }
