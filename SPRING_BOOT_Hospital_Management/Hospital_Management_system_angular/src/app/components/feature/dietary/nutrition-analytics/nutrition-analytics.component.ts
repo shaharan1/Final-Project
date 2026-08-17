@@ -97,6 +97,10 @@ export class NutritionAnalyticsComponent implements OnInit {
     const counts: Record<string, number> = {};
     for (const p of this.allPlans) {
       const t = p.dietType || 'Other';
+      counts[t] = 0;
+    }
+    for (const o of this.allOrders) {
+      const t = o.dietType || 'Other';
       counts[t] = (counts[t] || 0) + 1;
     }
     this.dietTypeData = Object.entries(counts).map(([type, count]) => ({
@@ -157,18 +161,14 @@ export class NutritionAnalyticsComponent implements OnInit {
   private buildCompletionData(): void {
     const mealTimes = ['BREAKFAST', 'LUNCH', 'DINNER', 'MORNING_SNACKS', 'EVENING_SNACKS'];
     const labels = ['Breakfast', 'Lunch', 'Dinner', 'Morning Snacks', 'Evening Snacks'];
+    const preparedStatuses = ['PREPARING', 'COOKING', 'READY', 'DELIVERED'];
     this.completionData = mealTimes.map((mt, i) => {
       const mealOrders = this.allOrders.filter(o => o.mealTime === mt);
-      const prepared = mealOrders.length;
-      const delivered = mealOrders.filter(o => o.status === 'DELIVERED' || o.status === 'READY').length;
+      const prepared = mealOrders.filter(o => preparedStatuses.includes(o.status)).length;
+      const delivered = mealOrders.filter(o => o.status === 'DELIVERED').length;
       const percentage = prepared > 0 ? Math.round((delivered / prepared) * 100) : 0;
       return { label: labels[i], delivered, prepared, percentage };
-    }).filter(d => d.prepared > 0);
-    if (this.completionData.length === 0) {
-      this.completionData = mealTimes.map((mt, i) => ({
-        label: labels[i], delivered: 0, prepared: 0, percentage: 0
-      }));
-    }
+    });
   }
 
   onPeriodChange(period: string): void {

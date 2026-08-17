@@ -102,9 +102,9 @@
             <div class="completion-row" *ngFor="let item of completionData">
               <span class="comp-label">{{ item.label }}</span>
               <div class="comp-track">
-                <div class="comp-fill" [style.width.%]="item.delivered" [style.background]="item.delivered > 80 ? '#198754' : item.delivered > 60 ? '#fd7e14' : '#dc3545'"></div>
+                <div class="comp-fill" [style.width.%]="item.percentage" [style.background]="item.percentage > 80 ? '#198754' : item.percentage > 60 ? '#fd7e14' : '#dc3545'"></div>
               </div>
-              <span class="comp-val">{{ item.delivered }}%</span>
+              <span class="comp-val">{{ item.percentage }}%</span>
             </div>
           </div>
           <div class="donut-container">
