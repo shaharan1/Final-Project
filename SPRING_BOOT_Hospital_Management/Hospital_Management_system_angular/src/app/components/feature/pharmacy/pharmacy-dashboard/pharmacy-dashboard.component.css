@@ -203,7 +203,7 @@
   filter: blur(40px);
   opacity: 0.15;
   pointer-events: none;
-    }.stat-glow--blue {     background: #059669;     }.stat-glow--purple {     background: #6610f2;     }.stat-glow--green {     background: #198754;     }.stat-glow--yellow {     background: #ffc107;     }.stat-glow--red {     background: #dc3545;     }.stat-glow--orange {     background: #fd7e14;     }/* ── QUICK ACTIONS ── */
+    }.stat-glow--blue {     background: #059669;     }.stat-glow--purple {     background: #0891b2;     }.stat-glow--green {     background: #198754;     }.stat-glow--yellow {     background: #ffc107;     }.stat-glow--red {     background: #dc3545;     }.stat-glow--orange {     background: #fd7e14;     }/* ── QUICK ACTIONS ── */
 .section-title {    
   font-size: 1.1rem;
   font-weight: 700;
@@ -247,8 +247,8 @@
   background: linear-gradient(135deg, rgba(25, 135, 84, 0.25), rgba(25, 135, 84, 0.08));
   color: #198754;
     }.action-icon--purple {    
-  background: linear-gradient(135deg, rgba(102, 16, 242, 0.25), rgba(102, 16, 242, 0.08));
-  color: #6610f2;
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.25), rgba(8, 145, 178, 0.08));
+  color: #0891b2;
     }.action-icon--orange {    
   background: linear-gradient(135deg, rgba(253, 126, 20, 0.25), rgba(253, 126, 20, 0.08));
   color: #fd7e14;
