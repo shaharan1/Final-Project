@@ -161,7 +161,7 @@
 .pulse-dot {
   width: 14px;
   height: 14px;
-  background: #198754;
+  background: #22c55e;
   border-radius: 50%;
   z-index: 2;
   position: relative;
@@ -214,7 +214,7 @@
 }
 
 .action-create:hover {
-  border-color: #198754;
+  border-color: #22c55e;
   box-shadow: 0 4px 20px rgba(25, 135, 84, 0.3);
 }
 

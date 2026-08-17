@@ -1,4 +1,4 @@
-:host {
+﻿:host {
   display: block;
 }
 
@@ -456,7 +456,7 @@
 
 .badge-success {
   background: rgba(34, 197, 94, 0.15);
-  color: #15803d;
+  color: #0d6b2f;
 }
 
 .badge-secondary {
@@ -519,7 +519,7 @@
 .assign-btn:hover {
   background: rgba(34, 197, 94, 0.15);
   border-color: rgba(34, 197, 94, 0.4);
-  color: #15803d;
+  color: #0d6b2f;
 }
 
 .empty-state {
@@ -570,7 +570,7 @@
 }
 
 .status-item.ambulances {
-  color: #15803d;
+  color: #0d6b2f;
 }
 
 .status-item.beds {

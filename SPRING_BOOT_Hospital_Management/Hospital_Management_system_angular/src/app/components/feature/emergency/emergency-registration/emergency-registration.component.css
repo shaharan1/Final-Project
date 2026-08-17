@@ -858,7 +858,7 @@
   .toggle-label,
   .severity-radio,
   .status-item {
-    color: #111827;
+    color: #2c3e50;
   }
 
   .form-input,
@@ -866,7 +866,7 @@
   .form-textarea {
     background: #f9fafb;
     border-color: #d1d5db;
-    color: #111827;
+    color: #2c3e50;
   }
 
   .action-bar,

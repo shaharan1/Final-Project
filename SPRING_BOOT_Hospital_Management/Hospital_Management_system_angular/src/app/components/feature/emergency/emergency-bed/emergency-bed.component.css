@@ -210,7 +210,7 @@
 }
 
 .action-create:hover {
-  border-color: #198754;
+  border-color: #22c55e;
   box-shadow: 0 4px 20px rgba(25, 135, 84, 0.3);
 }
 
@@ -438,7 +438,7 @@
   display: inline-block;
 }
 
-.status-dot.available { background: #198754; }
+.status-dot.available { background: #22c55e; }
 .status-dot.occupied { background: #dc3545; }
 .status-dot.cleaning { background: #ffc107; }
 
