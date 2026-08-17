@@ -25,15 +25,15 @@ export class DietReportsComponent implements OnInit {
   msgType = '';
 
   reportTypes = [
-    { key: 'meal', label: 'Meal Report', icon: 'plate', desc: 'Daily meal consumption and delivery' },
-    { key: 'patient-diet', label: 'Patient Diet Report', icon: 'patient', desc: 'Patient-wise diet assignment summary' },
-    { key: 'kitchen', label: 'Kitchen Report', icon: 'kitchen', desc: 'Kitchen production and efficiency' },
-    { key: 'dietician', label: 'Dietician Report', icon: 'user', desc: 'Dietician performance metrics' },
-    { key: 'nutrition', label: 'Nutrition Report', icon: 'chart', desc: 'Nutrition intake analysis' },
-    { key: 'consumption', label: 'Consumption Report', icon: 'fork', desc: 'Meal consumption patterns' },
-    { key: 'calories', label: 'Calories Report', icon: 'fire', desc: 'Daily calorie tracking' },
-    { key: 'ward', label: 'Ward Report', icon: 'ward', desc: 'Wise meal distribution' },
-    { key: 'doctor', label: 'Doctor Wise Diet', icon: 'doctor', desc: 'Doctor-wise diet assignments' }
+    { key: 'meal', label: 'Meal Report', emoji: '🍽️', desc: 'Daily meal consumption and delivery' },
+    { key: 'patient-diet', label: 'Patient Diet Report', emoji: '🧑', desc: 'Patient-wise diet assignment summary' },
+    { key: 'kitchen', label: 'Kitchen Report', emoji: '🍳', desc: 'Kitchen production and efficiency' },
+    { key: 'dietician', label: 'Dietician Report', emoji: '👩‍⚕️', desc: 'Dietician performance metrics' },
+    { key: 'nutrition', label: 'Nutrition Report', emoji: '📊', desc: 'Nutrition intake analysis' },
+    { key: 'consumption', label: 'Consumption Report', emoji: '🍴', desc: 'Meal consumption patterns' },
+    { key: 'calories', label: 'Calories Report', emoji: '🔥', desc: 'Daily calorie tracking' },
+    { key: 'ward', label: 'Ward Report', emoji: '🏥', desc: 'Wise meal distribution' },
+    { key: 'doctor', label: 'Doctor Wise Diet', emoji: '👨‍⚕️', desc: 'Doctor-wise diet assignments' }
   ];
 
   constructor(

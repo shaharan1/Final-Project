@@ -39,7 +39,7 @@
       <h3 class="section-title">Report Type</h3>
       <div class="report-cards">
         <div class="report-card glass" *ngFor="let rt of reportTypes" [class.active]="selectedReport===rt.key" (click)="selectedReport=rt.key;loadReport()">
-          <div class="report-icon">{{ rt.icon }}</div>
+          <div class="report-icon">{{ rt.emoji }}</div>
           <div class="report-info"><h4>{{ rt.label }}</h4><p>{{ rt.desc }}</p></div>
         </div>
       </div>
