@@ -1,8 +1,8 @@
-:host {
+﻿:host {
   display: block;
   min-height: 100vh;
-  background: #0a0e27;
-  color: #e2e8f0;
+  background: #eef2f6;
+  color: #334155;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
@@ -49,7 +49,7 @@
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
@@ -67,11 +67,11 @@
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 4px 0;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .subtitle {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(30, 41, 59, 0.95);
   font-size: 14px;
   margin: 0;
 }
@@ -94,12 +94,12 @@
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 16px;
   padding: 20px;
   backdrop-filter: blur(20px);
@@ -117,12 +117,12 @@
   font-size: 18px;
   font-weight: 600;
   margin: 0;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .btn-close {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   color: #94a3b8;
   width: 32px;
   height: 32px;
@@ -160,9 +160,9 @@
 }
 
 .filter-select {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e2e8f0;
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
+  color: #334155;
   padding: 6px 12px;
   border-radius: 8px;
   font-size: 13px;
@@ -170,8 +170,8 @@
 }
 
 .filter-select option {
-  background: #1a1f3a;
-  color: #e2e8f0;
+  background: #fff;
+  color: #334155;
 }
 
 .patient-list {
@@ -187,15 +187,15 @@
 }
 
 .patient-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 4px;
 }
 
 .patient-row {
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(30, 41, 59, 0.95);
+  background: rgba(30, 41, 59, 0.95);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -309,7 +309,7 @@
 .info-value {
   font-size: 14px;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .triage-level-section {
@@ -333,7 +333,7 @@
 }
 
 .triage-card {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-left: 4px solid;
   border-radius: 10px;
   padding: 12px 8px;
@@ -343,13 +343,13 @@
 }
 
 .triage-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(30, 41, 59, 0.95);
   transform: translateY(-2px);
 }
 
 .triage-card.active {
   box-shadow: 0 0 24px rgba(96, 165, 250, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(30, 41, 59, 0.95);
 }
 
 .triage-card-level {
@@ -397,11 +397,11 @@
 
 .vital-input-wrap input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 8px;
   padding: 8px 12px;
-  color: #e2e8f0;
+  color: #334155;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
@@ -454,7 +454,7 @@
 }
 
 .vital-slider-field label strong {
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .pain-slider {
@@ -504,11 +504,11 @@
 }
 
 .vital-field textarea {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 8px;
   padding: 10px 12px;
-  color: #e2e8f0;
+  color: #334155;
   font-size: 14px;
   outline: none;
   resize: vertical;
@@ -528,8 +528,8 @@
   width: 100%;
   margin-top: 20px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  color: #fff;
+  background: linear-gradient(135deg, #059669, #0891b2);
+  color: #2c3e50;
   border: none;
   border-radius: 10px;
   font-size: 15px;
@@ -555,8 +555,8 @@
 .spinner-sm {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
+  border: 2px solid rgba(30, 41, 59, 0.95);
+  border-top-color: #2c3e50;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -574,7 +574,7 @@
 .spinner {
   width: 36px;
   height: 36px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(30, 41, 59, 0.95);
   border-top-color: #60a5fa;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -628,7 +628,7 @@
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .recent-assessments {
@@ -639,7 +639,7 @@
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 12px 0;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .table-wrap {
@@ -651,7 +651,7 @@
 }
 
 .table-wrap::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 4px;
 }
 
@@ -669,14 +669,14 @@ th {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
   white-space: nowrap;
 }
 
 td {
   padding: 8px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  color: #cbd5e1;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
+  color: #475569;
   white-space: nowrap;
 }
 
@@ -720,3 +720,14 @@ td {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Light theme normalization (emergency module) ---- */
+.lp-hero-actions { position: relative; z-index: 2; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.glass, .glass-card, .stat-card, .ward-card, .bed-card, .ambulance-card, .patient-card, .order-card, .drug-card, .quick-card, .patient-item, .patient-row, .queue-section, .panel, .card, .modal-content, .summary-panel, .recent-assessments, .filter-select-wrap {
+  background: #fff !important;
+  border: 1px solid #eef2f6 !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lp-hero, .glass, .glass-card, .stat-card, .panel, .card, .ward-card, .bed-card, .ambulance-card, .patient-card, section { animation: lpFadeIn .5s ease both; }

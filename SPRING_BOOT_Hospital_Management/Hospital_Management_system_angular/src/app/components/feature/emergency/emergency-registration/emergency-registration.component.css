@@ -1,9 +1,9 @@
-.emergency-registration-container {
+﻿.emergency-registration-container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background: #eef2f6;
 }
 
 /* ── Header ── */
@@ -42,7 +42,7 @@
 .page-title {
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: #2c3e50;
   margin: 0;
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
 }
 
 .page-subtitle {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(30, 41, 59, 0.95);
   margin: 4px 0 0 0;
   font-size: 14px;
 }
@@ -79,7 +79,7 @@
 .counter-label {
   display: block;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(30, 41, 59, 0.95);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 4px;
@@ -98,9 +98,9 @@
   gap: 24px;
   margin-bottom: 24px;
   padding: 14px 24px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(12px);
   flex-wrap: wrap;
 }
@@ -110,7 +110,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(30, 41, 59, 0.95);
 }
 
 .status-dot {
@@ -123,7 +123,7 @@
 .dot-critical { background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
 .dot-waiting { background: #f59e0b; box-shadow: 0 0 8px rgba(245, 158, 11, 0.6); }
 .dot-treated { background: #3b82f6; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
-.dot-discharged { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
+.dot-discharged { background: #22c55e; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
 
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
@@ -132,19 +132,19 @@
 
 /* ── Glass Card ── */
 .glass-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 18px;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    inset 0 1px 0 rgba(30, 41, 59, 0.95);
   transition: border-color 0.3s ease;
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(30, 41, 59, 0.95);
 }
 
 /* ── Section Header ── */
@@ -159,7 +159,7 @@
   gap: 14px;
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 .section-icon {
@@ -199,13 +199,13 @@
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: #ffffff;
+  color: #2c3e50;
   margin: 0;
 }
 
 .section-subtitle {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(30, 41, 59, 0.95);
   margin: 2px 0 0 0;
 }
 
@@ -219,7 +219,7 @@
 
 .toggle-label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(30, 41, 59, 0.95);
   user-select: none;
 }
 
@@ -240,7 +240,7 @@
 .toggle-slider {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 24px;
   transition: all 0.3s ease;
 }
@@ -258,7 +258,7 @@
 }
 
 .toggle-switch input:checked + .toggle-slider {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #059669, #0891b2);
 }
 
 .toggle-switch input:checked + .toggle-slider::before {
@@ -285,7 +285,7 @@
   display: block;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(30, 41, 59, 0.95);
   margin-bottom: 6px;
 }
 
@@ -298,10 +298,10 @@
 .form-textarea {
   width: 100%;
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 10px;
-  color: #ffffff;
+  color: #2c3e50;
   font-size: 14px;
   font-family: inherit;
   outline: none;
@@ -311,14 +311,14 @@
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.25);
+  color: rgba(30, 41, 59, 0.95);
 }
 
 .form-input:focus,
 .form-select:focus,
 .form-textarea:focus {
   border-color: rgba(139, 92, 246, 0.5);
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.95);
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
 }
 
@@ -331,7 +331,7 @@
 
 .form-select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='rgba(30, 41, 59, 0.95)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 36px;
@@ -339,8 +339,8 @@
 }
 
 .form-select option {
-  background: #1e1b4b;
-  color: #ffffff;
+  background: #fff;
+  color: #2c3e50;
 }
 
 .form-textarea {
@@ -355,7 +355,7 @@
   gap: 10px;
   cursor: pointer;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(30, 41, 59, 0.95);
   user-select: none;
   padding: 8px 0;
 }
@@ -368,7 +368,7 @@
   width: 20px;
   height: 20px;
   border-radius: 6px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(30, 41, 59, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -377,7 +377,7 @@
 }
 
 .checkbox-label input:checked + .checkbox-custom {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, #059669, #0891b2);
   border-color: #8b5cf6;
 }
 
@@ -397,9 +397,9 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.2px;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(30, 41, 59, 0.95);
   padding: 12px 0 4px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 /* ── Severity Options ── */
@@ -415,11 +415,11 @@
   gap: 8px;
   padding: 8px 14px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(30, 41, 59, 0.95);
+  background: rgba(30, 41, 59, 0.95);
   cursor: pointer;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(30, 41, 59, 0.95);
   transition: all 0.25s ease;
   user-select: none;
 }
@@ -438,7 +438,7 @@
 .severity-dot.critical { background: #ef4444; }
 .severity-dot.high { background: #f59e0b; }
 .severity-dot.moderate { background: #3b82f6; }
-.severity-dot.low { background: #10b981; }
+.severity-dot.low { background: #22c55e; }
 
 .severity-radio.severity-critical {
   border-color: rgba(239, 68, 68, 0.4);
@@ -502,8 +502,8 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #ffffff;
+  background: linear-gradient(135deg, #059669, #0891b2);
+  color: #2c3e50;
   box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
 }
 
@@ -513,24 +513,24 @@
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  color: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(30, 41, 59, 0.95);
 }
 
 .btn-ghost {
   background: transparent;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(30, 41, 59, 0.95);
 }
 
 .btn-ghost:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.8);
+  background: rgba(30, 41, 59, 0.95);
+  color: rgba(30, 41, 59, 0.95);
 }
 
 .btn-lg {
@@ -548,8 +548,8 @@
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  border: 2px solid rgba(30, 41, 59, 0.95);
+  border-top-color: #2c3e50;
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
@@ -643,16 +643,16 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(30, 41, 59, 0.95);
   padding: 10px 14px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 .recent-table td {
   padding: 12px 14px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.75);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(30, 41, 59, 0.95);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
   vertical-align: middle;
 }
 
@@ -661,7 +661,7 @@
 }
 
 .recent-table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 41, 59, 0.95);
 }
 
 .emergency-number {
@@ -679,17 +679,17 @@
 
 .patient-name {
   font-weight: 500;
-  color: #ffffff;
+  color: #2c3e50;
 }
 
 .patient-age {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(30, 41, 59, 0.95);
 }
 
 .time-cell {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(30, 41, 59, 0.95);
   white-space: nowrap;
 }
 
@@ -760,9 +760,9 @@
 }
 
 .badge-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  color: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 /* ── Responsive ── */
@@ -875,3 +875,14 @@
     display: none !important;
   }
 }
+
+/* ---- Light theme normalization (emergency module) ---- */
+.lp-hero-actions { position: relative; z-index: 2; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.glass, .glass-card, .stat-card, .ward-card, .bed-card, .ambulance-card, .patient-card, .order-card, .drug-card, .quick-card, .patient-item, .patient-row, .queue-section, .panel, .card, .modal-content, .summary-panel, .recent-assessments, .filter-select-wrap {
+  background: #fff !important;
+  border: 1px solid #eef2f6 !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lp-hero, .glass, .glass-card, .stat-card, .panel, .card, .ward-card, .bed-card, .ambulance-card, .patient-card, section { animation: lpFadeIn .5s ease both; }

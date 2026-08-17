@@ -1,8 +1,8 @@
-:host {
+﻿:host {
   display: block;
   min-height: 100vh;
-  background: #0a0e27;
-  color: #e0e6f0;
+  background: #eef2f6;
+  color: #334155;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
@@ -47,7 +47,7 @@
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
@@ -64,7 +64,7 @@
 .page-header h1 {
   font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .order-count {
@@ -121,9 +121,9 @@
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 16px;
   padding: 20px;
 }
@@ -132,16 +132,16 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 16px;
-  color: #c4ccdc;
+  color: #475569;
 }
 
 .glass-input, .glass-select, .glass-textarea {
   width: 100%;
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 10px;
-  color: #e0e6f0;
+  color: #334155;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s;
@@ -153,8 +153,8 @@
 }
 
 .glass-select option {
-  background: #1a1f3a;
-  color: #e0e6f0;
+  background: #fff;
+  color: #334155;
 }
 
 .patient-list {
@@ -170,7 +170,7 @@
 }
 
 .patient-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 2px;
 }
 
@@ -182,12 +182,12 @@
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 41, 59, 0.95);
   border: 1px solid transparent;
 }
 
 .patient-item:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(30, 41, 59, 0.95);
 }
 
 .patient-item.selected {
@@ -203,7 +203,7 @@
 
 .patient-id {
   font-size: 11px;
-  color: #8892a4;
+  color: #64748b;
 }
 
 .triage-badge {
@@ -233,8 +233,8 @@
   align-items: center;
   gap: 4px;
   padding: 12px 8px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
@@ -254,12 +254,12 @@
   font-size: 11px;
   font-weight: 600;
   text-align: center;
-  color: #c4ccdc;
+  color: #475569;
 }
 
 .drug-dose {
   font-size: 10px;
-  color: #8892a4;
+  color: #64748b;
 }
 
 .route-badge {
@@ -306,7 +306,7 @@
 .form-group label {
   font-size: 12px;
   font-weight: 500;
-  color: #8892a4;
+  color: #64748b;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -322,7 +322,7 @@
   gap: 8px;
   font-size: 13px;
   cursor: pointer;
-  color: #c4ccdc;
+  color: #475569;
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -340,7 +340,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  background: linear-gradient(135deg, #059669, #0891b2);
   color: white;
 }
 
@@ -374,14 +374,14 @@ table th {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #8892a4;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #64748b;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 table td {
   padding: 10px 12px;
   font-size: 13px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 table td.actions {
@@ -411,12 +411,12 @@ table td.actions {
 
 .pharmacy-status.fulfilled { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
 .pharmacy-status.pending { background: rgba(234, 179, 8, 0.2); color: #facc15; }
-.no-request { color: #555d6e; }
+.no-request { color: #64748b; }
 
 .empty-state {
   text-align: center;
   padding: 30px;
-  color: #555d6e;
+  color: #64748b;
   font-size: 13px;
 }
 
@@ -431,12 +431,12 @@ table td.actions {
 }
 
 .empty-patient h3 {
-  color: #c4ccdc;
+  color: #475569;
   margin-bottom: 8px;
 }
 
 .empty-patient p {
-  color: #555d6e;
+  color: #64748b;
   font-size: 14px;
 }
 
@@ -445,3 +445,14 @@ table td.actions {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---- Light theme normalization (emergency module) ---- */
+.lp-hero-actions { position: relative; z-index: 2; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.glass, .glass-card, .stat-card, .ward-card, .bed-card, .ambulance-card, .patient-card, .order-card, .drug-card, .quick-card, .patient-item, .patient-row, .queue-section, .panel, .card, .modal-content, .summary-panel, .recent-assessments, .filter-select-wrap {
+  background: #fff !important;
+  border: 1px solid #eef2f6 !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lp-hero, .glass, .glass-card, .stat-card, .panel, .card, .ward-card, .bed-card, .ambulance-card, .patient-card, section { animation: lpFadeIn .5s ease both; }

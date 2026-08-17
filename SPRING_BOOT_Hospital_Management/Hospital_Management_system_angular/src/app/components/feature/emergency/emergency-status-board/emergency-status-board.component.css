@@ -1,4 +1,4 @@
-:host {
+﻿:host {
   display: block;
   width: 100%;
 }
@@ -6,8 +6,8 @@
 .status-board {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0f172a 100%);
-  color: #e2e8f0;
+  background: #eef2f6;
+  color: #334155;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   padding: 1rem;
 }
@@ -21,7 +21,7 @@
   background: linear-gradient(135deg, #059669 0%, #0891b2 100%) !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 16px;
   margin-bottom: 1rem;
   position: relative;
@@ -66,14 +66,14 @@
 .header-icon svg {
   width: 28px;
   height: 28px;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .header-text h1 {
   margin: 0;
   font-size: 1.3rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  background: linear-gradient(135deg, #f8fafc, #334155);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -140,8 +140,8 @@
 .refresh-btn {
   width: 36px;
   height: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(30, 41, 59, 0.95);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -152,8 +152,8 @@
 }
 
 .refresh-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(30, 41, 59, 0.95);
   color: #f1f5f9;
   transform: rotate(90deg);
 }
@@ -167,7 +167,7 @@
 .loading-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 14, 26, 0.85);
+  background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
@@ -182,7 +182,7 @@
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(30, 41, 59, 0.95);
   border-top-color: #3b82f6;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -197,10 +197,10 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 12px;
   padding: 0.75rem 1rem;
   display: flex;
@@ -210,8 +210,8 @@
 }
 
 .stat-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(30, 41, 59, 0.95);
   transform: translateY(-1px);
 }
 
@@ -233,14 +233,14 @@
 .stat-icon svg {
   width: 20px;
   height: 20px;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .waiting-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
 .treating-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-.critical-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
-.beds-icon { background: linear-gradient(135deg, #10b981, #059669); }
-.ambulances-icon { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.critical-icon { background: linear-gradient(135deg, #059669, #0891b2); }
+.beds-icon { background: linear-gradient(135deg, #22c55e, #059669); }
+.ambulances-icon { background: linear-gradient(135deg, #059669, #0891b2); }
 .doctors-icon { background: linear-gradient(135deg, #06b6d4, #0891b2); }
 
 .stat-icon.pulse {
@@ -290,10 +290,10 @@
 }
 
 .queue-section {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -303,7 +303,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 .queue-title {
@@ -322,7 +322,7 @@
   margin: 0;
   font-size: 0.9rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .queue-badge {
@@ -374,14 +374,14 @@
 }
 
 .queue-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 4px;
 }
 
 /* ── Patient Card ── */
 .patient-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-left: 3px solid #6c757d;
   border-radius: 10px;
   padding: 0.65rem 0.75rem;
@@ -389,8 +389,8 @@
 }
 
 .patient-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(30, 41, 59, 0.95);
 }
 
 .card-top {
@@ -405,7 +405,7 @@
   border-radius: 4px;
   font-size: 0.6rem;
   font-weight: 800;
-  color: #fff;
+  color: #2c3e50;
   letter-spacing: 0.03em;
   flex-shrink: 0;
 }
@@ -413,7 +413,7 @@
 .patient-name {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #334155;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -445,7 +445,7 @@
 }
 
 .detail-value {
-  color: #cbd5e1;
+  color: #475569;
   font-weight: 500;
 }
 
@@ -465,7 +465,7 @@
 .card-severity {
   margin-top: 0.35rem;
   padding-top: 0.35rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 .severity-label {
@@ -546,10 +546,10 @@
 }
 
 .panel {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -559,7 +559,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(30, 41, 59, 0.95);
 }
 
 .panel-title {
@@ -578,7 +578,7 @@
   margin: 0;
   font-size: 0.85rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 /* Bed Map */
@@ -646,7 +646,7 @@
 .bed-number {
   font-size: 0.55rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(30, 41, 59, 0.95);
 }
 
 /* Ambulance Fleet */
@@ -668,7 +668,7 @@
 }
 
 .ambulance-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 4px;
 }
 
@@ -677,14 +677,14 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.6rem 0.75rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 10px;
   transition: all 0.2s;
 }
 
 .ambulance-card:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(30, 41, 59, 0.95);
 }
 
 .amb-status-dot {
@@ -704,7 +704,7 @@
 .amb-number {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .amb-driver {
@@ -753,7 +753,7 @@
 }
 
 .doctor-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.95);
   border-radius: 4px;
 }
 
@@ -762,14 +762,14 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.5rem 0.75rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(30, 41, 59, 0.95);
   border-radius: 10px;
   transition: all 0.2s;
 }
 
 .doctor-row:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(30, 41, 59, 0.95);
 }
 
 .doc-icon {
@@ -786,7 +786,7 @@
 .doc-icon svg {
   width: 16px;
   height: 16px;
-  color: #fff;
+  color: #2c3e50;
 }
 
 .doc-info {
@@ -798,7 +798,7 @@
 .doc-name {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #e2e8f0;
+  color: #334155;
 }
 
 .doc-patient {
@@ -952,3 +952,14 @@
     height: 22px;
   }
 }
+
+/* ---- Light theme normalization (emergency module) ---- */
+.lp-hero-actions { position: relative; z-index: 2; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.glass, .glass-card, .stat-card, .ward-card, .bed-card, .ambulance-card, .patient-card, .order-card, .drug-card, .quick-card, .patient-item, .patient-row, .queue-section, .panel, .card, .modal-content, .summary-panel, .recent-assessments, .filter-select-wrap {
+  background: #fff !important;
+  border: 1px solid #eef2f6 !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lp-hero, .glass, .glass-card, .stat-card, .panel, .card, .ward-card, .bed-card, .ambulance-card, .patient-card, section { animation: lpFadeIn .5s ease both; }
