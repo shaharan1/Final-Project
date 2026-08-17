@@ -85,9 +85,12 @@
               </defs>
               <polygon [attr.points]="getCalorieAreaPoints()" fill="url(#calGrad)"/>
               <polyline [attr.points]="getCalorieLinePoints()" fill="none" stroke="#0d6efd" stroke-width="2"/>
-              <line *ngFor="let d of dailyCalories; let i = index" [attr.x1]="getX(i)" [attr.y1]="getY(d.calories)" [attr.x2]="getX(i)" [attr.y2]="150" stroke="rgba(255,255,255,0.03)"/>
-              <line x1="0" y1="30" x2="400" y2="30" stroke="rgba(255,255,255,0.05)" stroke-dasharray="4"/>
-            </svg>
+              <line *ngFor="let d of dailyCalories; let i = index" [attr.x1]="getX(i)" [attr.y1]="getY(d.calories)" [attr.x2]="getX(i)" [attr.y2]="150" stroke="rgba(0,0,0,0.06)"/>
+              <line x1="0" y1="30" x2="400" y2="30" stroke="rgba(0,0,0,0.08)" stroke-dasharray="4"/>
+              </svg>
+          </div>
+          <div class="chart-xlabels">
+            <span *ngFor="let d of dailyCalories">{{ d.day }}</span>
           </div>
         </div>
       </div>
