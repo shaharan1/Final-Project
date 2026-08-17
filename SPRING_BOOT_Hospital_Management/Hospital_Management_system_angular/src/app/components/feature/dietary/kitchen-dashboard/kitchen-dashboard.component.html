@@ -18,46 +18,57 @@
   </div>
 
   <div *ngIf="!loading">
-    <!-- Current Meal Indicator -->
-    <div class="current-meal-banner glass" *ngIf="currentMeal">
+    <!-- Current Meal Banner -->
+    <div class="current-meal-banner" *ngIf="currentMeal">
       <div class="meal-icon">🍽️</div>
       <div class="meal-info">
+        <span class="meal-eyebrow">Now Serving</span>
         <h3>{{ currentMeal.mealName }}</h3>
-        <p>Serving at {{ currentMeal.servingTime }}</p>
+        <p><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg> Serving at {{ currentMeal.servingTime }}</p>
       </div>
-      <span class="badge badge-info">{{ currentMeal.totalOrdersToday }} orders</span>
+      <span class="meal-count-badge">{{ currentMeal.totalOrdersToday }} orders today</span>
+    </div>
+
+    <!-- Meal Schedule Strip -->
+    <div class="meal-schedule" *ngIf="mealSchedule && mealSchedule.length">
+      <div class="meal-chips">
+        <div class="meal-chip" [class.active]="s.currentMeal" *ngFor="let s of mealSchedule">
+          <span class="meal-name">{{ s.mealName }}</span>
+          <span class="meal-time">{{ s.servingTime }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- KPI Cards -->
     <div class="kpi-row">
-      <div class="kpi-card glass">
+      <div class="kpi-card">
         <div class="kpi-icon" style="background: rgba(253,126,20,0.15); color: #fd7e14;">📋</div>
         <div class="kpi-body"><span class="kpi-value">{{ orderCounts['PENDING'] || 0 }}</span><span class="kpi-label">Pending</span></div>
       </div>
-      <div class="kpi-card glass">
+      <div class="kpi-card">
         <div class="kpi-icon" style="background: rgba(13,110,253,0.15); color: #0d6efd;">🔥</div>
         <div class="kpi-body"><span class="kpi-value">{{ orderCounts['COOKING'] || 0 }}</span><span class="kpi-label">Cooking</span></div>
       </div>
-      <div class="kpi-card glass">
+      <div class="kpi-card">
         <div class="kpi-icon" style="background: rgba(13,202,240,0.15); color: #0dcaf0;">👨‍🍳</div>
         <div class="kpi-body"><span class="kpi-value">{{ orderCounts['PREPARING'] || 0 }}</span><span class="kpi-label">Preparing</span></div>
       </div>
-      <div class="kpi-card glass">
+      <div class="kpi-card">
         <div class="kpi-icon" style="background: rgba(25,135,84,0.15); color: #198754;">✅</div>
         <div class="kpi-body"><span class="kpi-value">{{ orderCounts['READY'] || 0 }}</span><span class="kpi-label">Ready</span></div>
       </div>
-      <div class="kpi-card glass">
+      <div class="kpi-card">
         <div class="kpi-icon" style="background: rgba(25,135,84,0.15); color: #20c997;">🚚</div>
         <div class="kpi-body"><span class="kpi-value">{{ orderCounts['DELIVERED'] || 0 }}</span><span class="kpi-label">Delivered</span></div>
       </div>
-      <div class="kpi-card glass">
+      <div class="kpi-card">
         <div class="kpi-icon" style="background: rgba(220,53,69,0.15); color: #dc3545;">❌</div>
         <div class="kpi-body"><span class="kpi-value">{{ orderCounts['CANCELLED'] || 0 }}</span><span class="kpi-label">Cancelled</span></div>
       </div>
     </div>
 
     <!-- Status Flow -->
-    <div class="status-flow glass">
+    <div class="status-flow">
       <h3 class="section-title">Order Pipeline</h3>
       <div class="pipeline">
         <div class="pipeline-step" [class.active]="(orderCounts['PENDING']||0) > 0">
@@ -88,9 +99,10 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="panel glass">
+    <div class="panel">
       <div class="panel-head">
         <h2 class="panel-title">Today's Kitchen Orders</h2>
+        <span class="panel-count">{{ todayOrders.length }} total</span>
       </div>
       <div class="table-responsive">
         <table class="data-table">
