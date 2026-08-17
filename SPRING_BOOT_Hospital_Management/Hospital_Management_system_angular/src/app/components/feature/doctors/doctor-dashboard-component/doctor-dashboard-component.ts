@@ -11,10 +11,11 @@ import { AppointmentResponseModel } from '../../../../models/AppointmentResponse
 import { AppointmentService } from '../../../../services/appointment.service';
 import { PrescriptionModel } from '../../../../models/prescriptionModel';
 import { PrescriptionService } from '../../../../services/prescription.service';
+import { ImageUrlPipe } from '../../../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-doctor-dashboard-component',
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, ImageUrlPipe],
   templateUrl: './doctor-dashboard-component.html',
   styleUrl: './doctor-dashboard-component.css',
 })
@@ -170,5 +171,14 @@ uploadPhoto(): void {
     }
   });
 }
+
+  onImgError(event: Event): void {
+    const svg =
+      `<svg xmlns='http://www.w3.org/2000/svg' width='88' height='88'>` +
+      `<rect width='88' height='88' rx='44' fill='#e2e8f0'/>` +
+      `<text x='50%' y='50%' dy='.35em' font-family='Arial' font-size='36' fill='#94a3b8' text-anchor='middle'>?</text></svg>`;
+    (event.target as HTMLImageElement).src =
+      'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
 
 }

@@ -46,6 +46,7 @@ export class AppointmentList implements OnInit {
 
     if (this.isDoctor) {
       this.loadDoctorAppointments(user!.userId);
+      this.cdr.markForCheck();
     } else {
       this.loadDoctors();
       this.loadAppointments();
@@ -62,7 +63,7 @@ export class AppointmentList implements OnInit {
           this.appointmentService.getDoctorAppointments(res.id).subscribe({
             next: (appts) => {
               this.appointments = appts;
-            
+              this.cdr.markForCheck();
             },
             error: (err) => console.log(err)
           });

@@ -81,6 +81,8 @@ button { font-family: inherit; cursor: pointer; }
 .hero-actions {
   display: flex;
   gap: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .btn-primary {
@@ -120,6 +122,7 @@ button { font-family: inherit; cursor: pointer; }
   left: 0;
   height: 70px;
   opacity: .55;
+  pointer-events: none;
 }
 
 /* ---------- STATS ---------- */

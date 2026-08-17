@@ -261,7 +261,7 @@
   text-decoration: none;
 }
 
-.panel-link:hover { text-decoration: underline; }
+.panel-link:hover { text-decoration: none; }
 
 /* ===== TABLE ===== */
 .table-wrap { overflow-x: auto; }

@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { NurseModel } from '../../../models/nurseModel';
 import { NurseService } from '../../../services/nurse.service';
 
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
+
 @Component({
   selector: 'app-nurse',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ImageUrlPipe],
   templateUrl: './nurse.html',
   styleUrl: './nurse.css',
 })

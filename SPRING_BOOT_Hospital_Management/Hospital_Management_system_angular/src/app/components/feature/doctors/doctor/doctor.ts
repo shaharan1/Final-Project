@@ -5,9 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DoctorsDepartmentService } from '../../../../services/doctors-department';
 
+import { ImageUrlPipe } from '../../../../shared/pipes/image-url.pipe';
+
 @Component({
   selector: 'app-doctor',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ImageUrlPipe],
   templateUrl: './doctor.html',
   styleUrl: './doctor.css',
 })

@@ -43,14 +43,20 @@ export class DoctorDashboardHomeComponent implements OnInit {
     const user = this.storageService.getUser();
     if (user) {
       this.doctorName = user.name || 'Doctor';
-      this.dashboardService.getDoctorStats(user.userId).subscribe(data => {
-        this.totalPatients = data.totalPatients;
-        this.todayAppointments = data.todayAppointments;
-        this.pendingReports = data.pendingReports;
-        this.appointments = data.appointments;
-        this.allAppointments = data.allAppointments;
-        this.loading = false;
-        this.cdr.detectChanges();
+      this.dashboardService.getDoctorStats(user.userId).subscribe({
+        next: (data) => {
+          this.totalPatients = data.totalPatients ?? 0;
+          this.todayAppointments = data.todayAppointments ?? 0;
+          this.pendingReports = data.pendingReports ?? 0;
+          this.appointments = data.appointments ?? [];
+          this.allAppointments = data.allAppointments ?? [];
+          this.loading = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.loading = false;
+          this.cdr.detectChanges();
+        }
       });
       this.doctorService.findByUserId(user.userId).subscribe({
         next: (doctor) => {

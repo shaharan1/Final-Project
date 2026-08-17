@@ -65,7 +65,7 @@
           <label class="nr-label">Nurse Photo</label>
           <div class="nr-photo-upload">
             <div class="nr-photo-preview" *ngIf="hasPhoto(); else defaultAvatarNurse">
-              <img [src]="getPhotoPreview()" alt="Nurse Photo">
+              <img [src]="getPhotoPreview() | imageUrl" alt="Nurse Photo">
               <button type="button" class="nr-photo-remove" (click)="removePhoto()">✕</button>
             </div>
             <ng-template #defaultAvatarNurse>

@@ -215,7 +215,7 @@
                         <div class="text-center">
                             <div class="position-relative d-inline-block">
                                 <img *ngIf="hasPhoto(); else defaultAvatar"
-                                     [src]="getPhotoPreview()"
+                                     [src]="getPhotoPreview() | imageUrl"
                                      class="rounded-circle border border-3 border-white shadow-sm uploaded-photo"
                                      alt="Doctor Photo">
                                 <ng-template #defaultAvatar>

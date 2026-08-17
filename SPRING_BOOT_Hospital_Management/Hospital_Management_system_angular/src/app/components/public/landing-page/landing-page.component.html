@@ -178,7 +178,7 @@
     </div>
     <div class="doctors-grid">
       <div class="doctor-card" *ngFor="let doc of doctors">
-        <img [src]="doc.photo" [alt]="doc.name" class="doctor-photo" />
+        <img [src]="doc.photo | imageUrl" [alt]="doc.name" class="doctor-photo" />
         <h3 class="doctor-name">{{ doc.name }}</h3>
         <p class="doctor-spec">{{ doc.spec }}</p>
         <div class="doctor-meta">

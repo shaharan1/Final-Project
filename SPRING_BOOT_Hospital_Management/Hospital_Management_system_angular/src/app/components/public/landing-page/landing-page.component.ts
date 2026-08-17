@@ -7,10 +7,12 @@ import { environment } from '../../../../environments/environment';
 import { DoctorDepartmentModel } from '../../../models/doctorDepartmentModel';
 import { ScheduleSlotModel } from '../../../models/ScheduleSlotModel';
 
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
+
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, ImageUrlPipe],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
 })

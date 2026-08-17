@@ -111,7 +111,7 @@
           <label class="os-label">Staff Photo</label>
           <div class="os-photo-upload">
             <div class="os-photo-preview" *ngIf="hasPhoto(); else defaultAvatarStaff">
-              <img [src]="getPhotoPreview()" alt="Staff Photo">
+              <img [src]="getPhotoPreview() | imageUrl" alt="Staff Photo">
               <button type="button" class="os-photo-remove" (click)="removePhoto()">✕</button>
             </div>
             <ng-template #defaultAvatarStaff>

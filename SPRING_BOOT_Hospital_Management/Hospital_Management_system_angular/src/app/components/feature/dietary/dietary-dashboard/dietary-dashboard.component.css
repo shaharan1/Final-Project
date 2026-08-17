@@ -70,7 +70,7 @@
 .panel-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #eef2f6; }
 .panel-title { margin: 0; font-size: 1.1rem; font-weight: 700; color: #1a1a2e; }
 .panel-link { font-size: 0.85rem; color: #198754; text-decoration: none; font-weight: 600; transition: color 0.2s ease; }
-.panel-link:hover { color: #198754; text-decoration: underline; }
+.panel-link:hover { color: #198754; }
 
 /* ===== DATA TABLE ===== */
 .table-responsive { overflow-x: auto; }

@@ -4,9 +4,11 @@ import { OfficeStaffService } from '../../../services/office-staff.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
+
 @Component({
   selector: 'app-office-staff.component',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ImageUrlPipe],
   templateUrl: './office-staff.component.html',
   styleUrl: './office-staff.component.css',
 })

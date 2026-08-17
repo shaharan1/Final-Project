@@ -5,11 +5,12 @@ import { StorageService } from '../../../services/storage.service';
 import { ProfileService } from '../../../services/profile.service';
 import { LoginResponse } from '../../../models/login.model';
 import { environment } from '../../../../environments/environment';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ImageUrlPipe],
   templateUrl: './profile-card.component.html',
   styleUrl: './profile-card.component.css',
 })
@@ -74,12 +75,7 @@ export class ProfileCardComponent implements OnInit {
 
   getImageUrl(): string {
     if (this.previewUrl) return this.previewUrl;
-    if (this.user?.image) {
-      const img = this.user.image;
-      if (img.startsWith('http')) return img;
-      return environment.imgUrl.replace(/\/$/, '') + (img.startsWith('/') ? img : '/' + img);
-    }
-    return '';
+    return this.user?.image || '';
   }
 
   openEditModal(): void {

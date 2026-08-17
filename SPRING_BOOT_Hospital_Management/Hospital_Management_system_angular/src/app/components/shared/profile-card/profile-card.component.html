@@ -1,7 +1,7 @@
 <div class="profile-card" *ngIf="user">
   <div class="profile-left">
     <div class="profile-avatar-wrap" (click)="fileInput.click()">
-      <img *ngIf="getImageUrl()" [src]="getImageUrl()" class="profile-avatar-img" alt="Profile" />
+      <img *ngIf="getImageUrl()" [src]="getImageUrl() | imageUrl" class="profile-avatar-img" alt="Profile" />
       <div *ngIf="!getImageUrl()" class="profile-avatar-initials" [style.background]="getRoleColor()">
         {{ getInitials() }}
       </div>
@@ -32,7 +32,7 @@
 
     <div class="profile-modal-avatar">
       <div class="modal-avatar-wrap" (click)="modalFileInput.click()">
-        <img *ngIf="getImageUrl()" [src]="getImageUrl()" class="modal-avatar-img" alt="Profile" />
+        <img *ngIf="getImageUrl()" [src]="getImageUrl() | imageUrl" class="modal-avatar-img" alt="Profile" />
         <div *ngIf="!getImageUrl()" class="modal-avatar-initials" [style.background]="getRoleColor()">
           {{ getInitials() }}
         </div>
