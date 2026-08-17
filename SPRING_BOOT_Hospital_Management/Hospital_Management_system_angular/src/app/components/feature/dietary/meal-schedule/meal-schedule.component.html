@@ -23,28 +23,64 @@
   </div>
 
   <div *ngIf="!loading">
-    <div class="timeline-container glass">
-      <div class="timeline-line"></div>
-      <div class="timeline-nodes">
-        <div class="timeline-node" *ngFor="let schedule of schedules; let i = index" [class.current]="schedule.currentMeal">
-          <div class="node-marker" [style.background]="schedule.currentMeal ? '#0d6efd' : 'var(--line)'">
-            <span class="node-icon">{{ getMealIcon(schedule.mealName) }}</span>
-          </div>
-          <div class="node-content">
-            <h3>{{ schedule.mealName }}</h3>
-            <p class="node-time">{{ schedule.servingTime }}</p>
-            <p class="node-prep">Prep: {{ schedule.preparationStartTime }} - {{ schedule.preparationEndTime || 'TBD' }}</p>
-            <div class="node-progress">
-              <div class="progress-bar" [style.width.%]="getMealProgress(schedule)"></div>
+    <!-- Summary Cards -->
+    <div class="ms-summary">
+      <div class="ms-stat glass">
+        <div class="ms-stat-icon" style="background:rgba(5,150,105,0.15);color:#059669;">⏰</div>
+        <div class="ms-stat-body"><span class="ms-stat-value">{{ schedules.length }}</span><span class="ms-stat-label">Meal Slots</span></div>
+      </div>
+      <div class="ms-stat glass">
+        <div class="ms-stat-icon" style="background:rgba(16,185,129,0.15);color:#10b981;">🔥</div>
+        <div class="ms-stat-body"><span class="ms-stat-value">{{ schedules.filter(s => s.currentMeal).length }}</span><span class="ms-stat-label">Active Now</span></div>
+      </div>
+      <div class="ms-stat glass">
+        <div class="ms-stat-icon" style="background:rgba(8,145,178,0.15);color:#0891b2;">🍽️</div>
+        <div class="ms-stat-body"><span class="ms-stat-value">{{ totalOrdersToday() }}</span><span class="ms-stat-label">Orders Today</span></div>
+      </div>
+      <div class="ms-stat glass">
+        <div class="ms-stat-icon" style="background:rgba(253,126,20,0.15);color:#fd7e14;">📋</div>
+        <div class="ms-stat-body"><span class="ms-stat-value">{{ totalPlanned() }}</span><span class="ms-stat-label">Planned Meals</span></div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline glass" *ngIf="schedules.length">
+      <div class="timeline-item" *ngFor="let schedule of schedules; let i = index" [class.current]="schedule.currentMeal">
+        <div class="timeline-marker">
+          <span class="timeline-emoji">{{ getMealIcon(schedule.mealName) }}</span>
+          <span class="timeline-pulse" *ngIf="schedule.currentMeal"></span>
+        </div>
+        <div class="timeline-card">
+          <div class="tc-head">
+            <div class="tc-title">
+              <h3>{{ schedule.mealName }}</h3>
+              <span class="badge" [ngClass]="getStatusBadge(schedule.status)">{{ schedule.status }}</span>
             </div>
-            <span class="badge" [ngClass]="getStatusBadge(schedule.status)">{{ schedule.status }}</span>
-            <span class="order-count" *ngIf="orderCounts[schedule.mealName]">{{ orderCounts[schedule.mealName] }} orders</span>
-            <div class="node-actions">
+            <div class="tc-time">🕒 {{ schedule.servingTime }}</div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-meta">
+              <span>👨‍🍳 Prep: {{ schedule.preparationStartTime }} – {{ schedule.preparationEndTime || 'TBD' }}</span>
+            </div>
+            <div class="tc-progress">
+              <div class="tc-progress-head"><span>Served</span><span>{{ getMealProgress(schedule) }}%</span></div>
+              <div class="progress-track"><div class="progress-fill" [style.width.%]="getMealProgress(schedule)"></div></div>
+            </div>
+            <div class="tc-footer">
+              <span class="order-chip" *ngIf="orderCounts[schedule.mealName]">🧾 {{ orderCounts[schedule.mealName] }} orders</span>
+              <span class="order-chip muted" *ngIf="!orderCounts[schedule.mealName]">No orders yet</span>
               <button class="btn-sm btn-outline" (click)="openEditModal(schedule)">Edit</button>
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="empty-state glass" *ngIf="!schedules.length">
+      <div class="empty-icon">🍽️</div>
+      <h3>No meal schedules yet</h3>
+      <p>Create your first meal slot to start planning the day's servings.</p>
+      <button class="btn btn-primary" (click)="openAddModal()">+ Add Schedule</button>
     </div>
   </div>
 
@@ -56,8 +92,8 @@
         <div class="form-grid">
           <div class="form-group"><label>Meal Name *</label><input type="text" [(ngModel)]="formModel.mealName" placeholder="e.g., Breakfast" required></div>
           <div class="form-group"><label>Serving Time *</label><input type="time" [(ngModel)]="formModel.servingTime" required></div>
-          <div class="form-group"><label>Preperation Start</label><input type="time" [(ngModel)]="formModel.preparationStartTime"></div>
-          <div class="form-group"><label>Preperation End</label><input type="time" [(ngModel)]="formModel.preparationEndTime"></div>
+          <div class="form-group"><label>Preparation Start</label><input type="time" [(ngModel)]="formModel.preparationStartTime"></div>
+          <div class="form-group"><label>Preparation End</label><input type="time" [(ngModel)]="formModel.preparationEndTime"></div>
           <div class="form-group"><label>Status</label><select [(ngModel)]="formModel.status"><option value="ACTIVE">Active</option><option value="INACTIVE">Inactive</option></select></div>
           <div class="form-group"><label>Total Orders</label><input type="number" [(ngModel)]="formModel.totalOrdersToday"></div>
         </div>

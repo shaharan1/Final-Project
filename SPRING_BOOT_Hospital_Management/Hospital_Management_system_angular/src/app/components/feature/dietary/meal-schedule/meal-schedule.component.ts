@@ -79,4 +79,12 @@ export class MealScheduleComponent implements OnInit {
     };
     return map[mealName] || '🍽️';
   }
+
+  totalOrdersToday(): number {
+    return this.schedules.reduce((sum, s) => sum + (this.orderCounts[s.mealName] || 0), 0);
+  }
+
+  totalPlanned(): number {
+    return this.schedules.reduce((sum, s) => sum + (s.totalOrdersToday || 0), 0);
+  }
 }
