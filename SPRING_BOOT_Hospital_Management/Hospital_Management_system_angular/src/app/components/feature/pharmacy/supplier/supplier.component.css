@@ -21,6 +21,7 @@
   padding: 0 1.5rem;
   position: relative;
   z-index: 2;
+  animation: lpFadeIn .5s ease both;
      }.glass-card {     
   background:#ffffff;
   backdrop-filter: blur(12px);
@@ -72,6 +73,7 @@
   border: 1px solid #eef2f6;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  animation: lpFadeIn .5s ease both;
      }.search-box {     
   display: flex;
   align-items: center;
@@ -131,6 +133,7 @@
   margin: 0 auto 1.25rem;
   padding: 0;
   overflow-x: auto;
+  animation: lpFadeIn .5s ease both;
      }table {     
   width: 100%;
   border-collapse: collapse;
@@ -169,7 +172,7 @@
   padding: 0.15rem 0.45rem;
   border-radius: 5px;
   font-size: 0.8rem;
-  color: #c084fc;
+  color: #047857;
      }.badge {     
   display: inline-block;
   padding: 0.25rem 0.65rem;
@@ -200,16 +203,22 @@
   transition: all 0.2s;
   background: transparent;
      }.btn-icon.edit {     
-  color: #0d6efd;
+  color: #059669;
      }.btn-icon.edit:hover {     
-  background: rgba(13, 110, 253, 0.1);
+  background: rgba(5, 150, 105, 0.1);
      }.btn-icon.delete {     
   color: #dc3545;
      }.btn-icon.delete:hover {     
   background: rgba(220, 53, 69, 0.1);
      }.mobile-cards {     
   padding: 0 1rem;
-     }.supplier-card {     
+  animation: lpFadeIn .5s ease both;
+     }.lp-hero {     
+  animation: lpFadeIn .5s ease both;
+     }@keyframes lpFadeIn { 
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+  }.supplier-card {     
   margin-bottom: 1rem;
   overflow: hidden;
      }.supplier-card .card-header {     
@@ -258,7 +267,7 @@
      }@keyframes fadeIn { 
   from { opacity: 0; }
   to { opacity: 1; }
- }.modal { background:#ffffff; border:1px solid #e4e9f0; box-shadow:0 1px 3px rgba(16,24,40,.06), 0 8px 24px -12px rgba(16,24,40,.12);     
+ }.modal { background:#ffffff; border:1px solid #eef2f6; box-shadow:0 4px 24px rgba(0, 0, 0, 0.06);     
   width: 100%;
   max-width: 640px;
   max-height: 90vh;
@@ -317,19 +326,19 @@
 .form-group textarea,
 .form-group select {     
   padding: 0.55rem 0.75rem;
-  border: 1px solid rgba(15, 23, 42, 0.03);
+  border: 1px solid #e9ecef;
   border-radius: 8px;
   font-size: 0.88rem;
   color: #1f2d3d;
   transition: border-color 0.2s, box-shadow 0.2s;
-  background: rgba(15, 23, 42, 0.015);
+  background: #f9fafb;
   font-family: inherit;
      }.form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {     
   outline: none;
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
      }.delete-warning {     
   text-align: center;
   padding: 1rem 0;
