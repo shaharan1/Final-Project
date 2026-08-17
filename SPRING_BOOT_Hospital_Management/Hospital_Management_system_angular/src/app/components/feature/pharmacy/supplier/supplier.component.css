@@ -369,9 +369,7 @@
       }.mobile-only {    
     display: block;
       }
- }@media (max-width: 768px)     {.hero-content h1 {    
-    font-size: 1.5rem;
-      }.stats-row {    
+  }@media (max-width: 768px)     {.stats-row {    
     grid-template-columns: 1fr;
       }.toolbar {    
     flex-direction: column;
@@ -380,9 +378,7 @@
       }.form-group.full-width {    
     grid-column: auto;
       }
- }@media (max-width: 480px)     {.hero-section {    
-    padding: 2rem 1rem 1.5rem;
-      }.stat-card {    
+  }@media (max-width: 480px)     {.stat-card {    
     padding: 1rem;
       }
- }
+  }
