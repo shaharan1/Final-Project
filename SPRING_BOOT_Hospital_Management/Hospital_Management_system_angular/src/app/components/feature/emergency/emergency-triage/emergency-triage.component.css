@@ -397,8 +397,8 @@
 
 .vital-input-wrap input {
   flex: 1;
-  background: rgba(30, 41, 59, 0.95);
-  border: 1px solid rgba(30, 41, 59, 0.95);
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   padding: 8px 12px;
   color: #334155;
@@ -504,8 +504,8 @@
 }
 
 .vital-field textarea {
-  background: rgba(30, 41, 59, 0.95);
-  border: 1px solid rgba(30, 41, 59, 0.95);
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   padding: 10px 12px;
   color: #334155;
