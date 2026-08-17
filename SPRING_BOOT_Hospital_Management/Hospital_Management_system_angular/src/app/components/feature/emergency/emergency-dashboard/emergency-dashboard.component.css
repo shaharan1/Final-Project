@@ -5,19 +5,18 @@
 /* ─── Dashboard Wrapper ─── */
 .dashboard-wrapper {
   min-height: 100vh;
-  background: #0a0e27;
+  background: #eef2f6;
   padding: 24px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #e0e0e0;
+  color: #334155;
 }
 
 /* ─── Glass Base ─── */
 .glass {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #fff;
+  border: 1px solid #eef2f6;
   border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
 }
 
 /* ─── Skeleton Loader ─── */
@@ -29,9 +28,9 @@
 .skeleton-block {
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.04) 25%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.04) 75%
+    rgba(15, 23, 42, 0.04) 25%,
+    rgba(15, 23, 42, 0.1) 50%,
+    rgba(15, 23, 42, 0.04) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
@@ -88,167 +87,11 @@
   gap: 24px;
 }
 
-/* ─── Hero Header ─── */
-.hero-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 32px;
-  flex-wrap: wrap;
-  gap: 20px;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #059669 0%, #0891b2 100%) !important;
-}
+.lp-hero { animation: lpFadeIn .5s ease both; }
 
-.em-header-heartbeat {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
+.lp-hero-actions { position: relative; z-index: 2; display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
 
-.hero-header .wave-path {
-  stroke-dasharray: 2000;
-  stroke-dashoffset: 2000;
-  animation: emDrawWave 4s ease forwards;
-}
-
-@keyframes emDrawWave {
-  to { stroke-dashoffset: 0; }
-}
-
-.hero-title-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.hero-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
-.hero-subtitle {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
-  margin: 4px 0 0 0;
-}
-
-/* Pulse Indicator */
-.hero-icon {
-  font-size: 36px;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  animation: iconFloat 3s ease-in-out infinite;
-}
-
-@keyframes iconFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.pulse-indicator {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pulse-dot {
-  width: 14px;
-  height: 14px;
-  background: #dc3545;
-  border-radius: 50%;
-  z-index: 2;
-  position: relative;
-}
-
-.pulse-ring {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  border: 2px solid rgba(220, 53, 69, 0.4);
-  border-radius: 50%;
-  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.5);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.2);
-    opacity: 0;
-  }
-}
-
-/* Hero Actions */
-.hero-actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.action-btn i {
-  font-size: 16px;
-}
-
-.action-btn:hover {
-  transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.action-register:hover {
-  border-color: #dc3545;
-  box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
-}
-
-.action-status:hover {
-  border-color: #0d6efd;
-  box-shadow: 0 4px 20px rgba(13, 110, 253, 0.3);
-}
-
-.action-ambulance:hover {
-  border-color: #198754;
-  box-shadow: 0 4px 20px rgba(25, 135, 84, 0.3);
-}
-
-.action-refresh:hover {
-  border-color: #ffc107;
-  box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
-}
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 /* ─── Error Banner ─── */
 .error-banner {
@@ -256,9 +99,10 @@
   align-items: center;
   gap: 12px;
   padding: 14px 20px;
-  background: rgba(220, 53, 69, 0.15);
-  border-color: rgba(220, 53, 69, 0.3);
-  color: #ff6b7a;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  border-radius: 16px;
+  color: #dc2626;
 }
 
 .error-banner i {
@@ -269,7 +113,7 @@
   margin-left: auto;
   background: none;
   border: none;
-  color: #ff6b7a;
+  color: #dc2626;
   cursor: pointer;
   padding: 4px;
 }
@@ -277,6 +121,7 @@
 /* ─── KPI Section ─── */
 .kpi-section {
   width: 100%;
+  animation: lpFadeIn .5s ease both;
 }
 
 .kpi-grid {
@@ -294,16 +139,13 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  animation: lpFadeIn .5s ease both;
 }
 
 .kpi-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.kpi-card:hover .kpi-glow {
-  opacity: 0.12;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  border-color: #d1e7dd;
 }
 
 .kpi-glow {
@@ -316,6 +158,10 @@
   transition: opacity 0.3s ease;
   pointer-events: none;
   filter: blur(40px);
+}
+
+.kpi-card:hover .kpi-glow {
+  opacity: 0.12;
 }
 
 .kpi-icon {
@@ -339,26 +185,27 @@
 .kpi-value {
   font-size: 28px;
   font-weight: 700;
-  color: #ffffff;
+  color: #2c3e50;
   line-height: 1.1;
 }
 
 .kpi-value small {
   font-size: 14px;
   font-weight: 400;
-  color: rgba(255, 255, 255, 0.6);
+  color: #6c757d;
   margin-left: 2px;
 }
 
 .kpi-label {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6c757d;
   font-weight: 500;
 }
 
 /* ─── Triage Section ─── */
 .triage-section {
   padding: 24px 28px;
+  animation: lpFadeIn .5s ease both;
 }
 
 .charts-row {
@@ -371,16 +218,16 @@
 .chart-container {
   position: relative;
   height: 260px;
-  background: rgba(255, 255, 255, 0.02);
+  background: #f8fafc;
   border-radius: 12px;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid #eef2f6;
 }
 
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: #ffffff;
+  color: #2c3e50;
   margin: 0 0 20px 0;
   display: flex;
   align-items: center;
@@ -388,7 +235,7 @@
 }
 
 .section-title i {
-  color: rgba(255, 255, 255, 0.6);
+  color: #6c757d;
 }
 
 .triage-grid {
@@ -403,15 +250,15 @@
   align-items: center;
   gap: 10px;
   padding: 16px 12px;
-  background: rgba(255, 255, 255, 0.03);
+  background: #f8fafc;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid #eef2f6;
   transition: all 0.3s ease;
 }
 
 .triage-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--triage-color, rgba(255, 255, 255, 0.1));
+  background: #f0fdf4;
+  border-color: var(--triage-color, #d1e7dd);
 }
 
 .triage-badge {
@@ -436,12 +283,12 @@
 .triage-count {
   font-size: 24px;
   font-weight: 700;
-  color: #ffffff;
+  color: #2c3e50;
 }
 
 .triage-label {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6c757d;
   text-align: center;
   font-weight: 500;
 }
@@ -449,7 +296,7 @@
 .triage-bar {
   width: 100%;
   height: 4px;
-  background: rgba(255, 255, 255, 0.06);
+  background: #e9ecef;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -463,6 +310,7 @@
 /* ─── Table Section ─── */
 .table-section {
   padding: 24px 28px;
+  animation: lpFadeIn .5s ease both;
 }
 
 .table-header {
@@ -487,9 +335,9 @@
 .filter-tab {
   padding: 6px 14px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #6c757d;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
@@ -497,14 +345,14 @@
 }
 
 .filter-tab:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: #f0fdf4;
+  color: #2c3e50;
 }
 
 .filter-tab.active {
-  background: rgba(13, 110, 253, 0.2);
-  border-color: rgba(13, 110, 253, 0.5);
-  color: #4da3ff;
+  background: rgba(13, 110, 253, 0.12);
+  border-color: rgba(13, 110, 253, 0.4);
+  color: #2563eb;
 }
 
 .table-container {
@@ -524,8 +372,9 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: rgba(255, 255, 255, 0.4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #6c757d;
+  border-bottom: 2px solid #e9ecef;
+  background: #f8fafc;
 }
 
 .data-table tbody .table-row {
@@ -533,20 +382,20 @@
 }
 
 .data-table tbody .table-row:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: #f0fdf4;
 }
 
 .data-table tbody td {
   padding: 14px 16px;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #334155;
+  border-bottom: 1px solid #eef2f6;
 }
 
 .cell-id {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 600;
-  color: #4da3ff !important;
+  color: #2563eb !important;
 }
 
 .patient-info {
@@ -565,6 +414,8 @@
   font-weight: 700;
   font-size: 13px;
   flex-shrink: 0;
+  color: #ffffff;
+  background: linear-gradient(135deg, #059669, #0891b2);
 }
 
 .triage-pill {
@@ -576,10 +427,6 @@
   font-size: 12px;
   font-weight: 600;
   border: 1px solid;
-}
-
-.triage-pill i {
-  font-size: 10px;
 }
 
 .status-badge {
@@ -594,42 +441,42 @@
 
 .badge-info {
   background: rgba(13, 202, 240, 0.15);
-  color: #0dcaf0;
+  color: #0d8a9e;
 }
 
 .badge-warning {
-  background: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
 }
 
 .badge-primary {
-  background: rgba(13, 110, 253, 0.15);
-  color: #4da3ff;
+  background: rgba(13, 110, 253, 0.12);
+  color: #2563eb;
 }
 
 .badge-success {
-  background: rgba(25, 135, 84, 0.15);
-  color: #198754;
+  background: rgba(34, 197, 94, 0.15);
+  color: #15803d;
 }
 
 .badge-secondary {
-  background: rgba(108, 117, 125, 0.15);
-  color: #adb5bd;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .badge-danger {
-  background: rgba(220, 53, 69, 0.15);
-  color: #ff6b7a;
+  background: rgba(220, 53, 69, 0.12);
+  color: #dc2626;
 }
 
 .badge-purple {
-  background: rgba(102, 16, 242, 0.15);
-  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.15);
+  color: #7c3aed;
 }
 
 .cell-time {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: #6c757d !important;
   white-space: nowrap;
 }
 
@@ -642,9 +489,9 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #6c757d;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -658,27 +505,27 @@
 }
 
 .view-btn:hover {
-  background: rgba(13, 110, 253, 0.2);
+  background: rgba(13, 110, 253, 0.12);
   border-color: rgba(13, 110, 253, 0.4);
-  color: #4da3ff;
+  color: #2563eb;
 }
 
 .triage-btn:hover {
-  background: rgba(255, 193, 7, 0.2);
-  border-color: rgba(255, 193, 7, 0.4);
-  color: #ffc107;
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #b45309;
 }
 
 .assign-btn:hover {
-  background: rgba(25, 135, 84, 0.2);
-  border-color: rgba(25, 135, 84, 0.4);
-  color: #198754;
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: #15803d;
 }
 
 .empty-state {
   text-align: center;
   padding: 48px 20px;
-  color: rgba(255, 255, 255, 0.3);
+  color: #6c757d;
 }
 
 .empty-state i {
@@ -699,6 +546,7 @@
   gap: 24px;
   padding: 14px 28px;
   flex-wrap: wrap;
+  animation: lpFadeIn .5s ease both;
 }
 
 .status-item {
@@ -714,23 +562,23 @@
 }
 
 .status-item.critical {
-  color: #ff6b7a;
+  color: #dc2626;
 }
 
 .status-item.waiting {
-  color: #ffc107;
+  color: #b45309;
 }
 
 .status-item.ambulances {
-  color: #198754;
+  color: #15803d;
 }
 
 .status-item.beds {
-  color: #0dcaf0;
+  color: #0d8a9e;
 }
 
 .status-item.auto-refresh {
-  color: rgba(255, 255, 255, 0.4);
+  color: #6c757d;
   margin-left: auto;
 }
 
@@ -747,21 +595,6 @@
 @media (max-width: 900px) {
   .dashboard-wrapper {
     padding: 16px;
-  }
-
-  .hero-header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-  }
-
-  .hero-actions {
-    width: 100%;
-  }
-
-  .action-btn {
-    flex: 1;
-    justify-content: center;
   }
 
   .kpi-grid {
@@ -789,14 +622,6 @@
 
   .triage-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .hero-title {
-    font-size: 22px;
-  }
-
-  .kpi-value {
-    font-size: 24px;
   }
 
   .status-bar {
