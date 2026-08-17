@@ -1,32 +1,27 @@
 <div class="report-wrapper">
-  <!-- Hero Section -->
-  <section class="hero">
+  <section class="lp-hero">
     <div class="hero-bg">
-      <svg class="heartbeat-wave" viewBox="0 0 1200 200" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#198754" />
-            <stop offset="100%" stop-color="#0dcaf0" />
-          </linearGradient>
-        </defs>
-        <path class="wave wave-1" fill="none" stroke="url(#waveGrad)" stroke-width="3"
-          d="M0,100 L200,100 L250,100 L280,40 L310,160 L340,20 L370,180 L400,80 L430,120 L460,100 L700,100 L750,100 L780,40 L810,160 L840,20 L870,180 L900,80 L930,120 L960,100 L1200,100" />
-        <path class="wave wave-2" fill="none" stroke="url(#waveGrad)" stroke-width="2" opacity="0.4"
-          d="M0,100 L200,100 L250,100 L280,50 L310,150 L340,30 L370,170 L400,90 L430,110 L460,100 L700,100 L750,100 L780,50 L810,150 L840,30 L870,170 L900,90 L930,110 L960,100 L1200,100" />
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6"/>
       </svg>
     </div>
-    <div class="hero-content">
-      <div class="hero-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
-        </svg>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">📊</div>
+      <div>
+        <h1>Pharmacy Reports</h1>
+        <p class="lp-hero-sub">Sales &amp; stock reports</p>
       </div>
-      <h1>Pharmacy Reports</h1>
-      <p>Comprehensive analytics and insights for your pharmacy operations</p>
+    </div>
+    <div class="lp-hero-actions">
+      <button class="btn-print" *ngIf="dailySalesResult || monthlySalesResult || purchaseReportResult || stockReportResult || supplierReportResult" (click)="printReport()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 6 2 18 2 18 9" />
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+          <rect x="6" y="14" width="12" height="8" />
+        </svg>
+        Print Report
+      </button>
     </div>
   </section>
 
