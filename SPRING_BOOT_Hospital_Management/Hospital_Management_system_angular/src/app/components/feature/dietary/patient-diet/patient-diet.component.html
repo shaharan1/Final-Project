@@ -1,13 +1,16 @@
 <div class="dietary-page">
-  <div class="page-header">
-    <svg class="diet-header-heartbeat" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,110 L300,40 L330,80 L360,60 L600,60 L630,20 L660,100 L690,10 L720,110 L750,40 L780,80 L810,60 L1050,60 L1080,20 L1110,100 L1140,10 L1170,110 L1200,60" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" class="wave-path"/>
-    </svg>
-    <div>
-      <h1 class="page-title"><i class="bi bi-heart-pulse"></i> Patient Diet Management</h1>
-      <p class="page-subtitle">Assign diet plans and manage patient dietary needs</p>
+  <section class="lp-hero">
+    <div class="hero-bg">
+      <svg class="heartbeat-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <path class="wave-path" d="M0,60 L150,60 L180,20 L210,100 L240,10 L270,90 L300,60 L450,60 L480,30 L510,90 L540,20 L570,80 L600,60 L750,60 L780,25 L810,95 L840,15 L870,85 L900,60 L1050,60 L1080,35 L1110,85 L1140,25 L1170,75 L1200,60" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6"/>
+      </svg>
     </div>
-  </div>
+    <div class="lp-hero-content">
+      <div class="lp-hero-icon">🥗</div>
+      <div><h1>Patient Diet Management</h1><p class="lp-hero-sub">Assign diet plans and manage patient dietary needs</p></div>
+    </div>
+  </section>
 
   <!-- Error/Success Message -->
   <div class="error-container" *ngIf="msg">
