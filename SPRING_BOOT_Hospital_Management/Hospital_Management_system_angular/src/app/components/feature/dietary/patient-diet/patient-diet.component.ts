@@ -42,6 +42,13 @@ export class PatientDietComponent implements OnInit {
   assignmentForm: any = {};
   alertForm: any = {};
 
+  showPriceModal = false;
+  priceForm: any = {};
+  pricePlan: any = null;
+  pricePlanId: number | null = null;
+  pricePlanName = '';
+  priceMealCount = 1;
+
   alertTypes = ['DIABETIC', 'LOW_SODIUM', 'ALLERGY', 'NPO', 'FASTING', 'CRITICAL', 'FOOD_ALLERGY', 'KITCHEN_ALERT', 'LATE_DELIVERY'];
   severities = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
   msg = '';
@@ -341,9 +348,69 @@ export class PatientDietComponent implements OnInit {
     this.showModal = false;
     this.showDetailModal = false;
     this.showAlertModal = false;
+    this.showPriceModal = false;
     this.isEditMode = false;
     this.editingAssignmentId = null;
+    this.pricePlanId = null;
+    this.pricePlan = null;
     this.msg = '';
+  }
+
+  openUpdatePrice(patient: any): void {
+    try {
+      const a = this.getAssignmentForPatient(patient.id);
+      if (!a || !a.dietPlan) {
+        this.msg = 'No diet plan found for this patient';
+        this.msgType = 'error';
+        this.safeDetectChanges();
+        return;
+      }
+      this.selectedPatient = patient;
+      this.pricePlan = a.dietPlan;
+      this.pricePlanId = a.dietPlan.id;
+      this.pricePlanName = a.dietPlan.name || 'Diet Plan';
+      const meals = this.getMeals(a.dietPlan).filter(m => m.content && m.content !== '-');
+      this.priceMealCount = meals.length || 1;
+      this.priceForm = { pricePerDay: a.dietPlan.pricePerDay || 0 };
+      this.showPriceModal = true;
+      this.msg = '';
+      this.safeDetectChanges();
+    } catch (e) {
+      console.error('Open update price error:', e);
+    }
+  }
+
+  getPricePerMeal(plan: any): number {
+    if (!plan || !plan.pricePerDay) return 0;
+    const meals = this.getMeals(plan).filter(m => m.content && m.content !== '-');
+    const count = meals.length || 1;
+    return Math.round((plan.pricePerDay / count) * 100) / 100;
+  }
+
+  getPricePerMealPreview(): number {
+    const price = Number(this.priceForm.pricePerDay) || 0;
+    return Math.round((price / this.priceMealCount) * 100) / 100;
+  }
+
+  savePrice(): void {
+    if (this.pricePlanId == null) return;
+    const payload: any = this.pricePlan
+      ? { ...this.pricePlan, pricePerDay: Number(this.priceForm.pricePerDay) || 0 }
+      : { pricePerDay: Number(this.priceForm.pricePerDay) || 0 };
+    this.dietPlanService.update(this.pricePlanId, payload).subscribe({
+      next: () => {
+        this.showPriceModal = false;
+        this.msg = 'Diet rate updated successfully';
+        this.msgType = 'success';
+        this.loadData();
+      },
+      error: (err) => {
+        console.error('Update price error:', err);
+        this.msg = 'Failed to update rate. Please try again.';
+        this.msgType = 'error';
+        this.safeDetectChanges();
+      }
+    });
   }
 
   getUniqueWards(): string[] {

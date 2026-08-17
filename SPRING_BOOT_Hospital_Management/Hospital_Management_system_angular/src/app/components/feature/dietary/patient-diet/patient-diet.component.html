@@ -83,6 +83,7 @@
         <div class="diet-status" *ngIf="getAssignmentForPatient(patient.id) as a">
           <span class="diet-badge" [ngClass]="getDietTypeBadgeClass(a.dietPlan?.dietType)">{{ a.dietPlan?.dietType || 'Unknown' }}</span>
           <span class="diet-price" *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0">৳{{ a.dietPlan.pricePerDay }}/day</span>
+          <span class="diet-price meal-rate" *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0">৳{{ getPricePerMeal(a.dietPlan) }}/meal</span>
           <span class="diet-amount" *ngIf="a.totalAmount && a.totalAmount > 0">Total: ৳{{ a.totalAmount | number:'1.0-0' }}</span>
           <span class="status-badge badge-success">ACTIVE</span>
         </div>
@@ -106,6 +107,9 @@
           </button>
           <button class="action-btn primary" (click)="openUpdateDiet(patient)" *ngIf="getAssignmentForPatient(patient.id)">
             <i class="bi bi-pencil-square"></i> Update
+          </button>
+          <button class="action-btn price" (click)="openUpdatePrice(patient)" *ngIf="getAssignmentForPatient(patient.id)">
+            <i class="bi bi-cash-coin"></i> Rate
           </button>
           <button class="action-btn secondary" (click)="viewPatientDiet(patient)">
             <i class="bi bi-eye"></i> Details
