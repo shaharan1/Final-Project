@@ -30,30 +30,51 @@
     </div>
   </div>
 
-  <div class="filter-bar glass" *ngIf="!loading">
+  <div class="toolbar" *ngIf="!loading">
     <div class="search-group">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" class="search-input" placeholder="Search by name, specialization, license..." [(ngModel)]="searchTerm" (ngModelChange)="filterDieticians()">
     </div>
   </div>
 
-  <div class="cards-grid" *ngIf="!loading">
-    <div class="staff-card glass" *ngFor="let d of filteredDieticians">
-      <div class="staff-avatar">{{ getInitials(d.user?.name || d.specialization) }}</div>
-      <div class="staff-info">
-        <h3>{{ d.user?.name || 'N/A' }}</h3>
-        <span class="staff-spec">{{ d.specialization }}</span>
+  <div class="dieticians-grid" *ngIf="!loading">
+    <div class="dietician-card" [class.off-duty]="!d.active" *ngFor="let d of filteredDieticians">
+      <div class="card-top">
+        <div class="avatar">{{ getInitials(d.user?.name || d.specialization) }}</div>
+        <div class="dietician-info">
+          <h3>{{ d.user?.name || 'N/A' }}
+            <span class="status-dot" [ngClass]="d.active ? 'on-duty' : 'off-duty'"></span>
+          </h3>
+          <span class="tag lead">{{ d.specialization || 'General Nutrition' }}</span>
+          <div class="availability">
+            <span [ngClass]="d.active ? 'on-duty' : 'off-duty'">{{ d.active ? 'Available' : 'Unavailable' }}</span>
+            <span *ngIf="d.availableDays"> · {{ d.availableDays }}</span>
+          </div>
+        </div>
       </div>
-      <div class="staff-details">
-        <div class="detail-row"><span class="detail-lbl">License</span><span class="detail-val">{{ d.licenseNumber || 'N/A' }}</span></div>
-        <div class="detail-row"><span class="detail-lbl">Experience</span><span class="detail-val">{{ d.experienceYears || 0 }} yrs</span></div>
-        <div class="detail-row"><span class="detail-lbl">Phone</span><span class="detail-val">{{ d.phone || 'N/A' }}</span></div>
-        <div class="detail-row"><span class="detail-lbl">Duty Hours</span><span class="detail-val">{{ d.dutyHours || 'N/A' }}</span></div>
+
+      <div class="stats-row">
+        <div class="stat"><span class="value">{{ d.experienceYears || 0 }}</span><span class="label">Years Exp</span></div>
+        <div class="stat"><span class="value">{{ d.licenseNumber || '—' }}</span><span class="label">License</span></div>
+        <div class="stat"><span class="value">{{ d.phone || '—' }}</span><span class="label">Phone</span></div>
       </div>
-      <div class="staff-status">
-        <span class="badge" [ngClass]="d.active ? 'badge-success' : 'badge-secondary'">{{ d.active ? 'Active' : 'Inactive' }}</span>
+
+      <div class="contact" *ngIf="d.qualification || d.dutyHours || d.availableDays">
+        <div class="contact-item" *ngIf="d.qualification">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h4"/></svg>
+          {{ d.qualification }}
+        </div>
+        <div class="contact-item" *ngIf="d.dutyHours">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          {{ d.dutyHours }}
+        </div>
+        <div class="contact-item" *ngIf="d.availableDays">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+          {{ d.availableDays }}
+        </div>
       </div>
-      <div class="staff-actions">
+
+      <div class="card-actions">
         <button class="action-btn secondary" (click)="openEditModal(d)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           Edit
