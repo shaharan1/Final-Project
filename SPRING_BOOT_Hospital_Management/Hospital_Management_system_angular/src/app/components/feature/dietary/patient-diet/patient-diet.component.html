@@ -231,7 +231,7 @@
                 <span>Status: {{ a.status }}</span>
                 <span *ngIf="a.wardName">Ward: {{ a.wardName }}</span>
                 <span *ngIf="a.bedNumber">Bed: {{ a.bedNumber }}</span>
-                <span *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0" style="color:#19c184; font-weight:600;">Rate: ৳{{ a.dietPlan.pricePerDay }}/day</span>
+                <span *ngIf="a.dietPlan?.pricePerDay && a.dietPlan.pricePerDay! > 0" style="color:#19c184; font-weight:600;">Rate: ৳{{ a.dietPlan.pricePerDay }}/day · ৳{{ getPricePerMeal(a.dietPlan) }}/meal</span>
                 <span *ngIf="a.totalAmount && a.totalAmount > 0" style="color:#19c184; font-weight:600;">Total: ৳{{ a.totalAmount | number:'1.0-0' }}</span>
               </div>
               <div class="assignment-meals" *ngIf="a.dietPlan">
@@ -312,6 +312,34 @@
         <button class="btn btn-secondary" (click)="closeModals()">Cancel</button>
         <button class="btn btn-danger" (click)="saveAlert()">
           <i class="bi bi-bell"></i> Create Alert
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Diet Rate Modal -->
+  <div class="modal-overlay" *ngIf="showPriceModal" (click)="closeModals()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2><i class="bi bi-cash-coin"></i> Update Diet Rate</h2>
+        <button class="btn-close" (click)="closeModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-patient">Patient: <strong>{{ selectedPatient?.name }}</strong> — Plan: <strong>{{ pricePlanName }}</strong></p>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label>Price Per Day (৳)</label>
+            <input type="number" step="0.01" min="0" [(ngModel)]="priceForm.pricePerDay" placeholder="e.g., 500">
+          </div>
+        </div>
+        <div class="price-preview" *ngIf="priceForm.pricePerDay && priceForm.pricePerDay > 0">
+          Approx. per meal ({{ priceMealCount }} meals): <strong>৳{{ getPricePerMealPreview() }}</strong>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModals()">Cancel</button>
+        <button class="btn btn-primary" (click)="savePrice()">
+          <i class="bi bi-check-circle"></i> Update Rate
         </button>
       </div>
     </div>
