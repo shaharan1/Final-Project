@@ -42,7 +42,7 @@
             <tr *ngFor="let staff of officeStaffs; let i = index">
               <td class="osl-idx">{{ i + 1 }}</td>
               <td>
-                <img [src]="staff.photo" alt="{{ staff.name }}" class="osl-avatar" />
+                <img [src]="getAvatar(staff)" (error)="onImgError($event, staff)" alt="{{ staff.name }}" class="osl-avatar" />
               </td>
               <td class="osl-name">{{ staff.name }}</td>
               <td>{{ staff.email }}</td>

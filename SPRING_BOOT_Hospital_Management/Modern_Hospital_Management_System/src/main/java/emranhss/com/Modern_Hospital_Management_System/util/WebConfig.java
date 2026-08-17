@@ -17,12 +17,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        String path = Paths.get(uploadDir).toUri().toString();
+        // Resolve the configured upload directory to an absolute "file:" URI so
+        // uploaded images are always served correctly regardless of the working directory.
+        String absolute = Paths.get(uploadDir).toAbsolutePath().toString();
+        if (!absolute.endsWith("/")) {
+            absolute += "/";
+        }
+        String location = Paths.get(absolute).toUri().toString();
 
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations(path);
-
-
+        // Both /images/** (used by stored photo paths) and /uploads/** (used by the
+        // Angular proxy / imgUrl convention) point at the same upload directory.
+        registry.addResourceHandler("/images/**", "/uploads/**")
+                .addResourceLocations(location);
     }
 
 }
