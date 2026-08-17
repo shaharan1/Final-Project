@@ -140,7 +140,7 @@
 .history-action.ASSIGNED { background: #d1e7dd; color: #0f5132; }
 .history-action.UPDATED { background: #cfe2ff; color: #084298; }
 .history-action.CANCELLED { background: #f8d7da; color: #842029; }
-.history-action.DOCTOR_RECOMMENDATION { background: #e0d6f5; color: #6f42c1; }
+.history-action.DOCTOR_RECOMMENDATION { background: #ccfbf1; color: #0f766e; }
 .history-action.DIETICIAN_RECOMMENDATION { background: #cff4fc; color: #055160; }
 .history-action.MEAL_CHANGED { background: #fff3cd; color: #997404; }
 .history-date { font-size: 0.75rem; color: #6c757d; font-family: 'IBM Plex Mono', monospace; }
