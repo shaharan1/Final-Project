@@ -397,6 +397,10 @@
   .stats-row--inventory { grid-template-columns: repeat(3, 1fr); }
   .bottom-grid { grid-template-columns: 1fr 1fr; }
     }@media (max-width: 992px)    {.hero-bg {    padding: 30px 24px 40px;    }.hero-content {    flex-direction: column; gap: 20px;    }.dashboard-content {    padding: 0 24px 40px;    }.stats-row--revenue {    grid-template-columns: 1fr 1fr;    }.stats-row--inventory {    grid-template-columns: repeat(2, 1fr);    }.actions-grid {    grid-template-columns: repeat(3, 1fr);    }.bottom-grid {    grid-template-columns: 1fr;    }
- }@media (max-width: 600px)    {.hero-bg {    padding: 20px 16px 30px;    }.hero-text h1 {    font-size: 1.5rem;    }.dashboard-content {    padding: 0 16px 30px;    }.stats-row--revenue,
+}@media (max-width: 600px)    {.hero-bg {    padding: 20px 16px 30px;    }.hero-text h1 {    font-size: 1.5rem;    }.dashboard-content {    padding: 0 16px 30px;    }.stats-row--revenue,
   .stats-row--inventory {    grid-template-columns: 1fr;    }.actions-grid {    grid-template-columns: repeat(2, 1fr);    }.stat-value {    font-size: 1.4rem;    }
- }
+  }
+
+/* ── FADE-IN (shared .lp-* design system) ── */
+.lp-hero { animation: lpFadeIn .5s ease both; }
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
