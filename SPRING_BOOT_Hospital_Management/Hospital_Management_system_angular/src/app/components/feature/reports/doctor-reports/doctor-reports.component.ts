@@ -94,8 +94,8 @@ export class DoctorReportsComponent implements OnInit, AfterViewInit, OnDestroy 
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });
@@ -134,10 +134,10 @@ export class DoctorReportsComponent implements OnInit, AfterViewInit, OnDestroy 
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: 'rgba(255,255,255,0.6)' } } },
+        plugins: { legend: { labels: { color: '#495057' } } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });

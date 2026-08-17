@@ -114,8 +114,8 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
           title: { display: false }
         },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });
@@ -137,7 +137,7 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
             'rgba(25, 135, 84, 0.7)', 'rgba(255, 193, 7, 0.7)',
             'rgba(220, 53, 69, 0.7)', 'rgba(13, 202, 240, 0.7)'
           ],
-          borderColor: '#0a0e27',
+          borderColor: '#ffffff',
           borderWidth: 2
         }]
       },
@@ -145,7 +145,7 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.6)', padding: 16 } }
+          legend: { position: 'bottom', labels: { color: '#495057', padding: 16 } }
         }
       }
     });
@@ -178,8 +178,8 @@ export class PatientReportsComponent implements OnInit, AfterViewInit, OnDestroy
           legend: { display: false }
         },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });

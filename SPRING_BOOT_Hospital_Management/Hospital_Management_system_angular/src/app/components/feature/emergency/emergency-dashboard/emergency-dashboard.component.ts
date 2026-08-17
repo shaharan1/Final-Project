@@ -214,7 +214,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         datasets: [{
           data: counts,
           backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#198754', '#0d6efd'],
-          borderColor: '#0a0e27',
+          borderColor: '#ffffff',
           borderWidth: 3,
           hoverOffset: 8
         }]
@@ -225,7 +225,7 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         plugins: {
           legend: {
             position: 'bottom',
-            labels: { color: 'rgba(255,255,255,0.7)', padding: 16, font: { size: 12 } }
+            labels: { color: '#495057', padding: 16, font: { size: 12 } }
           }
         }
       }
@@ -266,13 +266,13 @@ export class EmergencyDashboardComponent implements OnInit, OnDestroy, AfterView
         maintainAspectRatio: false,
         scales: {
           x: {
-            ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 11 } },
-            grid: { color: 'rgba(255,255,255,0.04)' }
+            ticks: { color: '#6c757d', font: { size: 11 } },
+            grid: { color: '#e9ecef' }
           },
           y: {
             beginAtZero: true,
-            ticks: { color: 'rgba(255,255,255,0.5)', stepSize: 1 },
-            grid: { color: 'rgba(255,255,255,0.06)' }
+            ticks: { color: '#6c757d', stepSize: 1 },
+            grid: { color: '#e9ecef' }
           }
         },
         plugins: {

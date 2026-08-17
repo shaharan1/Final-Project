@@ -105,8 +105,8 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)', maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d', maxTicksLimit: 10 }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });
@@ -134,8 +134,8 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });
@@ -156,14 +156,14 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
             'rgba(255, 193, 7, 0.7)', 'rgba(102, 16, 242, 0.7)',
             'rgba(220, 53, 69, 0.7)', 'rgba(13, 202, 240, 0.7)'
           ],
-          borderColor: '#0a0e27',
+          borderColor: '#ffffff',
           borderWidth: 2
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.6)', padding: 16 } } }
+        plugins: { legend: { position: 'bottom', labels: { color: '#495057', padding: 16 } } }
       }
     });
     this.charts.push(chart);
@@ -190,8 +190,8 @@ export class RevenueReportsComponent implements OnInit, AfterViewInit, OnDestroy
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });

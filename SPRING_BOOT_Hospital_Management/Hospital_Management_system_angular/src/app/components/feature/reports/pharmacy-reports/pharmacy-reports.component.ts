@@ -207,8 +207,8 @@ export class PharmacyReportsComponent implements OnInit, AfterViewInit, OnDestro
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)', maxTicksLimit: 10 }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d', maxTicksLimit: 10 }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });
@@ -239,8 +239,8 @@ export class PharmacyReportsComponent implements OnInit, AfterViewInit, OnDestro
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });

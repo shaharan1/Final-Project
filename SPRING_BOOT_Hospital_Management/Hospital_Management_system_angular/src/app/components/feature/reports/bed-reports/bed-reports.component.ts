@@ -107,10 +107,10 @@ export class BedReportsComponent implements OnInit, AfterViewInit, OnDestroy {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: 'rgba(255,255,255,0.6)' } } },
+        plugins: { legend: { labels: { color: '#495057' } } },
         scales: {
-          x: { stacked: true, ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } },
-          y: { stacked: true, ticks: { color: 'rgba(255,255,255,0.5)' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          x: { stacked: true, ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } },
+          y: { stacked: true, ticks: { color: '#6c757d' }, grid: { color: '#e9ecef' } }
         }
       }
     });
@@ -127,14 +127,14 @@ export class BedReportsComponent implements OnInit, AfterViewInit, OnDestroy {
         datasets: [{
           data: [icu.occupied, icu.available],
           backgroundColor: ['rgba(220, 53, 69, 0.7)', 'rgba(25, 135, 84, 0.7)'],
-          borderColor: '#0a0e27',
+          borderColor: '#ffffff',
           borderWidth: 3
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.6)', padding: 16 } } }
+        plugins: { legend: { position: 'bottom', labels: { color: '#495057', padding: 16 } } }
       }
     });
     this.charts.push(chart);

@@ -170,6 +170,6 @@ export class NutritionAnalyticsComponent implements OnInit {
 
   getDonutGradient(): string {
     const pct = this.getAverageCompletion();
-    return `conic-gradient(#198754 0% ${pct}%, rgba(255,255,255,0.05) ${pct}% 100%)`;
+    return `conic-gradient(#198754 0% ${pct}%, #e9ecef ${pct}% 100%)`;
   }
 }
