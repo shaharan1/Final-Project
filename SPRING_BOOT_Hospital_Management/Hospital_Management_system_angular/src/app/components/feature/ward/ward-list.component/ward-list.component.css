@@ -1,5 +1,10 @@
 .container-fluid { padding: 24px; max-width: 1400px; margin: 0 auto; }
 
+@keyframes lpFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.lp-hero { animation: lpFadeIn .5s ease both; }
+.wl-search-bar { animation: lpFadeIn .5s ease both; }
+.wl-card { animation: lpFadeIn .5s ease both; }
+
 .wl-header {
     background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
     padding: 28px 32px;
@@ -36,14 +41,14 @@
     padding: 10px 24px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    background: linear-gradient(135deg, #059669, #0891b2);
     color: #fff;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     transition: transform .2s, box-shadow .2s;
 }
-.wl-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,110,253,0.3); }
+.wl-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5,150,105,0.3); }
 
 .wl-search-bar { margin-bottom: 20px; }
 .wl-search {
@@ -55,29 +60,30 @@
     outline: none;
     transition: border-color .2s;
 }
-.wl-search:focus { border-color: #0d6efd; }
+.wl-search:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,0.12); }
 
 .wl-card {
     background: #fff;
+    border: 1px solid #eef2f6;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     overflow: hidden;
 }
 
 .table { margin: 0; }
 .table th {
-    background: #f8f9fa;
+    background: #f0fdf9;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #495057;
+    color: #047857;
     padding: 14px 16px;
     border-bottom: 2px solid #e9ecef;
 }
 .table td { padding: 14px 16px; vertical-align: middle; font-size: 14px; }
 .table tbody tr { transition: background .15s; }
-.table tbody tr:hover { background: #f8f9fa; }
+.table tbody tr:hover { background: #f0fdf9; }
 
 .wl-badge {
     background: #e9ecef;
@@ -91,17 +97,17 @@
 
 .wl-btn-sm {
     padding: 6px 16px;
-    border: 2px solid #0d6efd;
+    border: 2px solid #059669;
     border-radius: 20px;
     background: #fff;
-    color: #0d6efd;
+    color: #059669;
     font-weight: 600;
     font-size: 13px;
     cursor: pointer;
     transition: all .2s;
     white-space: nowrap;
 }
-.wl-btn-sm:hover { background: #0d6efd; color: #fff; }
+.wl-btn-sm:hover { background: #059669; color: #fff; }
 
 .wl-empty { text-align: center; padding: 40px !important; color: #6c757d; }
 
