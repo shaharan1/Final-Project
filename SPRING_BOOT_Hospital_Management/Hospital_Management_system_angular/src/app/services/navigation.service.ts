@@ -322,9 +322,6 @@ export class NavigationService {
         items: [
           { label: 'Dashboard', icon: '📊', route: '/pharmacist-dashboard', section: 'dashboard' },
           { label: 'Pharmacy Dashboard', icon: '📊', route: '/pharmacy-dashboard', section: 'pharmacydashboard' },
-
-        { label: 'Reports & Analytics', icon: '📊', route: '/reports', section: 'reports' },
-
         ],
       },
       {
@@ -409,7 +406,6 @@ export class NavigationService {
         items: [
           { label: 'Dashboard', icon: '📊', route: '/billing-clerk-dashboard', section: 'dashboard' },
           { label: 'Billing Dashboard', icon: '💰', route: '/billing-dashboard', section: 'billingdashboard' },
-          { label: 'Reports & Analytics', icon: '📊', route: '/reports', section: 'reports' },
         ],
       },
       {
@@ -423,25 +419,11 @@ export class NavigationService {
         ],
       },
       {
-        label: 'Admissions',
-        items: [
-          { label: 'Admission', icon: '🏥', route: '/admission', section: 'admissionform' },
-          { label: 'Admission List', icon: '📋', route: '/admission-list', section: 'admission' },
-        ],
-      },
-      {
-        label: 'Patients',
-        items: [
-          { label: 'Patient List', icon: '👤', route: '/patient-list', section: 'patient' },
-        ],
-      },
-      {
         label: 'Surgery Management',
         items: [
           { label: 'Surgery Dashboard', icon: '⚕️', route: '/surgery/dashboard', section: 'surgery' },
           { label: 'All Surgeries', icon: '🩺', route: '/surgery/list', section: 'surgery' },
           { label: 'Register Surgery', icon: '📋', route: '/surgery/register', section: 'surgery' },
-          { label: 'Surgery Invoice', icon: '🧾', route: '/surgery/list', section: 'surgery' },
           { label: 'Rate & Config', icon: '⚙️', route: '/surgery/rate-management', section: 'surgery' },
         ],
       },
