@@ -27,13 +27,22 @@ export class PharmacistDashboardComponent implements OnInit {
     this.dashboardService.getPharmacistStats().subscribe(stats => {
       this.stats = stats;
       this.cdr.detectChanges();
+    }, error => {
+      this.loading = false;
+      this.cdr.detectChanges();
     });
     this.dashboardService.getAllMedicines().subscribe(medicines => {
       this.medicines = medicines.slice(0, 5);
       this.cdr.detectChanges();
+    }, error => {
+      this.loading = false;
+      this.cdr.detectChanges();
     });
     this.dashboardService.getAllGenerics().subscribe(generics => {
       this.generics = generics;
+      this.loading = false;
+      this.cdr.detectChanges();
+    }, error => {
       this.loading = false;
       this.cdr.detectChanges();
     });

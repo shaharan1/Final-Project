@@ -40,7 +40,8 @@ export class LabTechnicianDashboardComponent implements OnInit {
       next: (res) => {
         this.labStats = res;
         this.cdr.markForCheck();
-      }
+      },
+      error: () => { this.loading = false; }
     });
   }
 
@@ -60,7 +61,8 @@ export class LabTechnicianDashboardComponent implements OnInit {
       next: (res) => {
         this.testCatalog = res;
         this.cdr.markForCheck();
-      }
+      },
+      error: () => { this.loading = false; }
     });
   }
 
