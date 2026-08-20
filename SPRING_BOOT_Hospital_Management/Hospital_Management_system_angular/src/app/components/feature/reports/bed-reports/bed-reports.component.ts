@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, inject, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
@@ -22,6 +22,7 @@ export class BedReportsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private analyticsService = inject(AnalyticsService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   data: BedOccupancy | null = null;
   loading = true;
@@ -47,6 +48,7 @@ export class BedReportsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.data = res;
         this.loading = false;
         setTimeout(() => this.initCharts(), 100);
+        this.cdr.detectChanges();
       },
       error: () => {
         this.error = 'Failed to load bed occupancy data';
