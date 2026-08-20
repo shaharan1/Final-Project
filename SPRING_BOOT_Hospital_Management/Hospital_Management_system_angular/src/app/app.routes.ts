@@ -120,9 +120,6 @@ export const routes: Routes = [
   // ============ Dashboard redirect ============
   { path: 'dashboard', component: RoleRedirect, canActivate: [authGuard] },
 
-  // TEMP preview (unguarded) — verify data only; remove after
-  { path: 'ward-preview', component: WardManagerDashboardComponent },
-
   // ============ All authenticated routes under persistent layout ============
   {
     path: '',
