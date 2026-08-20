@@ -86,3 +86,105 @@
       </div>
     </div>
   </section>
+
+  <section *ngIf="!loading" class="full-width-section">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Quick Navigation</h2>
+        <span class="panel-tag">All Modules</span>
+      </div>
+      <div class="nav-group-title">Doctors</div>
+      <div class="module-grid">
+        <a routerLink="/doctor-departments" class="module-card">
+          <div class="module-ic module-ic--green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Doctor Departments</span>
+        </a>
+        <a routerLink="/doctor" class="module-card">
+          <div class="module-ic module-ic--green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Doctors</span>
+        </a>
+        <a routerLink="/schedule-slot" class="module-card">
+          <div class="module-ic module-ic--green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Schedule Slots</span>
+        </a>
+      </div>
+      <div class="nav-group-title">Appointments</div>
+      <div class="module-grid">
+        <a routerLink="/appointments" class="module-card">
+          <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Appointments</span>
+        </a>
+        <a routerLink="/appointment-list" class="module-card">
+          <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Appointment List</span>
+        </a>
+        <a routerLink="/appointments/create" class="module-card">
+          <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Book Appointment</span>
+        </a>
+        <a routerLink="/appointment-slip" class="module-card">
+          <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Appointment Slip</span>
+        </a>
+      </div>
+      <div class="nav-group-title">Patients</div>
+      <div class="module-grid">
+        <a routerLink="/patient" class="module-card">
+          <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Add Patient</span>
+        </a>
+        <a routerLink="/patient-list" class="module-card">
+          <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Patient List</span>
+        </a>
+        <a routerLink="/admission" class="module-card">
+          <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Patient Admission</span>
+        </a>
+        <a routerLink="/admission-list" class="module-card">
+          <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Admission List</span>
+        </a>
+      </div>
+      <div class="nav-group-title">Wards &amp; Beds</div>
+      <div class="module-grid">
+        <a routerLink="/ward-management" class="module-card">
+          <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Ward Management</span>
+        </a>
+        <a routerLink="/bed-management" class="module-card">
+          <div class="module-ic module-ic--teal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Bed Management</span>
+        </a>
+      </div>
+      <div class="nav-group-title">Laboratory</div>
+      <div class="module-grid">
+        <a routerLink="/lab-reception" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Reception</span>
+        </a>
+      </div>
+      <div class="nav-group-title">Emergency</div>
+      <div class="module-grid">
+        <a routerLink="/emergency/dashboard" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Emergency Dashboard</span>
+        </a>
+        <a routerLink="/emergency/registration" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Emergency Registration</span>
+        </a>
+        <a routerLink="/emergency/status-board" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Status Board</span>
+        </a>
+      </div>
+      <div class="nav-group-title">Reports</div>
+      <div class="module-grid">
+        <a routerLink="/reports/appointment" class="module-card">
+          <div class="module-ic module-ic--gray"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Appointment Reports</span>
+        </a>
+      </div>
+    </div>
+  </section>

@@ -23,14 +23,26 @@ export class ReceptionistDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getReceptionistStats().subscribe(stats => {
-      this.stats = stats;
-      this.cdr.detectChanges();
+    this.dashboardService.getReceptionistStats().subscribe({
+      next: (stats) => {
+        this.stats = stats;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
-    this.dashboardService.getTodayAppointments().subscribe(appointments => {
-      this.todayAppointments = appointments;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.dashboardService.getTodayAppointments().subscribe({
+      next: (appointments) => {
+        this.todayAppointments = appointments;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 

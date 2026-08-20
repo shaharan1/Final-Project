@@ -81,3 +81,19 @@
       </table>
     </div>
   </section>
+
+  <section *ngIf="!loading" class="full-width-section">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Quick Navigation</h2>
+        <span class="panel-tag">All Modules</span>
+      </div>
+      <div class="nav-group-title">Office Management</div>
+      <div class="module-grid">
+        <a routerLink="/office-staff" class="module-card">
+          <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Office Staff</span>
+        </a>
+      </div>
+    </div>
+  </section>

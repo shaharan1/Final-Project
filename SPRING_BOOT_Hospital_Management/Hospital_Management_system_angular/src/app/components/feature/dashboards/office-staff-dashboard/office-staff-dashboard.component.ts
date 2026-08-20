@@ -24,18 +24,27 @@ export class OfficeStaffDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getOfficeStats().subscribe(stats => {
-      this.stats = stats;
-      this.cdr.detectChanges();
+    this.dashboardService.getOfficeStats().subscribe({
+      next: (stats) => {
+        this.stats = stats;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.loading = false; }
     });
-    this.dashboardService.getRecentAdmissions().subscribe(admissions => {
-      this.recentAdmissions = admissions;
-      this.cdr.detectChanges();
+    this.dashboardService.getRecentAdmissions().subscribe({
+      next: (admissions) => {
+        this.recentAdmissions = admissions;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.loading = false; }
     });
-    this.dashboardService.getTodayAppointments().subscribe(appointments => {
-      this.todayAppointments = appointments;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.dashboardService.getTodayAppointments().subscribe({
+      next: (appointments) => {
+        this.todayAppointments = appointments;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.loading = false; }
     });
   }
 

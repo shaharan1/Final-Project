@@ -121,3 +121,89 @@
 
   </section>
 
+  <!-- Quick Navigation -->
+  <section *ngIf="!loading" class="full-width-section">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Quick Navigation</h2>
+        <span class="panel-tag">All Modules</span>
+      </div>
+
+      <div class="nav-group-title">Patients</div>
+      <div class="module-grid">
+        <a routerLink="/patient-list" class="module-card">
+          <div class="module-ic module-ic--blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Patient List</span>
+        </a>
+      </div>
+
+      <div class="nav-group-title">Tests</div>
+      <div class="module-grid">
+        <a routerLink="/tests/create" class="module-card">
+          <div class="module-ic module-ic--cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Add Test</span>
+        </a>
+        <a routerLink="/test-list" class="module-card">
+          <div class="module-ic module-ic--cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Test List</span>
+        </a>
+      </div>
+
+      <div class="nav-group-title">Laboratory</div>
+      <div class="module-grid">
+        <a routerLink="/lab-reception" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Reception</span>
+        </a>
+        <a routerLink="/sample-collection" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Sample Collection</span>
+        </a>
+        <a routerLink="/result-entry" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Result Entry</span>
+        </a>
+        <a routerLink="/lab-verification" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Verification</span>
+        </a>
+        <a routerLink="/doctor-lab-reports" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Reports</span>
+        </a>
+        <a routerLink="/lab/dashboard" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Dashboard</span>
+        </a>
+        <a routerLink="/lab/test-entry" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Test Result Entry</span>
+        </a>
+        <a routerLink="/lab/reports" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Reports List</span>
+        </a>
+        <a routerLink="/lab/reference-ranges" class="module-card">
+          <div class="module-ic module-ic--red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Reference Ranges</span>
+        </a>
+      </div>
+
+      <div class="nav-group-title">Emergency</div>
+      <div class="module-grid">
+        <a routerLink="/emergency/lab-orders" class="module-card">
+          <div class="module-ic module-ic--orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Emergency Lab Orders</span>
+        </a>
+      </div>
+
+      <div class="nav-group-title">Reports</div>
+      <div class="module-grid">
+        <a routerLink="/reports/lab" class="module-card">
+          <div class="module-ic module-ic--gray"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span>Lab Reports</span>
+        </a>
+      </div>
+    </div>
+  </section>
+

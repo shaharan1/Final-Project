@@ -27,9 +27,15 @@ export class NurseDashboardComponent implements OnInit {
     this.dashboardService.getNurseStats().subscribe(stats => {
       this.stats = stats;
       this.cdr.detectChanges();
+    }, error => {
+      this.loading = false;
+      this.cdr.detectChanges();
     });
     this.dashboardService.getRecentAdmissions().subscribe(admissions => {
       this.recentAdmissions = admissions;
+      this.cdr.detectChanges();
+    }, error => {
+      this.loading = false;
       this.cdr.detectChanges();
     });
     this.dashboardService.getWardOccupancy().subscribe(wards => {

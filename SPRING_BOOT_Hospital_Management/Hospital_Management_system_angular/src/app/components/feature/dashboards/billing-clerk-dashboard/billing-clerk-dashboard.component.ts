@@ -23,14 +23,24 @@ export class BillingClerkDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getAdminStats().subscribe(stats => {
-      this.stats = stats;
-      this.cdr.detectChanges();
+    this.dashboardService.getAdminStats().subscribe({
+      next: (stats) => {
+        this.stats = stats;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
-    this.dashboardService.getRecentAdmissions().subscribe(admissions => {
-      this.recentAdmissions = admissions;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.dashboardService.getRecentAdmissions().subscribe({
+      next: (admissions) => {
+        this.recentAdmissions = admissions;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
   }
 
