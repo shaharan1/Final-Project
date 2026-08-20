@@ -138,6 +138,10 @@ export const routes: Routes = [
       { path: 'billing-clerk-dashboard', component: BillingClerkDashboardComponent, canActivate: [roleGuard(['BillingClerk'])], data: { title: 'Billing Clerk Dashboard' } },
       { path: 'inventory-manager-dashboard', component: InventoryManagerDashboardComponent, canActivate: [roleGuard(['InventoryManager'])], data: { title: 'Inventory Manager Dashboard' } },
       { path: 'ward-manager-dashboard', component: WardManagerDashboardComponent, canActivate: [roleGuard(['WardManager'])], data: { title: 'Ward Manager Dashboard' } },
+      { path: 'doc-preview', component: DoctorDashboardHomeComponent }, // TEMP-PREVIEW
+      { path: 'nurse-preview', component: NurseDashboardComponent }, // TEMP-PREVIEW
+      { path: 'recep-preview', component: ReceptionistDashboardComponent }, // TEMP-PREVIEW
+      { path: 'billing-preview', component: BillingClerkDashboardComponent }, // TEMP-PREVIEW
 
       // ============ Doctors ============
       { path: 'doctor-departments', component: DoctorDepartment, canActivate: [roleGuard(['Admin', 'Doctor', 'Receptionist'])], data: { title: 'Doctor Departments' } },
