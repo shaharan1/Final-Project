@@ -466,25 +466,9 @@ export class NavigationService {
       {
         label: 'Inventory',
         items: [
-          { label: 'Medicine', icon: '💊', route: '/medicine-list', section: 'medicine' },
-          { label: 'Add Medicine', icon: '➕', route: '/medicines/create', section: 'addmedicine' },
           { label: 'Medicine Stock', icon: '📦', route: '/medicine-stock', section: 'medicinestock' },
-          { label: 'Generic', icon: '📁', route: '/generic-list', section: 'generic' },
-          { label: 'Add Generic', icon: '➕', route: '/generics', section: 'addgeneric' },
-        ],
-      },
-      {
-        label: 'Suppliers & Purchase',
-        items: [
           { label: 'Suppliers', icon: '🏪', route: '/suppliers', section: 'suppliers' },
           { label: 'Purchase Orders', icon: '🛒', route: '/purchase-orders', section: 'purchaseorders' },
-        ],
-      },
-      {
-        label: 'Wards & Beds',
-        items: [
-          { label: 'Ward', icon: '🏥', route: '/ward-list', section: 'ward' },
-          { label: 'Bed Management', icon: '🛏️', route: '/ward-management', section: 'bed' },
         ],
       },
       {
