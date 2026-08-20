@@ -24,18 +24,17 @@ export class WardManagerDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getWardManagerStats().subscribe(stats => {
-      this.stats = stats;
-      this.cdr.detectChanges();
+    this.dashboardService.getWardManagerStats().subscribe({
+      next: (stats) => { this.stats = stats; this.cdr.detectChanges(); },
+      error: () => { this.cdr.detectChanges(); }
     });
-    this.dashboardService.getWardOccupancy().subscribe(wards => {
-      this.wards = wards;
-      this.cdr.detectChanges();
+    this.dashboardService.getWardOccupancy().subscribe({
+      next: (wards) => { this.wards = wards; this.cdr.detectChanges(); },
+      error: () => { this.cdr.detectChanges(); }
     });
-    this.dashboardService.getRecentAdmissions().subscribe(admissions => {
-      this.recentAdmissions = admissions;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.dashboardService.getRecentAdmissions().subscribe({
+      next: (admissions) => { this.recentAdmissions = admissions; this.loading = false; this.cdr.detectChanges(); },
+      error: () => { this.loading = false; this.cdr.detectChanges(); }
     });
   }
 
