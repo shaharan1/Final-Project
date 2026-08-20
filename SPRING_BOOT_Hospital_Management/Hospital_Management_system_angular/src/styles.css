@@ -365,6 +365,29 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 13px;
 }
 
+.module-ic--blue { background: rgba(79,140,255,0.12); color: #4f8cff; }
+.module-ic--green { background: rgba(0,212,170,0.12); color: #00d4aa; }
+.module-ic--purple { background: rgba(168,85,247,0.12); color: #a855f7; }
+.module-ic--teal { background: rgba(32,201,160,0.12); color: #20c9a0; }
+.module-ic--red { background: rgba(255,107,107,0.12); color: #ff6b6b; }
+.module-ic--orange { background: rgba(255,179,71,0.12); color: #ffb347; }
+.module-ic--cyan { background: rgba(6,182,212,0.12); color: #06b6d4; }
+.module-ic--pink { background: rgba(244,114,182,0.12); color: #f472b6; }
+.module-ic--indigo { background: rgba(99,102,241,0.12); color: #6366f1; }
+.module-ic--yellow { background: rgba(234,179,8,0.12); color: #ca8a04; }
+.module-ic--gray { background: rgba(148,163,184,0.12); color: #64748b; }
+
+.nav-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 18px 0 10px;
+}
+
+.nav-group-title:first-child { margin-top: 0; }
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 1000px) {
   .grid-2col { grid-template-columns: 1fr; }
