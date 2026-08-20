@@ -24,18 +24,17 @@ export class InventoryManagerDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dashboardService.getInventoryStats().subscribe(stats => {
-      this.stats = stats;
-      this.cdr.detectChanges();
+    this.dashboardService.getInventoryStats().subscribe({
+      next: (stats) => { this.stats = stats; this.cdr.detectChanges(); },
+      error: () => { this.cdr.detectChanges(); }
     });
-    this.dashboardService.getAllMedicines().subscribe(medicines => {
-      this.medicines = medicines.slice(0, 4);
-      this.cdr.detectChanges();
+    this.dashboardService.getAllMedicines().subscribe({
+      next: (medicines) => { this.medicines = medicines.slice(0, 4); this.cdr.detectChanges(); },
+      error: () => { this.cdr.detectChanges(); }
     });
-    this.dashboardService.getAllGenerics().subscribe(generics => {
-      this.generics = generics;
-      this.loading = false;
-      this.cdr.detectChanges();
+    this.dashboardService.getAllGenerics().subscribe({
+      next: (generics) => { this.generics = generics; this.loading = false; this.cdr.detectChanges(); },
+      error: () => { this.loading = false; this.cdr.detectChanges(); }
     });
   }
 
