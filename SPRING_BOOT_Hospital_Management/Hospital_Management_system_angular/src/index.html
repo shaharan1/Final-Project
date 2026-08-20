@@ -6,15 +6,6 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <script>
-    window.__c = [];
-    function __upd(){ document.title = 'CAP[' + window.__c.join(' || ') + ']'; }
-    var _x = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function(m, u){ window.__c.push('XHR ' + m + ' ' + u); __upd(); return _x.apply(this, arguments); };
-    var _f = window.fetch;
-    window.fetch = function(u, o){ window.__c.push('FETCH ' + (typeof u === 'string' ? u : (u && u.url))); __upd(); return _f.apply(this, arguments); };
-    var _le = console.error; console.error = function(){ window.__c.push('ERR ' + [].slice.call(arguments).join(' ')); __upd(); _le.apply(console, arguments); };
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">

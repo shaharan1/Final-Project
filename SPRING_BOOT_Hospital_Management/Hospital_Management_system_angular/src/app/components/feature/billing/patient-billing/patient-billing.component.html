@@ -452,7 +452,7 @@
           </div>
           <div class="form-group">
             <label>Processed By</label>
-            <input type="text" [(ngModel)]="paymentForm.processedBy" placeholder="Staff name">
+            <input type="text" [(ngModel)]="paymentForm.processedBy" [readonly]="true" placeholder="Staff name">
           </div>
           <div class="form-group full-width">
             <label>Notes</label>

@@ -7,6 +7,7 @@ import { PatientService } from '../../../../services/patient.service';
 import { BillingInvoiceService } from '../../../../services/billing/billing-invoice.service';
 import { AdmissionService } from '../../../../services/admission.service';
 import { SurgeryService } from '../../../../services/surgery/surgery.service';
+import { StorageService } from '../../../../services/storage.service';
 import { PatientModel } from '../../../../models/patientModel';
 
 interface BillItem {
@@ -99,6 +100,8 @@ export class PatientBillingComponent implements OnInit {
   activeAdmission: any = null;
   loadingSync = false;
 
+  currentUserName = 'Admin';
+
   categoriesByGroup: { group: string; items: any[] }[] = [];
 
   patientSurgeries: any[] = [];
@@ -109,10 +112,14 @@ export class PatientBillingComponent implements OnInit {
     private patientService: PatientService,
     private billingService: BillingInvoiceService,
     private admissionService: AdmissionService,
-    private surgeryService: SurgeryService
+    private surgeryService: SurgeryService,
+    private storage: StorageService
   ) {}
 
   ngOnInit(): void {
+    const user = this.storage.getUser();
+    this.currentUserName = user?.name || 'Admin';
+    this.paymentForm.processedBy = this.currentUserName;
     this.generateInvoiceNumber();
     this.loadAllPatients();
     this.loadChargeCategories();
@@ -508,7 +515,7 @@ export class PatientBillingComponent implements OnInit {
       taxRate: this.taxRate,
       discountPercent: this.discountPercent,
       notes: this.billForm.notes,
-      preparedBy: 'Admin',
+      preparedBy: this.currentUserName,
       items: this.billItems.filter(i => i.itemStatus === 'ACTIVE').map(i => ({
         chargeCategoryId: i.chargeCategoryId,
         categoryCode: i.categoryCode,
@@ -535,7 +542,7 @@ export class PatientBillingComponent implements OnInit {
   finalizeInvoice(): void {
     if (!this.activeInvoice) return;
     this.loading = true;
-    this.billingService.finalizeInvoice(this.activeInvoice.id, 'Admin').subscribe({
+    this.billingService.finalizeInvoice(this.activeInvoice.id, this.currentUserName).subscribe({
       next: (res) => {
         this.activeInvoice = res;
         this.loading = false;
@@ -564,7 +571,7 @@ export class PatientBillingComponent implements OnInit {
       paymentMethod: 'CASH',
       transactionId: '',
       notes: '',
-      processedBy: 'Admin'
+      processedBy: this.currentUserName
     };
     this.showPaymentModal = true;
     this.cdr.detectChanges();
