@@ -473,22 +473,31 @@ export class NavigationService {
       {
         label: 'Wards & Beds',
         items: [
-          { label: 'Ward', icon: '🏥', route: '/ward-list', section: 'ward' },
           { label: 'Ward Management', icon: '🏥', route: '/ward-management', section: 'wardmanagement' },
-          { label: 'Bed Management', icon: '🛏️', route: '/ward-management', section: 'bed' },
+          { label: 'Add Ward', icon: '➕', route: '/ward', section: 'ward' },
+          { label: 'Ward List', icon: '📋', route: '/ward-list', section: 'wardlist' },
+          { label: 'Bed Management', icon: '🛏️', route: '/bed-management', section: 'bed' },
         ],
       },
       {
-        label: 'Patients',
+        label: 'Emergency',
         items: [
-          { label: 'Admitted Patient', icon: '🏥', route: '/admission-list', section: 'admission' },
-          { label: 'Patient List', icon: '👤', route: '/patient-list', section: 'patient' },
+          { label: 'Emergency Beds', icon: '🚨', route: '/emergency/beds', section: 'emergencybeds' },
+          { label: 'Ambulances', icon: '🚑', route: '/emergency/ambulances', section: 'ambulances' },
         ],
       },
       {
-        label: 'Staff',
+        label: 'Dietary & Kitchen',
         items: [
-          { label: 'Nurse', icon: '👩‍⚕️', route: '/nurses', section: 'nurse' },
+          { label: 'Meal Schedule', icon: '🍽️', route: '/dietary/meal-schedule', section: 'mealschedule' },
+          { label: 'Kitchen Dashboard', icon: '🍳', route: '/dietary/kitchen-dashboard', section: 'kitchendashboard' },
+          { label: 'Kitchen Orders', icon: '📦', route: '/dietary/kitchen-orders', section: 'kitchenorders' },
+        ],
+      },
+      {
+        label: 'Reports',
+        items: [
+          { label: 'Bed Reports', icon: '📈', route: '/reports/bed', section: 'bedreports' },
         ],
       },
     ];
