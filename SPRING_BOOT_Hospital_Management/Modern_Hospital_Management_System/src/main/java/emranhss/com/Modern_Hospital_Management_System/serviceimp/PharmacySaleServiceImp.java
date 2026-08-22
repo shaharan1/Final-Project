@@ -68,6 +68,10 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
                 throw new BadRequestException("Sale price must be greater than zero for: " + stock.getMedicineName());
             }
 
+            if (stock.isExpired()) {
+                throw new BadRequestException("Medicine '" + stock.getMedicineName() + "' is expired and cannot be sold");
+            }
+
             // Deduct sold quantity from the medicine inventory tracker statefully
             stock.setStockQuantity(stock.getStockQuantity() - itemReq.getQuantity());
             medicineStockRepository.save(stock);

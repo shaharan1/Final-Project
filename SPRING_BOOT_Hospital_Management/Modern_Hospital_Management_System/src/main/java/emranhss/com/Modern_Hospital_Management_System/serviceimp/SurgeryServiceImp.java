@@ -368,7 +368,7 @@ public class SurgeryServiceImp implements SurgeryService {
         return billingInvoiceRepository.findById(response.getId()).orElse(null);
     }
 
-    private void checkOtConflict(Long selfId, OperationTheatre ot, LocalDate surgeryDate) {
+    private void checkOtConflict(Long selfId, OperationTheatre ot, LocalDate surgeryDate, LocalTime startTime) {
         if (ot == null || surgeryDate == null) {
             return;
         }
@@ -376,10 +376,12 @@ public class SurgeryServiceImp implements SurgeryService {
         boolean conflict = booked.stream()
                 .anyMatch(s -> (selfId == null || !s.getId().equals(selfId))
                         && !"CANCELLED".equals(s.getStatus())
-                        && !"POSTPONED".equals(s.getStatus()));
+                        && !"POSTPONED".equals(s.getStatus())
+                        && startTime != null && s.getStartTime() != null
+                        && startTime.equals(s.getStartTime()));
         if (conflict) {
             throw new IllegalStateException(
-                    "Operation Theatre '" + ot.getOtName() + "' is already booked on " + surgeryDate);
+                    "Operation Theatre '" + ot.getOtName() + "' is already booked at " + surgeryDate + " " + startTime);
         }
     }
 
