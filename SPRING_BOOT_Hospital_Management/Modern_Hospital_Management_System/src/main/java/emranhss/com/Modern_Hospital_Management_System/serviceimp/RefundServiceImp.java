@@ -1,9 +1,11 @@
 package emranhss.com.Modern_Hospital_Management_System.serviceimp;
 
+import emranhss.com.Modern_Hospital_Management_System.entity.BillingInvoice;
 import emranhss.com.Modern_Hospital_Management_System.entity.Refund;
 import emranhss.com.Modern_Hospital_Management_System.enums.RefundStatus;
 import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
+import emranhss.com.Modern_Hospital_Management_System.repository.BillingInvoiceRepository;
 import emranhss.com.Modern_Hospital_Management_System.repository.RefundRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.RefundService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class RefundServiceImp implements RefundService {
 
     private final RefundRepository refundRepository;
+    private final BillingInvoiceRepository billingInvoiceRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -102,7 +105,24 @@ public class RefundServiceImp implements RefundService {
         }
         refund.setRefundStatus(RefundStatus.PROCESSED);
         refund.setProcessedDate(LocalDateTime.now());
-        return refundRepository.save(refund);
+        refund = refundRepository.save(refund);
+
+        if (refund.getInvoiceNumber() != null) {
+            billingInvoiceRepository.findByInvoiceNumber(refund.getInvoiceNumber()).ifPresent(invoice -> {
+                double newPaid = Math.max(0,
+                        (invoice.getTotalPaid() != null ? invoice.getTotalPaid() : 0.0) - refund.getRefundAmount());
+                invoice.setTotalPaid(newPaid);
+                invoice.recalculateTotals();
+                if (newPaid <= 0.01) {
+                    invoice.setPaymentStatus("REFUNDED");
+                } else {
+                    invoice.setPaymentStatus("PARTIAL");
+                }
+                billingInvoiceRepository.save(invoice);
+            });
+        }
+
+        return refund;
     }
 
     @Override

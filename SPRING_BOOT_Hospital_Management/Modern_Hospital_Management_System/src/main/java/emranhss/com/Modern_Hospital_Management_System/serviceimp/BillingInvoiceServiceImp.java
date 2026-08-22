@@ -55,6 +55,15 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
         return prefix + String.format("%04d", next % 10000);
     }
 
+    private void validateTaxAndDiscount(Double taxRate, Double discountPercent) {
+        if (taxRate != null && taxRate < 0) {
+            throw new BadRequestException("Tax rate cannot be negative");
+        }
+        if (discountPercent != null && (discountPercent < 0 || discountPercent > 100)) {
+            throw new BadRequestException("Discount percent must be between 0 and 100");
+        }
+    }
+
     @Override
     @Transactional
     public BillingInvoiceResponse createInvoice(BillingInvoiceRequest request) {
