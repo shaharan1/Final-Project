@@ -126,6 +126,9 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
         // 5. Mark the linked prescription as dispensed so it leaves the pending queue
         if (request.getPrescriptionId() != null) {
             prescriptionRepository.findById(request.getPrescriptionId()).ifPresent(p -> {
+                if (Boolean.TRUE.equals(p.getDispensed())) {
+                    throw new BadRequestException("Prescription " + p.getPrescriptionNumber() + " has already been dispensed");
+                }
                 p.setDispensed(true);
                 prescriptionRepository.save(p);
             });

@@ -105,12 +105,14 @@ public class RefundServiceImp implements RefundService {
         }
         refund.setRefundStatus(RefundStatus.PROCESSED);
         refund.setProcessedDate(LocalDateTime.now());
-        refund = refundRepository.save(refund);
+        Refund saved = refundRepository.save(refund);
 
-        if (refund.getInvoiceNumber() != null) {
-            billingInvoiceRepository.findByInvoiceNumber(refund.getInvoiceNumber()).ifPresent(invoice -> {
+        if (saved.getInvoiceNumber() != null) {
+            double refundAmount = saved.getRefundAmount();
+            String invoiceNumber = saved.getInvoiceNumber();
+            billingInvoiceRepository.findByInvoiceNumber(invoiceNumber).ifPresent(invoice -> {
                 double newPaid = Math.max(0,
-                        (invoice.getTotalPaid() != null ? invoice.getTotalPaid() : 0.0) - refund.getRefundAmount());
+                        (invoice.getTotalPaid() != null ? invoice.getTotalPaid() : 0.0) - refundAmount);
                 invoice.setTotalPaid(newPaid);
                 invoice.recalculateTotals();
                 if (newPaid <= 0.01) {
@@ -122,7 +124,7 @@ public class RefundServiceImp implements RefundService {
             });
         }
 
-        return refund;
+        return saved;
     }
 
     @Override
