@@ -278,10 +278,17 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
             throw new IllegalStateException("Invoice is already finalized");
         }
 
+        if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
+            throw new BadRequestException("Cannot finalize an invoice with no items");
+        }
+        invoice.recalculateTotals();
+        if (invoice.getNetAmount() == null || invoice.getNetAmount() <= 0) {
+            throw new BadRequestException("Cannot finalize an invoice with zero or negative net amount");
+        }
+
         invoice.setInvoiceStatus("FINALIZED");
         invoice.setFinalizedBy(finalizedBy);
         invoice.setFinalizedDate(LocalDateTime.now());
-        invoice.recalculateTotals();
         invoice = invoiceRepository.save(invoice);
         return mapper.toResponse(invoice);
     }
