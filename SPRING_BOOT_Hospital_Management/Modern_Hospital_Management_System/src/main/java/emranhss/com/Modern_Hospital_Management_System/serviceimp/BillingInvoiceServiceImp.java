@@ -62,6 +62,8 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
         Patient patient = patientRepository.findById(request.getPatientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
 
+        validateTaxAndDiscount(request.getTaxRate(), request.getDiscountPercent());
+
         if (request.getAdmittedPatientId() != null) {
             List<BillingInvoice> existing = invoiceRepository.findByAdmittedPatientIdOrderByCreatedDateDesc(request.getAdmittedPatientId());
             BillingInvoice draft = existing.stream()
@@ -175,6 +177,7 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
             throw new IllegalStateException("Cannot edit a finalized invoice");
         }
 
+        validateTaxAndDiscount(request.getTaxRate(), request.getDiscountPercent());
         if (request.getTaxRate() != null) invoice.setTaxRate(request.getTaxRate());
         if (request.getDiscountPercent() != null) invoice.setDiscountPercent(request.getDiscountPercent());
         if (request.getNotes() != null) invoice.setNotes(request.getNotes());
