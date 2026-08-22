@@ -64,6 +64,10 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
                 throw new IllegalStateException("Insufficient stock level for: " + stock.getMedicineName() + ". Available: " + stock.getStockQuantity());
             }
 
+            if (stock.getSalePrice() == null || stock.getSalePrice() <= 0) {
+                throw new BadRequestException("Sale price must be greater than zero for: " + stock.getMedicineName());
+            }
+
             // Deduct sold quantity from the medicine inventory tracker statefully
             stock.setStockQuantity(stock.getStockQuantity() - itemReq.getQuantity());
             medicineStockRepository.save(stock);
@@ -74,6 +78,8 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
             saleItem.setMedicineStock(stock);
             saleItem.setQuantity(itemReq.getQuantity());
             saleItem.setUnitPrice(stock.getSalePrice());
+            saleItem.setCostPrice(stock.getAvgCostPrice() != null ? stock.getAvgCostPrice()
+                    : (stock.getPurchasePrice() != null ? stock.getPurchasePrice() : 0.0));
 
             double itemSubtotal = stock.getSalePrice() * itemReq.getQuantity();
             saleItem.setSubtotal(itemSubtotal);
@@ -85,6 +91,12 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
         // 3. Complete main invoice financial deductions calculations
         double discountAmt = request.getDiscount() != null ? request.getDiscount() : 0.0;
         double vatAmt = request.getVat() != null ? request.getVat() : 0.0;
+        if (discountAmt < 0) {
+            throw new BadRequestException("Discount cannot be negative");
+        }
+        if (vatAmt < 0) {
+            throw new BadRequestException("VAT cannot be negative");
+        }
         sale.setTotalAmount(runningTotal);
         sale.setDiscount(discountAmt);
         sale.setVat(vatAmt);

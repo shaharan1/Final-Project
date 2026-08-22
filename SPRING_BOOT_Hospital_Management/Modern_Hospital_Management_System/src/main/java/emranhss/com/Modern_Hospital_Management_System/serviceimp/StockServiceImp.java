@@ -38,7 +38,9 @@ public class StockServiceImp implements StockService {
         stock.setSupplier(supplier);
         if (stock.getReservedQuantity() == null) stock.setReservedQuantity(0);
         if (stock.getDamagedQuantity() == null) stock.setDamagedQuantity(0);
-        return toResponse(stockRepository.save(stock));
+        MedicineStock saved = stockRepository.save(stock);
+        recomputeAverageCost(saved.getMedicineName(), saved.getStrength(), saved.getDosageForm());
+        return toResponse(saved);
     }
 
     @Override
@@ -62,7 +64,9 @@ public class StockServiceImp implements StockService {
         stock.setManufacturingDate(request.getManufacturingDate());
         stock.setExpiryDate(request.getExpiryDate());
         stock.setBarcode(request.getBarcode());
-        return toResponse(stockRepository.save(stock));
+        MedicineStock saved = stockRepository.save(stock);
+        recomputeAverageCost(saved.getMedicineName(), saved.getStrength(), saved.getDosageForm());
+        return toResponse(saved);
     }
 
     @Override
@@ -126,7 +130,8 @@ public class StockServiceImp implements StockService {
         int newQty = prevQty + request.getQuantityChange();
         if (newQty < 0) throw new IllegalArgumentException("Stock cannot go below zero");
         stock.setStockQuantity(newQty);
-        stockRepository.save(stock);
+        MedicineStock saved = stockRepository.save(stock);
+        recomputeAverageCost(saved.getMedicineName(), saved.getStrength(), saved.getDosageForm());
 
         StockAdjustment adj = new StockAdjustment();
         adj.setMedicineStock(stock);
@@ -179,7 +184,8 @@ public class StockServiceImp implements StockService {
         int prevQty = stock.getStockQuantity();
         int newQty = prevQty + quantity;
         stock.setStockQuantity(newQty);
-        stockRepository.save(stock);
+        MedicineStock saved = stockRepository.save(stock);
+        recomputeAverageCost(saved.getMedicineName(), saved.getStrength(), saved.getDosageForm());
 
         StockAdjustment adj = new StockAdjustment();
         adj.setMedicineStock(stock);
@@ -197,6 +203,27 @@ public class StockServiceImp implements StockService {
         MedicineStock stock = stockRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Stock not found"));
         stock.setActive(false);
         stockRepository.save(stock);
+    }
+
+    private void recomputeAverageCost(String medicineName, String strength, String dosageForm) {
+        List<MedicineStock> batches = stockRepository
+                .findByMedicineNameAndStrengthAndDosageForm(medicineName, strength, dosageForm);
+        if (batches.isEmpty()) {
+            return;
+        }
+        double totalQty = 0.0;
+        double totalCost = 0.0;
+        for (MedicineStock b : batches) {
+            int qty = b.getStockQuantity() != null ? b.getStockQuantity() : 0;
+            double price = b.getPurchasePrice() != null ? b.getPurchasePrice() : 0.0;
+            totalQty += qty;
+            totalCost += qty * price;
+        }
+        double avg = totalQty > 0 ? totalCost / totalQty : 0.0;
+        for (MedicineStock b : batches) {
+            b.setAvgCostPrice(avg);
+            stockRepository.save(b);
+        }
     }
 
     private MedicineStockResponse toResponse(MedicineStock m) {

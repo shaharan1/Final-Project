@@ -45,6 +45,9 @@ public class MedicineStock {
     @Column(nullable = false)
     private Double salePrice;
 
+    @Column(nullable = false)
+    private Double avgCostPrice = 0.0;
+
     private Double vat = 0.0;
 
     private Integer minimumStockLevel = 10;

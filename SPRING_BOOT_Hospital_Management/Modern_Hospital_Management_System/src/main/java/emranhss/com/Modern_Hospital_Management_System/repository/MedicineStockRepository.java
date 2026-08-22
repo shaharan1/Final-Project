@@ -14,6 +14,8 @@ public interface MedicineStockRepository extends JpaRepository<MedicineStock, Lo
 
     List<MedicineStock> findByMedicineNameContainingIgnoreCase(String name);
 
+    List<MedicineStock> findByMedicineNameAndStrengthAndDosageForm(String medicineName, String strength, String dosageForm);
+
     @Query("SELECT m FROM MedicineStock m WHERE m.active = true AND m.stockQuantity > 0 ORDER BY m.medicineName")
     List<MedicineStock> findAvailableStock();
 

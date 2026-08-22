@@ -31,6 +31,8 @@ public class PharmacySaleItem {
 
     private double unitPrice;
 
+    private double costPrice = 0.0;
+
     private double discount = 0.0;
 
     private double subtotal;
