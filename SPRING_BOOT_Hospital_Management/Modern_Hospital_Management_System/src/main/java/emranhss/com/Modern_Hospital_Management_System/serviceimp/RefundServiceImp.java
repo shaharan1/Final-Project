@@ -2,6 +2,7 @@ package emranhss.com.Modern_Hospital_Management_System.serviceimp;
 
 import emranhss.com.Modern_Hospital_Management_System.entity.Refund;
 import emranhss.com.Modern_Hospital_Management_System.enums.RefundStatus;
+import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.repository.RefundRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.RefundService;
@@ -41,6 +42,22 @@ public class RefundServiceImp implements RefundService {
     @Override
     @Transactional
     public Refund createRefund(Refund refund) {
+        if (refund.getRefundAmount() == null || refund.getRefundAmount() <= 0) {
+            throw new BadRequestException("Refund amount must be greater than zero");
+        }
+        if (refund.getOriginalAmount() == null || refund.getRefundAmount() > refund.getOriginalAmount()) {
+            throw new BadRequestException("Refund amount cannot exceed the original paid amount");
+        }
+
+        List<RefundStatus> activeRefunds = List.of(RefundStatus.APPROVED, RefundStatus.PROCESSED);
+        Double alreadyRefunded = refundRepository.sumRefundedByInvoice(refund.getInvoiceNumber(), activeRefunds);
+        double already = alreadyRefunded != null ? alreadyRefunded : 0.0;
+        double allowed = (refund.getOriginalAmount() != null ? refund.getOriginalAmount() : 0.0) - already;
+        if (refund.getRefundAmount() > allowed + 0.01) {
+            throw new BadRequestException("Total approved/processed refunds for invoice "
+                    + refund.getInvoiceNumber() + " would exceed the original paid amount");
+        }
+
         refund.setRefundReference(generateRefundReference());
         refund.setRefundStatus(RefundStatus.PENDING);
         if (refund.getCreatedDate() == null) {

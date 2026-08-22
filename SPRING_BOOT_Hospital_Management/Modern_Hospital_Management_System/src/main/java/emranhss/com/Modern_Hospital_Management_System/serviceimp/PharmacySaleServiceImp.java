@@ -4,6 +4,7 @@ import emranhss.com.Modern_Hospital_Management_System.dto.request.PharmacySaleIt
 import emranhss.com.Modern_Hospital_Management_System.dto.request.PharmacySaleRequest;
 import emranhss.com.Modern_Hospital_Management_System.dto.response.PharmacySaleResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.*;
+import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
 import emranhss.com.Modern_Hospital_Management_System.service.PharmacySaleService;
@@ -51,6 +52,10 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
 
         // 2. Loop through requested medicines to perform stock verification and price calculation
         for (PharmacySaleItemRequest itemReq : request.getItems()) {
+            if (itemReq.getQuantity() == null || itemReq.getQuantity() <= 0) {
+                throw new BadRequestException("Medicine quantity must be greater than zero");
+            }
+
             MedicineStock stock = medicineStockRepository.findById(itemReq.getMedicineStockId())
                     .orElseThrow(() -> new ResourceNotFoundException("Medicine stock not found with ID: " + itemReq.getMedicineStockId()));
 
@@ -87,6 +92,12 @@ public class PharmacySaleServiceImp implements PharmacySaleService {
         double paidAmt = request.getPaidAmount() != null ? request.getPaidAmount() : 0.0;
         sale.setPaidAmount(paidAmt);
         sale.setChangeAmount(Math.max(0, paidAmt - sale.getNetPayable()));
+
+        if (!"INPATIENT".equalsIgnoreCase(request.getPatientType())) {
+            if (paidAmt < sale.getNetPayable() - 0.01) {
+                throw new BadRequestException("Paid amount cannot be less than the net payable amount for outpatient sales");
+            }
+        }
 
         // 4. TRIGGER AUTOMATION: Update your existing Billing record's medicineCost dynamically
         if (targetBilling != null) {

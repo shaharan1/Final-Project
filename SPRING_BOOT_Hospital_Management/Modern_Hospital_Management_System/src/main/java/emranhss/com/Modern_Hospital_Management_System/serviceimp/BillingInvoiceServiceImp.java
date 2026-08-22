@@ -9,6 +9,7 @@ import emranhss.com.Modern_Hospital_Management_System.dto.mapper.BillingInvoiceM
 import emranhss.com.Modern_Hospital_Management_System.entity.*;
 import emranhss.com.Modern_Hospital_Management_System.enums.PaymentMethod;
 import emranhss.com.Modern_Hospital_Management_System.enums.PaymentStatus;
+import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.pdf.InvoicePdfGenerator;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
@@ -338,6 +339,23 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
     public BillingPaymentResponse processPayment(BillingPaymentRequest request) {
         BillingInvoice invoice = invoiceRepository.findById(request.getInvoiceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Invoice not found"));
+
+        if (!"FINALIZED".equals(invoice.getInvoiceStatus())) {
+            throw new BadRequestException("Payments can only be processed for a FINALIZED invoice");
+        }
+
+        Double amount = request.getAmount();
+        if (amount == null || amount <= 0) {
+            throw new BadRequestException("Payment amount must be greater than zero");
+        }
+
+        double due = invoice.getDueAmount() != null ? invoice.getDueAmount() : 0.0;
+        if (due <= 0.01) {
+            throw new BadRequestException("Invoice is already fully paid");
+        }
+        if (amount > due + 0.01) {
+            throw new BadRequestException("Payment amount " + amount + " exceeds the due amount " + due);
+        }
 
         BillingPayment payment = new BillingPayment();
         payment.setInvoice(invoice);
