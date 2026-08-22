@@ -41,8 +41,7 @@ public class BillingInvoiceServiceImp implements BillingInvoiceService {
     private final BillingInvoiceMapper mapper;
     private final BillingAggregationService aggregationService;
 
-    private String generateInvoiceNumber() {
-        String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyy"));
+    private String generateInvoiceNumber() {        String datePart = LocalDate.now().format(DateTimeFormatter.ofPattern("ddMMyy"));
         String prefix = "INV-" + datePart + "-";
         long max = 999;
         for (String num : invoiceRepository.findInvoiceNumbersByPrefix(prefix)) {
