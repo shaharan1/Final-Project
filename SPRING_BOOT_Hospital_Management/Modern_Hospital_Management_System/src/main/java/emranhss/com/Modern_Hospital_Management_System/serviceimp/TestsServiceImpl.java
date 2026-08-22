@@ -2,6 +2,7 @@ package emranhss.com.Modern_Hospital_Management_System.serviceimp;
 
 import emranhss.com.Modern_Hospital_Management_System.dto.response.TestOrderResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.Tests;
+import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.repository.TestsRepository;
 import emranhss.com.Modern_Hospital_Management_System.service.TestsService;
@@ -98,6 +99,15 @@ public class TestsServiceImpl implements TestsService {
     public TestOrderResponse enterResult(Long id, String resultValue, String resultNotes, String enteredBy) {
         Tests test = testsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Test order not found with ID: " + id));
+        if ("PENDING".equals(test.getOrderStatus())) {
+            throw new BadRequestException("Cannot enter result before the sample is collected");
+        }
+        if ("VERIFIED".equals(test.getOrderStatus()) || "COMPLETED".equals(test.getOrderStatus())) {
+            throw new BadRequestException("Cannot enter result for a verified or completed test");
+        }
+        if ("RESULT_ENTERED".equals(test.getOrderStatus())) {
+            throw new BadRequestException("Result has already been entered for this test and cannot be edited");
+        }
         test.setOrderStatus("RESULT_ENTERED");
         test.setResultValue(resultValue);
         test.setResultNotes(resultNotes);

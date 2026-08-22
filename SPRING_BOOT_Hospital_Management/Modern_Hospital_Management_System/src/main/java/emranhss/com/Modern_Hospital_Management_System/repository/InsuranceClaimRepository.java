@@ -18,6 +18,8 @@ public interface InsuranceClaimRepository extends JpaRepository<InsuranceClaim, 
 
     List<InsuranceClaim> findByPatientId(Long patientId);
 
+    List<InsuranceClaim> findByInvoiceNumber(String invoiceNumber);
+
     @Query("SELECT ic.claimStatus as status, SUM(ic.claimAmount) as total FROM InsuranceClaim ic GROUP BY ic.claimStatus")
     List<Object[]> sumClaimsByStatus();
 }
