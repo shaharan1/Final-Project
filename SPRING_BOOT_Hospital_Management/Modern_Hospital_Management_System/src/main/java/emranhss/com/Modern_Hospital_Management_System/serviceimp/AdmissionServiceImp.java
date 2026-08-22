@@ -6,6 +6,7 @@ import emranhss.com.Modern_Hospital_Management_System.dto.request.AdmissionReque
 import emranhss.com.Modern_Hospital_Management_System.dto.response.AdmissionResponse;
 import emranhss.com.Modern_Hospital_Management_System.entity.*;
 import emranhss.com.Modern_Hospital_Management_System.enums.BedStatus;
+import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
 import emranhss.com.Modern_Hospital_Management_System.service.AdmissionService;
@@ -34,6 +35,10 @@ public class AdmissionServiceImp implements AdmissionService {
     public AdmissionResponse admitPatient(AdmissionRequest request) {
         Patient patient = patientRepository.findById(request.getPatientId())
                 .orElseThrow(() -> new ResourceNotFoundException("Patient records missing"));
+
+        if (admittedPatientRepository.existsByPatientIdAndAdmissionStatus(patient.getId(), "ADMITTED")) {
+            throw new BadRequestException("Patient is already admitted");
+        }
 
         Doctor doctor = doctorRepository.findById(request.getDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor records missing"));

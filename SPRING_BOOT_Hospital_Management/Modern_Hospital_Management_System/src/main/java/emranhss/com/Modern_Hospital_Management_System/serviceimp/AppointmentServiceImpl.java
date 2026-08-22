@@ -4,6 +4,7 @@ import emranhss.com.Modern_Hospital_Management_System.dto.request.AppointmentReq
 import emranhss.com.Modern_Hospital_Management_System.dto.response.AppointmentResponse;
 import emranhss.com.Modern_Hospital_Management_System.dto.mapper.AppointmentMapper; // Inject Mapper
 import emranhss.com.Modern_Hospital_Management_System.entity.*;
+import emranhss.com.Modern_Hospital_Management_System.exception.BadRequestException;
 import emranhss.com.Modern_Hospital_Management_System.exception.ResourceNotFoundException;
 import emranhss.com.Modern_Hospital_Management_System.repository.*;
 import emranhss.com.Modern_Hospital_Management_System.service.AppointmentService;
@@ -43,6 +44,18 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         if (slot.getIsBooked()) {
             throw new IllegalStateException("This specific time slot has already been reserved!");
+        }
+
+        LocalDateTime slotDateTime = LocalDateTime.of(slot.getDate(), slot.getStartTime());
+        if (slotDateTime.isBefore(LocalDateTime.now())) {
+            throw new BadRequestException("Cannot book an appointment in the past");
+        }
+
+        long totalSlots = slotRepository.countByDoctorIdAndDate(request.getDoctorId(), request.getAppointmentDate());
+        long activeAppointments = appointmentRepository.countByDoctorIdAndAppointmentDateAndStatusNot(
+                request.getDoctorId(), request.getAppointmentDate(), "CANCELLED");
+        if (activeAppointments >= totalSlots) {
+            throw new BadRequestException("Doctor has reached the maximum number of appointments for this date");
         }
 
         slot.setIsBooked(true);
