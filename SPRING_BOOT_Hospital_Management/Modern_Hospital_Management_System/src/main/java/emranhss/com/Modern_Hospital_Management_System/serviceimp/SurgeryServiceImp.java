@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,7 +85,7 @@ public class SurgeryServiceImp implements SurgeryService {
         SurgeryMaster master = resolveMaster(request.getSurgeryMasterId());
         OperationTheatre ot = resolveOperationTheatre(request.getOperationTheatreId());
 
-        checkOtConflict(null, ot, request.getSurgeryDate());
+        checkOtConflict(null, ot, request.getSurgeryDate(), request.getStartTime());
 
         Surgery surgery = surgeryMapper.toEntity(request, patient, admission, surgeon, assistant,
                 anesthesiologist, department, category, master, ot, generateSurgeryNumber());
@@ -160,7 +161,7 @@ public class SurgeryServiceImp implements SurgeryService {
         SurgeryMaster master = resolveMaster(request.getSurgeryMasterId());
         OperationTheatre ot = resolveOperationTheatre(request.getOperationTheatreId());
 
-        checkOtConflict(id, ot, request.getSurgeryDate());
+        checkOtConflict(id, ot, request.getSurgeryDate(), request.getStartTime());
 
         surgeryMapper.updateEntity(surgery, request, patient, admission, surgeon, assistant,
                 anesthesiologist, department, category, master, ot);
