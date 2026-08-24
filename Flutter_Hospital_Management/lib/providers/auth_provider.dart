@@ -85,7 +85,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     final token = await tokenStorage.getToken();
     final userJson = await tokenStorage.getUser();
     if (token != null && token.isNotEmpty && userJson != null) {
-      final user = _decode(userJson);
+      final user =
+          LoginResponse.fromJson(jsonDecode(userJson) as Map<String, dynamic>);
       state = state.copyWith(token: token, user: user);
     }
   }
@@ -95,57 +96,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = const AuthState();
   }
 
-  String _encode(LoginResponse user) {
-    // Simple, dependency-free encoding of the stored user json.
-    return Uri.encodeComponent(_userToJsonString(user));
-  }
-
-  LoginResponse _decode(String encoded) {
-    final jsonString = Uri.decodeComponent(encoded);
-    final Map<String, dynamic> map = _parseJsonMap(jsonString);
-    return LoginResponse.fromJson(map);
-  }
-
-  String _userToJsonString(LoginResponse user) {
-    final buffer = StringBuffer();
-    buffer.write('{');
-    buffer.write('"token":"${_escape(user.token)}",');
-    buffer.write('"tokenType":"${_escape(user.tokenType)}",');
-    buffer.write('"role":"${_escape(user.role)}",');
-    buffer.write('"email":"${_escape(user.email)}",');
-    buffer.write('"name":"${_escape(user.name)}",');
-    buffer.write('"userId":${user.userId},');
-    buffer.write('"phone":${user.phone == null ? 'null' : '"${_escape(user.phone!)}"'},');
-    buffer.write('"image":${user.image == null ? 'null' : '"${_escape(user.image!)}"'});
-    buffer.write('}');
-    return buffer.toString();
-  }
-
-  Map<String, dynamic> _parseJsonMap(String s) {
-    // Minimal parser for our own known shape; relies on valid generated json.
-    final result = <String, dynamic>{};
-    final trimmed = s.trim();
-    if (!trimmed.startsWith('{') || !trimmed.endsWith('}')) return result;
-    final inner = trimmed.substring(1, trimmed.length - 1);
-    for (final pair in inner.split(',')) {
-      final idx = pair.indexOf(':');
-      if (idx == -1) continue;
-      final key = pair.substring(0, idx).trim().replaceAll('"', '');
-      final raw = pair.substring(idx + 1).trim();
-      result[key] = _parseValue(raw);
-    }
-    return result;
-  }
-
-  dynamic _parseValue(String raw) {
-    if (raw == 'null') return null;
-    if (raw.startsWith('"') && raw.endsWith('"')) {
-      return raw.substring(1, raw.length - 1).replaceAll('\\"', '"');
-    }
-    return int.tryParse(raw) ?? raw;
-  }
-
-  String _escape(String v) => v.replaceAll('"', '\\"');
+  String _encode(LoginResponse user) => jsonEncode(user.toJson());
 
   String _extractError(DioException e) {
     final data = e.response?.data;
