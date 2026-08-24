@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/screens/login_screen.dart';
+import 'package:flutter_hospital_management/screens/patient_list_screen.dart';
+import 'package:flutter_hospital_management/screens/appointment_list_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -48,10 +50,69 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             Text('Email: ${user?.email ?? 'N/A'}'),
             const SizedBox(height: 24),
-            const Text(
-              'Modules will be added here next (Billing, Appointments, Beds, etc.).',
-              style: TextStyle(color: Colors.grey),
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 1.6,
+              children: [
+                _ModuleCard(
+                  icon: Icons.people,
+                  label: 'Patients',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const PatientListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.calendar_today,
+                  label: 'Appointments',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AppointmentListScreen()),
+                  ),
+                ),
+              ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ModuleCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _ModuleCard({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 36, color: Colors.teal),
+            const SizedBox(height: 8),
+            Text(label, style: const TextStyle(fontSize: 16)),
+          ],
+        ),
+      ),
+    );
+  }
+}
           ],
         ),
       ),
