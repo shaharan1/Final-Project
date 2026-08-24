@@ -87,7 +87,7 @@ class _AppointmentListScreenState extends ConsumerState<AppointmentListScreen> {
             Expanded(
               child: ListView.separated(
                 itemCount: state.appointments.length,
-                separatorBuilder: (_, __) => const Divider(height: 1),
+                separatorBuilder: (_, _) => const Divider(height: 1),
                 itemBuilder: (context, i) {
                   final a = state.appointments[i];
                   final isCancelled = a.status == 'CANCELLED';
