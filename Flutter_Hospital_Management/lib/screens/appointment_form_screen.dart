@@ -151,7 +151,7 @@ class _AppointmentFormScreenState extends ConsumerState<AppointmentFormScreen> {
           child: Column(
             children: [
               DropdownButtonFormField<Doctor>(
-                value: _doctor,
+                initialValue: _doctor,
                 decoration: const InputDecoration(labelText: 'Doctor *', border: OutlineInputBorder()),
                 items: doctors
                     .map((d) => DropdownMenuItem(value: d, child: Text(d.displayName)))
@@ -161,7 +161,7 @@ class _AppointmentFormScreenState extends ConsumerState<AppointmentFormScreen> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<Patient>(
-                value: _existingPatient,
+                initialValue: _existingPatient,
                 decoration: const InputDecoration(
                   labelText: 'Existing patient (optional)',
                   border: OutlineInputBorder(),
@@ -223,7 +223,7 @@ class _AppointmentFormScreenState extends ConsumerState<AppointmentFormScreen> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: _paymentMethod,
+                initialValue: _paymentMethod,
                 decoration: const InputDecoration(labelText: 'Payment Method', border: OutlineInputBorder()),
                 items: _paymentMethods
                     .map((m) => DropdownMenuItem(value: m, child: Text(m)))

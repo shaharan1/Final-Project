@@ -98,7 +98,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
             Expanded(
               child: ListView.separated(
                 itemCount: state.patients.length,
-                separatorBuilder: (_, __) => const Divider(height: 1),
+                separatorBuilder: (_, _) => const Divider(height: 1),
                 itemBuilder: (context, i) {
                   final p = state.patients[i];
                   return ListTile(

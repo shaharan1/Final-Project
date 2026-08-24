@@ -126,7 +126,7 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: _gender,
+                      initialValue: _gender,
                       decoration: const InputDecoration(labelText: 'Gender', border: OutlineInputBorder()),
                       items: _genders
                           .map((g) => DropdownMenuItem(value: g, child: Text(g)))
@@ -137,7 +137,7 @@ class _PatientFormScreenState extends ConsumerState<PatientFormScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: _bloodGroup,
+                      initialValue: _bloodGroup,
                       decoration: const InputDecoration(labelText: 'Blood Group', border: OutlineInputBorder()),
                       items: _bloodGroups
                           .map((g) => DropdownMenuItem(value: g, child: Text(g)))
