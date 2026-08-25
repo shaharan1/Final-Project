@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/billing_invoice.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/providers/billing_provider.dart';
-import 'package:flutter_hospital_management/services/refund_service.dart';
 
 class BillingInvoiceDetailScreen extends ConsumerStatefulWidget {
   final int invoiceId;
@@ -98,7 +97,7 @@ class _BillingInvoiceDetailScreenState
                                 onPressed: () => _paymentDialog(inv),
                               ),
                               ElevatedButton.icon(
-                                icon: const Icon(Icons.refund),
+                                icon: const Icon(Icons.undo),
                                 label: const Text('Refund'),
                                 style: _btn(Colors.deepOrange),
                                 onPressed: () => _refundDialog(inv),
@@ -144,7 +143,7 @@ class _BillingInvoiceDetailScreenState
             mainAxisSize: MainAxisSize.min,
             children: [
               DropdownButtonFormField<ChargeCategory>(
-                value: cat,
+                initialValue: cat,
                 decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
                 items: categories
                     .map((c) => DropdownMenuItem(value: c, child: Text(c.display)))

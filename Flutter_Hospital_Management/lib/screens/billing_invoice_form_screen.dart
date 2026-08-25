@@ -53,7 +53,9 @@ class _BillingInvoiceFormScreenState
 
   @override
   void dispose() {
-    for (final r in _rows) r.dispose();
+    for (final r in _rows) {
+      r.dispose();
+    }
     _tax.dispose();
     _discount.dispose();
     _notes.dispose();
@@ -63,7 +65,9 @@ class _BillingInvoiceFormScreenState
   void _addRow() => setState(() => _rows.add(_ItemRow()));
 
   void _removeRow(int i) {
-    if (_rows.length <= 1) return;
+    if (_rows.length <= 1) {
+      return;
+    }
     setState(() {
       _rows[i].dispose();
       _rows.removeAt(i);
@@ -125,7 +129,7 @@ class _BillingInvoiceFormScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DropdownButtonFormField<Patient>(
-                value: _patient,
+                initialValue: _patient,
                 decoration: const InputDecoration(labelText: 'Patient *', border: OutlineInputBorder()),
                 items: patients
                     .map((p) => DropdownMenuItem(
@@ -185,7 +189,7 @@ class _BillingInvoiceFormScreenState
                           children: [
                             Expanded(
                               child: DropdownButtonFormField<ChargeCategory>(
-                                value: r.category,
+                                initialValue: r.category,
                                 decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
                                 items: categories
                                     .map((c) => DropdownMenuItem(value: c, child: Text(c.display)))
