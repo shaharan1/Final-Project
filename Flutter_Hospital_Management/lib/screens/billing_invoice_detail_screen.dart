@@ -36,8 +36,6 @@ class _BillingInvoiceDetailScreenState
     return Scaffold(
       appBar: AppBar(
         title: Text(inv?.invoiceNumber ?? 'Invoice'),
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
       ),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -52,10 +50,11 @@ class _BillingInvoiceDetailScreenState
                         children: [
                           _Header(inv: inv),
                           const SizedBox(height: 16),
-                          const Text('Items', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          const SectionTitle('Items', icon: Icons.list_alt),
                           const SizedBox(height: 8),
-                          ...inv.items.map((it) => Card(
+                          ...inv.items.map((it) => AppCard(
                                 child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
                                   title: Text(it.categoryName ?? it.description ?? 'Item'),
                                   subtitle: Text(
                                       'Qty: ${it.quantity ?? 0}  x  ${_money(it.unitPrice)}  (disc ${it.discountPercent ?? 0}%)'),
@@ -63,13 +62,16 @@ class _BillingInvoiceDetailScreenState
                                 ),
                               )),
                           const SizedBox(height: 16),
-                          const Text('Payments', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          const SectionTitle('Payments', icon: Icons.payments),
                           const SizedBox(height: 8),
-                          ...state.payments.map((p) => ListTile(
-                                leading: const Icon(Icons.payment),
-                                title: Text('${p.paymentMethod}  •  ${p.paymentStatus}'),
-                                subtitle: Text('by ${p.processedBy ?? '?'}  ${p.transactionId ?? ''}'),
-                                trailing: Text(_money(p.amount)),
+                          ...state.payments.map((p) => AppCard(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.zero,
+                                  leading: const Icon(Icons.payment),
+                                  title: Text('${p.paymentMethod}  •  ${p.paymentStatus}'),
+                                  subtitle: Text('by ${p.processedBy ?? '?'}  ${p.transactionId ?? ''}'),
+                                  trailing: Text(_money(p.amount)),
+                                ),
                               )),
                           if (state.payments.isEmpty)
                             const Text('No payments yet.', style: TextStyle(color: Colors.grey)),
@@ -113,7 +115,7 @@ class _BillingInvoiceDetailScreenState
   }
 
   ButtonStyle _btn([Color? c]) => ElevatedButton.styleFrom(
-        backgroundColor: c ?? Colors.teal,
+        backgroundColor: c ?? AppTheme.primary,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       );
@@ -351,7 +353,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return AppCard(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
