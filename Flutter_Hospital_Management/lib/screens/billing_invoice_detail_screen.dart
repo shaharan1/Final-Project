@@ -389,4 +389,15 @@ class _Header extends StatelessWidget {
           ],
         ),
       );
+
+  Widget _statusRow(String k, String v) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(k, style: const TextStyle(color: Colors.grey)),
+            StatusChip.fromStatus(v),
+          ],
+        ),
+      );
 }
