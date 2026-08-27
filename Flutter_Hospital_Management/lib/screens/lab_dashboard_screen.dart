@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/lab_provider.dart';
 import 'package:flutter_hospital_management/screens/lab_report_detail_screen.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class LabDashboardScreen extends ConsumerStatefulWidget {
@@ -36,6 +37,7 @@ class _LabDashboardScreenState extends ConsumerState<LabDashboardScreen> {
           )
         ],
       ),
+      drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null
