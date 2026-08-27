@@ -93,7 +93,7 @@ class _TestOrderListScreenState extends ConsumerState<TestOrderListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(testOrderNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Lab Test Orders'),
+      appBar: AppBar(title: const Text('Lab Test Orders')),
       drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())

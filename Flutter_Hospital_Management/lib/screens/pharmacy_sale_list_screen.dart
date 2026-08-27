@@ -28,7 +28,7 @@ class _PharmacySaleListScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(saleNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Pharmacy Sales'),
+      appBar: AppBar(title: const Text('Pharmacy Sales')),
       drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())

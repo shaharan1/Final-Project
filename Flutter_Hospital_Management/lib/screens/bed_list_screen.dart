@@ -31,7 +31,7 @@ class _BedListScreenState extends ConsumerState<BedListScreen> {
             .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Beds'),
+      appBar: AppBar(title: const Text('Beds')),
       drawer: const AppDrawer(),
       body: Column(
         children: [

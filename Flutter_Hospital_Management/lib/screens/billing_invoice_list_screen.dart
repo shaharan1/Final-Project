@@ -39,7 +39,7 @@ class _BillingInvoiceListScreenState
     final state = ref.watch(billingNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Billing'),
+      appBar: AppBar(title: const Text('Billing')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

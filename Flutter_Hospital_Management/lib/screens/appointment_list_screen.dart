@@ -35,7 +35,7 @@ class _AppointmentListScreenState
     final state = ref.watch(appointmentNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Appointments'),
+      appBar: AppBar(title: const Text('Appointments')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

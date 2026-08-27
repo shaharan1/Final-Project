@@ -57,7 +57,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
     final state = ref.watch(patientNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Patients'),
+      appBar: AppBar(title: const Text('Patients')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

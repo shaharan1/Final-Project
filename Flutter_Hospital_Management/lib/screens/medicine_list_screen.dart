@@ -26,7 +26,7 @@ class _MedicineListScreenState extends ConsumerState<MedicineListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(medicineNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Medicines'),
+      appBar: AppBar(title: const Text('Medicines')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

@@ -25,7 +25,7 @@ class _LabReportListScreenState extends ConsumerState<LabReportListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(labReportNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Lab Reports'),
+      appBar: AppBar(title: const Text('Lab Reports')),
       drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())

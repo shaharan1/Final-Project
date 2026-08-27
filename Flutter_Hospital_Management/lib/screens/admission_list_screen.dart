@@ -26,7 +26,7 @@ class _AdmissionListScreenState extends ConsumerState<AdmissionListScreen> {
     final state = ref.watch(admissionNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Admissions'),
+      appBar: AppBar(title: const Text('Admissions')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
