@@ -102,7 +102,6 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
-}
 
   Widget _quickCard(BuildContext context, IconData icon, String label,
           Widget screen) =>

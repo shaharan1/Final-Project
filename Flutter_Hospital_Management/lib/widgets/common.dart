@@ -120,9 +120,13 @@ class AnimatedCounter extends StatefulWidget {
   final double value;
   final String prefix;
   final String Function(double) format;
+  final TextStyle? style;
 
   const AnimatedCounter(this.value,
-      {super.key, this.prefix = '', this.format = _defaultFormat});
+      {super.key,
+      this.prefix = '',
+      this.format = _defaultFormat,
+      this.style});
 
   static String _defaultFormat(double v) =>
       v % 1 == 0 ? v.toInt().toString() : v.toStringAsFixed(2);
@@ -165,8 +169,8 @@ class _AnimatedCounterState extends State<AnimatedCounter>
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
         animation: _anim,
-        builder: (_, _) =>
-            Text('${widget.prefix}${widget.format(_anim.value)}'),
+        builder: (_, _) => Text('${widget.prefix}${widget.format(_anim.value)}',
+            style: widget.style),
       );
 }
 
@@ -175,12 +179,15 @@ class MiniBar extends StatelessWidget {
   final double value;
   final double max;
   final Color color;
+  final String? valueText;
+  final String? prefix;
 
-  const MiniBar(this.label, this.value, this.max, this.color, {super.key});
+  const MiniBar(this.label, this.value, this.max, this.color,
+      {super.key, this.valueText, this.prefix});
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(vertical: 7),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -190,10 +197,15 @@ class MiniBar extends StatelessWidget {
                 Expanded(
                     child: Text(label,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 13))),
-                Text(value.toStringAsFixed(2),
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w600)),
+                        style: const TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w500))),
+                Text(
+                    valueText ??
+                        '${prefix ?? ''}${value % 1 == 0 ? value.toInt().toString() : value.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: color)),
               ],
             ),
             const SizedBox(height: 6),
@@ -201,12 +213,14 @@ class MiniBar extends StatelessWidget {
               duration: const Duration(milliseconds: 800),
               curve: Curves.easeOutCubic,
               tween: Tween(begin: 0, end: max > 0 ? value / max : 0),
-              builder: (_, v, _) => LinearProgressIndicator(
-                value: v,
-                minHeight: 8,
-                backgroundColor: color.withValues(alpha: 0.12),
-                valueColor: AlwaysStoppedAnimation(color),
+              builder: (_, v, _) => ClipRRect(
                 borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: v,
+                  minHeight: 8,
+                  backgroundColor: color.withValues(alpha: 0.12),
+                  valueColor: AlwaysStoppedAnimation(color),
+                ),
               ),
             ),
           ],
