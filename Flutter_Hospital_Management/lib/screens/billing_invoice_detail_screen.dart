@@ -148,7 +148,7 @@ class _BillingInvoiceDetailScreenState
             children: [
               DropdownButtonFormField<ChargeCategory>(
                 initialValue: cat,
-                decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Category', ),
                 items: categories
                     .map((c) => DropdownMenuItem(value: c, child: Text(c.display)))
                     .toList(),
@@ -162,7 +162,7 @@ class _BillingInvoiceDetailScreenState
               const SizedBox(height: 12),
               TextField(
                 controller: desc,
-                decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Description', ),
               ),
               const SizedBox(height: 12),
               Row(
@@ -170,7 +170,7 @@ class _BillingInvoiceDetailScreenState
                   Expanded(
                     child: TextField(
                       controller: qty,
-                      decoration: const InputDecoration(labelText: 'Qty', border: OutlineInputBorder()),
+                      decoration: const InputDecoration(labelText: 'Qty', ),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -178,7 +178,7 @@ class _BillingInvoiceDetailScreenState
                   Expanded(
                     child: TextField(
                       controller: price,
-                      decoration: const InputDecoration(labelText: 'Unit Price', border: OutlineInputBorder()),
+                      decoration: const InputDecoration(labelText: 'Unit Price', ),
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     ),
                   ),
@@ -230,20 +230,20 @@ class _BillingInvoiceDetailScreenState
             children: [
               TextField(
                 controller: amount,
-                decoration: const InputDecoration(labelText: 'Amount', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Amount', ),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: method,
-                decoration: const InputDecoration(labelText: 'Method', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Method', ),
                 items: methods.map((m) => DropdownMenuItem(value: m, child: Text(m))).toList(),
                 onChanged: (v) => method = v!,
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: txn,
-                decoration: const InputDecoration(labelText: 'Transaction ID (optional)', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Transaction ID (optional)', ),
               ),
             ],
           ),
@@ -292,20 +292,20 @@ class _BillingInvoiceDetailScreenState
             children: [
               TextField(
                 controller: amount,
-                decoration: const InputDecoration(labelText: 'Refund Amount', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Refund Amount', ),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: type,
-                decoration: const InputDecoration(labelText: 'Type', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Type', ),
                 items: types.map((t) => DropdownMenuItem(value: t, child: Text(t))).toList(),
                 onChanged: (v) => type = v!,
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: reason,
-                decoration: const InputDecoration(labelText: 'Reason', border: OutlineInputBorder()),
+                decoration: const InputDecoration(labelText: 'Reason', ),
               ),
             ],
           ),
