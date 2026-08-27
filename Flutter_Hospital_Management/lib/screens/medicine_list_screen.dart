@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/pharmacy_provider.dart';
 import 'package:flutter_hospital_management/screens/medicine_form_screen.dart';
@@ -25,7 +26,8 @@ class _MedicineListScreenState extends ConsumerState<MedicineListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(medicineNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Medicines')),
+      appBar: AppBar(title: const Text('Medicines'),
+      drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(

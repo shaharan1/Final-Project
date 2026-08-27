@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/billing_provider.dart';
 import 'package:flutter_hospital_management/screens/billing_invoice_form_screen.dart';
@@ -38,7 +39,8 @@ class _BillingInvoiceListScreenState
     final state = ref.watch(billingNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Billing')),
+      appBar: AppBar(title: const Text('Billing'),
+      drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/appointment_provider.dart';
 import 'package:flutter_hospital_management/screens/appointment_form_screen.dart';
@@ -34,7 +35,8 @@ class _AppointmentListScreenState
     final state = ref.watch(appointmentNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Appointments')),
+      appBar: AppBar(title: const Text('Appointments'),
+      drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(

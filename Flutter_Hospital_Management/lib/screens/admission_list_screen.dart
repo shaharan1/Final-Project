@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/admission_provider.dart';
 import 'package:flutter_hospital_management/screens/admission_form_screen.dart';
@@ -25,7 +26,8 @@ class _AdmissionListScreenState extends ConsumerState<AdmissionListScreen> {
     final state = ref.watch(admissionNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Admissions')),
+      appBar: AppBar(title: const Text('Admissions'),
+      drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(

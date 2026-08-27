@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
@@ -56,7 +57,8 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
     final state = ref.watch(patientNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Patients')),
+      appBar: AppBar(title: const Text('Patients'),
+      drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => Navigator.push(

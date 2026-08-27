@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/infrastructure_provider.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
@@ -30,7 +31,8 @@ class _BedListScreenState extends ConsumerState<BedListScreen> {
             .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Beds')),
+      appBar: AppBar(title: const Text('Beds'),
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Padding(

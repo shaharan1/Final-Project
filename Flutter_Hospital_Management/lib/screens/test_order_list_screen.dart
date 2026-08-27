@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/test_order.dart';
 import 'package:flutter_hospital_management/providers/lab_provider.dart';
@@ -92,7 +93,8 @@ class _TestOrderListScreenState extends ConsumerState<TestOrderListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(testOrderNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Lab Test Orders')),
+      appBar: AppBar(title: const Text('Lab Test Orders'),
+      drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null

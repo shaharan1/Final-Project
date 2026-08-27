@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/lab_provider.dart';
 import 'package:flutter_hospital_management/screens/lab_report_detail_screen.dart';
@@ -24,7 +25,8 @@ class _LabReportListScreenState extends ConsumerState<LabReportListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(labReportNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Lab Reports')),
+      appBar: AppBar(title: const Text('Lab Reports'),
+      drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null

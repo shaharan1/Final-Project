@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/pharmacy_provider.dart';
 import 'package:flutter_hospital_management/screens/pharmacy_sale_detail_screen.dart';
@@ -27,7 +28,8 @@ class _PharmacySaleListScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(saleNotifierProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Pharmacy Sales')),
+      appBar: AppBar(title: const Text('Pharmacy Sales'),
+      drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null
