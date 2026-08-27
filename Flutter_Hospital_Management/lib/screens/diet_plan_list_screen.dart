@@ -127,6 +127,8 @@ class _DietPlanListScreenState extends ConsumerState<DietPlanListScreen> {
                       ),
                           ),
                         ),
+                      ],
+                    ),
     );
   }
 }

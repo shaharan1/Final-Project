@@ -239,6 +239,7 @@ class _TestOrderListScreenState extends ConsumerState<TestOrderListScreen> {
                       ],
                     ),
     );
+  }
 
   Widget _buildChips(List<String> chips) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -256,5 +257,4 @@ class _TestOrderListScreenState extends ConsumerState<TestOrderListScreen> {
               .toList(),
         ),
       );
-  }
 }

@@ -122,6 +122,7 @@ class _SurgeryListScreenState extends ConsumerState<SurgeryListScreen> {
                       ),
                           ),
                         ),
+                      ],
                     ),
     );
   }

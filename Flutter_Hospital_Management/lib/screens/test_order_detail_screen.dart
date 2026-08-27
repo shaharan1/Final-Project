@@ -62,8 +62,7 @@ class _TestOrderDetailScreenState extends ConsumerState<TestOrderDetailScreen> {
           const SizedBox(height: 8),
           DetailSection('Test Details', [
             DetailRow('Normal Range', m.normalRange, icon: Icons.straighten),
-            DetailRow('Standard Price',
-                m.standardPrice != null ? m.standardPrice.toString() : null,
+            DetailRow('Standard Price', m.standardPrice?.toString(),
                 icon: Icons.attach_money),
             DetailRow('Sample Type', m.sampleType, icon: Icons.biotech),
           ], icon: Icons.checklist),

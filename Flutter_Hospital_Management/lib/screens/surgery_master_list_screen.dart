@@ -136,6 +136,7 @@ class _SurgeryMasterListScreenState
                       ),
                           ),
                         ),
+                      ],
                     ),
     );
   }
