@@ -6,7 +6,7 @@ class DoctorService {
 
   DoctorService(this.dio);
 
-  Future<List<Doctor>> getAll() async {
+  Future<List<Doctor>> getDoctors() async {
     final res = await dio.get('/doctors');
     return (res.data as List)
         .map((e) => Doctor.fromJson(e as Map<String, dynamic>))
