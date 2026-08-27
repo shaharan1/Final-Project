@@ -13,7 +13,6 @@ import 'package:flutter_hospital_management/screens/pharmacy_sale_list_screen.da
 import 'package:flutter_hospital_management/screens/test_order_list_screen.dart';
 import 'package:flutter_hospital_management/screens/lab_report_list_screen.dart';
 import 'package:flutter_hospital_management/screens/lab_dashboard_screen.dart';
-import 'package:flutter_hospital_management/screens/login_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class AppDrawer extends ConsumerWidget {
