@@ -8,6 +8,7 @@ import 'package:flutter_hospital_management/screens/billing_invoice_list_screen.
 import 'package:flutter_hospital_management/screens/dashboard_screen.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
+import 'package:flutter_hospital_management/core/role_access.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -50,49 +51,36 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             const SectionTitle('Quick Access', icon: Icons.flash_on),
             const SizedBox(height: 12),
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.8,
-              children: [
-                _ModuleCard(
-                  icon: Icons.dashboard,
-                  label: 'Dashboard',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const DashboardScreen()),
-                  ),
-                ),
-                _ModuleCard(
-                  icon: Icons.people,
-                  label: 'Patients',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const PatientListScreen()),
-                  ),
-                ),
-                _ModuleCard(
-                  icon: Icons.calendar_today,
-                  label: 'Appointments',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const AppointmentListScreen()),
-                  ),
-                ),
-                _ModuleCard(
-                  icon: Icons.receipt_long,
-                  label: 'Billing',
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const BillingInvoiceListScreen()),
-                  ),
-                ),
-              ],
+            Builder(
+              builder: (context) {
+                final allowed = allowedModulesFor(user?.role);
+                final quick = <Widget>[];
+                if (allowed.contains(ModuleKeys.dashboard)) {
+                  quick.add(_quickCard(context, Icons.dashboard, 'Dashboard',
+                      const DashboardScreen()));
+                }
+                if (allowed.contains(ModuleKeys.patients)) {
+                  quick.add(_quickCard(context, Icons.people, 'Patients',
+                      const PatientListScreen()));
+                }
+                if (allowed.contains(ModuleKeys.appointments)) {
+                  quick.add(_quickCard(context, Icons.calendar_today,
+                      'Appointments', const AppointmentListScreen()));
+                }
+                if (allowed.contains(ModuleKeys.billing)) {
+                  quick.add(_quickCard(context, Icons.receipt_long, 'Billing',
+                      const BillingInvoiceListScreen()));
+                }
+                return GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 1.8,
+                  children: quick,
+                );
+              },
             ),
             const SizedBox(height: 16),
             AppCard(
@@ -114,6 +102,18 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+  Widget _quickCard(BuildContext context, IconData icon, String label,
+          Widget screen) =>
+      _ModuleCard(
+        icon: icon,
+        label: label,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => screen),
+        ),
+      );
 }
 
 class _ModuleCard extends StatelessWidget {

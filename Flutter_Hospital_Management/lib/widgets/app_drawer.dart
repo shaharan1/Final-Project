@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hospital_management/core/role_access.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/screens/home_screen.dart';
 import 'package:flutter_hospital_management/screens/dashboard_screen.dart';
@@ -23,6 +24,20 @@ import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
+class _Item {
+  final String key;
+  final IconData icon;
+  final String label;
+  final Widget screen;
+  const _Item(this.key, this.icon, this.label, this.screen);
+}
+
+class _Section {
+  final String title;
+  final List<_Item> items;
+  const _Section(this.title, this.items);
+}
+
 class AppDrawer extends ConsumerWidget {
   const AppDrawer({super.key});
 
@@ -37,6 +52,61 @@ class AppDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authNotifierProvider).user;
+    final allowed = allowedModulesFor(user?.role);
+
+    const sections = [
+      _Section('OVERVIEW', [
+        _Item(ModuleKeys.dashboard, Icons.dashboard, 'Dashboard',
+            DashboardScreen()),
+      ]),
+      _Section('CLINICAL', [
+        _Item(ModuleKeys.patients, Icons.people, 'Patients', PatientListScreen()),
+        _Item(ModuleKeys.appointments, Icons.calendar_today, 'Appointments',
+            AppointmentListScreen()),
+        _Item(ModuleKeys.admissions, Icons.assignment_ind, 'Admissions',
+            AdmissionListScreen()),
+        _Item(ModuleKeys.beds, Icons.bed, 'Beds', BedListScreen()),
+      ]),
+      _Section('BILLING & PHARMACY', [
+        _Item(ModuleKeys.billing, Icons.receipt_long, 'Billing',
+            BillingInvoiceListScreen()),
+        _Item(ModuleKeys.pharmacy, Icons.medication, 'Pharmacy',
+            MedicineListScreen()),
+        _Item(ModuleKeys.pharmacySales, Icons.shopping_cart, 'Pharmacy Sales',
+            PharmacySaleListScreen()),
+      ]),
+      _Section('LABORATORY', [
+        _Item(ModuleKeys.labTests, Icons.science, 'Lab Tests',
+            TestOrderListScreen()),
+        _Item(ModuleKeys.labReports, Icons.biotech, 'Lab Reports',
+            LabReportListScreen()),
+        _Item(ModuleKeys.labDashboard, Icons.analytics, 'Lab Dashboard',
+            LabDashboardScreen()),
+      ]),
+      _Section('STAFF & EMERGENCY', [
+        _Item(ModuleKeys.doctors, Icons.medical_services, 'Doctors',
+            DoctorListScreen()),
+        _Item(ModuleKeys.ambulances, Icons.emergency, 'Ambulances',
+            AmbulanceListScreen()),
+        _Item(ModuleKeys.ambulanceTrips, Icons.route, 'Ambulance Trips',
+            AmbulanceTripListScreen()),
+      ]),
+      _Section('DIET & SURGERY', [
+        _Item(ModuleKeys.dietPlans, Icons.restaurant_menu, 'Diet Plans',
+            DietPlanListScreen()),
+        _Item(ModuleKeys.surgeryCatalog, Icons.category, 'Surgery Catalog',
+            SurgeryMasterListScreen()),
+        _Item(ModuleKeys.surgeries, Icons.medical_information, 'Surgeries',
+            SurgeryListScreen()),
+      ]),
+      _Section('INSURANCE', [
+        _Item(ModuleKeys.insurance, Icons.health_and_safety, 'Insurance',
+            InsuranceListScreen()),
+        _Item(ModuleKeys.insuranceClaims, Icons.receipt_long,
+            'Insurance Claims', InsuranceClaimListScreen()),
+      ]),
+    ];
+
     final initials = (user?.name ?? '?')
         .trim()
         .split(RegExp(r'\s+'))
@@ -45,80 +115,42 @@ class AppDrawer extends ConsumerWidget {
         .join()
         .toUpperCase();
 
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          UserAccountsDrawerHeader(
-            accountName: Text(user?.name ?? 'User',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            accountEmail:
-                Text('${user?.role ?? ''}${user?.email != null ? ' • ${user!.email}' : ''}'),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Text(initials,
-                  style: const TextStyle(
-                      color: AppTheme.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-            ),
-            decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
-          ),
-          _group('OVERVIEW'),
-          _tile(context, Icons.dashboard, 'Dashboard',
-              () => _go(context, const DashboardScreen())),
-          _tile(context, Icons.home, 'Home',
-              () => _go(context, const HomeScreen())),
-          _group('CLINICAL'),
-          _tile(context, Icons.people, 'Patients',
-              () => _go(context, const PatientListScreen())),
-          _tile(context, Icons.calendar_today, 'Appointments',
-              () => _go(context, const AppointmentListScreen())),
-          _tile(context, Icons.assignment_ind, 'Admissions',
-              () => _go(context, const AdmissionListScreen())),
-          _tile(context, Icons.bed, 'Beds',
-              () => _go(context, const BedListScreen())),
-          _group('BILLING & PHARMACY'),
-          _tile(context, Icons.receipt_long, 'Billing',
-              () => _go(context, const BillingInvoiceListScreen())),
-          _tile(context, Icons.medication, 'Pharmacy',
-              () => _go(context, const MedicineListScreen())),
-          _tile(context, Icons.shopping_cart, 'Pharmacy Sales',
-              () => _go(context, const PharmacySaleListScreen())),
-          _group('LABORATORY'),
-          _tile(context, Icons.science, 'Lab Tests',
-              () => _go(context, const TestOrderListScreen())),
-          _tile(context, Icons.biotech, 'Lab Reports',
-              () => _go(context, const LabReportListScreen())),
-          _tile(context, Icons.analytics, 'Lab Dashboard',
-              () => _go(context, const LabDashboardScreen())),
-          _group('STAFF & EMERGENCY'),
-          _tile(context, Icons.medical_services, 'Doctors',
-              () => _go(context, const DoctorListScreen())),
-          _tile(context, Icons.emergency, 'Ambulances',
-              () => _go(context, const AmbulanceListScreen())),
-          _tile(context, Icons.route, 'Ambulance Trips',
-              () => _go(context, const AmbulanceTripListScreen())),
-          _group('DIET & SURGERY'),
-          _tile(context, Icons.restaurant_menu, 'Diet Plans',
-              () => _go(context, const DietPlanListScreen())),
-          _tile(context, Icons.category, 'Surgery Catalog',
-              () => _go(context, const SurgeryMasterListScreen())),
-          _tile(context, Icons.medical_information, 'Surgeries',
-              () => _go(context, const SurgeryListScreen())),
-          _group('INSURANCE'),
-          _tile(context, Icons.health_and_safety, 'Insurance',
-              () => _go(context, const InsuranceListScreen())),
-          _tile(context, Icons.receipt_long, 'Insurance Claims',
-              () => _go(context, const InsuranceClaimListScreen())),
-          const Divider(),
-          _tile(context, Icons.logout, 'Logout', () async {
-            Navigator.pop(context);
-            await ref.read(authNotifierProvider.notifier).logout();
-          }, color: AppTheme.danger),
-        ],
+    final children = <Widget>[
+      UserAccountsDrawerHeader(
+        accountName: Text(user?.name ?? 'User',
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+        accountEmail: Text(
+            '${user?.role ?? ''}${user?.email != null ? ' • ${user!.email}' : ''}'),
+        currentAccountPicture: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: Text(initials,
+              style: const TextStyle(
+                  color: AppTheme.primary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20)),
+        ),
+        decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
       ),
-    );
+      _tile(context, Icons.home, 'Home', () => _go(context, const HomeScreen())),
+    ];
+
+    for (final sec in sections) {
+      final items = sec.items.where((it) => allowed.contains(it.key)).toList();
+      if (items.isEmpty) continue;
+      children.add(_group(sec.title));
+      for (final it in items) {
+        children.add(_tile(context, it.icon, it.label,
+            () => _go(context, it.screen)));
+      }
+    }
+
+    children.add(const Divider());
+    children.add(_tile(context, Icons.logout, 'Logout', () async {
+      Navigator.pop(context);
+      await ref.read(authNotifierProvider.notifier).logout();
+    }, color: AppTheme.danger));
+
+    return Drawer(child: ListView(padding: EdgeInsets.zero, children: children));
   }
 
   Widget _group(String label) => Padding(

@@ -59,4 +59,7 @@ class Doctor {
         departmentName: j['departmentName'],
         description: j['description'],
       );
+
+  String get displayName =>
+      name != null && name!.isNotEmpty ? name! : 'Doctor';
 }
