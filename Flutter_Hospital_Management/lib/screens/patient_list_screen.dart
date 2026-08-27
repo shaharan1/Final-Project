@@ -98,7 +98,10 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
                 child: EmptyState('No patients found', icon: Icons.people))
           else
             Expanded(
-              child: ListView.separated(
+              child: RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(patientNotifierProvider.notifier).load(),
+                child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: state.patients.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -151,6 +154,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
                     ),
                   );
                 },
+              ),
               ),
             ),
         ],
