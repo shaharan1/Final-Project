@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
 import 'package:flutter_hospital_management/screens/patient_form_screen.dart';
+import 'package:flutter_hospital_management/widgets/common.dart';
 
 class PatientListScreen extends ConsumerStatefulWidget {
   const PatientListScreen({super.key});
@@ -55,21 +56,23 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
     final state = ref.watch(patientNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Patients'),
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
+      appBar: AppBar(title: const Text('Patients')),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const PatientFormScreen()),
+        ).then((_) => ref.read(patientNotifierProvider.notifier).load()),
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search (name, phone, code...)',
                 prefixIcon: const Icon(Icons.search),
-                border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () {
@@ -84,30 +87,52 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
           ),
           if (state.error != null)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(state.error!, style: const TextStyle(color: Colors.red)),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(state.error!,
+                  style: const TextStyle(color: Colors.red)),
             ),
           if (state.isLoading)
-            const Expanded(
-              child: Center(child: CircularProgressIndicator()),
-            )
+            const Expanded(child: Center(child: CircularProgressIndicator()))
           else if (state.patients.isEmpty)
             const Expanded(
-              child: Center(child: Text('No patients found.')), )
+                child: EmptyState('No patients found', icon: Icons.people))
           else
             Expanded(
               child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: state.patients.length,
-                separatorBuilder: (_, _) => const Divider(height: 1),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, i) {
                   final p = state.patients[i];
-                  return ListTile(
-                    title: Text(p.name),
-                    subtitle: Text(
-                        '${p.patientCode ?? ''}  •  ${p.phone ?? 'no phone'}  •  ${p.gender ?? ''}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  return AppCard(
+                    child: Row(
                       children: [
+                        CircleAvatar(
+                          backgroundColor:
+                              const Color(0xFF0E7C86).withValues(alpha: 0.12),
+                          child: const Icon(Icons.person, color: Color(0xFF0E7C86)),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(p.name,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600, fontSize: 15)),
+                              const SizedBox(height: 4),
+                              Text(
+                                [
+                                  if (p.patientCode != null) p.patientCode!,
+                                  if (p.phone != null) p.phone!,
+                                  if (p.gender != null) p.gender!,
+                                ].join('  •  '),
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
                         IconButton(
                           icon: const Icon(Icons.edit, color: Colors.blue),
                           onPressed: () => Navigator.push(
@@ -115,7 +140,8 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
                             MaterialPageRoute(
                               builder: (_) => PatientFormScreen(patient: p),
                             ),
-                          ),
+                          ).then((_) =>
+                              ref.read(patientNotifierProvider.notifier).load()),
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
@@ -128,15 +154,6 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
               ),
             ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const PatientFormScreen()),
-        ),
       ),
     );
   }
