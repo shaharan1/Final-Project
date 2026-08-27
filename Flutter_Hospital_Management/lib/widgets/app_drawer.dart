@@ -13,6 +13,14 @@ import 'package:flutter_hospital_management/screens/pharmacy_sale_list_screen.da
 import 'package:flutter_hospital_management/screens/test_order_list_screen.dart';
 import 'package:flutter_hospital_management/screens/lab_report_list_screen.dart';
 import 'package:flutter_hospital_management/screens/lab_dashboard_screen.dart';
+import 'package:flutter_hospital_management/screens/doctor_list_screen.dart';
+import 'package:flutter_hospital_management/screens/ambulance_list_screen.dart';
+import 'package:flutter_hospital_management/screens/ambulance_trip_list_screen.dart';
+import 'package:flutter_hospital_management/screens/diet_plan_list_screen.dart';
+import 'package:flutter_hospital_management/screens/surgery_list_screen.dart';
+import 'package:flutter_hospital_management/screens/surgery_master_list_screen.dart';
+import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
+import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class AppDrawer extends ConsumerWidget {
@@ -84,6 +92,25 @@ class AppDrawer extends ConsumerWidget {
               () => _go(context, const LabReportListScreen())),
           _tile(context, Icons.analytics, 'Lab Dashboard',
               () => _go(context, const LabDashboardScreen())),
+          _group('STAFF & EMERGENCY'),
+          _tile(context, Icons.medical_services, 'Doctors',
+              () => _go(context, const DoctorListScreen())),
+          _tile(context, Icons.emergency, 'Ambulances',
+              () => _go(context, const AmbulanceListScreen())),
+          _tile(context, Icons.route, 'Ambulance Trips',
+              () => _go(context, const AmbulanceTripListScreen())),
+          _group('DIET & SURGERY'),
+          _tile(context, Icons.restaurant_menu, 'Diet Plans',
+              () => _go(context, const DietPlanListScreen())),
+          _tile(context, Icons.category, 'Surgery Catalog',
+              () => _go(context, const SurgeryMasterListScreen())),
+          _tile(context, Icons.medical_information, 'Surgeries',
+              () => _go(context, const SurgeryListScreen())),
+          _group('INSURANCE'),
+          _tile(context, Icons.health_and_safety, 'Insurance',
+              () => _go(context, const InsuranceListScreen())),
+          _tile(context, Icons.receipt_long, 'Insurance Claims',
+              () => _go(context, const InsuranceClaimListScreen())),
           const Divider(),
           _tile(context, Icons.logout, 'Logout', () async {
             Navigator.pop(context);
