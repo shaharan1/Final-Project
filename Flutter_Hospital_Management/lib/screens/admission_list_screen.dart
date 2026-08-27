@@ -49,7 +49,10 @@ class _AdmissionListScreenState extends ConsumerState<AdmissionListScreen> {
                     icon: Icons.assignment_ind))
           else
             Expanded(
-              child: ListView.separated(
+              child: RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(admissionNotifierProvider.notifier).load(),
+                child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: state.admissions.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -107,6 +110,7 @@ class _AdmissionListScreenState extends ConsumerState<AdmissionListScreen> {
                     ),
                   );
                 },
+              ),
               ),
             ),
         ],
