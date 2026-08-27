@@ -8,9 +8,6 @@ import 'package:flutter_hospital_management/providers/appointment_provider.dart'
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
 import 'package:flutter_hospital_management/providers/pharmacy_provider.dart';
 import 'package:flutter_hospital_management/providers/prescription_provider.dart';
-import 'package:flutter_hospital_management/services/appointment_service.dart';
-import 'package:flutter_hospital_management/services/patient_service.dart';
-import 'package:flutter_hospital_management/services/pharmacy_service.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
@@ -152,7 +149,9 @@ class _PrescriptionFormScreenState
     _temp.dispose();
     _weight.dispose();
     _notes.dispose();
-    for (final r in _rows) r.dispose();
+    for (final r in _rows) {
+      r.dispose();
+    }
     super.dispose();
   }
 
@@ -168,32 +167,47 @@ class _PrescriptionFormScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _section('Patient & Visit', [
-                DropdownButtonFormField<int>(
-                  value: _selectedPatientId,
-                  decoration: const InputDecoration(labelText: 'Patient *'),
-                  items: _patients
-                      .map((p) => DropdownMenuItem(
-                            value: p.id,
-                            child: Text(p.name),
-                          ))
-                      .toList(),
-                  onChanged: (v) => setState(() => _selectedPatientId = v),
-                  validator: (v) =>
-                      v == null ? 'Required' : null,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Patient *',
+                        style: TextStyle(fontSize: 12, color: Colors.grey)),
+                    DropdownButton<int>(
+                      isExpanded: true,
+                      value: _selectedPatientId,
+                      hint: const Text('Select patient'),
+                      items: _patients
+                          .map((p) => DropdownMenuItem(
+                                value: p.id,
+                                child: Text(p.name),
+                              ))
+                          .toList(),
+                      onChanged: (v) =>
+                          setState(() => _selectedPatientId = v),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 12),
-                DropdownButtonFormField<int>(
-                  value: _selectedAppointmentId,
-                  decoration:
-                      const InputDecoration(labelText: 'Appointment (optional)'),
-                  items: _appointments
-                      .map((a) => DropdownMenuItem(
-                            value: a.id,
-                            child: Text(
-                                '${a.appointmentNumber ?? a.id} • ${a.appointmentDate ?? ''}'),
-                          ))
-                      .toList(),
-                  onChanged: (v) => setState(() => _selectedAppointmentId = v),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Appointment (optional)',
+                        style: TextStyle(fontSize: 12, color: Colors.grey)),
+                    DropdownButton<int>(
+                      isExpanded: true,
+                      value: _selectedAppointmentId,
+                      hint: const Text('None'),
+                      items: _appointments
+                          .map((a) => DropdownMenuItem(
+                                value: a.id,
+                                child: Text(
+                                    '${a.appointmentNumber ?? a.id} • ${a.appointmentDate ?? ''}'),
+                              ))
+                          .toList(),
+                      onChanged: (v) =>
+                          setState(() => _selectedAppointmentId = v),
+                    ),
+                  ],
                 ),
               ]),
               _section('Clinical Notes', [
@@ -247,7 +261,7 @@ class _PrescriptionFormScreenState
                 ),
               ]),
               _section('Medicines', [
-                ..._rows.map((r) => _rowCard(r)).toList(),
+                ..._rows.map((r) => _rowCard(r)),
                 const SizedBox(height: 8),
                 OutlinedButton.icon(
                   onPressed: _addRow,
@@ -321,17 +335,26 @@ class _PrescriptionFormScreenState
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      value: r.medicineId,
-                      decoration:
-                          const InputDecoration(labelText: 'Medicine'),
-                      items: _medicines
-                          .map((m) => DropdownMenuItem(
-                                value: m.id,
-                                child: Text(m.medicineName ?? 'Medicine'),
-                              ))
-                          .toList(),
-                      onChanged: (v) => setState(() => r.medicineId = v),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Medicine',
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.grey)),
+                        DropdownButton<int>(
+                          isExpanded: true,
+                          value: r.medicineId,
+                          hint: const Text('Select medicine'),
+                          items: _medicines
+                              .map((m) => DropdownMenuItem(
+                                    value: m.id,
+                                    child: Text(m.medicineName),
+                                  ))
+                              .toList(),
+                          onChanged: (v) =>
+                              setState(() => r.medicineId = v),
+                        ),
+                      ],
                     ),
                   ),
                   IconButton(

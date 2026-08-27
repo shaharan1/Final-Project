@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hospital_management/core/role_access.dart';
 import 'package:flutter_hospital_management/models/appointment.dart';
 import 'package:flutter_hospital_management/models/prescription.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
@@ -70,6 +69,12 @@ class _DoctorDashboardScreenState
   Widget build(BuildContext context) {
     final doctor = ref.watch(doctorNotifierProvider).myDoctor;
     final rx = ref.watch(prescriptionNotifierProvider);
+    final spec = doctor?.specialization;
+    final dept = doctor?.departmentName;
+    final sub = <String>[
+      if (spec != null) spec,
+      if (dept != null) dept,
+    ];
 
     final doctorId = doctor?.id;
     final todays = _appointments
@@ -85,7 +90,7 @@ class _DoctorDashboardScreenState
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => PrescriptionFormScreen(doctorId: doctorId!),
+                  builder: (_) => PrescriptionFormScreen(doctorId: doctorId),
                 ),
               ).then((_) => _init()),
               icon: const Icon(Icons.add),
@@ -110,11 +115,7 @@ class _DoctorDashboardScreenState
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  [
-                    if (doctor?.specialization != null) doctor!.specialization!,
-                    if (doctor?.departmentName != null)
-                      doctor!.departmentName!,
-                  ].join('  •  '),
+                  _sub.join('  •  '),
                   style: const TextStyle(color: Colors.white70),
                 ),
               ],
@@ -150,8 +151,7 @@ class _DoctorDashboardScreenState
             else
               ...rx.prescriptions
                   .take(10)
-                  .map((p) => _rxCard(p))
-                  .toList(),
+                  .map((p) => _rxCard(p)),
             const SizedBox(height: 8),
           ],
         ],
