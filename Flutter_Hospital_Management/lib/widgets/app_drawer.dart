@@ -45,7 +45,7 @@ class AppDrawer extends ConsumerWidget {
 
   void _go(BuildContext context, Widget screen) {
     Navigator.pop(context);
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => screen),
     );

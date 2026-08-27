@@ -2,10 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/screens/login_screen.dart';
-import 'package:flutter_hospital_management/screens/patient_list_screen.dart';
-import 'package:flutter_hospital_management/screens/appointment_list_screen.dart';
-import 'package:flutter_hospital_management/screens/billing_invoice_list_screen.dart';
 import 'package:flutter_hospital_management/screens/dashboard_screen.dart';
+import 'package:flutter_hospital_management/screens/patient_list_screen.dart';
+import 'package:flutter_hospital_management/screens/patient_form_screen.dart';
+import 'package:flutter_hospital_management/screens/appointment_list_screen.dart';
+import 'package:flutter_hospital_management/screens/appointment_form_screen.dart';
+import 'package:flutter_hospital_management/screens/billing_invoice_list_screen.dart';
+import 'package:flutter_hospital_management/screens/billing_invoice_form_screen.dart';
+import 'package:flutter_hospital_management/screens/admission_list_screen.dart';
+import 'package:flutter_hospital_management/screens/bed_list_screen.dart';
+import 'package:flutter_hospital_management/screens/medicine_list_screen.dart';
+import 'package:flutter_hospital_management/screens/pharmacy_sale_list_screen.dart';
+import 'package:flutter_hospital_management/screens/test_order_list_screen.dart';
+import 'package:flutter_hospital_management/screens/lab_report_list_screen.dart';
+import 'package:flutter_hospital_management/screens/lab_dashboard_screen.dart';
+import 'package:flutter_hospital_management/screens/doctor_list_screen.dart';
+import 'package:flutter_hospital_management/screens/doctor_dashboard_screen.dart';
+import 'package:flutter_hospital_management/screens/ambulance_list_screen.dart';
+import 'package:flutter_hospital_management/screens/ambulance_trip_list_screen.dart';
+import 'package:flutter_hospital_management/screens/diet_plan_list_screen.dart';
+import 'package:flutter_hospital_management/screens/surgery_list_screen.dart';
+import 'package:flutter_hospital_management/screens/surgery_master_list_screen.dart';
+import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
+import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/core/role_access.dart';
@@ -16,8 +35,12 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final auth = ref.watch(authNotifierProvider);
-    final user = auth.user;
+    final user = ref.watch(authNotifierProvider).user;
+    final role = normalizeRole(user?.role);
+    final access = ref.watch(roleAccessProvider);
+    final allowed = allowedModulesFor(role, access);
+
+    final activities = _activitiesFor(role);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,32 +68,46 @@ class HomeScreen extends ConsumerWidget {
           children: [
             GradientHeader(
               'Welcome, ${user?.name ?? 'User'}',
-              subtitle:
-                  '${user?.role ?? ''}${user?.email != null ? ' • ${user!.email}' : ''}',
+              subtitle: '${role.toUpperCase()}${user?.email != null ? ' • ${user!.email}' : ''}',
             ),
             const SizedBox(height: 20),
-            const SectionTitle('Quick Access', icon: Icons.flash_on),
+            if (activities.isNotEmpty) ...[
+              const SectionTitle('Your Activities', icon: Icons.flash_on),
+              const SizedBox(height: 12),
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 2.4,
+                children: activities
+                    .map((a) => _ActivityCard(activity: a))
+                    .toList(),
+              ),
+              const SizedBox(height: 24),
+            ],
+            const SectionTitle('Modules', icon: Icons.apps),
             const SizedBox(height: 12),
             Builder(
               builder: (context) {
-                final access = ref.watch(roleAccessProvider);
-                final allowed = allowedModulesFor(user?.role, access);
-                final quick = <Widget>[];
-                if (allowed.contains(ModuleKeys.dashboard)) {
-                  quick.add(_quickCard(context, Icons.dashboard, 'Dashboard',
-                      const DashboardScreen()));
+                final tiles = <Widget>[];
+                for (final key in allModuleOrder) {
+                  if (!allowed.contains(key)) continue;
+                  final screen = _screenForKey(key);
+                  if (screen == null) continue;
+                  tiles.add(_ModuleCard(
+                    icon: moduleIcons[key] ?? Icons.circle,
+                    label: moduleLabels[key] ?? key,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => screen),
+                    ),
+                  ));
                 }
-                if (allowed.contains(ModuleKeys.patients)) {
-                  quick.add(_quickCard(context, Icons.people, 'Patients',
-                      const PatientListScreen()));
-                }
-                if (allowed.contains(ModuleKeys.appointments)) {
-                  quick.add(_quickCard(context, Icons.calendar_today,
-                      'Appointments', const AppointmentListScreen()));
-                }
-                if (allowed.contains(ModuleKeys.billing)) {
-                  quick.add(_quickCard(context, Icons.receipt_long, 'Billing',
-                      const BillingInvoiceListScreen()));
+                if (tiles.isEmpty) {
+                  return const Text('No modules available for your role.',
+                      style: TextStyle(color: Colors.grey));
                 }
                 return GridView.count(
                   shrinkWrap: true,
@@ -79,24 +116,9 @@ class HomeScreen extends ConsumerWidget {
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   childAspectRatio: 1.8,
-                  children: quick,
+                  children: tiles,
                 );
               },
-            ),
-            const SizedBox(height: 16),
-            AppCard(
-              child: Row(
-                children: [
-                  const Icon(Icons.menu, color: AppTheme.primary),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Open the menu (top-left) for all modules: Beds, Admissions, Pharmacy, Lab and more.',
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),
@@ -104,16 +126,163 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _quickCard(BuildContext context, IconData icon, String label,
-          Widget screen) =>
-      _ModuleCard(
-        icon: icon,
-        label: label,
+  Widget? _screenForKey(String key) {
+    switch (key) {
+      case ModuleKeys.dashboard:
+        return const DashboardScreen();
+      case ModuleKeys.patients:
+        return const PatientListScreen();
+      case ModuleKeys.appointments:
+        return const AppointmentListScreen();
+      case ModuleKeys.admissions:
+        return const AdmissionListScreen();
+      case ModuleKeys.beds:
+        return const BedListScreen();
+      case ModuleKeys.billing:
+        return const BillingInvoiceListScreen();
+      case ModuleKeys.pharmacy:
+        return const MedicineListScreen();
+      case ModuleKeys.pharmacySales:
+        return const PharmacySaleListScreen();
+      case ModuleKeys.labTests:
+        return const TestOrderListScreen();
+      case ModuleKeys.labReports:
+        return const LabReportListScreen();
+      case ModuleKeys.labDashboard:
+        return const LabDashboardScreen();
+      case ModuleKeys.doctors:
+        return const DoctorListScreen();
+      case ModuleKeys.ambulances:
+        return const AmbulanceListScreen();
+      case ModuleKeys.ambulanceTrips:
+        return const AmbulanceTripListScreen();
+      case ModuleKeys.dietPlans:
+        return const DietPlanListScreen();
+      case ModuleKeys.surgeryCatalog:
+        return const SurgeryMasterListScreen();
+      case ModuleKeys.surgeries:
+        return const SurgeryListScreen();
+      case ModuleKeys.insurance:
+        return const InsuranceListScreen();
+      case ModuleKeys.insuranceClaims:
+        return const InsuranceClaimListScreen();
+      default:
+        return null;
+    }
+  }
+}
+
+class _Activity {
+  final IconData icon;
+  final String label;
+  final Widget screen;
+  const _Activity(this.icon, this.label, this.screen);
+}
+
+List<_Activity> _activitiesFor(String role) {
+  switch (role) {
+    case 'doctor':
+      return [
+        const _Activity(Icons.medical_services, 'My Dashboard', DoctorDashboardScreen()),
+        const _Activity(Icons.calendar_today, 'My Appointments', AppointmentListScreen()),
+        const _Activity(Icons.people, 'Patients', PatientListScreen()),
+        const _Activity(Icons.science, 'Lab Tests', TestOrderListScreen()),
+      ];
+    case 'receptionist':
+      return [
+        const _Activity(Icons.calendar_today, 'New Appointment', AppointmentFormScreen()),
+        const _Activity(Icons.person_add, 'Register Patient', PatientFormScreen()),
+        const _Activity(Icons.assignment_ind, 'Admissions', AdmissionListScreen()),
+        const _Activity(Icons.bed, 'Beds', BedListScreen()),
+      ];
+    case 'nurse':
+      return [
+        const _Activity(Icons.bed, 'Beds', BedListScreen()),
+        const _Activity(Icons.assignment_ind, 'Admissions', AdmissionListScreen()),
+        const _Activity(Icons.people, 'Patients', PatientListScreen()),
+        const _Activity(Icons.restaurant_menu, 'Diet Plans', DietPlanListScreen()),
+      ];
+    case 'pharmacist':
+      return [
+        const _Activity(Icons.medication, 'Medicines', MedicineListScreen()),
+        const _Activity(Icons.shopping_cart, 'Sales', PharmacySaleListScreen()),
+      ];
+    case 'labtechnician':
+      return [
+        const _Activity(Icons.science, 'Lab Tests', TestOrderListScreen()),
+        const _Activity(Icons.biotech, 'Reports', LabReportListScreen()),
+        const _Activity(Icons.analytics, 'Lab Dashboard', LabDashboardScreen()),
+      ];
+    case 'billingclerk':
+      return [
+        const _Activity(Icons.receipt_long, 'New Invoice', BillingInvoiceFormScreen()),
+        const _Activity(Icons.receipt_long, 'Invoices', BillingInvoiceListScreen()),
+        const _Activity(Icons.health_and_safety, 'Insurance', InsuranceListScreen()),
+        const _Activity(Icons.receipt_long, 'Claims', InsuranceClaimListScreen()),
+      ];
+    case 'dietician':
+      return [
+        const _Activity(Icons.restaurant_menu, 'Diet Plans', DietPlanListScreen()),
+        const _Activity(Icons.people, 'Patients', PatientListScreen()),
+      ];
+    case 'wardmanager':
+      return [
+        const _Activity(Icons.bed, 'Beds', BedListScreen()),
+        const _Activity(Icons.assignment_ind, 'Admissions', AdmissionListScreen()),
+        const _Activity(Icons.people, 'Patients', PatientListScreen()),
+      ];
+    case 'inventorymanager':
+      return [
+        const _Activity(Icons.medication, 'Medicines', MedicineListScreen()),
+        const _Activity(Icons.shopping_cart, 'Sales', PharmacySaleListScreen()),
+      ];
+    default:
+      return [];
+  }
+}
+
+class _ActivityCard extends StatelessWidget {
+  final _Activity activity;
+  const _ActivityCard({required this.activity});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: AppTheme.primaryGradient,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+              color: Color(0x1A000000), blurRadius: 8, offset: Offset(0, 3))
+        ],
+      ),
+      child: InkWell(
         onTap: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => screen),
+          MaterialPageRoute(builder: (_) => activity.screen),
         ),
-      );
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: Row(
+            children: [
+              Icon(activity.icon, color: Colors.white, size: 22),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  activity.label,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _ModuleCard extends StatelessWidget {
@@ -141,8 +310,7 @@ class _ModuleCard extends StatelessWidget {
             children: [
               Icon(icon, color: AppTheme.primary, size: 28),
               const SizedBox(height: 8),
-              Text(label,
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
             ],
           ),
         ),
