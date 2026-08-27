@@ -12,23 +12,19 @@ class DoctorListState {
   final List<Doctor> doctors;
   final String? error;
 
-  const DoctorListState({
-    this.isLoading = false,
-    this.doctors = const [],
-    this.error,
-  });
+  const DoctorListState(
+      {this.isLoading = false, this.doctors = const [], this.error});
 
   DoctorListState copyWith({
     bool? isLoading,
     List<Doctor>? doctors,
     String? error,
-  }) {
-    return DoctorListState(
-      isLoading: isLoading ?? this.isLoading,
-      doctors: doctors ?? this.doctors,
-      error: error ?? this.error,
-    );
-  }
+  }) =>
+      DoctorListState(
+        isLoading: isLoading ?? this.isLoading,
+        doctors: doctors ?? this.doctors,
+        error: error ?? this.error,
+      );
 }
 
 final doctorNotifierProvider =
@@ -44,7 +40,7 @@ class DoctorNotifier extends StateNotifier<DoctorListState> {
   Future<void> load() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final list = await service.getAll();
+      final list = await service.getDoctors();
       state = state.copyWith(isLoading: false, doctors: list);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
