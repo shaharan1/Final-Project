@@ -22,6 +22,7 @@ import 'package:flutter_hospital_management/screens/surgery_list_screen.dart';
 import 'package:flutter_hospital_management/screens/surgery_master_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
+import 'package:flutter_hospital_management/screens/role_access_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class _Item {
@@ -52,7 +53,9 @@ class AppDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authNotifierProvider).user;
-    final allowed = allowedModulesFor(user?.role);
+    final access = ref.watch(roleAccessProvider);
+    final allowed = allowedModulesFor(user?.role, access);
+    final isAdmin = normalizeRole(user?.role) == 'admin';
 
     const sections = [
       _Section('OVERVIEW', [
@@ -132,6 +135,13 @@ class AppDrawer extends ConsumerWidget {
         decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
       ),
       _tile(context, Icons.home, 'Home', () => _go(context, const HomeScreen())),
+      if (isAdmin)
+        _tile(
+          context,
+          Icons.admin_panel_settings,
+          'Role Permissions',
+          () => _go(context, const RoleAccessScreen()),
+        ),
     ];
 
     for (final sec in sections) {

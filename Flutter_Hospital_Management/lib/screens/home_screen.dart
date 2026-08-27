@@ -53,7 +53,8 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             Builder(
               builder: (context) {
-                final allowed = allowedModulesFor(user?.role);
+                final access = ref.watch(roleAccessProvider);
+                final allowed = allowedModulesFor(user?.role, access);
                 final quick = <Widget>[];
                 if (allowed.contains(ModuleKeys.dashboard)) {
                   quick.add(_quickCard(context, Icons.dashboard, 'Dashboard',
