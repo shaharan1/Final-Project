@@ -102,6 +102,14 @@ class HomeScreen extends ConsumerWidget {
                     MaterialPageRoute(builder: (_) => const AdmissionListScreen()),
                   ),
                 ),
+                _ModuleCard(
+                  icon: Icons.dashboard,
+                  label: 'Dashboard',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const DashboardScreen()),
+                  ),
+                ),
               ],
             ),
           ],
