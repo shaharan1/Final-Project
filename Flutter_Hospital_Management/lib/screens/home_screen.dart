@@ -5,6 +5,8 @@ import 'package:flutter_hospital_management/screens/login_screen.dart';
 import 'package:flutter_hospital_management/screens/patient_list_screen.dart';
 import 'package:flutter_hospital_management/screens/appointment_list_screen.dart';
 import 'package:flutter_hospital_management/screens/billing_invoice_list_screen.dart';
+import 'package:flutter_hospital_management/screens/bed_list_screen.dart';
+import 'package:flutter_hospital_management/screens/admission_list_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -81,6 +83,22 @@ class HomeScreen extends ConsumerWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const BillingInvoiceListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.bed,
+                  label: 'Beds',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const BedListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.assignment_ind,
+                  label: 'Admissions',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AdmissionListScreen()),
                   ),
                 ),
               ],
