@@ -228,6 +228,82 @@ class MiniBar extends StatelessWidget {
       );
 }
 
+class DetailSection extends StatelessWidget {
+  final String title;
+  final IconData? icon;
+  final List<Widget> children;
+
+  const DetailSection(this.title, this.children,
+      {super.key, this.icon});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                if (icon != null) ...[
+                  Icon(icon, color: AppTheme.primary, size: 18),
+                  const SizedBox(width: 8),
+                ],
+                Text(title,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF263238))),
+              ],
+            ),
+            const SizedBox(height: 10),
+            AppCard(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                children: children
+                    .map((c) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: c,
+                        ))
+                    .toList(),
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class DetailRow extends StatelessWidget {
+  final String label;
+  final String? value;
+  final IconData? icon;
+
+  const DetailRow(this.label, this.value, {super.key, this.icon});
+
+  @override
+  Widget build(BuildContext context) => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 18, color: Colors.grey),
+            const SizedBox(width: 10),
+          ] else
+            const SizedBox(width: 28),
+          SizedBox(
+            width: 130,
+            child: Text(label,
+                style: const TextStyle(fontSize: 13, color: Colors.grey)),
+          ),
+          Expanded(
+            child: Text(
+              (value == null || value!.isEmpty) ? '—' : value!,
+              style: const TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      );
+}
+
 class GradientHeader extends StatelessWidget {
   final String title;
   final String? subtitle;
