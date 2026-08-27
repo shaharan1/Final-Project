@@ -71,10 +71,7 @@ class _DoctorDashboardScreenState
     final rx = ref.watch(prescriptionNotifierProvider);
     final spec = doctor?.specialization;
     final dept = doctor?.departmentName;
-    final sub = <String>[
-      if (spec != null) spec,
-      if (dept != null) dept,
-    ];
+    final sub = [spec, dept].whereType<String>().toList();
 
     final doctorId = doctor?.id;
     final todays = _appointments
@@ -115,7 +112,7 @@ class _DoctorDashboardScreenState
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  _sub.join('  •  '),
+                  sub.join('  •  '),
                   style: const TextStyle(color: Colors.white70),
                 ),
               ],
