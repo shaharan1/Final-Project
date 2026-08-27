@@ -50,6 +50,16 @@ class PrescriptionNotifier extends StateNotifier<PrescriptionListState> {
     }
   }
 
+  Future<void> loadAll() async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final list = await service.getAll();
+      state = state.copyWith(isLoading: false, prescriptions: list);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
   Future<bool> create(PrescriptionRequest request) async {
     try {
       await service.create(request);
