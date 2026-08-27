@@ -39,15 +39,15 @@ class _BedListScreenState extends ConsumerState<BedListScreen> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _FilterChip('All', _filter == null, () => setState(() => _filter = null)),
+                  _filterChip('All', _filter == null, () => setState(() => _filter = null)),
                   const SizedBox(width: 8),
-                  _FilterChip('Available', _filter == 'AVAILABLE',
+                  _filterChip('Available', _filter == 'AVAILABLE',
                       () => setState(() => _filter = 'AVAILABLE')),
                   const SizedBox(width: 8),
-                  _FilterChip('Occupied', _filter == 'OCCUPIED',
+                  _filterChip('Occupied', _filter == 'OCCUPIED',
                       () => setState(() => _filter = 'OCCUPIED')),
                   const SizedBox(width: 8),
-                  _FilterChip('Maintenance', _filter == 'MAINTENANCE',
+                  _filterChip('Maintenance', _filter == 'MAINTENANCE',
                       () => setState(() => _filter = 'MAINTENANCE')),
                 ],
               ),
@@ -116,7 +116,7 @@ class _BedListScreenState extends ConsumerState<BedListScreen> {
     );
   }
 
-  Widget _FilterChip(String label, bool selected, VoidCallback onTap) =>
+  Widget _filterChip(String label, bool selected, VoidCallback onTap) =>
       FilterChip(
         label: Text(label),
         selected: selected,
