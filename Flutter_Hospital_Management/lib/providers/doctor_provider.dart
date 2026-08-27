@@ -10,19 +10,25 @@ final doctorServiceProvider = Provider<DoctorService>((ref) {
 class DoctorListState {
   final bool isLoading;
   final List<Doctor> doctors;
+  final Doctor? myDoctor;
   final String? error;
 
   const DoctorListState(
-      {this.isLoading = false, this.doctors = const [], this.error});
+      {this.isLoading = false,
+      this.doctors = const [],
+      this.myDoctor,
+      this.error});
 
   DoctorListState copyWith({
     bool? isLoading,
     List<Doctor>? doctors,
+    Doctor? myDoctor,
     String? error,
   }) =>
       DoctorListState(
         isLoading: isLoading ?? this.isLoading,
         doctors: doctors ?? this.doctors,
+        myDoctor: myDoctor ?? this.myDoctor,
         error: error ?? this.error,
       );
 }
@@ -44,6 +50,15 @@ class DoctorNotifier extends StateNotifier<DoctorListState> {
       state = state.copyWith(isLoading: false, doctors: list);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> loadMyProfile(int userId) async {
+    try {
+      final doctor = await service.getByUserId(userId);
+      state = state.copyWith(myDoctor: doctor);
+    } catch (e) {
+      state = state.copyWith(error: e.toString());
     }
   }
 }

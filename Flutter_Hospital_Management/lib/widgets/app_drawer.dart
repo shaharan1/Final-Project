@@ -23,6 +23,7 @@ import 'package:flutter_hospital_management/screens/surgery_master_list_screen.d
 import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/screens/role_access_screen.dart';
+import 'package:flutter_hospital_management/screens/doctor_dashboard_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class _Item {
@@ -135,6 +136,13 @@ class AppDrawer extends ConsumerWidget {
         decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
       ),
       _tile(context, Icons.home, 'Home', () => _go(context, const HomeScreen())),
+      if (isAdmin || normalizeRole(user?.role) == 'doctor')
+        _tile(
+          context,
+          Icons.medical_services,
+          'Doctor Dashboard',
+          () => _go(context, const DoctorDashboardScreen()),
+        ),
       if (isAdmin)
         _tile(
           context,

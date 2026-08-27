@@ -12,4 +12,9 @@ class DoctorService {
         .map((e) => Doctor.fromJson(e as Map<String, dynamic>))
         .toList();
   }
+
+  Future<Doctor> getByUserId(int userId) async {
+    final res = await dio.get('/doctors/user/$userId');
+    return Doctor.fromJson(res.data as Map<String, dynamic>);
+  }
 }
