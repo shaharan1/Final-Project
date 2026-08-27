@@ -7,6 +7,7 @@ import 'package:flutter_hospital_management/screens/appointment_list_screen.dart
 import 'package:flutter_hospital_management/screens/billing_invoice_list_screen.dart';
 import 'package:flutter_hospital_management/screens/bed_list_screen.dart';
 import 'package:flutter_hospital_management/screens/admission_list_screen.dart';
+import 'package:flutter_hospital_management/screens/dashboard_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
