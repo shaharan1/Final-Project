@@ -30,8 +30,27 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     Widget home;
     if (auth.isLoading && auth.token == null) {
-      home = const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
+      home = Scaffold(
+        body: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(gradient: AppTheme.primaryGradient),
+          child: const Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.local_hospital, size: 72, color: Colors.white),
+                SizedBox(height: 16),
+                Text('Elite Care Hospital',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold)),
+                SizedBox(height: 24),
+                CircularProgressIndicator(color: Colors.white),
+              ],
+            ),
+          ),
+        ),
       );
     } else if (auth.token != null) {
       home = const HomeScreen();
