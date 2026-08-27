@@ -8,6 +8,11 @@ import 'package:flutter_hospital_management/screens/billing_invoice_list_screen.
 import 'package:flutter_hospital_management/screens/bed_list_screen.dart';
 import 'package:flutter_hospital_management/screens/admission_list_screen.dart';
 import 'package:flutter_hospital_management/screens/dashboard_screen.dart';
+import 'package:flutter_hospital_management/screens/medicine_list_screen.dart';
+import 'package:flutter_hospital_management/screens/pharmacy_sale_list_screen.dart';
+import 'package:flutter_hospital_management/screens/test_order_list_screen.dart';
+import 'package:flutter_hospital_management/screens/lab_report_list_screen.dart';
+import 'package:flutter_hospital_management/screens/lab_dashboard_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -20,8 +25,6 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Elite Care Hospital'),
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -108,6 +111,51 @@ class HomeScreen extends ConsumerWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const DashboardScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.medication,
+                  label: 'Pharmacy',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const MedicineListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.receipt_long,
+                  label: 'Pharmacy Sales',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const PharmacySaleListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.science,
+                  label: 'Lab Tests',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const TestOrderListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.biotech,
+                  label: 'Lab Reports',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const LabReportListScreen()),
+                  ),
+                ),
+                _ModuleCard(
+                  icon: Icons.analytics,
+                  label: 'Lab Dashboard',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const LabDashboardScreen()),
                   ),
                 ),
               ],

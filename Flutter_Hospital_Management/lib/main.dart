@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/screens/login_screen.dart';
 import 'package:flutter_hospital_management/screens/home_screen.dart';
+import 'package:flutter_hospital_management/theme.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -41,10 +42,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp(
       title: 'Elite Care Hospital',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light,
       home: home,
     );
   }
