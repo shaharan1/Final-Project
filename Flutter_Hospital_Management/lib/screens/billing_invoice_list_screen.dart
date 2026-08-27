@@ -17,6 +17,7 @@ class BillingInvoiceListScreen extends ConsumerStatefulWidget {
 class _BillingInvoiceListScreenState
     extends ConsumerState<BillingInvoiceListScreen> {
   final _search = TextEditingController();
+  String _filter = 'All';
 
   @override
   void initState() {
@@ -34,9 +35,38 @@ class _BillingInvoiceListScreenState
   String _money(dynamic v) =>
       '৳ ${(v is num ? v.toDouble() : 0).toStringAsFixed(2)}';
 
+  Widget _buildChips(List<String> chips) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Row(
+          children: chips
+              .map((c) => Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(c),
+                      selected: _filter == c,
+                      onSelected: (_) => setState(() => _filter = c),
+                    ),
+                  ))
+              .toList(),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(billingNotifierProvider);
+    final statuses = {
+      for (final inv in state.invoices)
+        if (inv.paymentStatus != null && inv.paymentStatus!.isNotEmpty)
+          inv.paymentStatus!
+    }.toList()
+      ..sort();
+    final chips = ['All', ...statuses];
+    final filtered = _filter == 'All'
+        ? state.invoices
+        : state.invoices
+            .where((inv) => (inv.paymentStatus ?? '') == _filter)
+            .toList();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Billing')),
@@ -65,10 +95,11 @@ class _BillingInvoiceListScreenState
                   },
                 ),
               ),
-              onChanged: (v) =>
-                  ref.read(billingNotifierProvider.notifier).search(v.trim()),
+                  onChanged: (v) =>
+                      ref.read(billingNotifierProvider.notifier).search(v.trim()),
             ),
           ),
+          _buildChips(chips),
           if (state.error != null)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -77,7 +108,7 @@ class _BillingInvoiceListScreenState
             ),
           if (state.isLoading)
             const Expanded(child: Center(child: CircularProgressIndicator()))
-          else if (state.invoices.isEmpty)
+          else if (filtered.isEmpty)
             const Expanded(
                 child: EmptyState('No invoices found',
                     icon: Icons.receipt_long))
@@ -88,10 +119,10 @@ class _BillingInvoiceListScreenState
                     ref.read(billingNotifierProvider.notifier).load(),
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: state.invoices.length,
+                  itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 10),
                   itemBuilder: (context, i) {
-                    final inv = state.invoices[i];
+                    final inv = filtered[i];
                     return AppCard(
                       onTap: () => Navigator.push(
                         context,

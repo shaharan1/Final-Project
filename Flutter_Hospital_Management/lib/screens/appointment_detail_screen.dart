@@ -3,6 +3,7 @@ import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/providers/appointment_provider.dart';
 import 'package:flutter_hospital_management/models/appointment.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
+import 'package:flutter_hospital_management/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AppointmentDetailScreen extends ConsumerStatefulWidget {

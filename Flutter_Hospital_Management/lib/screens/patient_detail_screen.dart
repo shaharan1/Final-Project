@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
-import 'package:flutter_hospital_management/services/patient_service.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
 import 'package:flutter_hospital_management/screens/patient_form_screen.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
+import 'package:flutter_hospital_management/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PatientDetailScreen extends ConsumerStatefulWidget {
