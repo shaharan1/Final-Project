@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/core/role_access.dart';
-import 'package:flutter_hospital_management/models/prescription.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/providers/doctor_provider.dart';
 import 'package:flutter_hospital_management/providers/prescription_provider.dart';
@@ -74,7 +73,7 @@ class _PrescriptionListScreenState
                   : ListView.separated(
                       padding: const EdgeInsets.all(16),
                       itemCount: state.prescriptions.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
                       itemBuilder: (_, i) {
                         final p = state.prescriptions[i];
                         return AppCard(

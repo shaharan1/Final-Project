@@ -4,7 +4,6 @@ import 'package:flutter_hospital_management/core/constants/app_constants.dart';
 import 'package:flutter_hospital_management/core/pdf_launcher.dart';
 import 'package:flutter_hospital_management/models/prescription.dart';
 import 'package:flutter_hospital_management/providers/prescription_provider.dart';
-import 'package:flutter_hospital_management/services/prescription_service.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/theme.dart';

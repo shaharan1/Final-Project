@@ -38,6 +38,7 @@ import 'package:flutter_hospital_management/screens/surgery_master_list_screen.d
 import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/screens/prescription_form_screen.dart';
+import 'package:flutter_hospital_management/screens/prescription_list_screen.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/core/role_access.dart';
@@ -448,6 +449,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         return const InsuranceListScreen();
       case ModuleKeys.insuranceClaims:
         return const InsuranceClaimListScreen();
+      case ModuleKeys.prescriptions:
+        return const PrescriptionListScreen();
       default:
         return null;
     }

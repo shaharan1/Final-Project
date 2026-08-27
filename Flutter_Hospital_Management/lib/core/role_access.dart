@@ -24,6 +24,7 @@ class ModuleKeys {
   static const surgeries = 'surgeries';
   static const insurance = 'insurance';
   static const insuranceClaims = 'insurance_claims';
+  static const prescriptions = 'prescriptions';
 }
 
 /// Ordered list of all module keys (used by the admin UI).
@@ -47,6 +48,7 @@ const List<String> allModuleOrder = [
   ModuleKeys.surgeries,
   ModuleKeys.insurance,
   ModuleKeys.insuranceClaims,
+  ModuleKeys.prescriptions,
 ];
 
 const Map<String, String> moduleLabels = {
@@ -69,6 +71,7 @@ const Map<String, String> moduleLabels = {
   ModuleKeys.surgeries: 'Surgeries',
   ModuleKeys.insurance: 'Insurance',
   ModuleKeys.insuranceClaims: 'Insurance Claims',
+  ModuleKeys.prescriptions: 'Prescriptions',
 };
 
 const Map<String, IconData> moduleIcons = {
@@ -91,6 +94,7 @@ const Map<String, IconData> moduleIcons = {
   ModuleKeys.surgeries: Icons.medical_information,
   ModuleKeys.insurance: Icons.health_and_safety,
   ModuleKeys.insuranceClaims: Icons.receipt_long,
+  ModuleKeys.prescriptions: Icons.receipt_long,
 };
 
 /// Default module set per role (keys are normalized lower-case role names).
@@ -105,7 +109,7 @@ final Map<String, Set<String>> _defaults = {
     ModuleKeys.beds,
     ModuleKeys.doctors,
   },
-  'doctor': {
+   'doctor': {
     ModuleKeys.dashboard,
     ModuleKeys.patients,
     ModuleKeys.appointments,
@@ -115,6 +119,7 @@ final Map<String, Set<String>> _defaults = {
     ModuleKeys.dietPlans,
     ModuleKeys.surgeries,
     ModuleKeys.surgeryCatalog,
+    ModuleKeys.prescriptions,
   },
   'nurse': {
     ModuleKeys.dashboard,
