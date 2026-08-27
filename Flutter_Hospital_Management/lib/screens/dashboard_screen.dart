@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/dashboard_provider.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -36,6 +37,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           )
         ],
       ),
+      drawer: const AppDrawer(),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.error != null
