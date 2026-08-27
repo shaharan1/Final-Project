@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/insurance_provider.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
+import 'package:flutter_hospital_management/screens/insurance_detail_screen.dart';
 
 class InsuranceListScreen extends ConsumerStatefulWidget {
   const InsuranceListScreen({super.key});
@@ -44,15 +45,28 @@ class _InsuranceListScreenState extends ConsumerState<InsuranceListScreen> {
                           return AppCard(
                             child: Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: const Color(0xFF0E7C86)
-                                      .withValues(alpha: 0.12),
-                                  child: const Icon(Icons.health_and_safety,
-                                      color: Color(0xFF0E7C86)),
+                                GestureDetector(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              InsuranceDetailScreen(item: ins))),
+                                  child: CircleAvatar(
+                                    backgroundColor: const Color(0xFF0E7C86)
+                                        .withValues(alpha: 0.12),
+                                    child: const Icon(Icons.health_and_safety,
+                                        color: Color(0xFF0E7C86)),
+                                  ),
                                 ),
                                 const SizedBox(width: 14),
                                 Expanded(
-                                  child: Column(
+                                  child: GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                InsuranceDetailScreen(item: ins))),
+                                    child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -75,6 +89,7 @@ class _InsuranceListScreenState extends ConsumerState<InsuranceListScreen> {
                                       StatusChip.fromStatus(
                                           ins.active == true ? 'ACTIVE' : 'INACTIVE'),
                                     ],
+                                  ),
                                   ),
                                 ),
                               ],

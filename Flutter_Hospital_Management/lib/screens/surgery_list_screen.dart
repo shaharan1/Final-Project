@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/clinical_provider.dart';
+import 'package:flutter_hospital_management/screens/surgery_detail_screen.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 
@@ -12,6 +13,8 @@ class SurgeryListScreen extends ConsumerStatefulWidget {
 }
 
 class _SurgeryListScreenState extends ConsumerState<SurgeryListScreen> {
+  String _filter = 'All';
+
   @override
   void initState() {
     super.initState();
@@ -21,9 +24,35 @@ class _SurgeryListScreenState extends ConsumerState<SurgeryListScreen> {
   String _money(dynamic v) =>
       '৳ ${(v is num ? v.toDouble() : 0).toStringAsFixed(2)}';
 
+  Widget _buildChips(List<String> chips) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Row(
+          children: chips
+              .map((c) => Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(c),
+                      selected: _filter == c,
+                      onSelected: (_) => setState(() => _filter = c),
+                    ),
+                  ))
+              .toList(),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(clinicalNotifierProvider);
+    final values = {
+      for (final x in state.surgeries)
+        if (x.status != null && x.status!.isNotEmpty) x.status!
+    }.toList()
+      ..sort();
+    final chips = ['All', ...values];
+    final filtered = _filter == 'All'
+        ? state.surgeries
+        : state.surgeries.where((x) => (x.status ?? '') == _filter).toList();
     return Scaffold(
       appBar: AppBar(title: const Text('Surgeries')),
       drawer: const AppDrawer(),
@@ -33,17 +62,27 @@ class _SurgeryListScreenState extends ConsumerState<SurgeryListScreen> {
               ? Center(child: Text(state.error!, style: const TextStyle(color: Colors.red)))
               : state.surgeries.isEmpty
                   ? const EmptyState('No surgeries found', icon: Icons.medical_information)
-                  : RefreshIndicator(
+                  : Column(
+                      children: [
+                        _buildChips(chips),
+                        Expanded(
+                          child: RefreshIndicator(
                       onRefresh: () =>
                           ref.read(clinicalNotifierProvider.notifier).load(),
                       child: ListView.separated(
                         padding: const EdgeInsets.all(16),
-                        itemCount: state.surgeries.length,
+                        itemCount: filtered.length,
                         separatorBuilder: (_, _) => const SizedBox(height: 10),
                         itemBuilder: (_, i) {
-                          final s = state.surgeries[i];
+                          final s = filtered[i];
                           return AppCard(
-                            child: Column(
+                            child: GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          SurgeryDetailScreen(item: s))),
+                              child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
@@ -77,9 +116,12 @@ class _SurgeryListScreenState extends ConsumerState<SurgeryListScreen> {
                                         fontSize: 12, color: Color(0xFF2E9E5B))),
                               ],
                             ),
+                            ),
                           );
                         },
                       ),
+                          ),
+                        ),
                     ),
     );
   }
