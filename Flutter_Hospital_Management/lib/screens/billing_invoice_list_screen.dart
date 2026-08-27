@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/billing_provider.dart';
 import 'package:flutter_hospital_management/screens/billing_invoice_form_screen.dart';
 import 'package:flutter_hospital_management/screens/billing_invoice_detail_screen.dart';
+import 'package:flutter_hospital_management/widgets/common.dart';
 
 class BillingInvoiceListScreen extends ConsumerStatefulWidget {
   const BillingInvoiceListScreen({super.key});
@@ -29,26 +30,31 @@ class _BillingInvoiceListScreenState
     super.dispose();
   }
 
+  String _money(dynamic v) =>
+      '৳ ${(v is num ? v.toDouble() : 0).toStringAsFixed(2)}';
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(billingNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Billing'),
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
+      appBar: AppBar(title: const Text('Billing')),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const BillingInvoiceFormScreen()),
+        ).then((_) => ref.read(billingNotifierProvider.notifier).load()),
       ),
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             child: TextField(
               controller: _search,
               decoration: InputDecoration(
                 labelText: 'Search (invoice no, patient)',
                 prefixIcon: const Icon(Icons.search),
-                border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () {
@@ -63,52 +69,76 @@ class _BillingInvoiceListScreenState
           ),
           if (state.error != null)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child:
-                  Text(state.error!, style: const TextStyle(color: Colors.red)),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(state.error!,
+                  style: const TextStyle(color: Colors.red)),
             ),
           if (state.isLoading)
             const Expanded(child: Center(child: CircularProgressIndicator()))
           else if (state.invoices.isEmpty)
-            const Expanded(child: Center(child: Text('No invoices found.')))
+            const Expanded(
+                child: EmptyState('No invoices found',
+                    icon: Icons.receipt_long))
           else
             Expanded(
-              child: ListView.separated(
-                itemCount: state.invoices.length,
-                separatorBuilder: (_, _) => const Divider(height: 1),
-                itemBuilder: (context, i) {
-                  final inv = state.invoices[i];
-                  return ListTile(
-                    title: Text(inv.invoiceNumber ?? '#$i'),
-                    subtitle: Text(
-                        '${inv.patientName ?? 'Unknown'}  •  ${inv.invoiceType ?? ''}\nNet: ${inv.netAmount ?? 0}  •  Due: ${inv.dueAmount ?? 0}'),
-                    isThreeLine: true,
-                    trailing: Chip(
-                      label: Text(inv.paymentStatus ?? ''),
-                      backgroundColor:
-                          inv.paymentStatus == 'PAID' ? Colors.green[100] : Colors.orange[100],
-                    ),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            BillingInvoiceDetailScreen(invoiceId: inv.id!),
+              child: RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(billingNotifierProvider.notifier).load(),
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: state.invoices.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (context, i) {
+                    final inv = state.invoices[i];
+                    return AppCard(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              BillingInvoiceDetailScreen(invoiceId: inv.id!),
+                        ),
                       ),
-                    ),
-                  );
-                },
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: const Color(0xFF0E7C86)
+                                .withValues(alpha: 0.12),
+                            child: const Icon(Icons.receipt_long,
+                                color: Color(0xFF0E7C86)),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(inv.invoiceNumber ?? '#$i',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 15)),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${inv.patientName ?? 'Unknown'}  •  ${inv.invoiceType ?? ''}',
+                                  style: const TextStyle(
+                                      fontSize: 13, color: Colors.grey),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Net: ${_money(inv.netAmount)}  •  Due: ${_money(inv.dueAmount)}',
+                                  style: const TextStyle(
+                                      fontSize: 12, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                          StatusChip.fromStatus(inv.paymentStatus ?? 'N/A'),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.teal,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const BillingInvoiceFormScreen()),
-        ),
       ),
     );
   }
