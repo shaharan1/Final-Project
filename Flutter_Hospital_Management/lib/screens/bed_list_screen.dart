@@ -65,7 +65,9 @@ class _BedListScreenState extends ConsumerState<BedListScreen> {
             const Expanded(child: EmptyState('No beds found', icon: Icons.bed))
           else
             Expanded(
-              child: ListView.separated(
+              child: RefreshIndicator(
+                onRefresh: () => ref.read(bedNotifierProvider.notifier).load(),
+                child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: beds.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -105,10 +107,11 @@ class _BedListScreenState extends ConsumerState<BedListScreen> {
                       ],
                     ),
                   );
-                },
-              ),
-            ),
-        ],
+                 },
+               ),
+               ),
+             ),
+         ],
       ),
     );
   }

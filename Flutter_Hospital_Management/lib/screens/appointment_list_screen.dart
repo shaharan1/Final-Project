@@ -78,7 +78,10 @@ class _AppointmentListScreenState
                     EmptyState('No appointments found', icon: Icons.event_busy))
           else
             Expanded(
-              child: ListView.separated(
+              child: RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(appointmentNotifierProvider.notifier).load(),
+                child: ListView.separated(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: state.appointments.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -136,6 +139,7 @@ class _AppointmentListScreenState
                     ),
                   );
                 },
+              ),
               ),
             ),
         ],
