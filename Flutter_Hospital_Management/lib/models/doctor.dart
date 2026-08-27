@@ -16,6 +16,7 @@ class Doctor {
   final String? dutyHours;
   final String? chamber;
   final String? departmentName;
+  final String? description;
 
   const Doctor({
     this.id,
@@ -35,6 +36,7 @@ class Doctor {
     this.dutyHours,
     this.chamber,
     this.departmentName,
+    this.description,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> j) => Doctor(
@@ -55,7 +57,6 @@ class Doctor {
         dutyHours: j['dutyHours'],
         chamber: j['chamber'],
         departmentName: j['departmentName'],
+        description: j['description'],
       );
-
-  String get displayName => '${name ?? 'Unknown'}${specialization != null ? ' ($specialization)' : ''}';
 }
