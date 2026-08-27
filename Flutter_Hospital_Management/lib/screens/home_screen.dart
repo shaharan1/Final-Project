@@ -13,6 +13,8 @@ import 'package:flutter_hospital_management/screens/pharmacy_sale_list_screen.da
 import 'package:flutter_hospital_management/screens/test_order_list_screen.dart';
 import 'package:flutter_hospital_management/screens/lab_report_list_screen.dart';
 import 'package:flutter_hospital_management/screens/lab_dashboard_screen.dart';
+import 'package:flutter_hospital_management/widgets/common.dart';
+import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -40,23 +42,17 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            GradientHeader(
               'Welcome, ${user?.name ?? 'User'}',
-              style: Theme.of(context).textTheme.headlineSmall,
+              subtitle: '${user?.role ?? ''}${user?.email != null ? ' • ${user!.email}' : ''}',
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Role: ${user?.role ?? 'N/A'}',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text('Email: ${user?.email ?? 'N/A'}'),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
