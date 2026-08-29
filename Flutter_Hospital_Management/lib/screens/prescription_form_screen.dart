@@ -72,11 +72,13 @@ class _PrescriptionFormScreenState
       final appointments = await ref
           .read(appointmentServiceProvider)
           .getByDoctor(widget.doctorId);
+      final tests = await ref.read(labServiceProvider).getTestMasters();
       if (mounted) {
         setState(() {
           _patients = patients;
           _medicines = medicines;
           _appointments = appointments;
+          _tests = tests;
         });
       }
     } catch (e) {
@@ -123,6 +125,7 @@ class _PrescriptionFormScreenState
       notes: _notes.text.trim(),
       nextFollowUpDate: _followUp != null ? _fmtDate(_followUp!) : null,
       prescriptionItems: items,
+      testIds: _selectedTestIds.isEmpty ? null : _selectedTestIds.toList(),
     );
 
     setState(() => _submitting = true);
