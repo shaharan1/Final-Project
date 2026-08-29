@@ -125,6 +125,11 @@ class _PatientDetailScreenState extends ConsumerState<PatientDetailScreen> {
                 tooltip: 'Delete',
                 onPressed: _confirmDelete,
               ),
+              IconButton(
+                icon: const Icon(Icons.picture_as_pdf),
+                tooltip: 'Download Summary PDF',
+                onPressed: () => _downloadSummary(p!),
+              ),
             ],
             IconButton(
               icon: const Icon(Icons.refresh),
