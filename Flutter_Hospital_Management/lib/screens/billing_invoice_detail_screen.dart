@@ -353,6 +353,20 @@ class _BillingInvoiceDetailScreenState
 
   void _snack(String m) => ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text(m), backgroundColor: Colors.red));
+
+  Future<void> _downloadPdf(BillingInvoice inv) async {
+    try {
+      final bytes = await savePdf(buildInvoicePdf(inv));
+      await exportPdf(bytes, 'invoice_${inv.invoiceNumber ?? inv.id}.pdf');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('PDF generated'),
+            backgroundColor: AppTheme.success));
+      }
+    } catch (e) {
+      if (mounted) _snack('PDF failed: $e');
+    }
+  }
 }
 
 class _Header extends StatelessWidget {
