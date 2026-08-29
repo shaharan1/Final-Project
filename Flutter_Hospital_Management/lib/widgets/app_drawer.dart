@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/core/role_access.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
+import 'package:flutter_hospital_management/providers/theme_provider.dart';
 import 'package:flutter_hospital_management/screens/home_screen.dart';
 import 'package:flutter_hospital_management/screens/dashboard_screen.dart';
 import 'package:flutter_hospital_management/screens/patient_list_screen.dart';
@@ -239,6 +240,21 @@ class AppDrawer extends ConsumerWidget {
       }
     }
 
+    children.add(const Divider());
+    children.add(
+      SwitchListTile(
+        secondary: Icon(
+          ref.watch(themeModeProvider) == ThemeMode.dark
+              ? Icons.dark_mode
+              : Icons.light_mode,
+          color: AppTheme.primary,
+        ),
+        title: const Text('Dark Mode'),
+        value: ref.watch(themeModeProvider) == ThemeMode.dark,
+        onChanged: (_) => ref.read(themeModeProvider.notifier).toggle(),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      ),
+    );
     children.add(const Divider());
     children.add(_tile(context, Icons.logout, 'Logout', () async {
       Navigator.pop(context);

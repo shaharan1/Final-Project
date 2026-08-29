@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/appointment_provider.dart';
@@ -65,6 +66,7 @@ class _AppointmentListScreenState
             .toList();
 
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'appointments'),
       appBar: AppBar(title: const Text('Appointments')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(

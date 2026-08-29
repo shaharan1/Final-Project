@@ -4,6 +4,7 @@ import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/screens/login_screen.dart';
 import 'package:flutter_hospital_management/screens/home_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
+import 'package:flutter_hospital_management/providers/theme_provider.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -62,6 +63,8 @@ class _MyAppState extends ConsumerState<MyApp> {
       title: 'Elite Care Hospital',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ref.watch(themeModeProvider),
       home: home,
     );
   }

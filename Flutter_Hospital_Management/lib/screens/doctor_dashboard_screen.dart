@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_hospital_management/models/appointment.dart';
 import 'package:flutter_hospital_management/models/prescription.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
@@ -79,6 +80,7 @@ class _DoctorDashboardScreenState
         .toList();
 
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'doctor'),
       appBar: AppBar(title: const Text('Doctor Dashboard')),
       drawer: const AppDrawer(),
       floatingActionButton: doctorId == null
