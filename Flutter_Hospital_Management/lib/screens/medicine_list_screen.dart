@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/pharmacy_provider.dart';
 import 'package:flutter_hospital_management/screens/medicine_form_screen.dart';
@@ -57,6 +58,7 @@ class _MedicineListScreenState extends ConsumerState<MedicineListScreen> {
             .where((x) => (x.genericName ?? '') == _filter)
             .toList();
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'pharmacy'),
       appBar: AppBar(title: const Text('Medicines')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
