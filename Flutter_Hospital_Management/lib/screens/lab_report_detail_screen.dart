@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/core/pdf/document_builders.dart';
+import 'package:flutter_hospital_management/core/pdf/pdf_export.dart';
 import 'package:flutter_hospital_management/models/lab_report.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
+import 'package:flutter_hospital_management/theme.dart';
 
 class LabReportDetailScreen extends StatelessWidget {
   final LabReport report;
@@ -10,7 +13,33 @@ class LabReportDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(report.reportNumber ?? 'Report #${report.id}')),
+      appBar: AppBar(
+        title: Text(report.reportNumber ?? 'Report #${report.id}'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.picture_as_pdf),
+            tooltip: 'Download PDF',
+            onPressed: () async {
+              try {
+                final bytes = await savePdf(buildLabReportPdf(report));
+                await exportPdf(
+                    bytes, 'lab_report_${report.reportNumber ?? report.id}.pdf');
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text('PDF generated'),
+                      backgroundColor: AppTheme.success));
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('PDF failed: $e'),
+                      backgroundColor: AppTheme.danger));
+                }
+              }
+            },
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hospital_management/core/pdf/document_builders.dart';
+import 'package:flutter_hospital_management/core/pdf/pdf_export.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
 import 'package:flutter_hospital_management/providers/appointment_provider.dart';
