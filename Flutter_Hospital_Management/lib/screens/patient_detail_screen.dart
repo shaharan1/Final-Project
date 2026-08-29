@@ -90,6 +90,45 @@ class _PatientDetailScreenState extends ConsumerState<PatientDetailScreen> {
     );
   }
 
+  Future<void> _downloadSummary(Patient p) async {
+    final appts = ref
+        .read(appointmentNotifierProvider)
+        .appointments
+        .where((a) => a.registeredPatientId == p.id)
+        .toList();
+    final admits = ref
+        .read(admissionNotifierProvider)
+        .admissions
+        .where((a) => a.patientId == p.id)
+        .toList();
+    final bills = ref
+        .read(billingNotifierProvider)
+        .invoices
+        .where((b) => b.patientId == p.id)
+        .toList();
+    final rxs = ref
+        .read(prescriptionNotifierProvider)
+        .prescriptions
+        .where((rx) => rx.patientName == p.name)
+        .toList();
+    try {
+      final bytes = await savePdf(
+          buildPatientPdf(p, appts, admits, bills, rxs));
+      await exportPdf(bytes, 'patient_${p.patientCode ?? p.id}.pdf');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('PDF generated'),
+            backgroundColor: AppTheme.success));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('PDF failed: $e'),
+            backgroundColor: AppTheme.danger));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = _patient;
