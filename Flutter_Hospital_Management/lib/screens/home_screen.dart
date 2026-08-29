@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
+import 'package:flutter_hospital_management/widgets/theme_toggle_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
@@ -157,6 +158,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: AppBar(
         title: const Text('Elite Care Hospital'),
         actions: [
+          const ThemeToggleButton(),
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: 'Search',

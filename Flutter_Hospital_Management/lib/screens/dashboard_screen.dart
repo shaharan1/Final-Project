@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
+import 'package:flutter_hospital_management/widgets/theme_toggle_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/dashboard_provider.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
@@ -73,6 +74,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       appBar: AppBar(
         title: const Text('Dashboard'),
         actions: [
+          const ThemeToggleButton(),
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Refresh',
