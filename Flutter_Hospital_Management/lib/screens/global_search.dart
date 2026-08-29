@@ -45,7 +45,7 @@ class AppSearchDelegate extends SearchDelegate<String> {
         final patients = ref
             .watch(patientNotifierProvider)
             .patients
-            .where((p) => (p.name ?? '').toLowerCase().contains(q))
+            .where((p) => p.name.toLowerCase().contains(q))
             .toList();
         final medicines = ref
             .watch(medicineNotifierProvider)

@@ -41,6 +41,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   # Secure storage for JWT + user session (also used for local role overrides)
   flutter_secure_storage: ^9.2.2
+  fl_chart: ^1.2.0
 
 dev_dependencies:
   flutter_test:
