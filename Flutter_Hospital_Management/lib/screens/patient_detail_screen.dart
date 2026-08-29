@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
-import 'package:flutter_hospital_management/models/appointment.dart';
-import 'package:flutter_hospital_management/models/admission.dart';
-import 'package:flutter_hospital_management/models/billing_invoice.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
 import 'package:flutter_hospital_management/providers/appointment_provider.dart';
 import 'package:flutter_hospital_management/providers/admission_provider.dart';
@@ -274,7 +271,7 @@ class _PatientDetailScreenState extends ConsumerState<PatientDetailScreen> {
         ),
         child: ListTile(
           leading: const Icon(Icons.assignment_ind, color: AppTheme.primary),
-          title: Text(a.admissionNumber ?? 'Admission'),
+          title: Text('Admission #${a.admissionId ?? ''}'),
           subtitle: Text('${a.admissionDate ?? ''}  •  ${a.status ?? ''}'),
         ),
       ),
@@ -300,7 +297,7 @@ class _PatientDetailScreenState extends ConsumerState<PatientDetailScreen> {
           leading: const Icon(Icons.receipt_long, color: AppTheme.primary),
           title: Text(b.invoiceNumber ?? 'Invoice'),
           subtitle: Text(
-              '${b.invoiceDate ?? ''}  •  ৳ ${b.totalAmount ?? 0}  •  ${b.status ?? ''}'),
+              '৳ ${b.netAmount ?? 0}  •  ${b.invoiceStatus ?? ''}'),
         ),
       ),
     );
@@ -310,7 +307,7 @@ class _PatientDetailScreenState extends ConsumerState<PatientDetailScreen> {
     final list = ref
         .watch(prescriptionNotifierProvider)
         .prescriptions
-        .where((rx) => rx.patientId == p.id)
+        .where((rx) => rx.patientName == p.name)
         .toList();
     return _relatedList(
       items: list,
