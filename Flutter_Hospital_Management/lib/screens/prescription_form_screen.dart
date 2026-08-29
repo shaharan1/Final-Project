@@ -276,6 +276,29 @@ class _PrescriptionFormScreenState
                   label: const Text('Add Medicine'),
                 ),
               ]),
+              _section('Recommended Lab Tests', [
+                if (_tests.isEmpty)
+                  const Text('No lab tests available.',
+                      style: TextStyle(color: Colors.grey))
+                else
+                  ..._tests.map(
+                    (t) => CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: _selectedTestIds.contains(t.id),
+                      title: Text(t.display),
+                      subtitle: t.standardPrice != null
+                          ? Text('৳ ${t.standardPrice}')
+                          : null,
+                      onChanged: (v) => setState(() {
+                        if (v == true) {
+                          _selectedTestIds.add(t.id!);
+                        } else {
+                          _selectedTestIds.remove(t.id);
+                        }
+                      }),
+                    ),
+                  ),
+              ]),
               _section('Other', [
                 TextFormField(
                   controller: _notes,
