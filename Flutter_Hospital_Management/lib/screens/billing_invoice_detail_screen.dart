@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hospital_management/core/pdf/document_builders.dart';
+import 'package:flutter_hospital_management/core/pdf/pdf_export.dart';
 import 'package:flutter_hospital_management/models/billing_invoice.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/providers/billing_provider.dart';
@@ -36,6 +38,14 @@ class _BillingInvoiceDetailScreenState
     return Scaffold(
       appBar: AppBar(
         title: Text(inv?.invoiceNumber ?? 'Invoice'),
+        actions: [
+          if (inv != null)
+            IconButton(
+              icon: const Icon(Icons.picture_as_pdf),
+              tooltip: 'Download PDF',
+              onPressed: () => _downloadPdf(inv),
+            ),
+        ],
       ),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
