@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/lab_report.dart';
@@ -41,6 +42,7 @@ class _LabReportListScreenState extends ConsumerState<LabReportListScreen> {
             .where((x) => _safeStatus(x) == _filter)
             .toList();
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'labReports'),
       appBar: AppBar(title: const Text('Lab Reports')),
       drawer: const AppDrawer(),
       body: state.isLoading

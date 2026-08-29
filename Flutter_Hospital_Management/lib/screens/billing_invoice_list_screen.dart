@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/billing_provider.dart';
@@ -69,6 +70,7 @@ class _BillingInvoiceListScreenState
             .toList();
 
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'billing'),
       appBar: AppBar(title: const Text('Billing')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(

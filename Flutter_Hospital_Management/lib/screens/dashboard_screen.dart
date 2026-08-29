@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/dashboard_provider.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
@@ -68,6 +69,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     ];
 
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'dashboard'),
       appBar: AppBar(
         title: const Text('Dashboard'),
         actions: [
