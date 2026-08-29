@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'lib/core/pdf/document_builders.dart';
-import 'lib/models/patient.dart';
-import 'lib/models/prescription.dart';
-import 'lib/models/billing_invoice.dart';
-import 'lib/models/lab_report.dart';
-import 'lib/models/appointment.dart';
-import 'lib/models/admission.dart';
+import 'package:flutter_hospital_management/core/pdf/document_builders.dart';
+import 'package:flutter_hospital_management/models/patient.dart';
+import 'package:flutter_hospital_management/models/prescription.dart';
+import 'package:flutter_hospital_management/models/billing_invoice.dart';
+import 'package:flutter_hospital_management/models/lab_report.dart';
+import 'package:flutter_hospital_management/models/appointment.dart';
+import 'package:flutter_hospital_management/models/admission.dart';
 
 void main() async {
   final rx = PrescriptionResponse(
