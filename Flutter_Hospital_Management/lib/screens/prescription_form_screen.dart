@@ -4,9 +4,11 @@ import 'package:flutter_hospital_management/models/appointment.dart';
 import 'package:flutter_hospital_management/models/medicine.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
 import 'package:flutter_hospital_management/models/prescription.dart';
+import 'package:flutter_hospital_management/models/test_master.dart';
 import 'package:flutter_hospital_management/providers/appointment_provider.dart';
 import 'package:flutter_hospital_management/providers/patient_provider.dart';
 import 'package:flutter_hospital_management/providers/pharmacy_provider.dart';
+import 'package:flutter_hospital_management/providers/lab_provider.dart';
 import 'package:flutter_hospital_management/providers/prescription_provider.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/theme.dart';
@@ -34,7 +36,9 @@ class _PrescriptionFormScreenState
   List<Patient> _patients = [];
   List<Medicine> _medicines = [];
   List<Appointment> _appointments = [];
+  List<TestMaster> _tests = [];
 
+  final Set<int> _selectedTestIds = {};
   int? _selectedPatientId;
   int? _selectedAppointmentId;
   final _diagnosis = TextEditingController();
