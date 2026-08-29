@@ -5,8 +5,14 @@ import 'package:flutter_hospital_management/screens/login_screen.dart';
 import 'package:flutter_hospital_management/screens/home_screen.dart';
 import 'package:flutter_hospital_management/theme.dart';
 import 'package:flutter_hospital_management/providers/theme_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  try {
+    await Hive.openBox('cache');
+  } catch (_) {}
   runApp(const ProviderScope(child: MyApp()));
 }
 

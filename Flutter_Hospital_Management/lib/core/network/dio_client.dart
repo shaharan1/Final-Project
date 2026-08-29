@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_hospital_management/core/constants/app_constants.dart';
+import 'package:flutter_hospital_management/core/network/cache_interceptor.dart';
 import 'package:flutter_hospital_management/core/storage/token_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class DioClient {
   static Dio create({TokenStorage? tokenStorage}) {
@@ -11,6 +13,11 @@ class DioClient {
       receiveTimeout: const Duration(seconds: 30),
       headers: {'Content-Type': 'application/json'},
     ));
+
+    try {
+      final box = Hive.box('cache');
+      dio.interceptors.add(CacheInterceptor(box));
+    } catch (_) {}
 
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
