@@ -4,6 +4,8 @@ import 'package:flutter_hospital_management/providers/dashboard_provider.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
+import 'package:flutter_hospital_management/models/dashboard.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -261,6 +263,99 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       );
 
   double _toDouble(dynamic v) => (v is num) ? v.toDouble() : 0.0;
+
+  Widget _revenueLineChart(BillingDashboard b) {
+    final data = b.dailyRevenueChart;
+    if (data.isEmpty) return const SizedBox();
+    final spots = data
+        .asMap()
+        .entries
+        .map((e) =>
+            FlSpot(e.key.toDouble(), (e.value.revenue ?? 0).toDouble()))
+        .toList();
+    final maxY = data
+        .map((e) => (e.revenue ?? 0).toDouble())
+        .fold(0.0, (a, c) => a > c ? a : c);
+    return SizedBox(
+      height: 240,
+      child: LineChart(
+        LineChartData(
+          minY: 0,
+          maxY: maxY * 1.2,
+          lineBarsData: [
+            LineChartBarData(
+              spots: spots,
+              isCurved: true,
+              color: AppTheme.primary,
+              barWidth: 3,
+              dotData: FlDotData(show: false),
+              belowBarData: BarAreaData(
+                show: true,
+                color: AppTheme.primary.withValues(alpha: 0.15),
+              ),
+            ),
+          ],
+          gridData: FlGridData(show: true, drawVerticalLine: false),
+          borderData: FlBorderData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles:
+                AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles:
+                AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles:
+                AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (v, meta) {
+                  final i = v.toInt();
+                  if (i < 0 || i >= data.length) return const SizedBox();
+                  final d = data[i].date ?? '';
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Text(d.length >= 5 ? d.substring(5) : d,
+                        fontSize: 10),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _paymentStatusPie(Map<String, dynamic>? p) {
+    if (p == null) return const SizedBox();
+    final items = [
+      ('Completed', _toDouble(p['completedPayments']), AppTheme.success),
+      ('Pending', _toDouble(p['pendingPayments']), AppTheme.warning),
+      ('Failed', _toDouble(p['failedPayments']), AppTheme.danger),
+    ];
+    final total = items.fold(0.0, (s, e) => s + e.$2);
+    if (total <= 0) return const SizedBox();
+    return SizedBox(
+      height: 220,
+      child: PieChart(
+        PieChartData(
+          sectionsSpace: 3,
+          centerSpaceRadius: 45,
+          sections: items
+              .map((e) => PieChartSectionData(
+                    value: e.$2,
+                    color: e.$3,
+                    title: '${(e.$2 / total * 100).toStringAsFixed(0)}%',
+                    radius: 80,
+                    titleStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold),
+                  ))
+              .toList(),
+        ),
+      ),
+    );
+  }
 }
 
 class _Hero extends StatelessWidget {
