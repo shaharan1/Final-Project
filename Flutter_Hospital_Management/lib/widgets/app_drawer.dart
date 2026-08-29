@@ -24,6 +24,17 @@ import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/screens/role_access_screen.dart';
 import 'package:flutter_hospital_management/screens/doctor_dashboard_screen.dart';
+import 'package:flutter_hospital_management/providers/patient_provider.dart';
+import 'package:flutter_hospital_management/providers/appointment_provider.dart';
+import 'package:flutter_hospital_management/providers/admission_provider.dart';
+import 'package:flutter_hospital_management/providers/infrastructure_provider.dart';
+import 'package:flutter_hospital_management/providers/billing_provider.dart';
+import 'package:flutter_hospital_management/providers/pharmacy_provider.dart';
+import 'package:flutter_hospital_management/providers/lab_provider.dart';
+import 'package:flutter_hospital_management/providers/prescription_provider.dart';
+import 'package:flutter_hospital_management/providers/doctor_provider.dart';
+import 'package:flutter_hospital_management/providers/clinical_provider.dart';
+import 'package:flutter_hospital_management/providers/insurance_provider.dart';
 import 'package:flutter_hospital_management/theme.dart';
 
 class _Item {
@@ -49,6 +60,71 @@ class AppDrawer extends ConsumerWidget {
       context,
       MaterialPageRoute(builder: (_) => screen),
     );
+  }
+
+  String _today() {
+    final d = DateTime.now();
+    final m = '${d.month}'.padLeft(2, '0');
+    final day = '${d.day}'.padLeft(2, '0');
+    return '${d.year}-$m-$day';
+  }
+
+  int? _badge(String key, WidgetRef ref) {
+    switch (key) {
+      case ModuleKeys.patients:
+        final c = ref.watch(patientNotifierProvider).patients.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.appointments: {
+        final t = _today();
+        final c = ref
+            .watch(appointmentNotifierProvider)
+            .appointments
+            .where((a) => (a.appointmentDate ?? '').startsWith(t))
+            .length;
+        return c > 0 ? c : null;
+      }
+      case ModuleKeys.admissions:
+        final c = ref.watch(admissionNotifierProvider).admissions.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.beds: {
+        final c = ref
+            .watch(bedNotifierProvider)
+            .beds
+            .where((b) => (b.status ?? '').toLowerCase().contains('occup'))
+            .length;
+        return c > 0 ? c : null;
+      }
+      case ModuleKeys.billing:
+        final c = ref.watch(billingNotifierProvider).invoices.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.pharmacy:
+        final c = ref.watch(medicineNotifierProvider).medicines.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.pharmacySales:
+        final c = ref.watch(saleNotifierProvider).sales.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.labTests:
+        final c = ref.watch(testOrderNotifierProvider).orders.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.labReports:
+        final c = ref.watch(labReportNotifierProvider).reports.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.doctors:
+        final c = ref.watch(doctorNotifierProvider).doctors.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.dietPlans:
+        final c = ref.watch(dietPlanNotifierProvider).plans.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.insuranceClaims:
+        final c = ref.watch(insuranceNotifierProvider).claims.length;
+        return c > 0 ? c : null;
+      case ModuleKeys.prescriptions:
+        final c =
+            ref.watch(prescriptionNotifierProvider).prescriptions.length;
+        return c > 0 ? c : null;
+      default:
+        return null;
+    }
   }
 
   @override
@@ -157,8 +233,9 @@ class AppDrawer extends ConsumerWidget {
       if (items.isEmpty) continue;
       children.add(_group(sec.title));
       for (final it in items) {
+        final badge = _badge(it.key, ref);
         children.add(_tile(context, it.icon, it.label,
-            () => _go(context, it.screen)));
+            () => _go(context, it.screen), badge: badge));
       }
     }
 
@@ -182,10 +259,21 @@ class AppDrawer extends ConsumerWidget {
       );
 
   Widget _tile(BuildContext context, IconData icon, String label,
-      VoidCallback onTap, {Color? color}) {
+      VoidCallback onTap, {Color? color, int? badge}) {
     return ListTile(
       leading: Icon(icon, color: color ?? AppTheme.primary),
       title: Text(label, style: TextStyle(color: color)),
+      trailing: badge != null
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: AppTheme.accent,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text('$badge',
+                  style: const TextStyle(color: Colors.white, fontSize: 12)),
+            )
+          : null,
       onTap: onTap,
       dense: true,
       horizontalTitleGap: 8,
