@@ -40,6 +40,7 @@ import 'package:flutter_hospital_management/screens/insurance_list_screen.dart';
 import 'package:flutter_hospital_management/screens/insurance_claim_list_screen.dart';
 import 'package:flutter_hospital_management/screens/prescription_form_screen.dart';
 import 'package:flutter_hospital_management/screens/prescription_list_screen.dart';
+import 'package:flutter_hospital_management/screens/global_search.dart';
 import 'package:flutter_hospital_management/widgets/common.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_hospital_management/core/role_access.dart';
@@ -154,6 +155,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: AppBar(
         title: const Text('Elite Care Hospital'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: 'Search',
+            onPressed: () =>
+                showSearch(context: context, delegate: AppSearchDelegate()),
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Logout',
