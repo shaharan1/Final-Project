@@ -224,6 +224,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                                 ),
                               ),
                             ],
+                            if (b != null && b.dailyRevenueChart.isNotEmpty) ...[
+                              const SizedBox(height: 24),
+                              const SectionTitle('Revenue Trend',
+                                  icon: Icons.show_chart),
+                              AppCard(child: _revenueLineChart(b)),
+                            ],
+                            if (p != null) ...[
+                              const SizedBox(height: 24),
+                              const SectionTitle('Payment Status',
+                                  icon: Icons.pie_chart),
+                              AppCard(child: _paymentStatusPie(p)),
+                            ],
                             const SizedBox(height: 24),
                           ],
                         ),
@@ -314,7 +326,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(d.length >= 5 ? d.substring(5) : d,
-                        fontSize: 10),
+                        style: const TextStyle(fontSize: 10)),
                   );
                 },
               ),
