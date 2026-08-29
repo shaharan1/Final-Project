@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_hospital_management/core/constants/app_constants.dart';
-import 'package:flutter_hospital_management/core/pdf_launcher.dart';
+import 'package:flutter_hospital_management/core/pdf/document_builders.dart';
+import 'package:flutter_hospital_management/core/pdf/pdf_export.dart';
 import 'package:flutter_hospital_management/models/prescription.dart';
 import 'package:flutter_hospital_management/providers/prescription_provider.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
@@ -52,8 +52,7 @@ class _PrescriptionDetailScreenState
             IconButton(
               icon: const Icon(Icons.picture_as_pdf),
               tooltip: 'Download PDF',
-              onPressed: () => openPdfInBrowser(
-                  '${AppConstants.baseUrl}/prescriptions/${_data!.id}/pdf'),
+              onPressed: () => _downloadPdf(),
             ),
         ],
       ),
@@ -189,4 +188,24 @@ class _PrescriptionDetailScreenState
           ],
         ),
       );
+
+  Future<void> _downloadPdf() async {
+    if (_data == null) return;
+    try {
+      final bytes = await savePdf(buildPrescriptionPdf(_data!));
+      await exportPdf(bytes,
+          'prescription_${_data!.prescriptionNumber ?? _data!.id}.pdf');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('PDF generated'),
+            backgroundColor: AppTheme.success));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('PDF failed: $e'),
+            backgroundColor: AppTheme.danger));
+      }
+    }
+  }
 }
