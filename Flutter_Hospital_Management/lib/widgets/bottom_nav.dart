@@ -114,6 +114,9 @@ class RoleBottomNav extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (MediaQuery.of(context).size.width >= 700) {
+      return const SizedBox.shrink();
+    }
     final role = ref.watch(authNotifierProvider).user?.role ?? '';
     final items = _itemsFor(role);
     final idx = items.indexWhere((e) => e.key == currentKey);
