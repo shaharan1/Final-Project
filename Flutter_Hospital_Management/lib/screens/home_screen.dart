@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
@@ -53,6 +54,14 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _loaded = false;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(
+        const Duration(seconds: 45), (_) => _loadRoleData());
+  }
 
   @override
   void didChangeDependencies() {
@@ -61,6 +70,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       _loaded = true;
       _loadRoleData();
     }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   void _loadRoleData() {
@@ -166,7 +181,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   '${role.toUpperCase()}${user?.email != null ? ' • ${user!.email}' : ''}',
             ),
             const SizedBox(height: 20),
-            const SectionTitle("Today's Overview", icon: Icons.insights),
+            Row(
+              children: const [
+                SectionTitle("Today's Overview", icon: Icons.insights),
+                SizedBox(width: 8),
+                _LiveDot(),
+                Text('LIVE',
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.success,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1)),
+              ],
+            ),
             const SizedBox(height: 12),
             _statGrid(stats),
             const SizedBox(height: 24),
@@ -247,7 +274,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               .entries
               .map((e) => SizedBox(
                     width: cw,
-                    child: _StatCard(e.value, palette[e.key % palette.length]),
+                    child: _AnimatedStatCard(
+                        e.value, palette[e.key % palette.length], e.key),
                   ))
               .toList(),
         );
@@ -509,6 +537,68 @@ class _StatCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _AnimatedStatCard extends StatelessWidget {
+  final _Stat stat;
+  final Color color;
+  final int index;
+  const _AnimatedStatCard(this.stat, this.color, this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: Duration(milliseconds: 350 + index * 70),
+      curve: Curves.easeOutCubic,
+      builder: (_, v, child) => Opacity(
+        opacity: v,
+        child: Transform.translate(
+          offset: Offset(0, (1 - v) * 14),
+          child: _StatCard(stat, color),
+        ),
+      ),
+    );
+  }
+}
+
+class _LiveDot extends StatefulWidget {
+  const _LiveDot();
+  @override
+  State<_LiveDot> createState() => _LiveDotState();
+}
+
+class _LiveDotState extends State<_LiveDot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(seconds: 1))
+    ..repeat(reverse: true);
+  late final Animation<double> _a =
+      Tween<double>(begin: 0.25, end: 1).animate(_c);
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => FadeTransition(
+        opacity: _a,
+        child: Container(
+          width: 9,
+          height: 9,
+          decoration: BoxDecoration(
+            color: AppTheme.success, shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  color: AppTheme.success.withValues(alpha: 0.5),
+                  blurRadius: 6,
+                  spreadRadius: 1)
+            ],
+          ),
+        ),
+      );
 }
 
 class _Activity {
