@@ -25,7 +25,7 @@ pw.Widget _title(String t) => pw.Container(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(_hospital,
-              style: pw.TextStyle(bold: true, fontSize: 20)),
+              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 20)),
           pw.SizedBox(height: 2),
           pw.Text(t,
               style: pw.TextStyle(fontSize: 14, color: PdfColors.grey700)),
@@ -50,13 +50,15 @@ pw.Widget _kv(String k, String? v) => pw.Padding(
 
 pw.Widget _sectionTitle(String t) => pw.Padding(
       padding: const pw.EdgeInsets.only(top: 12, bottom: 4),
-      child: pw.Text(t, style: pw.TextStyle(bold: true, fontSize: 13)),
+      child: pw.Text(t,
+          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 13)),
     );
 
 pw.Widget _table(List<String> headers, List<List<String?>> rows) {
   if (rows.isEmpty) {
     return pw.Text('No records.',
-        style: const pw.TextStyle(color: PdfColors.grey700, italic: true));
+        style: const pw.TextStyle(
+            color: PdfColors.grey700, fontStyle: pw.FontStyle.italic));
   }
   return pw.Table(
     border: pw.TableBorder.all(width: 0.5, color: PdfColors.grey),
@@ -64,10 +66,11 @@ pw.Widget _table(List<String> headers, List<List<String?>> rows) {
       pw.TableRow(
         decoration: const pw.BoxDecoration(color: PdfColors.grey200),
         children: headers
-            .map((h) => pw.Padding(
-                  padding: const pw.EdgeInsets.all(4),
-                  child: pw.Text(h, style: pw.TextStyle(bold: true)),
-                ))
+                .map((h) => pw.Padding(
+                      padding: const pw.EdgeInsets.all(4),
+                      child: pw.Text(h,
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    ))
             .toList(),
       ),
       ...rows.map(
