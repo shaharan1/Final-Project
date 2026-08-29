@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_hospital_management/models/test_order.dart';
 import 'package:flutter_hospital_management/models/lab_report.dart';
+import 'package:flutter_hospital_management/models/test_master.dart';
 
 class LabService {
   final Dio dio;
@@ -11,6 +12,13 @@ class LabService {
     final res = await dio.get('/test-orders');
     return (res.data as List)
         .map((e) => TestOrder.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<TestMaster>> getTestMasters() async {
+    final res = await dio.get('/tests');
+    return (res.data as List)
+        .map((e) => TestMaster.fromJson(e as Map<String, dynamic>))
         .toList();
   }
 
