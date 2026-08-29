@@ -167,7 +167,7 @@ class _PatientDetailScreenState extends ConsumerState<PatientDetailScreen> {
               IconButton(
                 icon: const Icon(Icons.picture_as_pdf),
                 tooltip: 'Download Summary PDF',
-                onPressed: () => _downloadSummary(p!),
+                onPressed: () => _downloadSummary(p),
               ),
             ],
             IconButton(
