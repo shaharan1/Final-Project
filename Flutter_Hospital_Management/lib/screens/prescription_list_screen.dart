@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/core/role_access.dart';
 import 'package:flutter_hospital_management/providers/auth_provider.dart';
@@ -49,6 +50,7 @@ class _PrescriptionListScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(prescriptionNotifierProvider);
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'prescriptions'),
       appBar: AppBar(
         title: const Text('Prescriptions'),
         actions: [

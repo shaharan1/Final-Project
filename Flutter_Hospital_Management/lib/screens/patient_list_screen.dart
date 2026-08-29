@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hospital_management/widgets/bottom_nav.dart';
 import 'package:flutter_hospital_management/widgets/app_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hospital_management/models/patient.dart';
@@ -87,6 +88,7 @@ class _PatientListScreenState extends ConsumerState<PatientListScreen> {
             .toList();
 
     return Scaffold(
+      bottomNavigationBar: const RoleBottomNav(currentKey: 'patients'),
       appBar: AppBar(title: const Text('Patients')),
       drawer: const AppDrawer(),
       floatingActionButton: FloatingActionButton(
